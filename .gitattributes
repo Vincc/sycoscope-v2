@@ -1,0 +1,7 @@
+# LF everywhere, so SHA-256 of committed files is the same on every machine.
+* text=auto eol=lf
+*.npz binary
+# Generations and judged data are committed through Git LFS.
+data/**/*.jsonl filter=lfs diff=lfs merge=lfs -text
+data/**/*.csv filter=lfs diff=lfs merge=lfs -text
+generations/**/*.jsonl filter=lfs diff=lfs merge=lfs -text

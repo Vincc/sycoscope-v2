@@ -1,0 +1,30 @@
+[project]
+name = "sycoscope"
+version = "0.1.0"
+description = "Linear probes for sycophancy sub-types"
+readme = "README.md"
+requires-python = "==3.13.*"
+# Versions pinned to the old repo's uv.lock so parity checks compare like with like.
+dependencies = [
+    "accelerate==1.14.0",
+    "anthropic>=1.8.0",
+    "numpy==2.5.1",
+    "scikit-learn==1.9.0",
+    "scipy==1.18.0",
+    "torch==2.12.1",
+    "transformers==5.13.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["utils"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "scripts"]
