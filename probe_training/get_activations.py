@@ -6,7 +6,7 @@ plus per-row id, n_tokens, prompt_len, n_reasoning_tokens (a thinking block betw
 into no position), n_response_tokens (visible answer), first5_text, and
   contrastive inputs: label, polarity, pair_index, cell, pair_type, prompt_id
   judging inputs: benchmark, group (skyline split group), truncated, and if judged labels__<name> (int8, -1 = None)
-Skipped rows are listed in the .meta.json.
+Skipped rows are listed in meta/<output>.meta.json.
 
 Run from the repo root: python -m probe_training.get_activations --model ... --input ...
 """

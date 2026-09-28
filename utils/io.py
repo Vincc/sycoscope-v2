@@ -64,8 +64,9 @@ def parse_jsonl_bytes(data: bytes) -> list[dict]:
 
 
 def meta_path(output) -> Path:
+    """<dir>/meta/<name>.meta.json for an output at <dir>/<name>."""
     output = Path(output)
-    return output.with_name(output.name + ".meta.json")
+    return output.parent / "meta" / (output.name + ".meta.json")
 
 
 def plain(value):
@@ -78,7 +79,7 @@ def plain(value):
 
 
 def write_meta(output, inputs, args, counts: dict, extra: dict | None = None) -> None:
-    """Write `<output>.meta.json`: inputs with SHA-256, git state, command line, row counts."""
+    """Write `meta/<output name>.meta.json` beside the output: inputs with SHA-256, git state, command line, row counts."""
     meta = {
         "output": Path(output).name,
         "inputs": {Path(p).as_posix(): sha256(p) for p in inputs},

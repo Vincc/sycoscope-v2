@@ -45,6 +45,6 @@ Current step: **Step 1 only** (probe training). Do not start Step 2 or 3 until a
 - Port from the old repo's best existing version of each piece (mapped in `docs/PORTING_NOTES.md`); do not rewrite from memory.
 - Anything that produces numbers gets a parity check against the old repo before it is used.
 - Do not decide items listed under "Open decisions" in `docs/PLAN.md`; ask.
-- Every output file gets a sibling `*.meta.json`: input paths with SHA-256, git commit (a dirty tree is recorded as dirty), command-line arguments, row counts.
+- Every output file gets a `meta/<name>.meta.json` in its directory: input paths with SHA-256, git commit (a dirty tree is recorded as dirty), command-line arguments, row counts.
 - Generations and judged data are committed (Git LFS for large files). Activations are never committed.
 - Model runs (generation, activation extraction) need a GPU machine; unit tests must run on CPU.

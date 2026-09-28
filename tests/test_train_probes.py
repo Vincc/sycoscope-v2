@@ -4,7 +4,7 @@ import numpy as np
 
 from probe_training import train_probes
 from utils import probes
-from utils.io import read_json, read_jsonl, write_json
+from utils.io import meta_path, read_json, read_jsonl, write_json
 
 
 def fake_activations(path, n_prompts=20, n_pairs=2, hidden=8, drop_id=None):
@@ -27,7 +27,7 @@ def fake_activations(path, n_prompts=20, n_pairs=2, hidden=8, drop_id=None):
     X = rng.normal(size=(len(fields["id"]), hidden)).astype(np.float32)
     X[:, 0] += 3.0 * np.array(fields["label"])
     np.savez(path, response_L01=X, **{k: np.array(v) for k, v in fields.items()})
-    write_json(path.with_name(path.name + ".meta.json"), {"model": "org/fake-model", "layers": [1]})
+    write_json(meta_path(path), {"model": "org/fake-model", "layers": [1]})
 
 
 def run(tmp_path, monkeypatch, npz, *extra):

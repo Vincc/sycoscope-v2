@@ -9,7 +9,7 @@ from tests.test_train_probes import fake_activations
 from tests.test_train_probes import run as run_contrastive
 from utils import probes
 from utils.activations import NO_LABEL, read_labels
-from utils.io import read_json, read_jsonl, write_json
+from utils.io import meta_path, read_json, read_jsonl, write_json
 
 
 def fake_judged(path, model="org/fake-model", n_groups=30, hidden=8):
@@ -31,7 +31,7 @@ def fake_judged(path, model="org/fake-model", n_groups=30, hidden=8):
         labels__syco=syco_stored.astype(np.int8),
         labels__flipped=np.where(syco_stored == NO_LABEL, NO_LABEL, 1 - syco_stored).astype(np.int8),
     )
-    write_json(path.with_name(path.name + ".meta.json"), {"model": model, "layers": [1]})
+    write_json(meta_path(path), {"model": model, "layers": [1]})
     return X, syco_stored
 
 
@@ -141,6 +141,6 @@ def test_model_mismatch_and_missing_layer_raise(tmp_path, monkeypatch):
     z = dict(np.load(fewer))
     z["response_L02"] = z.pop("response_L01")
     np.savez(fewer, **z)
-    write_json(fewer.with_name(fewer.name + ".meta.json"), {"model": "org/fake-model", "layers": [2]})
+    write_json(meta_path(fewer), {"model": "org/fake-model", "layers": [2]})
     with pytest.raises(ValueError, match="lacks"):
         evaluate(monkeypatch, sweep, fewer)
