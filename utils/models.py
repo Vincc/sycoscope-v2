@@ -5,7 +5,6 @@
 MODELS = {
     "meta-llama/Meta-Llama-3-8B-Instruct": {"n_layers": 32, "thinking": False},
     "Qwen/Qwen3-8B": {"n_layers": 36, "thinking": True},
-    "Qwen/Qwen3-14B": {"n_layers": 40, "thinking": True},
     "Qwen/Qwen3.5-9B": {"n_layers": 32, "thinking": False, "template_kwargs": {"enable_thinking": False}},
     "Qwen/Qwen3.8-27B": {"n_layers": 64, "thinking": False, "template_kwargs": {"enable_thinking": False}},
     "google/gemma-3-12b-it": {"n_layers": 48, "thinking": False},
@@ -17,7 +16,6 @@ MODELS = {
 # OpenRouter slugs of the runs under generations/<org>__<model>/, mapped to the Hugging Face checkpoint.
 OPENROUTER_TO_HF = {
     "qwen/qwen3-8b": "Qwen/Qwen3-8B",
-    "qwen/qwen3-14b": "Qwen/Qwen3-14B",
     "qwen/qwen3.5-9b": "Qwen/Qwen3.5-9B",
     "qwen/qwen3.8-27b": "Qwen/Qwen3.8-27B",
     "google/gemma-3-12b-it": "google/gemma-3-12b-it",
