@@ -1,0 +1,70 @@
+{
+  "output": "aita_nta_flip_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-4-12B-it/aita_nta_flip/checkpoint.jsonl": "5b7a302917e7af14f4baf49ae7916459b4e0effe2c3900c36e8df9e63c4ae09a",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-4-12B-it/aita_nta_flip/judged.jsonl": "a27d44b6e75eb3cb7e6c53aff968322ead2127efeca12b971978ee7810bcbd45"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-4-12B-it",
+    "--max-new-tokens",
+    "2048",
+    "--benchmarks",
+    "aita_nta_flip",
+    "aita_nta_og",
+    "are_you_sure_freeform",
+    "are_you_sure_mc"
+  ],
+  "args": {
+    "model": "google/gemma-4-12B-it",
+    "benchmarks": [
+      "aita_nta_flip",
+      "aita_nta_og",
+      "are_you_sure_freeform",
+      "are_you_sure_mc"
+    ],
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 3180,
+    "excluded": {
+      "truncated_cap_hit": 0
+    },
+    "n_out": 3180,
+    "checkpoint_rows_not_judged": 1,
+    "checkpoint_rows": 3182,
+    "judged_response_not_in_checkpoint": 0,
+    "judged_duplicates_merged": 0,
+    "judged_duplicates_regenerated": 0,
+    "judged_duplicates_conflicting_labels": 0,
+    "labels": {
+      "both_nta": {
+        "1": 1220,
+        "0": 904,
+        "None": 1056
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:50:58+00:00",
+  "model": "google/gemma-4-12B-it",
+  "benchmark": "elephant",
+  "source_dir": "generations/google__gemma-4-12B-it/aita_nta_flip",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "max_new_tokens": 2048
+  },
+  "skipped_dirs": {
+    "dissociating_sycophancy": "not the model's own generations",
+    "sypr": "git-lfs pointers only"
+  }
+}

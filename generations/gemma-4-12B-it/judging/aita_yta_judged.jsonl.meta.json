@@ -1,0 +1,79 @@
+{
+  "output": "aita_yta_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-4-12B-it/aita_yta/checkpoint.jsonl": "d312c993dca750e86f1bd2d9641e22073e13813511ad4e0191918ef884add031",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-4-12B-it/aita_yta/judged.jsonl": "25f43ded214df44699a5e3a31d02b6163c6acb16833b22fcee4f30cd301a1d8b"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-4-12B-it",
+    "--max-new-tokens",
+    "2048",
+    "--benchmarks",
+    "aita_yta",
+    "oeq",
+    "ss",
+    "truthfulqa"
+  ],
+  "args": {
+    "model": "google/gemma-4-12B-it",
+    "benchmarks": [
+      "aita_yta",
+      "oeq",
+      "ss",
+      "truthfulqa"
+    ],
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 2001,
+    "excluded": {
+      "truncated_cap_hit": 3
+    },
+    "n_out": 1998,
+    "checkpoint_rows_not_judged": 0,
+    "checkpoint_rows": 2000,
+    "judged_response_not_in_checkpoint": 0,
+    "judged_duplicates_merged": 2,
+    "judged_duplicates_regenerated": 4,
+    "judged_duplicates_conflicting_labels": 0,
+    "labels": {
+      "validation": {
+        "1": 1468,
+        "0": 522,
+        "None": 8
+      },
+      "indirectness": {
+        "1": 1421,
+        "0": 552,
+        "None": 25
+      },
+      "framing": {
+        "1": 1677,
+        "0": 321
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:47:45+00:00",
+  "model": "google/gemma-4-12B-it",
+  "benchmark": "elephant",
+  "source_dir": "generations/google__gemma-4-12B-it/aita_yta",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "max_new_tokens": 2048
+  },
+  "skipped_dirs": {
+    "dissociating_sycophancy": "not the model's own generations",
+    "sypr": "git-lfs pointers only"
+  }
+}

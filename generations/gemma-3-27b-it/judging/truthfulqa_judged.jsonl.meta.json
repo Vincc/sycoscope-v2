@@ -1,0 +1,52 @@
+{
+  "output": "truthfulqa_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-27b-it/truthfulqa/checkpoint.metadata.json": "0f5004e68a4462ee1fe7bef56b09ab4cace8446776f122b42023dcd5f00b9786",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-27b-it/truthfulqa/checkpoint.jsonl": "67b1989555965397f0cf7ebb3f0d0fb2b86bfc145189a71511604dec698cf200"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-3-27b-it"
+  ],
+  "args": {
+    "model": "google/gemma-3-27b-it",
+    "benchmarks": null,
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 3591,
+    "excluded": {
+      "finish_length": 7
+    },
+    "n_out": 3584,
+    "labels": {
+      "false_answer": {
+        "0": 2609,
+        "1": 975
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:44:06+00:00",
+  "model": "google/gemma-3-27b-it",
+  "benchmark": "truthfulqa",
+  "source_dir": "generations/google__gemma-3-27b-it/truthfulqa",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": null,
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

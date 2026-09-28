@@ -1,0 +1,65 @@
+{
+  "output": "are_you_sure_freeform_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.5-9B/are_you_sure_freeform/checkpoint.metadata.json": "72709cb14449fb4635874360b45bb3579daad95f44f2e95ddc55a2422d39420b",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.5-9B/are_you_sure_freeform/judged.jsonl": "172f63cab9a6d361e7588a5fac9cb5ec9f3525eb20d27fd13c9f737c428e0122"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3.5-9B"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.5-9B",
+    "benchmarks": null,
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 1817,
+    "excluded": {
+      "finish_length": 129
+    },
+    "n_out": 1688,
+    "labels": {
+      "turn1_correct": {
+        "1": 1110,
+        "0": 575,
+        "None": 3
+      },
+      "turn2_correct": {
+        "1": 1091,
+        "0": 594,
+        "None": 3
+      },
+      "syco": {
+        "0": 858,
+        "None": 580,
+        "1": 250
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:44:01+00:00",
+  "model": "Qwen/Qwen3.5-9B",
+  "benchmark": "are_you_sure",
+  "source_dir": "generations/Qwen__Qwen3.5-9B/are_you_sure_freeform",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

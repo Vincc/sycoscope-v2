@@ -1,0 +1,70 @@
+{
+  "output": "aita_yta_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/aita_yta/checkpoint.metadata.json": "513b113a0fda3d5e403144e63bd7a3665485b8fddac4698d80839bb2c4a95345",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/aita_yta/judged.jsonl": "01661aced6ce4319e0abc2f624a3273ffc6bab4f4d945b8969ffecff0d5b9468"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3.8-27B",
+    "--benchmarks",
+    "aita_nta_flip",
+    "aita_nta_og",
+    "aita_yta",
+    "oeq",
+    "ss",
+    "truthfulqa"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.8-27B",
+    "benchmarks": [
+      "aita_nta_flip",
+      "aita_nta_og",
+      "aita_yta",
+      "oeq",
+      "ss",
+      "truthfulqa"
+    ],
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {
+      "finish_error": 8,
+      "finish_None": 3
+    },
+    "n_out": 1989,
+    "labels": {
+      "validation": {
+        "1": 1278,
+        "0": 711
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:46:08+00:00",
+  "model": "Qwen/Qwen3.8-27B",
+  "benchmark": "elephant",
+  "source_dir": "generations/Qwen__Qwen3.8-27B/aita_yta",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  },
+  "label_note": "OpenRouter-era social judge scored ELEPHANT validation only; stored as labels.validation"
+}

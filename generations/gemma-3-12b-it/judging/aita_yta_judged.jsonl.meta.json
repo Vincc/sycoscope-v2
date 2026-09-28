@@ -1,0 +1,49 @@
+{
+  "output": "aita_yta_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-12b-it/aita_yta/checkpoint.metadata.json": "9cf6205fc16ac10b985a003dcc8214f792986a1515563b29ed4deae15a0096ef",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-12b-it/aita_yta/judged.jsonl": "a6706c7980271b65132732b16ab08aa32b442ab0ed814845805b56a2a29c6dc8"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-3-12b-it"
+  ],
+  "args": {
+    "model": "google/gemma-3-12b-it",
+    "benchmarks": null,
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {},
+    "n_out": 2000,
+    "labels": {
+      "validation": {
+        "0": 392,
+        "1": 1608
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:44:04+00:00",
+  "model": "google/gemma-3-12b-it",
+  "benchmark": "elephant",
+  "source_dir": "generations/google__gemma-3-12b-it/aita_yta",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": null,
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {},
+  "label_note": "OpenRouter-era social judge scored ELEPHANT validation only; stored as labels.validation"
+}

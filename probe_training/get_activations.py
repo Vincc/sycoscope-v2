@@ -2,7 +2,8 @@
 
 Input rows have id, messages, response, and live in generations/<model name>/<training|evaluation|judging>/.
 Writes <input stem>_activations.npz next to the input: arrays <position>_L<layer> of shape (n, hidden),
-plus per-row id, n_tokens, prompt_len, n_response_tokens, first5_text, and
+plus per-row id, n_tokens, prompt_len, n_reasoning_tokens (a thinking block between prompt and answer, pooled
+into no position), n_response_tokens (visible answer), first5_text, and
   contrastive inputs: label, polarity, pair_index, cell, pair_type, prompt_id
   judging inputs: benchmark, group (skyline split group), truncated, and if judged labels__<name> (int8, -1 = None)
 Skipped rows are listed in the .meta.json.
@@ -18,20 +19,26 @@ import numpy as np
 
 from utils.activations import LABEL_PREFIX, NO_LABEL, POSITIONS, extract, prepare, resolve_layers
 from utils.io import check_counts, read_jsonl, write_meta
-from utils.models import load_model_and_tokenizer, text_config
+from utils.models import load_model_and_tokenizer, model_spec, text_config
 
 SPLITS = ("training", "evaluation", "judging")
 CONTRASTIVE_FIELDS = ("label", "polarity", "pair_index", "cell", "pair_type", "prompt_id")
 
 
 def skyline_group(row: dict) -> str:
-    """Rows sharing a group must share a side of a skyline split: AYS by question, ELEPHANT by prompt text."""
-    if row["benchmark"] == "are_you_sure":
+    """Rows sharing a group must share a side of a skyline split.
+
+    AYS and truthfulqa by question (plain and pushback tellings of one question stay together), ELEPHANT by prompt
+    text, and both tellings of an AITA-NTA-FLIP pair by the pair's row_id.
+    """
+    if row["benchmark"] in ("are_you_sure", "truthfulqa"):
         text = row["question"]
+    elif row["benchmark"] == "elephant" and row.get("source") == "AITA-NTA-FLIP":
+        text = f"AITA-NTA-FLIP:{row['row_id']}"
     elif row["benchmark"] == "elephant":
-        if row["messages"][0]["role"] != "user":
-            raise ValueError(f"{row['id']}: first message is not the user prompt")
-        text = row["messages"][0]["content"]
+        if row["messages"][-1]["role"] != "user":
+            raise ValueError(f"{row['id']}: last message is not the user prompt")
+        text = row["messages"][-1]["content"]
     else:
         raise ValueError(f"{row['id']}: no group rule for benchmark {row['benchmark']!r}")
     return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
@@ -87,12 +94,15 @@ def main():
     if len(set(ids)) != len(ids):
         raise ValueError(f"{args.input}: duplicate ids")
 
+    spec = model_spec(args.model)
+    if spec["thinking"] and any("reasoning" not in r for r in rows):
+        raise ValueError(f"{args.model} is a thinking model but {args.input} has rows without a reasoning field")
     model, tokenizer = load_model_and_tokenizer(args.model, padding_side="right")
     n_layers = text_config(model.config).num_hidden_layers
     layers = resolve_layers(n_layers, args.layers, args.layer_fracs)
     print(f"{args.model}: {n_layers} blocks; extracting blocks {layers} from hidden_states[L + 1]")
 
-    prepared, skips = prepare(rows, tokenizer, args.max_length)
+    prepared, skips = prepare(rows, tokenizer, args.max_length, spec.get("template_kwargs"))
     if not prepared:
         raise ValueError(f"{args.input}: every row was skipped ({Counter(s['reason'] for s in skips)})")
     print(f"{len(prepared)} rows, {len(skips)} skipped")
@@ -113,7 +123,8 @@ def main():
         id=np.array([p["id"] for p in prepared]),
         n_tokens=np.array([p["n_tokens"] for p in prepared]),
         prompt_len=np.array([p["prompt_len"] for p in prepared]),
-        n_response_tokens=np.array([p["resp_end"] - p["prompt_len"] for p in prepared]),
+        n_reasoning_tokens=np.array([p["answer_start"] - p["prompt_len"] for p in prepared]),
+        n_response_tokens=np.array([p["resp_end"] - p["answer_start"] for p in prepared]),
         first5_text=np.array([p["first5_text"] for p in prepared]),
     )
     counts = check_counts(len(rows), Counter(s["reason"] for s in skips), len(prepared), args.input.name)
@@ -123,6 +134,7 @@ def main():
         "layers": layers,
         "layer_convention": "hidden_states[layer + 1]",
         "positions": list(POSITIONS),
+        "template_kwargs": spec.get("template_kwargs"),
         "dtype": "float32",
         "skips": skips,
     }

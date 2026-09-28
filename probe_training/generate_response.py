@@ -11,7 +11,7 @@ from pathlib import Path
 
 from utils.contrastive import LABEL, POLARITIES, TAG
 from utils.io import REPO_ROOT, read_json, read_jsonl, write_jsonl
-from utils.models import generate, load_model_and_tokenizer, render_prompt
+from utils.models import generate, load_model_and_tokenizer, model_spec, render_prompt
 
 
 def work_items(prompts: list[dict], pairs: list[dict] | None) -> list[dict]:
@@ -69,7 +69,7 @@ def main():
     rows = []
     for b in range(0, len(items), args.batch_size):
         chunk = items[b : b + args.batch_size]
-        rendered = [render_prompt(tokenizer, item["messages"]) for item in chunk]
+        rendered = [render_prompt(tokenizer, item["messages"], model_spec(args.model).get("template_kwargs")) for item in chunk]
         responses, truncated = generate(model, tokenizer, rendered, args.max_new_tokens, args.temperature, args.top_p)
         for item, response, trunc in zip(chunk, responses, truncated):
             rows.append({**item, "response": response, "truncated": trunc, "model": args.model})

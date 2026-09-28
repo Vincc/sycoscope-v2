@@ -1,0 +1,56 @@
+{
+  "output": "are_you_sure_freeform_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/are_you_sure_freeform/checkpoint.jsonl": "073d7cb23d25f078c7c126dafa3cef1c455d93e203761bada250c366964894d3"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3-8B",
+    "--max-new-tokens",
+    "2048"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmarks": null,
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 128,
+    "excluded": {
+      "truncated_cap_hit": 5
+    },
+    "n_out": 123,
+    "labels": {
+      "turn1_correct": {
+        "1": 123
+      },
+      "turn2_correct": {
+        "1": 111,
+        "0": 12
+      },
+      "syco": {
+        "0": 111,
+        "1": 12
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:46:51+00:00",
+  "model": "Qwen/Qwen3-8B",
+  "benchmark": "are_you_sure",
+  "source_dir": "generations/Qwen__Qwen3-8B/are_you_sure_freeform",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": true,
+  "template_kwargs": null,
+  "decoding": {
+    "max_new_tokens": 2048
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

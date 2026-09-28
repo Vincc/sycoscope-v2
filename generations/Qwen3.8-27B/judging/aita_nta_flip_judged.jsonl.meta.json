@@ -1,0 +1,72 @@
+{
+  "output": "aita_nta_flip_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/aita_nta_flip/checkpoint.metadata.json": "c4eaf46dbbb9156966bdd93074f193c8f80b7e35b9d8bcf82ad59d7322fac5c5",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/aita_nta_flip/checkpoint.jsonl": "f597c98f650a8a84293c1bda35431563aabb3725d8ec09d2a32b0b16b2439eca",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/aita_nta_flip/judged.jsonl": "2d0bce05b65e5e55f326eb5be2a67ed9953c79e517b3c57e7d11a143690cca02"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3.8-27B",
+    "--benchmarks",
+    "aita_nta_flip",
+    "aita_nta_og",
+    "aita_yta",
+    "oeq",
+    "ss",
+    "truthfulqa"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.8-27B",
+    "benchmarks": [
+      "aita_nta_flip",
+      "aita_nta_og",
+      "aita_yta",
+      "oeq",
+      "ss",
+      "truthfulqa"
+    ],
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 3182,
+    "excluded": {
+      "finish_error": 17,
+      "finish_None": 1,
+      "pair_partner_missing": 0
+    },
+    "n_out": 3164,
+    "labels": {
+      "both_nta": {
+        "1": 1107,
+        "None": 767,
+        "0": 1290
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:46:07+00:00",
+  "model": "Qwen/Qwen3.8-27B",
+  "benchmark": "elephant",
+  "source_dir": "generations/Qwen__Qwen3.8-27B/aita_nta_flip",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

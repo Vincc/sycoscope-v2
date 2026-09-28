@@ -23,11 +23,13 @@ def response_token_span(offsets, prefix_chars: int) -> tuple[int, int]:
     return start, end
 
 
-def position_spans(prompt_len: int, resp_end: int, n_first: int = 5) -> dict[str, tuple[int, int]]:
+def position_spans(prompt_len: int, resp_end: int, answer_start: int | None = None, n_first: int = 5) -> dict[str, tuple[int, int]]:
+    """answer_start is where the visible answer begins; a thinking block between prompt_len and it is pooled into nothing."""
+    a = prompt_len if answer_start is None else answer_start
     return {
         "last_prompt": (prompt_len - 1, prompt_len),
-        "first5": (prompt_len, min(prompt_len + n_first, resp_end)),
-        "response": (prompt_len, resp_end),
+        "first5": (a, min(a + n_first, resp_end)),
+        "response": (a, resp_end),
     }
 
 
@@ -50,28 +52,34 @@ def act_key(position: str, layer: int) -> str:
     return f"{position}_L{layer:02d}"
 
 
-def prepare(rows: list[dict], tokenizer, max_length: int):
-    """Tokenize each row's messages + response and locate the spans. Returns (prepared, skips).
+def prepare(rows: list[dict], tokenizer, max_length: int, template_kwargs: dict | None = None):
+    """Tokenize each row's messages + reasoning + response and locate the spans. Returns (prepared, skips).
 
+    `reasoning` (a thinking model's <think> block, verbatim with its trailing whitespace) sits between the
+    prompt and the visible answer; last_prompt stays on the prompt, first5 and response cover the answer only.
     Over-length rows are skipped, never truncated: a cut prompt moves last_prompt.
     """
     prepared, skips = [], []
     for row in rows:
-        prefix = render_prompt(tokenizer, row["messages"])
-        full_text = prefix + row["response"]
+        prefix = render_prompt(tokenizer, row["messages"], template_kwargs)
+        reasoning = row.get("reasoning", "")
+        full_text = prefix + reasoning + row["response"]
         enc = tokenizer(full_text, add_special_tokens=False, return_offsets_mapping=True)  # template already has BOS
         prompt_len, resp_end = response_token_span(enc["offset_mapping"], len(prefix))
+        answer_start, _ = response_token_span(enc["offset_mapping"], len(prefix) + len(reasoning))
         n_tokens = len(enc["input_ids"])
-        # A response starting with whitespace can merge with the template's trailing "\n\n", which moves last_prompt.
+        # Text starting with whitespace can merge with the token before it, which moves the boundary.
         if tokenizer(prefix, add_special_tokens=False)["input_ids"] != enc["input_ids"][:prompt_len]:
             raise ValueError(f"{row['id']}: response merges with the prompt's last token; strip leading whitespace")
+        if reasoning and tokenizer(prefix + reasoning, add_special_tokens=False)["input_ids"] != enc["input_ids"][:answer_start]:
+            raise ValueError(f"{row['id']}: answer merges with the reasoning's last token")
         if n_tokens > max_length:
             skips.append({"id": row["id"], "reason": "too_long", "n_tokens": n_tokens})
             continue
-        if resp_end <= prompt_len:
+        if resp_end <= answer_start:
             skips.append({"id": row["id"], "reason": "empty_response_span"})
             continue
-        spans = position_spans(prompt_len, resp_end)
+        spans = position_spans(prompt_len, resp_end, answer_start)
         f0, f1 = spans["first5"]
         prepared.append(
             {
@@ -79,6 +87,7 @@ def prepare(rows: list[dict], tokenizer, max_length: int):
                 "full_text": full_text,
                 "n_tokens": n_tokens,
                 "prompt_len": prompt_len,
+                "answer_start": answer_start,
                 "resp_end": resp_end,
                 "spans": spans,
                 "first5_text": tokenizer.decode(enc["input_ids"][f0:f1]),

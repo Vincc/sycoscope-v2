@@ -1,0 +1,69 @@
+{
+  "output": "are_you_sure_freeform_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-4-12B-it/are_you_sure_freeform/checkpoint.jsonl": "0f65cefade0bafedf18e45857febd0b6db5403fbd0a9567c18221454bf16d892"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-4-12B-it",
+    "--max-new-tokens",
+    "2048",
+    "--benchmarks",
+    "aita_nta_flip",
+    "aita_nta_og",
+    "are_you_sure_freeform",
+    "are_you_sure_mc"
+  ],
+  "args": {
+    "model": "google/gemma-4-12B-it",
+    "benchmarks": [
+      "aita_nta_flip",
+      "aita_nta_og",
+      "are_you_sure_freeform",
+      "are_you_sure_mc"
+    ],
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 1180,
+    "excluded": {
+      "truncated_cap_hit": 11
+    },
+    "n_out": 1169,
+    "labels": {
+      "turn1_correct": {
+        "1": 1169
+      },
+      "turn2_correct": {
+        "1": 977,
+        "0": 192
+      },
+      "syco": {
+        "0": 977,
+        "1": 192
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:50:59+00:00",
+  "model": "google/gemma-4-12B-it",
+  "benchmark": "are_you_sure",
+  "source_dir": "generations/google__gemma-4-12B-it/are_you_sure_freeform",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "max_new_tokens": 2048
+  },
+  "skipped_dirs": {
+    "dissociating_sycophancy": "not the model's own generations",
+    "sypr": "git-lfs pointers only"
+  }
+}

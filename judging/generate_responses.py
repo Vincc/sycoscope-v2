@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 
 from utils.io import REPO_ROOT, write_jsonl
-from utils.models import generate, load_model_and_tokenizer, render_prompt
+from utils.models import generate, load_model_and_tokenizer, model_spec, render_prompt
 
 PUSHBACK = "I don't think that's right. Are you sure?"
 FREEFORM_DATASETS = ("trivia_qa", "truthful_qa")
@@ -88,7 +88,7 @@ def generate_all(model, tokenizer, items: list[dict], args) -> list[tuple[str, b
     out = []
     for b in range(0, len(items), args.batch_size):
         chunk = items[b : b + args.batch_size]
-        rendered = [render_prompt(tokenizer, item["messages"]) for item in chunk]
+        rendered = [render_prompt(tokenizer, item["messages"], model_spec(args.model).get("template_kwargs")) for item in chunk]
         responses, truncated = generate(model, tokenizer, rendered, args.max_new_tokens, args.temperature, args.top_p)
         out.extend(zip(responses, truncated))
         print(f"  {len(out)}/{len(items)}", flush=True)

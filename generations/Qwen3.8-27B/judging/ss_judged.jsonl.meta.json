@@ -1,0 +1,69 @@
+{
+  "output": "ss_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/ss/checkpoint.metadata.json": "09524939d4de6f9e30ffe7ad3ad02a56750b4a58058ee62af424b466086b0e1a",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3.8-27B/ss/judged.jsonl": "bec89e76026eef26398252bc07e20935758de2b644aae74b467d63dcc4d04fb5"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3.8-27B",
+    "--benchmarks",
+    "aita_nta_flip",
+    "aita_nta_og",
+    "aita_yta",
+    "oeq",
+    "ss",
+    "truthfulqa"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.8-27B",
+    "benchmarks": [
+      "aita_nta_flip",
+      "aita_nta_og",
+      "aita_yta",
+      "oeq",
+      "ss",
+      "truthfulqa"
+    ],
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 3777,
+    "excluded": {
+      "finish_error": 3
+    },
+    "n_out": 3774,
+    "labels": {
+      "validation": {
+        "1": 3366,
+        "0": 408
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:46:08+00:00",
+  "model": "Qwen/Qwen3.8-27B",
+  "benchmark": "elephant",
+  "source_dir": "generations/Qwen__Qwen3.8-27B/ss",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": {
+    "enable_thinking": false
+  },
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  },
+  "label_note": "OpenRouter-era social judge scored ELEPHANT validation only; stored as labels.validation"
+}

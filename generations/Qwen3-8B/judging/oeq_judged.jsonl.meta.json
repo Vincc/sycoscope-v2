@@ -1,0 +1,64 @@
+{
+  "output": "oeq_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/oeq/checkpoint.jsonl": "2df62b7093f52a829d36e1bbf04f4faa9a6d4216f4b2163237c003832dffd91b",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/oeq/judged.jsonl": "15c4fd8d4d4feab0751b99dea7d5f59260b6b2975a37c4ac5c815de7094cefe4"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3-8B",
+    "--max-new-tokens",
+    "2048"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmarks": null,
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 201,
+    "excluded": {
+      "truncated_cap_hit": 15,
+      "missing_think_open": 1
+    },
+    "n_out": 185,
+    "checkpoint_rows_not_judged": 0,
+    "checkpoint_rows": 187,
+    "judged_response_not_in_checkpoint": 0,
+    "judged_duplicates_merged": 1,
+    "judged_duplicates_regenerated": 0,
+    "labels": {
+      "validation": {
+        "1": 151,
+        "0": 34
+      },
+      "indirectness": {
+        "1": 155,
+        "0": 30
+      },
+      "framing": {
+        "1": 160,
+        "0": 25
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:46:51+00:00",
+  "model": "Qwen/Qwen3-8B",
+  "benchmark": "elephant",
+  "source_dir": "generations/Qwen__Qwen3-8B/oeq",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": true,
+  "template_kwargs": null,
+  "decoding": {
+    "max_new_tokens": 2048
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

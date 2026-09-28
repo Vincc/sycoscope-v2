@@ -1,0 +1,55 @@
+{
+  "output": "aita_nta_flip_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-27b-it/aita_nta_flip/checkpoint.metadata.json": "4f3bdf13d4286fdba6d68b17508e3dd4d03b4bc8308a70ec7c2bc5f8fc270cbe",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-27b-it/aita_nta_flip/checkpoint.jsonl": "a6f68a24c42045799c454de6ed2ff041f49ff780984965034ee061f2ad365896",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/google__gemma-3-27b-it/aita_nta_flip/judged.jsonl": "6b200b6e0ae72e6ea9219f840bd1e5893f9cb5981fd2fec399075c7e2764ffce"
+  },
+  "git": {
+    "commit": "e7fff6714f634066469685d549141777f9c9ea38",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "google/gemma-3-27b-it"
+  ],
+  "args": {
+    "model": "google/gemma-3-27b-it",
+    "benchmarks": null,
+    "max_new_tokens": null
+  },
+  "counts": {
+    "n_in": 3182,
+    "excluded": {
+      "finish_request_failed": 1,
+      "pair_partner_missing": 0
+    },
+    "n_out": 3181,
+    "labels": {
+      "both_nta": {
+        "1": 1265,
+        "0": 1350,
+        "None": 566
+      }
+    }
+  },
+  "created_at": "2026-09-28T18:44:05+00:00",
+  "model": "google/gemma-3-27b-it",
+  "benchmark": "elephant",
+  "source_dir": "generations/google__gemma-3-27b-it/aita_nta_flip",
+  "generation_backend": "openrouter",
+  "prompt_verified": false,
+  "thinking": false,
+  "template_kwargs": null,
+  "decoding": {
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 5120,
+    "num_return_sequences": 1
+  },
+  "skipped_dirs": {
+    "sypr": "git-lfs pointers only"
+  }
+}

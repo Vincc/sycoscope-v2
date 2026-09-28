@@ -1,6 +1,29 @@
 # Models this repo has been checked against. n_layers is asserted against the loaded config.
+# thinking: responses carry a <think>...</think> block that the importer stores as `reasoning`.
+# template_kwargs: extra apply_chat_template arguments that reproduce the prompt the generations used.
+# system_prompt: system message the generation run prepended to every conversation.
 MODELS = {
     "meta-llama/Meta-Llama-3-8B-Instruct": {"n_layers": 32, "thinking": False},
+    "Qwen/Qwen3-8B": {"n_layers": 36, "thinking": True},
+    "Qwen/Qwen3-14B": {"n_layers": 40, "thinking": True},
+    "Qwen/Qwen3.5-9B": {"n_layers": 32, "thinking": False, "template_kwargs": {"enable_thinking": False}},
+    "Qwen/Qwen3.8-27B": {"n_layers": 64, "thinking": False, "template_kwargs": {"enable_thinking": False}},
+    "google/gemma-3-12b-it": {"n_layers": 48, "thinking": False},
+    "google/gemma-3-27b-it": {"n_layers": 62, "thinking": False},
+    "google/gemma-4-12B-it": {"n_layers": 48, "thinking": False, "template_kwargs": {"enable_thinking": False}},
+    "google/gemma-4-31B-it": {"n_layers": 60, "thinking": False, "template_kwargs": {"enable_thinking": False}},
+    "nvidia/Llama-3.1-Nemotron-Nano-8B-v1": {"n_layers": 32, "thinking": True, "system_prompt": "detailed thinking on"},
+}
+
+# OpenRouter slugs of the runs under generations/<org>__<model>/, mapped to the Hugging Face checkpoint.
+OPENROUTER_TO_HF = {
+    "qwen/qwen3-8b": "Qwen/Qwen3-8B",
+    "qwen/qwen3-14b": "Qwen/Qwen3-14B",
+    "qwen/qwen3.5-9b": "Qwen/Qwen3.5-9B",
+    "qwen/qwen3.8-27b": "Qwen/Qwen3.8-27B",
+    "google/gemma-3-12b-it": "google/gemma-3-12b-it",
+    "google/gemma-3-27b-it": "google/gemma-3-27b-it",
+    "google/gemma-4-31b-it": "google/gemma-4-31B-it",
 }
 
 
@@ -42,9 +65,9 @@ def load_tokenizer(name: str, padding_side: str):
     return tokenizer
 
 
-def render_prompt(tokenizer, messages: list[dict]) -> str:
+def render_prompt(tokenizer, messages: list[dict], template_kwargs: dict | None = None) -> str:
     """Chat-template text up to and including the assistant header."""
-    return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **(template_kwargs or {}))
 
 
 def contrastive_messages(system_prompt: str, user_text: str) -> list[dict]:
