@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import numpy as np
 
 from utils.models import render_prompt
@@ -87,20 +85,6 @@ def prepare(rows: list[dict], tokenizer, max_length: int):
             }
         )
     return prepared, skips
-
-
-def load_index(act_dir, stem: str, row_ids) -> tuple[list[dict], list[dict]]:
-    """Activation index and skips for `stem`. Together they must cover row_ids exactly once."""
-    from utils.io import read_jsonl
-
-    index = read_jsonl(Path(act_dir) / f"{stem}.index.jsonl")
-    skips = read_jsonl(Path(act_dir) / f"{stem}.skips.jsonl")
-    covered = [i["id"] for i in index] + [s["id"] for s in skips]
-    if len(covered) != len(set(covered)) or set(covered) != set(row_ids) or len(covered) != len(row_ids):
-        raise AssertionError(f"{stem}: activation index + skips do not cover the rows exactly once")
-    if [i["row"] for i in index] != list(range(len(index))):
-        raise AssertionError(f"{stem}: index rows are not 0..n-1 in order")
-    return index, skips
 
 
 def check_right_padded(mask, lengths_expected: list[int], ids: list[str]) -> None:

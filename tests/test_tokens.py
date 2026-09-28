@@ -1,7 +1,7 @@
 import pytest
 
 from utils.activations import position_spans, prepare, resolve_layers, response_token_span
-from utils.models import contrastive_messages, render_prompt, strip_think
+from utils.models import contrastive_messages, render_prompt
 
 RESPONSES = [
     "Yes, absolutely.",
@@ -98,9 +98,3 @@ def test_resolve_layers():
     with pytest.raises(ValueError):
         resolve_layers(32)
 
-
-def test_strip_think():
-    assert strip_think("<think>a</think> answer") == "answer"
-    assert strip_think("<think>a</think>x<think>b</think> final ") == "final"
-    assert strip_think("<think>never closed") is None
-    assert strip_think(" plain ") == "plain"

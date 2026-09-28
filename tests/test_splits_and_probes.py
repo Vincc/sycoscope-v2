@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 
 from utils import probes
-from utils.io import write_jsonl
 from utils.splits import group_split, split_masks
 
 
@@ -65,42 +64,3 @@ def test_fit_requires_both_classes():
 
 def test_auroc_undefined_for_one_class():
     assert probes.auroc(np.array([1, 1, 1]), np.array([0.1, 0.2, 0.3])) is None
-
-
-def test_contrastive_drop_takes_the_pair_partner(tmp_path):
-    from train_contrastive import load_pair_rows
-
-    gen = []
-    for p, flags in {"p1": (None, None), "p2": ("repetitive", None), "p3": (None, "refusal"), "p4": (None, None)}.items():
-        for pol, label, flag in (("pos", 1, flags[0]), ("neg", 0, flags[1])):
-            gen.append({"id": f"s__{pol}__{p}", "prompt_id": p, "label": label, "degenerate": flag})
-    write_jsonl(tmp_path / "s.jsonl", gen)
-    kept_ids = [r["id"] for r in gen if r["id"] != "s__neg__p4"]
-    write_jsonl(tmp_path / "act" / "s.index.jsonl", [{"row": i, "id": rid} for i, rid in enumerate(kept_ids)])
-    write_jsonl(tmp_path / "act" / "s.skips.jsonl", [{"id": "s__neg__p4", "reason": "too_long"}])
-
-    kept, rows, counts = load_pair_rows("s", tmp_path / "s.jsonl", tmp_path / "act")
-    assert sorted(rows[i["id"]]["prompt_id"] for i in kept) == ["p1", "p1", "p3", "p3"]  # refusal is kept
-    assert counts == {
-        "n_in": 8,
-        "excluded": {"extraction_too_long": 1, "degenerate_repetitive": 1, "pair_partner_dropped": 2},
-        "n_out": 4,
-    }
-
-
-def test_skyline_excludes_and_counts_unlabeled_rows():
-    from train_skyline import select_labeled
-
-    rows = {
-        "a": {"labels": {"v": 1}},
-        "b": {"labels": {"v": None}},
-        "c": {"labels": {"v": 0}},
-        "d": {"labels": {"v": 1}},
-    }
-    index = [{"row": 0, "id": "a"}, {"row": 1, "id": "b"}, {"row": 2, "id": "c"}]
-    kept, counts = select_labeled(rows, index, [{"id": "d", "reason": "too_long"}], "v")
-    assert [i["id"] for i in kept] == ["a", "c"]
-    assert counts == {"n_in": 4, "excluded": {"extraction_too_long": 1, "unlabeled": 1}, "n_out": 2}
-    rows["a"]["labels"]["v"] = "1"
-    with pytest.raises(ValueError):
-        select_labeled(rows, index, [{"id": "d", "reason": "too_long"}], "v")

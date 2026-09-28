@@ -62,15 +62,6 @@ def resolve_terminators(model, tokenizer) -> list[int]:
     return sorted({i for i in ids if isinstance(i, int)})
 
 
-def strip_think(text: str) -> str | None:
-    """Text after the last </think>; None for an unclosed think block (no answer was given)."""
-    if "</think>" in text:
-        return text.rsplit("</think>", 1)[1].strip()
-    if "<think>" in text:
-        return None
-    return text.strip()
-
-
 def generate(model, tokenizer, prompts: list[str], max_new_tokens: int, temperature: float, top_p: float):
     """Batched generation from chat-rendered prompts. Returns (responses, truncated flags).
 
