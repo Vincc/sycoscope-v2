@@ -1,7 +1,7 @@
 # Models this repo has been checked against. n_layers is asserted against the loaded config.
 # thinking: responses carry a <think>...</think> block that the importer stores as `reasoning`.
 # template_kwargs: extra apply_chat_template arguments that reproduce the prompt the generations used.
-# system_prompt: system message the generation run prepended to every conversation.
+# system_prompt: system message the generation run prepended to every conversation (none registered yet).
 MODELS = {
     "meta-llama/Meta-Llama-3-8B-Instruct": {"n_layers": 32, "thinking": False},
     "Qwen/Qwen3-8B": {"n_layers": 36, "thinking": True},
@@ -12,7 +12,6 @@ MODELS = {
     "google/gemma-3-27b-it": {"n_layers": 62, "thinking": False},
     "google/gemma-4-12B-it": {"n_layers": 48, "thinking": False, "template_kwargs": {"enable_thinking": False}},
     "google/gemma-4-31B-it": {"n_layers": 60, "thinking": False, "template_kwargs": {"enable_thinking": False}},
-    "nvidia/Llama-3.1-Nemotron-Nano-8B-v1": {"n_layers": 32, "thinking": True, "system_prompt": "detailed thinking on"},
 }
 
 # OpenRouter slugs of the runs under generations/<org>__<model>/, mapped to the Hugging Face checkpoint.
