@@ -33,9 +33,6 @@
     }
   },
   "created_at": "2026-09-28T18:44:07+00:00",
-  "model": "google/gemma-4-31B-it",
-  "benchmark": "elephant",
-  "source_dir": "generations/google__gemma-4-31B-it/aita_yta",
   "generation_backend": "openrouter",
   "prompt_verified": false,
   "thinking": false,
@@ -48,9 +45,6 @@
     "top_p": null,
     "max_new_tokens": 5120,
     "num_return_sequences": 1
-  },
-  "skipped_dirs": {
-    "sypr": "git-lfs pointers only"
   },
   "label_note": "OpenRouter-era social judge scored ELEPHANT validation only; stored as labels.validation"
 }

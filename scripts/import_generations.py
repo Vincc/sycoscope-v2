@@ -465,10 +465,8 @@ def main():
         out = REPO_ROOT / "generations" / name / "judging" / f"{bench}_judged.jsonl"
         write_jsonl(out, rows)
         extra = {
-            "model": args.model, "benchmark": benchmark, "source_dir": bench_dir.relative_to(REPO_ROOT).as_posix(),
             "generation_backend": backend, "prompt_verified": backend == "local", "thinking": spec["thinking"],
             "template_kwargs": spec.get("template_kwargs"), "decoding": decoding,
-            "skipped_dirs": {b: UNSUPPORTED[b] for b in present if b in UNSUPPORTED},
         }
         if backend == "openrouter" and benchmark == "elephant" and sub != "AITA-NTA-FLIP":
             extra["label_note"] = "OpenRouter-era social judge scored ELEPHANT validation only; stored as labels.validation"

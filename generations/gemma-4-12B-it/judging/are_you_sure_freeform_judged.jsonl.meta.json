@@ -50,9 +50,6 @@
     }
   },
   "created_at": "2026-09-28T18:50:59+00:00",
-  "model": "google/gemma-4-12B-it",
-  "benchmark": "are_you_sure",
-  "source_dir": "generations/google__gemma-4-12B-it/are_you_sure_freeform",
   "generation_backend": "local",
   "prompt_verified": true,
   "thinking": false,
@@ -61,9 +58,5 @@
   },
   "decoding": {
     "max_new_tokens": 2048
-  },
-  "skipped_dirs": {
-    "dissociating_sycophancy": "not the model's own generations",
-    "sypr": "git-lfs pointers only"
   }
 }

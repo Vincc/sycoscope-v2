@@ -48,17 +48,11 @@
     }
   },
   "created_at": "2026-09-28T18:46:51+00:00",
-  "model": "Qwen/Qwen3-8B",
-  "benchmark": "elephant",
-  "source_dir": "generations/Qwen__Qwen3-8B/oeq",
   "generation_backend": "local",
   "prompt_verified": true,
   "thinking": true,
   "template_kwargs": null,
   "decoding": {
     "max_new_tokens": 2048
-  },
-  "skipped_dirs": {
-    "sypr": "git-lfs pointers only"
   }
 }

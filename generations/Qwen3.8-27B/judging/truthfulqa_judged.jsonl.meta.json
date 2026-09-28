@@ -48,9 +48,6 @@
     }
   },
   "created_at": "2026-09-28T18:46:09+00:00",
-  "model": "Qwen/Qwen3.8-27B",
-  "benchmark": "truthfulqa",
-  "source_dir": "generations/Qwen__Qwen3.8-27B/truthfulqa",
   "generation_backend": "openrouter",
   "prompt_verified": false,
   "thinking": false,
@@ -63,8 +60,5 @@
     "top_p": null,
     "max_new_tokens": 5120,
     "num_return_sequences": 1
-  },
-  "skipped_dirs": {
-    "sypr": "git-lfs pointers only"
   }
 }
