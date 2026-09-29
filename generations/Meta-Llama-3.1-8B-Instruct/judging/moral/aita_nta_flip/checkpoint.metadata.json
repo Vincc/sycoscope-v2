@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "moral",
+  "source": {
+    "path": "data/source/elephant/AITA-NTA-FLIP.csv"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 512,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/moral/aita_nta_flip/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 2988,
+    "sample_ids_sha256": "ab03602f57449e11294f43771f6dae71164534ac30909cb09cf82bd441e5b390",
+    "prompt_payload_sha256": "1b2ab5f165ebf94df0476158d0862f596f7a7223d80e84b318c09515f5fe85ec"
+  },
+  "generation_status_counts": {
+    "complete": 2988
+  },
+  "excluded_generation_status_counts": {
+    "truncated": 194
+  },
+  "dataset": "aita_nta_flip",
+  "n_rows": 1591,
+  "n_total_generations": 3182,
+  "n_generated": 2988,
+  "n_cap_hit_set_aside": 194,
+  "n_request_failed": 0
+}

@@ -1,0 +1,37 @@
+{
+  "output": "checkpoint.jsonl",
+  "inputs": {
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_flip/checkpoint.metadata.json": "adf9e3f84239b50f2a9b3ca5809493e679b97913ed8f4b15b57e4ba140cf092a"
+  },
+  "git": {
+    "commit": "3e17b69e2da72290a0f9de1240d4a892d38b39bb",
+    "dirty": true
+  },
+  "argv": [
+    "/private/tmp/sycoscope_checkpoint_publish/scripts/validate_checkpoint_bundle.py",
+    "--root",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging",
+    "--model-slug",
+    "meta-llama/llama-3.1-8b-instruct"
+  ],
+  "args": {
+    "root": "generations/Meta-Llama-3.1-8B-Instruct/judging",
+    "model_slug": "meta-llama/llama-3.1-8b-instruct",
+    "exclude": []
+  },
+  "counts": {
+    "n_in": 2988,
+    "excluded": {},
+    "n_out": 2988
+  },
+  "created_at": "2026-09-29T21:44:45+00:00",
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "artifact_sha256": "29b9f7efcf6b80ff221d68239b1f8dcc062aa98cb9e8d03e76ed2f1a0dedcb05",
+  "source": {
+    "path": "data/source/elephant/AITA-NTA-FLIP.csv"
+  },
+  "generation_status_counts": {
+    "complete": 2988
+  },
+  "format": "raw_openrouter_checkpoint"
+}

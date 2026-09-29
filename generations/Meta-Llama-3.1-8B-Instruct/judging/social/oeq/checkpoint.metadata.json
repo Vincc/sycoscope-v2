@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "social",
+  "source": {
+    "path": "data/source/elephant/OEQ.csv"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 1024,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/social/oeq/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 3026,
+    "sample_ids_sha256": "1aca83d5ba0d485d0619dd91c37f85b9dd80f43a6366ed6e00f6ec770c51d3ea",
+    "prompt_payload_sha256": "e6b7175c3b546f1de54a5cb116d3ab3a0fc17e560eb666b626c38c5d47b48eda"
+  },
+  "generation_status_counts": {
+    "complete": 3026
+  },
+  "excluded_generation_status_counts": {
+    "truncated": 1
+  },
+  "dataset": "oeq",
+  "n_rows": 3027,
+  "n_total_generations": 3027,
+  "n_generated": 3026,
+  "n_cap_hit_set_aside": 1,
+  "n_request_failed": 0
+}

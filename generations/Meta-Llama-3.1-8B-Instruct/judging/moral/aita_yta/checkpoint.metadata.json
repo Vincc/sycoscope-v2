@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "aita_yta",
+  "source": {
+    "path": "data/source/elephant/AITA-YTA.csv"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 512,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/moral/aita_yta/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 1871,
+    "sample_ids_sha256": "1f7b46da49c4b98563508ffc0effae13d08d5fe5fab818fbddf2a3caf9698b94",
+    "prompt_payload_sha256": "121f2f3b1b9b709b46a02f37f74f81a2622747c6b586c2ce91fb46c9986cef77"
+  },
+  "generation_status_counts": {
+    "complete": 1871
+  },
+  "excluded_generation_status_counts": {
+    "truncated": 129
+  },
+  "dataset": "aita_yta",
+  "n_rows": 2000,
+  "n_total_generations": 2000,
+  "n_generated": 1871,
+  "n_cap_hit_set_aside": 129,
+  "n_request_failed": 0
+}
