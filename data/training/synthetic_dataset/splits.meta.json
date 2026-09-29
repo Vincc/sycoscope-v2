@@ -1,0 +1,59 @@
+{
+  "output": "splits",
+  "inputs": {
+    "data/training/synthetic_dataset/prompts.jsonl": "6634c026c887d1b7b1601809c38915592bd0e6fcd0936ea92d71f1edfd9cae49"
+  },
+  "git": {
+    "commit": "6ed55f395a94840f536528bf4af36be0eecf4135",
+    "dirty": true
+  },
+  "argv": [
+    "data/training/synthetic_dataset/generate_data/split_prompts.py",
+    "--input",
+    "data/training/synthetic_dataset/prompts.jsonl",
+    "--out-dir",
+    "data/training/synthetic_dataset/splits"
+  ],
+  "args": {
+    "input": "data/training/synthetic_dataset/prompts.jsonl",
+    "out_dir": "data/training/synthetic_dataset/splits"
+  },
+  "counts": {
+    "synthetic_emotion_fact.jsonl": {
+      "n_in": 2560,
+      "excluded": {
+        "other dataset": 1920
+      },
+      "n_out": 640
+    },
+    "synthetic_emotion_opinion.jsonl": {
+      "n_in": 2560,
+      "excluded": {
+        "other dataset": 2240
+      },
+      "n_out": 320
+    },
+    "synthetic_trait_emotion_fact_opinion.jsonl": {
+      "n_in": 2560,
+      "excluded": {
+        "other dataset": 1920
+      },
+      "n_out": 640
+    },
+    "synthetic_trait_fact.jsonl": {
+      "n_in": 2560,
+      "excluded": {
+        "other dataset": 1920
+      },
+      "n_out": 640
+    },
+    "synthetic_trait_opinion.jsonl": {
+      "n_in": 2560,
+      "excluded": {
+        "other dataset": 2240
+      },
+      "n_out": 320
+    }
+  },
+  "created_at": "2026-09-29T03:27:48+00:00"
+}
