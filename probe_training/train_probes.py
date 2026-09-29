@@ -3,7 +3,7 @@
 A unit is a contrastive cell (--cells, contrastive activations npz, split by prompt_id so both responses to a
 prompt share a side) or a skyline label (--labels, judged activations npz, split by group; rows whose label is
 None are excluded). One split is shared by every unit. Writes to probes/<model name>/<sweep>/:
-  split.json               train and test groups, and train_ids: every row id in a train group
+  split.json               train and test groups, train_ids (all training-group rows), fit_ids (balanced rows per unit)
   <unit>.probes.npz        every probe for one unit (pairNN or the label name), arrays keyed <probe_id>__<field>
   manifest.jsonl           one row per probe: its parameters, file, key and train/test metrics
 
@@ -29,6 +29,21 @@ def complete_pairs(prompt_ids: np.ndarray, labels: np.ndarray) -> np.ndarray:
         by_prompt.setdefault(pid, []).append(int(label))
     ok = {pid for pid, ls in by_prompt.items() if sorted(ls) == [0, 1]}
     return np.array([pid in ok for pid in prompt_ids], dtype=bool)
+
+
+def balanced_training_mask(y: np.ndarray, candidate: np.ndarray, seed: int) -> np.ndarray:
+    """Keep every minority-class training row and an equal random sample of the majority class."""
+    zero = np.flatnonzero(candidate & (y == 0))
+    one = np.flatnonzero(candidate & (y == 1))
+    if not len(zero) or not len(one) or int(candidate.sum()) != len(zero) + len(one):
+        raise ValueError("training candidates must contain only 0/1 and both classes")
+    n = min(len(zero), len(one))
+    rng = np.random.default_rng(seed)
+    selected = np.r_[zero if len(zero) == n else rng.choice(zero, n, replace=False),
+                     one if len(one) == n else rng.choice(one, n, replace=False)]
+    keep = np.zeros(len(y), dtype=bool)
+    keep[selected] = True
+    return keep
 
 
 def probe_id(unit: str, method: str, position: str, layer: int, C: float | None) -> str:
@@ -126,9 +141,9 @@ def main():
     split["group_field"] = group_field
     split["activations"] = source
     split["train_ids"] = sorted(ids[np.isin(groups, split["train"])].tolist())  # evaluate_probes excludes these
+    split["fit_ids"] = {}
     out_dir.mkdir(parents=True)
     split_path = out_dir / "split.json"
-    write_json(split_path, split)
     print(f"{out_dir}: {len(split['train'])} train / {len(split['test'])} test {group_field} groups, shared by all units")
 
     grid = []
@@ -140,13 +155,19 @@ def main():
     for unit in units:
         name, rows, y = unit["name"], unit["rows"], unit["y"]
         g = groups[rows].tolist()
-        tr, te = split_masks(g, split)
-        if set(np.array(g)[tr]) & set(np.array(g)[te]):
+        tr_candidate, te = split_masks(g, split)
+        if set(np.array(g)[tr_candidate]) & set(np.array(g)[te]):
             raise AssertionError(f"{name}: a group is in both train and test")
-        probes.check_binary(y[tr], f"{name} train")
+        tr = balanced_training_mask(y, tr_candidate, args.seed)
+        split["fit_ids"][name] = ids[rows[tr]].tolist()
+        balance_counts = check_counts(int(tr_candidate.sum()),
+                                      Counter({"majority_downsampled": int(tr_candidate.sum() - tr.sum())}),
+                                      int(tr.sum()), f"{name} training balance")
+        if int((y[tr] == 0).sum()) != int((y[tr] == 1).sum()):
+            raise AssertionError(f"{name}: training labels are not balanced")
         probes.check_binary(y[te], f"{name} test")
         test_groups = [x for x, m in zip(g, te) if m]
-        print(f"\n[{name}] {counts['per_unit'][name]} | train {tr.sum()} / test {te.sum()} rows")
+        print(f"\n[{name}] {counts['per_unit'][name]} | train {balance_counts} / test {te.sum()} rows")
 
         fitted = {}
         npz_name = f"{name}.probes.npz"
@@ -172,21 +193,24 @@ def main():
                     "model": act_meta["model"],
                     "n_train": int(tr.sum()),
                     "n_train_pos": int(y[tr].sum()),
+                    "n_train_candidate": int(tr_candidate.sum()),
+                    "n_train_balance_excluded": balance_counts["excluded"]["majority_downsampled"],
                     "n_test": int(te.sum()),
                     "n_test_pos": int(y[te].sum()),
                     "train_auroc": probes.auroc(y[tr], s_tr),
-                    "train_accuracy": probes.accuracy(y[tr], s_tr, method),
+                    "train_balanced_accuracy": probes.balanced_accuracy(y[tr], s_tr, method),
                     "test_auroc": probes.auroc(y[te], s_te),
-                    "test_accuracy": probes.accuracy(y[te], s_te, method),
+                    "test_balanced_accuracy": probes.balanced_accuracy(y[te], s_te, method),
                     "test_paired_win_rate": win,  # None for skyline: rows are not paired
                     "n_test_pairs": n_pairs,
                 }
             )
             m = manifest[-1]
             paired = "" if win is None else f" paired {win:.3f}"
-            print(f"  {pid}: test auroc {m['test_auroc']:.3f} acc {m['test_accuracy']:.3f}{paired}")
+            print(f"  {pid}: test auroc {m['test_auroc']:.3f} balanced acc {m['test_balanced_accuracy']:.3f}{paired}")
         probes.save_probes(out_dir / npz_name, fitted)
 
+    write_json(split_path, split)
     manifest_path = out_dir / "manifest.jsonl"
     write_jsonl(manifest_path, manifest)
     extra = {"model": act_meta["model"], "units": [u["name"] for u in units], "n_probes": len(manifest),

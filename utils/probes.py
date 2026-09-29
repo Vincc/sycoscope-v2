@@ -88,10 +88,13 @@ def auroc(y: np.ndarray, scores: np.ndarray) -> float | None:
     return float(roc_auc_score(y, scores))
 
 
-def accuracy(y: np.ndarray, scores: np.ndarray, method: str) -> float:
-    # Old code thresholds logistic at > 0 and DIM at >= threshold.
+def balanced_accuracy(y: np.ndarray, scores: np.ndarray, method: str) -> float | None:
+    """Mean of sensitivity and specificity; undefined if either class is absent."""
+    if len(np.unique(y)) < 2:
+        return None
+    # Logistic uses > 0 and DIM uses >= 0, matching each probe's decision boundary.
     pred = (scores > 0) if method == "logistic" else (scores >= 0)
-    return float((pred.astype(int) == y).mean())
+    return float(((pred[y == 1] == 1).mean() + (pred[y == 0] == 0).mean()) / 2)
 
 
 def paired_win_rate(scores: np.ndarray, y: np.ndarray, prompt_ids: list[str]) -> tuple[float | None, int]:

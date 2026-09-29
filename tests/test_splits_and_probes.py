@@ -64,3 +64,10 @@ def test_fit_requires_both_classes():
 
 def test_auroc_undefined_for_one_class():
     assert probes.auroc(np.array([1, 1, 1]), np.array([0.1, 0.2, 0.3])) is None
+
+
+def test_balanced_accuracy_uses_equal_class_weight():
+    y = np.array([0, 0, 0, 0, 1])
+    scores = np.array([-1., -1., -1., 1., -1.])
+    assert probes.balanced_accuracy(y, scores, "logistic") == pytest.approx(0.375)
+    assert probes.balanced_accuracy(np.array([0, 0]), np.array([-1., 1.]), "logistic") is None

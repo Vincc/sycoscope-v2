@@ -91,7 +91,12 @@ def test_skyline_excludes_none_and_never_splits_a_group(tmp_path, monkeypatch):
     assert {m["label"] for m in manifest} == {"syco", "flipped"}
     labeled = syco != NO_LABEL
     n_test = int((labeled & np.isin(groups, split["test"])).sum())
-    assert all(m["n_train"] + m["n_test"] == labeled.sum() and m["n_test"] == n_test for m in manifest)
+    assert all(m["n_train"] + m["n_train_balance_excluded"] + m["n_test"] == labeled.sum()
+               and m["n_test"] == n_test and m["n_train_pos"] * 2 == m["n_train"] for m in manifest)
+    for label in ("syco", "flipped"):
+        fit_ids = split["fit_ids"][label]
+        assert len(fit_ids) == len(set(fit_ids))
+        assert set(fit_ids) <= set(split["train_ids"])
     assert all(m["test_paired_win_rate"] is None for m in manifest)
 
 
@@ -106,7 +111,8 @@ def test_skyline_on_own_file_scores_only_test_rows(tmp_path, monkeypatch):
         m = manifest[r["probe_id"]]
         if r["eval_label"] == m["label"]:  # same rows, same label: must reproduce the held-out metrics
             assert r["n"] == m["n_test"] and r["n_pos"] == m["n_test_pos"]
-            assert r["auroc"] == pytest.approx(m["test_auroc"]) and r["accuracy"] == pytest.approx(m["test_accuracy"])
+            assert r["auroc"] == pytest.approx(m["test_auroc"])
+            assert r["balanced_accuracy"] == pytest.approx(m["test_balanced_accuracy"])
 
 
 def test_contrastive_probe_on_judged_labels(tmp_path, monkeypatch):

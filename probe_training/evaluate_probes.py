@@ -1,7 +1,7 @@
-"""Score every probe of a sweep on a judged activations npz; AUROC and accuracy against each judged label.
+"""Score every probe of a sweep on a judged activations npz; AUROC and balanced accuracy per label.
 
 Rows excluded per label: in_probe_train (id in the sweep's train_ids, or its group in the sweep's train groups
-when the npz has the sweep's group field) and label_none. Accuracy uses each probe's own decision boundary
+when the npz has the sweep's group field) and label_none. Balanced accuracy uses each probe's decision boundary
 (score 0), which may be miscalibrated on another distribution; AUROC does not depend on it.
 Writes <sweep dir>/eval/<npz stem>.jsonl, one row per probe x label.
 
@@ -99,7 +99,7 @@ def main():
                     "n_excluded_none": counts[name]["excluded"]["label_none"],
                     "n_excluded_train": counts[name]["excluded"]["in_probe_train"],
                     "auroc": probes.auroc(y, s),
-                    "accuracy": probes.accuracy(y, s, m["method"]) if n else None,
+                    "balanced_accuracy": probes.balanced_accuracy(y, s, m["method"]),
                 }
             )
 

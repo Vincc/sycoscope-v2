@@ -7,9 +7,11 @@ from pathlib import Path
 from utils.io import check_counts, read_jsonl, write_jsonl, write_meta
 
 
-def sample_indices(rows: list[dict], label: str, strategy: str, n: int, seed: int) -> list[int]:
-    if n <= 0:
+def sample_indices(rows: list[dict], label: str, strategy: str, n: int | None, seed: int) -> list[int]:
+    if strategy != "match_minority" and (n is None or n <= 0):
         raise ValueError("sample size must be positive")
+    if strategy == "match_minority" and n is not None:
+        raise ValueError("match_minority determines sample size from the minority class; omit --n")
     by_label = {0: [], 1: []}
     for i, row in enumerate(rows):
         value = row["labels"][label]
@@ -19,7 +21,15 @@ def sample_indices(rows: list[dict], label: str, strategy: str, n: int, seed: in
             raise ValueError(f"{row['id']}: {label} must be 0, 1 or None")
         by_label[value].append(i)
     rng = random.Random(seed)
-    if strategy == "balanced":
+    if strategy == "match_minority":
+        if not by_label[0] or not by_label[1]:
+            raise ValueError("match_minority needs both classes")
+        per_class = min(len(by_label[0]), len(by_label[1]))
+        chosen = (
+            (by_label[0] if len(by_label[0]) == per_class else rng.sample(by_label[0], per_class))
+            + (by_label[1] if len(by_label[1]) == per_class else rng.sample(by_label[1], per_class))
+        )
+    elif strategy == "balanced":
         if n % 2:
             raise ValueError("balanced sample size must be even")
         chosen = rng.sample(by_label[0], n // 2) + rng.sample(by_label[1], n // 2)
@@ -38,8 +48,8 @@ def main():
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--label", required=True)
-    parser.add_argument("--strategy", choices=("balanced", "minority_class"), required=True)
-    parser.add_argument("--n", type=int, required=True)
+    parser.add_argument("--strategy", choices=("balanced", "minority_class", "match_minority"), required=True)
+    parser.add_argument("--n", type=int)
     parser.add_argument("--seed", type=int, required=True)
     args = parser.parse_args()
 
