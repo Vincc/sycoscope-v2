@@ -91,10 +91,10 @@ def test_position_spans():
 
 
 def test_resolve_layers():
+    assert resolve_layers(4) == [0, 1, 2, 3]
     assert resolve_layers(32, fracs=[0.25, 0.5, 0.75]) == [8, 16, 24]
     assert resolve_layers(32, layers=[24, 8, 16, 8]) == [8, 16, 24]
     with pytest.raises(ValueError):
-        resolve_layers(32, layers=[31])
+        resolve_layers(32, layers=[32])
     with pytest.raises(ValueError):
-        resolve_layers(32)
-
+        resolve_layers(32, layers=[0], fracs=[0.5])

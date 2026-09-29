@@ -4,6 +4,7 @@
 # system_prompt: system message the generation run prepended to every conversation (none registered yet).
 MODELS = {
     "meta-llama/Meta-Llama-3-8B-Instruct": {"n_layers": 32, "thinking": False},
+    "meta-llama/Llama-3.1-8B-Instruct": {"n_layers": 32, "thinking": False},
     "Qwen/Qwen3-8B": {"n_layers": 36, "thinking": True},
     "Qwen/Qwen3.5-9B": {"n_layers": 32, "thinking": False, "template_kwargs": {"enable_thinking": False}},
     "Qwen/Qwen3.8-27B": {"n_layers": 64, "thinking": False, "template_kwargs": {"enable_thinking": False}},

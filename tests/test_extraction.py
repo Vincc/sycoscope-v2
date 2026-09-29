@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 import torch
+from zipfile import ZIP_DEFLATED, ZipFile
 
 from utils.activations import act_key, check_right_padded, extract, prepare, resolve_layers
 from utils.models import contrastive_messages
@@ -41,29 +42,56 @@ def test_extract_reads_block_output_at_hidden_states_l_plus_1(tiny_model, tokeni
     prepared, skips = prepare(rows, tokenizer, max_length=512)
     assert skips == []
     tokenizer.padding_side = "right"
-    layers = resolve_layers(4, layers=[0, 1, 2])
+    layers = resolve_layers(4)
     out = extract(tiny_model, tokenizer, prepared, layers=layers, batch_size=2)
 
     for i, p in enumerate(prepared):
         enc = tokenizer(p["full_text"], return_tensors="pt", add_special_tokens=False)
         blocks = block_outputs(tiny_model, enc["input_ids"], enc["attention_mask"])
         for L in layers:
+            block = tiny_model.model.norm(blocks[L]) if L == 3 else blocks[L]
             for pos, (s, e) in p["spans"].items():
-                expected = blocks[L][0, s:e].float().mean(dim=0).numpy()
+                expected = block[0, s:e].float().mean(dim=0).detach().numpy()
                 # Batched vs single-example forward differs only by float noise; a wrong layer or span differs by O(1).
                 np.testing.assert_allclose(out[act_key(pos, L)][i], expected, atol=1e-4, rtol=1e-4)
 
 
-def test_last_block_is_rejected(tiny_model):
-    """hidden_states[n_layers] is post-final-norm, so the last block has no residual-stream reading."""
+def test_last_block_is_post_final_norm(tiny_model):
+    """The final saved layer uses the model's post-norm hidden state."""
     ids = torch.tensor([[1, 5, 7, 9]])
     with torch.no_grad():
         hs = tiny_model(input_ids=ids, output_hidden_states=True).hidden_states
     blocks = block_outputs(tiny_model, ids, torch.ones_like(ids))
     assert not torch.allclose(hs[4], blocks[3], atol=1e-4)
     assert torch.allclose(hs[4], tiny_model.model.norm(blocks[3]), atol=1e-5)
-    with pytest.raises(ValueError):
-        resolve_layers(4, layers=[3])
+    assert resolve_layers(4, layers=[3]) == [3]
+
+
+def test_raw_answer_archive_matches_pooled_response(tmp_path, tiny_model, tokenizer):
+    rows = [
+        {"id": "a", "messages": contrastive_messages("Be brief.", "First?"), "response": "Yes."},
+        {"id": "b", "messages": contrastive_messages("Be brief.", "Second?"), "response": "No, that is incorrect."},
+    ]
+    prepared, skips = prepare(rows, tokenizer, 512)
+    assert not skips
+    shards = []
+    pooled_dir = tmp_path / "pooled"
+    pooled_dir.mkdir()
+    out = extract(tiny_model, tokenizer, prepared, [0, 3], 2, tmp_path, "answer", shards, pooled_dir)
+    assert all(isinstance(a, np.memmap) for a in out.values())
+    assert len(shards) == 1 and shards[0]["n_rows"] == 2
+    with ZipFile(shards[0]["path"]) as archive:
+        assert all(m.compress_type == ZIP_DEFLATED for m in archive.infolist())
+    with np.load(shards[0]["path"]) as raw:
+        for raw_row, source_row in enumerate(raw["source_row"]):
+            i = int(source_row)
+            assert raw["id"][raw_row] == prepared[i]["id"]
+            token_ids = raw[f"row{raw_row:04d}_token_ids"]
+            assert len(token_ids) == prepared[i]["resp_end"] - prepared[i]["answer_start"]
+            for layer in (0, 3):
+                tokens = raw[f"row{raw_row:04d}_L{layer:02d}"]
+                np.testing.assert_allclose(tokens.mean(axis=0), out[act_key("response", layer)][i], atol=1e-5)
+                np.testing.assert_allclose(tokens[:5].mean(axis=0), out[act_key("first5", layer)][i], atol=1e-5)
 
 
 def test_extract_refuses_left_padding(tiny_model, tokenizer):
