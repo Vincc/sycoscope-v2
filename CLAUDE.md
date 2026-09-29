@@ -7,8 +7,6 @@ This repo is a clean rebuild of `github.com/oscaryas/SycoScope` (the "old repo",
 ## Read first
 
 - `docs/SPEC.md`: the research spec. Scope is the spec plus skyline cross-generalization.
-- `docs/PLAN.md`: design decisions, build steps, done criteria, open decisions.
-- `docs/PORTING_NOTES.md`: where each component lives in the old repo, details that must be preserved, known problems in the old code and data.
 
 Current step: **Step 1 only** (probe training). Do not start Step 2 or 3 until asked.
 
@@ -37,14 +35,13 @@ Current step: **Step 1 only** (probe training). Do not start Step 2 or 3 until a
 
 **Tests.**
 
-- Only where a mistake gives wrong numbers silently (see the list in `docs/PORTING_NOTES.md`). Small `pytest` functions, most needing only a tokenizer.
+- Only where a mistake gives wrong numbers silently. Small `pytest` functions, most needing only a tokenizer.
 - When a test fails, fix the code.
 
 ## Working rules
 
-- Port from the old repo's best existing version of each piece (mapped in `docs/PORTING_NOTES.md`); do not rewrite from memory.
+- Port from the old repo's best existing version of each piece; do not rewrite from memory.
 - Anything that produces numbers gets a parity check against the old repo before it is used.
-- Do not decide items listed under "Open decisions" in `docs/PLAN.md`; ask.
-- Every output file gets a sibling `*.meta.json`: input paths with SHA-256, git commit (a dirty tree is recorded as dirty), command-line arguments, row counts.
+- Every activation file gets a sibling `*.meta.json`: input paths with SHA-256, git commit (a dirty tree is recorded as dirty), command-line arguments, row counts.
 - Generations and judged data are committed (Git LFS for large files). Activations are never committed.
 - Model runs (generation, activation extraction) need a GPU machine; unit tests must run on CPU.

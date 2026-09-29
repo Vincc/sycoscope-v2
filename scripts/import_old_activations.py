@@ -1,6 +1,6 @@
 """Port an old prompt_probes run's Perez-prompt generations and activations into the probe_training layout.
 
-Writes to generations/<model>/training/:
+Writes to generations/<model>/training/model_written_evals/perez_user_prompts/:
   <name>_contrastive_responses.jsonl + _activations.npz   every pair x polarity x prompt
   <name>_neutral_responses.jsonl + _activations.npz       no system prompt, one row per prompt
 in the same row and array format as generate_response.py and get_activations.py.
@@ -127,7 +127,7 @@ def main():
     if set(slug_of) != {p["cell"] for p in pairs}:
         raise ValueError(f"old cells {sorted(slug_of)} != pairs file cells")
 
-    out_dir = REPO_ROOT / "generations" / model.split("/")[-1] / "training"
+    out_dir = REPO_ROOT / "generations" / model.split("/")[-1] / "training" / "model_written_evals" / "perez_user_prompts"
     meta_extra = {"model": model, "n_layers": old_meta["n_layers"], "layers": layers,
                   "layer_convention": old_meta["layer_convention"], "positions": list(POSITIONS), "dtype": "float32",
                   "old_run": args.old_run.as_posix(), "old_activations_meta": old_meta}

@@ -1,6 +1,7 @@
 # Models this repo has been checked against. n_layers is asserted against the loaded config.
 MODELS = {
     "meta-llama/Meta-Llama-3-8B-Instruct": {"n_layers": 32, "thinking": False},
+    "meta-llama/Llama-3.1-8B-Instruct": {"n_layers": 32, "thinking": False},
 }
 
 

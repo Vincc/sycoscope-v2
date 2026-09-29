@@ -1,7 +1,7 @@
 {
   "output": "prompts.jsonl",
   "inputs": {
-    "data/training/synthetic_dataset/generate_data/scenarios.jsonl": "5337ba4301df9dffef0aca7b5fedda4e0791781bbdf74393eb0c7104cc225e6b"
+    "data/training/synthetic_dataset/scenarios.jsonl": "5337ba4301df9dffef0aca7b5fedda4e0791781bbdf74393eb0c7104cc225e6b"
   },
   "git": {
     "commit": "6ed55f395a94840f536528bf4af36be0eecf4135",
@@ -10,7 +10,7 @@
   "argv": [
     "data/training/synthetic_dataset/generate_data/build_prompts.py",
     "--scenarios",
-    "data/training/synthetic_dataset/generate_data/scenarios.jsonl",
+    "data/training/synthetic_dataset/scenarios.jsonl",
     "--out",
     "data/training/synthetic_dataset/prompts.jsonl",
     "--model",
@@ -19,7 +19,7 @@
     "16"
   ],
   "args": {
-    "scenarios": "data/training/synthetic_dataset/generate_data/scenarios.jsonl",
+    "scenarios": "data/training/synthetic_dataset/scenarios.jsonl",
     "out": "data/training/synthetic_dataset/prompts.jsonl",
     "model": "claude-opus-5-5",
     "max_workers": 16,

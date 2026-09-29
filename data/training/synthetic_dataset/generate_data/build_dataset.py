@@ -10,10 +10,8 @@ repeat across scenarios; invalid scenarios are regenerated.
 Accepted scenarios are appended to the output file as they're accepted, so an interrupted run
 resumes where it left off when rerun with the same --out. The file is rewritten in cell order at the end.
 
-Usage:
-    pip install anthropic
-    export ANTHROPIC_API_KEY=...
-    python generate_scenarios.py --out scenarios.jsonl
+Usage (from the repo root):
+    uv run python data/training/synthetic_dataset/generate_data/build_dataset.py         --out data/training/synthetic_dataset/scenarios.jsonl
 """
 
 import argparse
