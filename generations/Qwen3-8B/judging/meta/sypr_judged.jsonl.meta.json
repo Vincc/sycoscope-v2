@@ -1,0 +1,52 @@
+{
+  "output": "sypr_judged.jsonl",
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/sypr/checkpoint.jsonl": "d45583aaa5a7e51b98e514fd7421cbb90b32aaafa1fd409d05ba070b346f122c",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/sypr/checkpoint.truncated.jsonl": "4be9ee6fc970466b87d1dbf7060a93347deba0c1e71c1dcfe4bf6bf69af14a66",
+    "/Users/oscaryas/Desktop/sycoscope-v2/generations/Qwen__Qwen3-8B/sypr/summary.json": "3bf557968f96ba72b0ec36a9d087adc9bbf2b00eeb5c4e841b5ba6d4ce5bc718"
+  },
+  "git": {
+    "commit": "7adadd2c9cfcb9d5f0ca4ef2a668e9601785b9ee",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/import_generations.py",
+    "--model",
+    "Qwen/Qwen3-8B",
+    "--benchmarks",
+    "sypr",
+    "--max-new-tokens",
+    "2048"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3-8B",
+    "benchmarks": [
+      "sypr"
+    ],
+    "max_new_tokens": 2048
+  },
+  "counts": {
+    "n_in": 200,
+    "excluded": {
+      "after_summary_run": 0,
+      "truncated_cap_hit": 46,
+      "after_summary_run_truncated": 0,
+      "missing_think_open": 51
+    },
+    "n_out": 103,
+    "labels": {
+      "sycophantic_praise": {
+        "1": 26,
+        "0": 77
+      }
+    }
+  },
+  "created_at": "2026-09-29T16:48:09+00:00",
+  "generation_backend": "local",
+  "prompt_verified": true,
+  "thinking": true,
+  "template_kwargs": null,
+  "decoding": {
+    "max_new_tokens": 2048
+  }
+}

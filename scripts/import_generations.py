@@ -18,6 +18,7 @@ import argparse
 import json
 import re
 from collections import Counter
+from itertools import zip_longest
 from pathlib import Path
 
 from judging.generate_responses import PUSHBACK, mc_letters
@@ -34,8 +35,10 @@ BENCHMARKS = {
     "are_you_sure_mc": ("are_you_sure", "mc"),
     "are_you_sure_freeform": ("are_you_sure", "freeform"),
     "truthfulqa": ("truthfulqa", None),
+    "sypr": ("sypr", None),
 }
-UNSUPPORTED = {"sypr": "git-lfs pointers only", "dissociating_sycophancy": "not the model's own generations"}
+UNSUPPORTED = {"dissociating_sycophancy": "not the model's own generations"}
+SOURCE_DIRS = {"google/gemma-3-27b-it": "google__gemma-3-27B-it"}  # old directory uses uppercase B
 ELEPHANT_METRICS = ("validation", "indirectness", "framing")
 PLACEHOLDER = "\x00USER\x00"
 
@@ -105,6 +108,91 @@ class LocalRenderer:
 def read_truncated(bench_dir: Path) -> list[dict]:
     path = bench_dir / "checkpoint.truncated.jsonl"
     return read_jsonl(path) if path.exists() else []
+
+
+def sypr_messages(prompt: str, utterance: str, renderer: LocalRenderer, rid: str) -> list[dict]:
+    if prompt.startswith("<|im_start|>"):
+        start, end, suffix = "<|im_start|>", "<|im_end|>\n", "<|im_start|>assistant\n"
+    elif prompt.startswith("<bos><|turn>"):
+        start, end, suffix = "<|turn>", "<turn|>\n", "<|turn>model\n<|channel>thought\n<channel|>"
+    else:
+        raise ValueError(f"{rid}: unrecognized SyPR chat template")
+    if not prompt.endswith(suffix):
+        raise ValueError(f"{rid}: SyPR prompt lacks the assistant header")
+    body = prompt[:-len(suffix)]
+    if body.startswith("<bos>"):
+        body = body[len("<bos>"):]
+    messages = []
+    while body:
+        if not body.startswith(start):
+            raise ValueError(f"{rid}: malformed SyPR turn")
+        body = body[len(start):]
+        if "\n" not in body or end not in body:
+            raise ValueError(f"{rid}: incomplete SyPR turn")
+        role, body = body.split("\n", 1)
+        content, body = body.split(end, 1)
+        if role not in ("user", "assistant", "model"):
+            raise ValueError(f"{rid}: unexpected SyPR role {role!r}")
+        messages.append({"role": "assistant" if role == "model" else role, "content": content})
+    if not messages or messages[-1] != {"role": "user", "content": utterance}:
+        raise ValueError(f"{rid}: final SyPR user turn differs from utterance_text")
+    if renderer.render(messages) != prompt:
+        raise ValueError(f"{rid}: SyPR messages do not reproduce the stored prompt")
+    return messages
+
+
+def sypr_label(row: dict, rid: str) -> int | None:
+    praised = row["praised"]
+    poor = row["is_poor_quality"]
+    if (praised is not None and (type(praised) is not int or praised not in (0, 1))) or type(poor) is not bool:
+        raise ValueError(f"{rid}: invalid SyPR praise or quality value")
+    label = None if praised is None else int(praised == 1 and poor)
+    if (row["label"] is not None and type(row["label"]) is not int) or row["label"] != label:
+        raise ValueError(f"{rid}: SyPR label disagrees with praise and quality")
+    return label
+
+
+def local_sypr(bench_dir: Path, model: str, spec: dict, renderer: LocalRenderer, max_new_tokens: int):
+    ckpt, truncated = read_jsonl(bench_dir / "checkpoint.jsonl"), read_truncated(bench_dir)
+    summary = read_json(bench_dir / "summary.json")
+    if any(r["max_new_tokens"] != max_new_tokens for r in truncated):
+        raise ValueError(f"{bench_dir}: SyPR cap differs from --max-new-tokens")
+    if summary["model"] != model or summary["n_judged"] > len(ckpt) or summary["n_skipped"] > len(truncated):
+        raise ValueError(f"{bench_dir}: SyPR summary disagrees with source files")
+    if summary["n_judged"] + summary["n_skipped"] != summary["n_total_eligible"]:
+        raise ValueError(f"{bench_dir}: SyPR summary counts do not add up")
+    selected = ckpt[:summary["n_judged"]]
+    if sum(r["praised"] == 1 for r in selected) != summary["n_raw_praise"] or \
+            sum(r["label"] == 1 for r in selected) != summary["n_sycophantic_praise"]:
+        raise ValueError(f"{bench_dir}: SyPR summary does not match checkpoint prefix")
+    rows = []
+    excluded = Counter({
+        "after_summary_run": len(ckpt) - len(selected),
+        "truncated_cap_hit": summary["n_skipped"],
+        "after_summary_run_truncated": len(truncated) - summary["n_skipped"],
+    })
+    for i, r in enumerate(selected):
+        rid = f"sypr__{i:05d}"
+        if r["text"] != r["prompt"] + r["response"]:
+            raise ValueError(f"{rid}: SyPR text differs from prompt and response")
+        label = sypr_label(r, rid)
+        messages = sypr_messages(r["prompt"], r["utterance_text"], renderer, rid)
+        split = split_reasoning(r["response"], spec["thinking"])
+        if isinstance(split, str):
+            excluded[split] += 1
+            continue
+        reasoning, answer = split
+        if not answer.strip():
+            excluded["empty_response"] += 1
+            continue
+        rows.append({
+            "id": rid, "benchmark": "sypr", "source": r["domain"], "utterance_text": r["utterance_text"],
+            "is_poor_quality": r["is_poor_quality"], "praised": r["praised"], "messages": messages,
+            "reasoning": reasoning, "response": answer, "truncated": False,
+            "model": model, "generation_backend": "local", "labels": {"sycophantic_praise": label},
+        })
+    counts = check_counts(len(ckpt) + len(truncated), excluded, len(rows), "sypr")
+    return rows, counts, [bench_dir / "checkpoint.jsonl", bench_dir / "checkpoint.truncated.jsonl", bench_dir / "summary.json"]
 
 
 def collapse_duplicates(items: list[dict], source: str) -> tuple[list[dict], int, int]:
@@ -405,6 +493,52 @@ def openrouter_truthfulqa(bench_dir: Path, model: str):
     return rows, check_counts(len(ckpt), excluded, len(rows), "truthfulqa"), [path]
 
 
+def openrouter_sypr(bench_dir: Path, model: str):
+    ckpt_path, judged_path = bench_dir / "checkpoint.jsonl", bench_dir / "judged.jsonl"
+    rows, excluded, n_in = [], Counter(), 0
+    with ckpt_path.open(encoding="utf-8") as ckpt, judged_path.open(encoding="utf-8") as judged:
+        for i, pair in enumerate(zip_longest(ckpt, judged)):
+            if None in pair:
+                raise ValueError(f"{bench_dir}: checkpoint and judged row counts differ")
+            raw, r = (json.loads(line) for line in pair)
+            n_in += 1
+            rid = f"sypr__{r['id']}"
+            if set(r) - set(raw) != {"praised", "is_poor_quality", "label"} or \
+                    any(r[k] != v for k, v in raw.items()):
+                raise ValueError(f"{rid}: judged row differs from checkpoint")
+            if r["id"] != r["row_id"] or OPENROUTER_TO_HF.get(r["model"]) != model:
+                raise ValueError(f"{rid}: SyPR ID or model disagrees with source")
+            if r["domain_family"] == "reasoning":
+                if type(r["ground_truth_correctness"]) is not bool:
+                    raise ValueError(f"{rid}: invalid SyPR correctness value")
+                poor = not r["ground_truth_correctness"]
+            elif r["domain_family"] == "social" and r["utterance_quality"] in ("low", "high"):
+                poor = r["utterance_quality"] == "low"
+            else:
+                raise ValueError(f"{rid}: invalid SyPR domain or quality")
+            if r["is_poor_quality"] != poor:
+                raise ValueError(f"{rid}: SyPR quality disagrees with source fields")
+            label = sypr_label(r, rid)
+            messages = r["messages"]
+            if len(messages) < 2 or messages[-2] != {"role": "user", "content": r["utterance_text"]} or \
+                    messages[-1] != {"role": "assistant", "content": r["response"]}:
+                raise ValueError(f"{rid}: SyPR messages disagree with utterance or response")
+            check_no_reasoning(r, rid, "reasoning")
+            if finish_exclusion(excluded, r["finish_reason"]):
+                continue
+            if not r["response"].strip():
+                excluded["empty_response"] += 1
+                continue
+            rows.append({
+                "id": rid, "benchmark": "sypr", "source": r["domain"], "domain_family": r["domain_family"],
+                "row_id": r["row_id"], "utterance_text": r["utterance_text"],
+                "is_poor_quality": poor, "praised": r["praised"], "messages": messages[:-1],
+                "response": r["response"], "truncated": False, "model": model,
+                "generation_backend": "openrouter", "labels": {"sycophantic_praise": label},
+            })
+    return rows, check_counts(n_in, excluded, len(rows), "sypr"), [ckpt_path, judged_path]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", required=True, help="Hugging Face id, e.g. Qwen/Qwen3-8B; source dir is generations/<org>__<name>/")
@@ -414,7 +548,7 @@ def main():
 
     spec = model_spec(args.model)
     org, name = args.model.split("/")
-    src_root = REPO_ROOT / "generations" / f"{org}__{name}"
+    src_root = REPO_ROOT / "generations" / SOURCE_DIRS.get(args.model, f"{org}__{name}")
     if not src_root.is_dir():
         raise FileNotFoundError(src_root)
     present = sorted(p.name for p in src_root.iterdir() if p.is_dir())
@@ -442,6 +576,8 @@ def main():
                 rows, counts, inputs = local_elephant(bench_dir, sub, args.model, spec, renderer)
             elif benchmark == "are_you_sure":
                 rows, counts, inputs = local_are_you_sure(bench_dir, sub, args.model, spec, renderer)
+            elif benchmark == "sypr":
+                rows, counts, inputs = local_sypr(bench_dir, args.model, spec, renderer, args.max_new_tokens)
             else:
                 rows, counts, inputs = local_truthfulqa(bench_dir, args.model, spec, renderer)
             decoding = {"max_new_tokens": args.max_new_tokens}
@@ -453,6 +589,8 @@ def main():
                 rows, counts, paths = openrouter_elephant(bench_dir, sub, args.model)
             elif benchmark == "are_you_sure":
                 rows, counts, paths = openrouter_are_you_sure(bench_dir, sub, args.model)
+            elif benchmark == "sypr":
+                rows, counts, paths = openrouter_sypr(bench_dir, args.model)
             else:
                 rows, counts, paths = openrouter_truthfulqa(bench_dir, args.model)
             inputs += paths
