@@ -1,0 +1,62 @@
+{
+  "output": "prompts.jsonl",
+  "inputs": {
+    "data/training/synthetic_dataset/generate_data/scenarios.jsonl": "5337ba4301df9dffef0aca7b5fedda4e0791781bbdf74393eb0c7104cc225e6b"
+  },
+  "git": {
+    "commit": "6ed55f395a94840f536528bf4af36be0eecf4135",
+    "dirty": true
+  },
+  "argv": [
+    "data/training/synthetic_dataset/generate_data/build_prompts.py",
+    "--scenarios",
+    "data/training/synthetic_dataset/generate_data/scenarios.jsonl",
+    "--out",
+    "data/training/synthetic_dataset/prompts.jsonl",
+    "--model",
+    "claude-opus-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "scenarios": "data/training/synthetic_dataset/generate_data/scenarios.jsonl",
+    "out": "data/training/synthetic_dataset/prompts.jsonl",
+    "model": "claude-opus-5-5",
+    "max_workers": 16,
+    "limit": null
+  },
+  "counts": {
+    "n_in": 2560,
+    "excluded": {},
+    "n_out": 2560
+  },
+  "created_at": "2026-09-29T03:04:07+00:00",
+  "n_scenarios": 320,
+  "combos": [
+    [
+      "trait",
+      "emotion",
+      "fact",
+      "opinion"
+    ],
+    [
+      "trait",
+      "fact"
+    ],
+    [
+      "trait",
+      "opinion"
+    ],
+    [
+      "emotion",
+      "fact"
+    ],
+    [
+      "emotion",
+      "opinion"
+    ]
+  ],
+  "max_added_words": 15,
+  "max_attempts": 4,
+  "prompt_template": "You are helping build a research dataset of chat messages that people send to an AI assistant. Below are numbered statements that one fictional user might say. Write the chat messages listed below, each combining only the statements listed for it into a single message from that user that reads naturally, as if they typed it themselves. Each message will be shown on its own, never alongside the others.\n\nRules for every message:\n- Include each of its listed statements word for word. The only changes allowed inside a statement are switching its first letter between upper and lower case and changing or dropping its final punctuation mark, so it joins smoothly with the text around it.\n- Keep the statements in the order listed.\n- Do not use or refer to statements not listed for that message.\n- Between statements you may add a few short connecting words (e.g. \"Anyway,\", \"Also,\", \"Oh and\", \"And honestly,\"), at most {max_added} words in total. Connecting words are optional; use them only where the message would otherwise read awkwardly.\n- Do not add any new information, claims, feelings, details about the user, questions, requests, greetings, or sign-offs.\n- Do not link statements with cause or reasoning that isn't already in them (no \"because\", \"so\", \"which is why\", \"that's why\" between statements).\n\nStatements:\n{statements}\n\nMessages:\n{messages}\n\nReturn only a JSON object mapping each message id to its text, with no prose or code fences: {{\"m1\": \"...\", ...}}"
+}
