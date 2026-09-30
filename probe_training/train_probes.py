@@ -2,10 +2,11 @@
 
 A unit is a contrastive cell (--cells, contrastive activations npz, split by prompt_id so both responses to a
 prompt share a side) or a skyline label (--labels, judged activations npz, split by group; rows whose label is
-None are excluded). One split is shared by every unit. Writes to probes/<model name>/<sweep>/:
-  split.json               train and test groups, train_ids (all training-group rows), fit_ids (balanced rows per unit)
+None are excluded). One split is shared by every unit; validation chooses hyperparameters and test reports results.
+Writes to probes/<model name>/<sweep>/:
+  split.json               train, val and test groups, train_ids, val_ids, fit_ids (balanced rows per unit)
   <unit>.probes.npz        every probe for one unit (pairNN or the label name), arrays keyed <probe_id>__<field>
-  manifest.jsonl           one row per probe: its parameters, file, key and train/test metrics
+  manifest.jsonl           one row per probe: its parameters, file, key and train/val/test metrics
 
 Run from the repo root: python -m probe_training.train_probes --activations ... --sweep ... --cells all ...
 """
@@ -112,6 +113,7 @@ def main():
     parser.add_argument("--C", type=float, nargs="+", required=True, help="Inverse L2 strengths (logistic only).")
     parser.add_argument("--max-iter", type=int, required=True)
     parser.add_argument("--test-frac", type=float, required=True)
+    parser.add_argument("--val-frac", type=float, required=True, help="0 for no validation split.")
     parser.add_argument("--seed", type=int, required=True, help="Split seed.")
     args = parser.parse_args()
 
@@ -137,14 +139,15 @@ def main():
     if not len(ids) == len(groups) == z[act_key(args.positions[0], args.layers[0])].shape[0]:
         raise AssertionError("activation arrays and row fields differ in length")
 
-    split = group_split(sorted(set(groups.tolist())), args.test_frac, args.seed)
+    split = group_split(sorted(set(groups.tolist())), args.test_frac, args.val_frac, args.seed)
     split["group_field"] = group_field
     split["activations"] = source
     split["train_ids"] = sorted(ids[np.isin(groups, split["train"])].tolist())  # evaluate_probes excludes these
+    split["val_ids"] = sorted(ids[np.isin(groups, split["val"])].tolist())
     split["fit_ids"] = {}
     out_dir.mkdir(parents=True)
     split_path = out_dir / "split.json"
-    print(f"{out_dir}: {len(split['train'])} train / {len(split['test'])} test {group_field} groups, shared by all units")
+    print(f"{out_dir}: {len(split['train'])} train / {len(split['val'])} val / {len(split['test'])} test {group_field} groups, shared by all units")
 
     grid = []
     for method, position, layer in itertools.product(args.methods, args.positions, args.layers):
@@ -155,9 +158,7 @@ def main():
     for unit in units:
         name, rows, y = unit["name"], unit["rows"], unit["y"]
         g = groups[rows].tolist()
-        tr_candidate, te = split_masks(g, split)
-        if set(np.array(g)[tr_candidate]) & set(np.array(g)[te]):
-            raise AssertionError(f"{name}: a group is in both train and test")
+        tr_candidate, va, te = split_masks(g, split)
         tr = balanced_training_mask(y, tr_candidate, args.seed)
         split["fit_ids"][name] = ids[rows[tr]].tolist()
         balance_counts = check_counts(int(tr_candidate.sum()),
@@ -166,16 +167,30 @@ def main():
         if int((y[tr] == 0).sum()) != int((y[tr] == 1).sum()):
             raise AssertionError(f"{name}: training labels are not balanced")
         probes.check_binary(y[te], f"{name} test")
-        test_groups = [x for x, m in zip(g, te) if m]
-        print(f"\n[{name}] {counts['per_unit'][name]} | train {balance_counts} / test {te.sum()} rows")
+        if split["val"]:
+            probes.check_binary(y[va], f"{name} val")
+        print(f"\n[{name}] {counts['per_unit'][name]} | train {balance_counts} / val {va.sum()} / test {te.sum()} rows")
 
         fitted = {}
         npz_name = f"{name}.probes.npz"
         for method, position, layer, C in grid:
             X = z[act_key(position, layer)][rows]
             probe = probes.fit(method, X[tr], y[tr], C, args.max_iter)
-            s_tr, s_te = probes.score(method, probe, X[tr]), probes.score(method, probe, X[te])
-            win, n_pairs = probes.paired_win_rate(s_te, y[te], test_groups) if unit["paired"] else (None, None)
+            s_tr = probes.score(method, probe, X[tr])
+            held_out = {}
+            for side, mask in (("val", va), ("test", te)):
+                s = probes.score(method, probe, X[mask])
+                sy = y[mask]
+                side_groups = [x for x, selected in zip(g, mask) if selected]
+                win, n_pairs = probes.paired_win_rate(s, sy, side_groups) if unit["paired"] and mask.any() else (None, None)
+                held_out.update({
+                    f"n_{side}": int(mask.sum()),
+                    f"n_{side}_pos": int(sy.sum()),
+                    f"{side}_auroc": probes.auroc(sy, s),
+                    f"{side}_balanced_accuracy": probes.balanced_accuracy(sy, s, method) if mask.any() else None,
+                    f"{side}_paired_win_rate": win,
+                    f"n_{side}_pairs": n_pairs,
+                })
             pid = probe_id(name, method, position, layer, C)
             fitted[pid] = probe
             manifest.append(
@@ -190,24 +205,21 @@ def main():
                     "max_iter": args.max_iter,
                     "split_seed": args.seed,
                     "test_frac": args.test_frac,
+                    "val_frac": args.val_frac,
                     "model": act_meta["model"],
                     "n_train": int(tr.sum()),
                     "n_train_pos": int(y[tr].sum()),
                     "n_train_candidate": int(tr_candidate.sum()),
                     "n_train_balance_excluded": balance_counts["excluded"]["majority_downsampled"],
-                    "n_test": int(te.sum()),
-                    "n_test_pos": int(y[te].sum()),
                     "train_auroc": probes.auroc(y[tr], s_tr),
                     "train_balanced_accuracy": probes.balanced_accuracy(y[tr], s_tr, method),
-                    "test_auroc": probes.auroc(y[te], s_te),
-                    "test_balanced_accuracy": probes.balanced_accuracy(y[te], s_te, method),
-                    "test_paired_win_rate": win,  # None for skyline: rows are not paired
-                    "n_test_pairs": n_pairs,
+                    **held_out,
                 }
             )
             m = manifest[-1]
-            paired = "" if win is None else f" paired {win:.3f}"
-            print(f"  {pid}: test auroc {m['test_auroc']:.3f} balanced acc {m['test_balanced_accuracy']:.3f}{paired}")
+            val = "" if m["val_auroc"] is None else f"val auroc {m['val_auroc']:.3f} | "
+            paired = "" if m["test_paired_win_rate"] is None else f" paired {m['test_paired_win_rate']:.3f}"
+            print(f"  {pid}: {val}test auroc {m['test_auroc']:.3f} balanced acc {m['test_balanced_accuracy']:.3f}{paired}")
         probes.save_probes(out_dir / npz_name, fitted)
 
     write_json(split_path, split)

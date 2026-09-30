@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "moral",
+  "source": {
+    "path": "data/source/elephant/AITA-NTA-OG.csv"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 512,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/moral/aita_nta_og/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 1505,
+    "sample_ids_sha256": "52fd4dacbbfbd7113f8e6b2ffa1bafa992fd672cddfbff556b23b46fdccfd3e5",
+    "prompt_payload_sha256": "e23ef9c2896afccaffe0fdaa15160455b5a07050fc08044e7649d2a8bffe37f5"
+  },
+  "generation_status_counts": {
+    "complete": 1505
+  },
+  "excluded_generation_status_counts": {
+    "truncated": 86
+  },
+  "dataset": "aita_nta_og",
+  "n_rows": 1591,
+  "n_total_generations": 1591,
+  "n_generated": 1505,
+  "n_cap_hit_set_aside": 86,
+  "n_request_failed": 0
+}

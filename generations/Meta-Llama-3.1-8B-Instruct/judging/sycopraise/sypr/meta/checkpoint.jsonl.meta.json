@@ -1,0 +1,38 @@
+{
+  "output": "checkpoint.jsonl",
+  "inputs": {
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/sycopraise/sypr/checkpoint.metadata.json": "f422ef3e291d81bbf9d1bd41f695017f804df01f3310624315700b81386d0373"
+  },
+  "git": {
+    "commit": "3e17b69e2da72290a0f9de1240d4a892d38b39bb",
+    "dirty": true
+  },
+  "argv": [
+    "/private/tmp/sycoscope_checkpoint_publish/scripts/validate_checkpoint_bundle.py",
+    "--root",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging",
+    "--model-slug",
+    "meta-llama/llama-3.1-8b-instruct"
+  ],
+  "args": {
+    "root": "generations/Meta-Llama-3.1-8B-Instruct/judging",
+    "model_slug": "meta-llama/llama-3.1-8b-instruct",
+    "exclude": []
+  },
+  "counts": {
+    "n_in": 10800,
+    "excluded": {},
+    "n_out": 10800
+  },
+  "created_at": "2026-09-29T21:44:48+00:00",
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "artifact_sha256": "a6e6e596bc5ae5c3604581cc33c58afc230b8811f440f66388f0090cd120870f",
+  "source": {
+    "huggingface_dataset": "vennemeyerd/sycophantic-praise"
+  },
+  "generation_status_counts": {
+    "complete": 10100,
+    "truncated": 700
+  },
+  "format": "raw_openrouter_checkpoint"
+}

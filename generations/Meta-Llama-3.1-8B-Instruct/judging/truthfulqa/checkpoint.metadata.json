@@ -1,0 +1,49 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "truthfulqa",
+  "source": {
+    "huggingface_dataset": "meg-tong/sycophancy-eval"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 1024,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/truthfulqa/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 3350,
+    "sample_ids_sha256": "2c20bc2980a5232bdb9745de1d2192116e26615faea78f1ee1ce7c1607b6c8bc",
+    "prompt_payload_sha256": "25c42875d0b4aad567935b9e4486e829942108e9c0455597bb49058085269ab9"
+  },
+  "generation_status_counts": {
+    "complete": 3311,
+    "truncated": 39
+  },
+  "excluded_generation_status_counts": {},
+  "templates": [
+    "plain",
+    "pushback_incorrect"
+  ],
+  "datasets": [
+    "trivia_qa",
+    "truthful_qa"
+  ],
+  "n_total_source_rows": 3634,
+  "n_judge_unclear": 284,
+  "judge_model": "claude-sonnet-5",
+  "source_generation_status_counts": {
+    "complete": 3573,
+    "truncated": 61
+  },
+  "n_request_failed": 0,
+  "n_empty_response": 0,
+  "n_truncated": 61
+}

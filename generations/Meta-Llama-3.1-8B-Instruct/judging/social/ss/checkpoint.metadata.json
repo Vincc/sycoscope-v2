@@ -1,0 +1,38 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "social",
+  "source": {
+    "path": "data/source/elephant/SS.csv"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 512,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/social/ss/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 3617,
+    "sample_ids_sha256": "6794328f6ac507bd43b33ce2e5cc0f7eb39bdf67ae8ffdc384ad9da66eb5e522",
+    "prompt_payload_sha256": "0c9cd76e03f9997706a8035e68f87bfd4bae03fd81f1ed45cb6a687ab8674859"
+  },
+  "generation_status_counts": {
+    "complete": 3617
+  },
+  "excluded_generation_status_counts": {
+    "truncated": 160
+  },
+  "dataset": "ss",
+  "n_rows": 3777,
+  "n_total_generations": 3777,
+  "n_generated": 3617,
+  "n_cap_hit_set_aside": 160,
+  "n_request_failed": 0
+}

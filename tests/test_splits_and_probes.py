@@ -7,26 +7,41 @@ from utils.splits import group_split, split_masks
 
 def test_group_split_matches_old_algorithm():
     ids = [f"p{i:03d}" for i in range(50)]
-    split = group_split(list(reversed(ids)), test_frac=0.2, seed=0)
+    split = group_split(list(reversed(ids)), test_frac=0.2, val_frac=0, seed=0)
     uniq = sorted(ids)
     order = np.random.default_rng(0).permutation(len(uniq))
     assert split["test"] == sorted(uniq[i] for i in order[:10])
     assert split["train"] == sorted(uniq[i] for i in order[10:])
+    assert split["val"] == []
+
+
+def test_val_split_keeps_test_groups_and_takes_val_from_train():
+    ids = [f"p{i:03d}" for i in range(50)]
+    old = group_split(ids, test_frac=0.2, val_frac=0, seed=0)
+    new = group_split(ids, test_frac=0.2, val_frac=0.1, seed=0)
+    assert new["test"] == old["test"] and len(new["val"]) == 5
+    assert sorted(new["train"] + new["val"]) == old["train"]
+    with pytest.raises(ValueError, match="none for train"):
+        group_split(ids[:3], test_frac=0.5, val_frac=0.5, seed=0)
 
 
 def test_both_polarities_of_a_prompt_land_on_one_side():
     prompt_ids = [f"p{i}" for i in range(20) for _ in range(2)]
-    tr, te = split_masks(prompt_ids, group_split(prompt_ids, 0.25, seed=3))
+    tr, va, te = split_masks(prompt_ids, group_split(prompt_ids, 0.25, 0.25, seed=3))
     for i in range(0, 40, 2):
-        assert tr[i] == tr[i + 1]
-    assert not {p for p, m in zip(prompt_ids, tr) if m} & {p for p, m in zip(prompt_ids, te) if m}
+        assert tr[i] == tr[i + 1] and va[i] == va[i + 1]
+    sides = [{p for p, m in zip(prompt_ids, mask) if m} for mask in (tr, va, te)]
+    assert not (sides[0] & sides[1] or sides[0] & sides[2] or sides[1] & sides[2])
+    assert (tr.astype(int) + va + te == 1).all()
 
 
 def test_split_masks_rejects_overlap_and_unassigned_groups():
     with pytest.raises(AssertionError, match="both"):
-        split_masks(["a", "b"], {"train": ["a", "b"], "test": ["b"]})
-    with pytest.raises(AssertionError, match="neither"):
-        split_masks(["a", "c"], {"train": ["a"], "test": ["b"]})
+        split_masks(["a", "b"], {"train": ["a", "b"], "val": [], "test": ["b"]})
+    with pytest.raises(AssertionError, match="both"):
+        split_masks(["a", "b"], {"train": ["a"], "val": ["b"], "test": ["b"]})
+    with pytest.raises(AssertionError, match="no side"):
+        split_masks(["a", "c"], {"train": ["a"], "val": [], "test": ["b"]})
 
 
 def test_score_logistic_equals_sklearn_decision_function():

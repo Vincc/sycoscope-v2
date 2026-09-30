@@ -1,7 +1,7 @@
 {
   "output": "splits",
   "inputs": {
-    "data/training/synthetic_dataset/generate_data/prompts.jsonl": "6634c026c887d1b7b1601809c38915592bd0e6fcd0936ea92d71f1edfd9cae49"
+    "data/training/synthetic_dataset/prompts.jsonl": "6634c026c887d1b7b1601809c38915592bd0e6fcd0936ea92d71f1edfd9cae49"
   },
   "git": {
     "commit": "7f5536ed8da8271a0327418f592ad5c656c69f78",
@@ -10,12 +10,12 @@
   "argv": [
     "data/training/synthetic_dataset/generate_data/split_prompts.py",
     "--input",
-    "data/training/synthetic_dataset/generate_data/prompts.jsonl",
+    "data/training/synthetic_dataset/prompts.jsonl",
     "--out-dir",
     "data/training/synthetic_dataset/splits"
   ],
   "args": {
-    "input": "data/training/synthetic_dataset/generate_data/prompts.jsonl",
+    "input": "data/training/synthetic_dataset/prompts.jsonl",
     "out_dir": "data/training/synthetic_dataset/splits"
   },
   "counts": {

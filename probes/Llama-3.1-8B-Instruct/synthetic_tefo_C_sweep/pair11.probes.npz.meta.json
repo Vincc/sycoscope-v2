@@ -1,0 +1,218 @@
+{
+  "output": "pair11.probes.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz": "0480b6160035659b3187d8c3002aeb9bed6fb7d261df01dcdbe8b9b141a7bd59"
+  },
+  "git": {
+    "commit": "7d682ffe66f2a6ad2453e6a1ae3e3a6c2951dca7",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/train_probes.py",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz",
+    "--sweep",
+    "synthetic_tefo_C_sweep",
+    "--cells",
+    "all",
+    "--methods",
+    "logistic",
+    "dim",
+    "--positions",
+    "last_prompt",
+    "first5",
+    "response",
+    "--layers",
+    "3",
+    "6",
+    "10",
+    "13",
+    "16",
+    "19",
+    "22",
+    "26",
+    "29",
+    "--C",
+    "0.0001",
+    "0.001",
+    "0.01",
+    "0.1",
+    "1",
+    "10",
+    "--max-iter",
+    "10000",
+    "--test-frac",
+    "0.2",
+    "--val-frac",
+    "0.10",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "activations": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz",
+    "sweep": "synthetic_tefo_C_sweep",
+    "cells": [
+      "all"
+    ],
+    "labels": null,
+    "methods": [
+      "logistic",
+      "dim"
+    ],
+    "positions": [
+      "last_prompt",
+      "first5",
+      "response"
+    ],
+    "layers": [
+      3,
+      6,
+      10,
+      13,
+      16,
+      19,
+      22,
+      26,
+      29
+    ],
+    "C": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "max_iter": 10000,
+    "test_frac": 0.2,
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 17920,
+    "excluded": {
+      "cell_not_selected": 0,
+      "pair_partner_missing": 0
+    },
+    "n_out": 17920
+  },
+  "created_at": "2026-09-30T01:50:18+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "units": [
+    "pair00",
+    "pair01",
+    "pair02",
+    "pair03",
+    "pair04",
+    "pair05",
+    "pair06",
+    "pair07",
+    "pair08",
+    "pair09",
+    "pair10",
+    "pair11",
+    "pair12",
+    "pair13"
+  ],
+  "n_probes": 2646,
+  "per_unit": {
+    "pair00": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair01": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair02": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair03": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair04": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair05": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair06": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair07": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair08": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair09": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair10": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair11": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair12": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair13": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    }
+  }
+}

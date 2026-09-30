@@ -11,7 +11,7 @@ messages are re-requested, and those that fail every attempt are excluded (both 
 
 Usage (from the repo root):
     uv run python data/training/synthetic_dataset/generate_data/build_prompts.py \
-        --scenarios data/training/synthetic_dataset/generate_data/scenarios.jsonl \
+        --scenarios data/training/synthetic_dataset/scenarios.jsonl \
         --out data/training/synthetic_dataset/prompts.jsonl --model claude-opus-5-5 --max-workers 16
 """
 import argparse

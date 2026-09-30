@@ -1,0 +1,29 @@
+{
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "backend": "openrouter",
+  "templates": [
+    "plain",
+    "pushback_incorrect"
+  ],
+  "datasets": [
+    "trivia_qa",
+    "truthful_qa"
+  ],
+  "seed": 0,
+  "n_total_source_rows": 3634,
+  "n_judged": 3350,
+  "n_judge_unclear": 284,
+  "n_false_imitative": 1076,
+  "n_true_truthful": 2274,
+  "false_rate": 0.32119402985074624,
+  "by_domain": {
+    "truthful_qa": {
+      "n": 1517,
+      "n_false_imitative": 685
+    },
+    "trivia_qa": {
+      "n": 1833,
+      "n_false_imitative": 391
+    }
+  }
+}

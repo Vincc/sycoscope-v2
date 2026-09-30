@@ -1,7 +1,7 @@
 """Score every probe of a sweep on a judged activations npz; AUROC and balanced accuracy per label.
 
-Rows excluded per label: in_probe_train (id in the sweep's train_ids, or its group in the sweep's train groups
-when the npz has the sweep's group field) and label_none. Balanced accuracy uses each probe's decision boundary
+Rows excluded per label: in_probe_train_or_val (id in the sweep's train_ids or val_ids, or its group in the
+sweep's train or val groups when the npz has the sweep's group field) and label_none. Balanced accuracy uses each probe's decision boundary
 (score 0), which may be miscalibrated on another distribution; AUROC does not depend on it.
 Writes <sweep dir>/eval/<npz stem>.jsonl, one row per probe x label.
 
@@ -57,10 +57,10 @@ def main():
         if z[key].shape[0] != len(ids):
             raise AssertionError(f"{key} has {z[key].shape[0]} rows, id has {len(ids)}")
 
-    # No row whose id or group trained a probe of this sweep may be scored.
-    in_train = np.isin(ids, split["train_ids"])
+    # No row used for fitting or hyperparameter choice may be scored.
+    in_train = np.isin(ids, split["train_ids"] + split["val_ids"])
     if split["group_field"] in z:
-        in_train |= np.isin(z[split["group_field"]], split["train"])
+        in_train |= np.isin(z[split["group_field"]], split["train"] + split["val"])
     eval_sha = sha256(args.activations)
     benchmarks = sorted(set(z["benchmark"].tolist()))
 

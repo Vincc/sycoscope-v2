@@ -40,7 +40,7 @@ def train_skyline(tmp_path, monkeypatch, npz):
     monkeypatch.setattr(train_probes, "write_meta", lambda *a, **k: None)  # needs a git commit
     argv = ["train_probes", "--activations", str(npz), "--sweep", "sky", "--labels", "all", "--methods", "logistic", "dim",
             "--positions", "response", "--layers", "1", "--C", "1", "--max-iter", "1000",
-            "--test-frac", "0.3", "--seed", "0"]
+            "--test-frac", "0.3", "--val-frac", "0", "--seed", "0"]
     monkeypatch.setattr(sys, "argv", argv)
     train_probes.main()
     return tmp_path / "probes" / "fake-model" / "sky"

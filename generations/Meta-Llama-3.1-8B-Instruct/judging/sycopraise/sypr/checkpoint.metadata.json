@@ -1,0 +1,31 @@
+{
+  "format_version": 1,
+  "model": "meta-llama/llama-3.1-8b-instruct",
+  "dataset_type": "sypr",
+  "source": {
+    "huggingface_dataset": "vennemeyerd/sycophantic-praise"
+  },
+  "decoding": {
+    "backend": "openrouter",
+    "do_sample": false,
+    "temperature": null,
+    "top_p": null,
+    "max_new_tokens": 1024,
+    "num_return_sequences": 1
+  },
+  "seed": 0,
+  "output": "data/baseline/meta-llama__llama-3.1-8b-instruct/sycopraise/sypr/checkpoint.jsonl",
+  "system_prompt_cell": null,
+  "system_prompt_polarity": null,
+  "system_prompt": null,
+  "baseline_compatibility": {
+    "n_rows": 10800,
+    "sample_ids_sha256": "a08ef93c7d7c6ef5064d0a0649ce5e1dade8200b12aa92ebcf56a4fbf52406c3",
+    "prompt_payload_sha256": "65e47ae2d91f4fa9e4f0971de56d9da288dd8f8d08903360e7a0be34a37c7be8"
+  },
+  "generation_status_counts": {
+    "complete": 10100,
+    "truncated": 700
+  },
+  "excluded_generation_status_counts": {}
+}
