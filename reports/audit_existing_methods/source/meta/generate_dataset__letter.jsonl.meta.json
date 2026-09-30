@@ -1,0 +1,42 @@
+{
+  "output": "generate_dataset__letter.jsonl",
+  "inputs": {
+    "activations/audit/caa/generate_dataset.npz": "3cce9272049d651bb72792f7b976772be2e5253a2229fe9267d62a0be54c6ae8"
+  },
+  "git": {
+    "commit": "4e5c185967e5cbb82d9b5dd1f6de742371a32dd8",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/fit_directions.py",
+    "--activations",
+    "activations/audit/caa/generate_dataset.npz",
+    "--pool",
+    "letter",
+    "--select",
+    "val"
+  ],
+  "args": {
+    "activations": "activations/audit/caa/generate_dataset.npz",
+    "pool": "letter",
+    "select": "val",
+    "units": null
+  },
+  "counts": {
+    "n_in": 32,
+    "excluded": {},
+    "n_out": 32
+  },
+  "created_at": "2026-09-30T22:21:48+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "caa",
+  "source_file": "data/audit/caa/generate_dataset.jsonl",
+  "source_repo": "https://github.com/nrimsky/CAA",
+  "source_commit": "5dabbbd9a0bca5f25e174501e959de378806aa48",
+  "selected_layers": {
+    "caa": 26
+  },
+  "units": [
+    "caa"
+  ]
+}

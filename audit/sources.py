@@ -108,8 +108,12 @@ def last_content_index(tokenizer, ids: list[int]) -> int:
     return idx
 
 
-def vennemeyer_rows(items: list[dict], dataset: str, variant: str, tokenizer, val_frac: float, val_seed: int) -> list[dict]:
-    """variant 'plain': their Human:/Assistant: text with BOS; 'chat': the same turns in the Llama-3.1 chat template."""
+def vennemeyer_rows(items: list[dict], dataset: str, variant: str, tokenizer, val_frac: float, val_seed: int,
+                    resp_all: bool = False) -> list[dict]:
+    """variant 'plain': their Human:/Assistant: text with BOS; 'chat': the same turns in the Llama-3.1 chat template.
+
+    resp_all adds their 'resp_all' pooling (all response tokens; TextDataset: start = len(ids) - len(response ids)).
+    """
     splits = vennemeyer_split(items, val_frac, val_seed)
     rows = []
     for k, (it, split) in enumerate(zip(items, splits)):
@@ -132,6 +136,10 @@ def vennemeyer_rows(items: list[dict], dataset: str, variant: str, tokenizer, va
         if enc["offset_mapping"][i][0] < resp_start_char:
             raise ValueError(f"{row['id']}: last content token is inside the prompt")
         row["pool"] = {"last_content": [i, i + 1]}
+        if resp_all:
+            resp = it["response"] if variant == "plain" else text[resp_start_char:]
+            n_resp = len(tokenizer(resp, add_special_tokens=False)["input_ids"])
+            row["pool"]["resp_all"] = [len(enc["input_ids"]) - n_resp, len(enc["input_ids"])]
         row["n_tokens"] = len(enc["input_ids"])
         rows.append(row)
     return rows

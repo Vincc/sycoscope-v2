@@ -1,0 +1,60 @@
+{
+  "output": "split.json",
+  "inputs": {
+    "activations/audit/caa/directions/generate_dataset__letter.npz": "553ef6d30c63be1cfb651152e909d65efa331a08e4c8c155f1a4ee62db449790"
+  },
+  "git": {
+    "commit": "6a604eb419433265fbac93feb01d65352f24806a",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/caa/directions/generate_dataset__letter.npz",
+    "--table",
+    "reports/audit_existing_methods/source/generate_dataset__letter.jsonl",
+    "--name",
+    "caa",
+    "--units",
+    "caa",
+    "--extra-layers",
+    "13",
+    "--cell",
+    "Position-Subjective / Explicit",
+    "--native-position",
+    "answer-letter token of an appended (A)/(B) completion"
+  ],
+  "args": {
+    "directions": "activations/audit/caa/directions/generate_dataset__letter.npz",
+    "table": "reports/audit_existing_methods/source/generate_dataset__letter.jsonl",
+    "name": "caa",
+    "units": [
+      "caa"
+    ],
+    "extra_layers": [
+      13
+    ],
+    "positions": [
+      "last_prompt",
+      "first5",
+      "response"
+    ],
+    "cell": "Position-Subjective / Explicit",
+    "native_position": "answer-letter token of an appended (A)/(B) completion",
+    "native_matches": null,
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_in": 6,
+    "excluded": {},
+    "n_out": 6
+  },
+  "created_at": "2026-09-30T22:29:38+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "caa",
+  "cell": "Position-Subjective / Explicit",
+  "native_position": "answer-letter token of an appended (A)/(B) completion",
+  "native_matches_cached_position": null,
+  "source_repo": "https://github.com/nrimsky/CAA",
+  "source_commit": "5dabbbd9a0bca5f25e174501e959de378806aa48"
+}

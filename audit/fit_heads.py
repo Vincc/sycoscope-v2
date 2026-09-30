@@ -98,6 +98,8 @@ def main():
     parser.add_argument("--C", type=float, required=True, help="C of the logistic regression on the top heads (ours).")
     parser.add_argument("--max-iter", type=int, default=10000)
     parser.add_argument("--native-position", required=True)
+    parser.add_argument("--matches-native", required=True, choices=("yes", "approx", "no"),
+                        help="Does the benchmark pooling scored later equal the native position?")
     parser.add_argument("--cell", required=True)
     parser.add_argument("--out-name", required=True, help="probes/<model>/audit_<out-name>/")
     args = parser.parse_args()
@@ -119,7 +121,7 @@ def main():
         manifest.append({"probe_id": det_id, "probe_type": "audit_heads", "method": "logistic", "pooling": args.pool,
                          "heads": [list(map(int, x)) for x in head_list], "layers": sorted({int(L) for L, _ in head_list}),
                          "model": prov["model"], "audit_method": args.method, "audit_unit": kind, "our_addition": ours,
-                         "cell": args.cell, "native_position": args.native_position,
+                         "cell": args.cell, "native_position": args.native_position, "matches_native": args.matches_native,
                          "source_repo": prov["source_repo"], "source_commit": prov["source_commit"],
                          "source_heldout_auroc": auc, "source_n_heldout": int(test.sum()), **extra})
         print(f"{det_id}: heads {head_list[:4]}{'...' if len(head_list) > 4 else ''} held-out AUROC {auc}")

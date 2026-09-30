@@ -1,0 +1,63 @@
+{
+  "output": "ays_mc_judged_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0_activations.npz": "0927ad9fa5abc9664d1e58301f6ba417465d4f71666d4246dbc6562f094d8744",
+    "probes/Llama-3.1-8B-Instruct/audit_caa/manifest.jsonl": "23948b5c257d12642445e17817ae938647ac687baf0e5f48074022d111ec230e",
+    "probes/Llama-3.1-8B-Instruct/audit_caa/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "6a604eb419433265fbac93feb01d65352f24806a",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_caa",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_caa",
+    "activations": "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "syco": {
+      "n_in": 742,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 742
+    },
+    "turn1_correct": {
+      "n_in": 742,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 742
+    },
+    "turn2_correct": {
+      "n_in": 742,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 742
+    }
+  },
+  "created_at": "2026-09-30T22:30:11+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "0927ad9fa5abc9664d1e58301f6ba417465d4f71666d4246dbc6562f094d8744",
+  "labels": [
+    "syco",
+    "turn1_correct",
+    "turn2_correct"
+  ],
+  "n_probes": 6
+}

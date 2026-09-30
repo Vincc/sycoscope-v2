@@ -44,6 +44,8 @@ def main():
     parser.add_argument("--method", required=True, choices=sorted(EXTERNAL))
     parser.add_argument("--val-frac", type=float, default=0.1, help="caa, vennemeyer: val fraction for layer choice.")
     parser.add_argument("--seed", type=int, default=0, help="caa, vennemeyer: seed of our split / val carve.")
+    parser.add_argument("--vennemeyer-resp-all-diag", action="store_true",
+                        help="Diagnostic: math sets with the extra resp_all pooling, as method vennemeyer_diag.")
     args = parser.parse_args()
 
     ext = external_state(args.method)
@@ -59,6 +61,18 @@ def main():
         split = sources.assign_group_split(rows, test_frac=0.2, val_frac=args.val_frac, seed=args.seed)
         outputs.append((out_dir / "generate_dataset.jsonl", rows, [src], {"n_items": len(items),
                         "split": {k: split[k] for k in ("test_frac", "val_frac", "seed")}}))
+
+    elif args.method == "vennemeyer" and args.vennemeyer_resp_all_diag:
+        out_dir = REPO_ROOT / "data" / "audit" / "vennemeyer_diag"
+        for name in ("math_factorial",):
+            src = ext_dir / f"data/factorial/{name}.json"
+            items = json.loads(src.read_text(encoding="utf-8"))
+            for variant in ("plain", "chat"):
+                rows = sources.vennemeyer_rows(items, name, variant, tokenizer, args.val_frac, args.seed, resp_all=True)
+                for r in rows:
+                    r["method"] = "vennemeyer_diag"
+                outputs.append((out_dir / f"{name}__{variant}.jsonl", rows, [src], {"n_items": len(items), "variant": variant,
+                                "note": "diagnostic pooling for the SyPr parity gap"}))
 
     elif args.method == "vennemeyer":
         for name in VENNEMEYER_FILES:

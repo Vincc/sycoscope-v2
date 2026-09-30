@@ -1,0 +1,41 @@
+{
+  "output": "math_factorial__plain.jsonl",
+  "inputs": {
+    "/workspace/sycoscope-v2/external/vennemeyer/data/factorial/math_factorial.json": "b5516e5462f8de5c07eaed13327a61de21c5e5821852ff97f59d362bcb69eac8"
+  },
+  "git": {
+    "commit": "6a604eb419433265fbac93feb01d65352f24806a",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/build_source.py",
+    "--method",
+    "vennemeyer",
+    "--vennemeyer-resp-all-diag"
+  ],
+  "args": {
+    "method": "vennemeyer",
+    "val_frac": 0.1,
+    "seed": 0,
+    "vennemeyer_resp_all_diag": true
+  },
+  "counts": {
+    "n_in": 8000,
+    "excluded": {},
+    "n_out": 8000
+  },
+  "created_at": "2026-09-30T22:34:39+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef",
+  "source_dirty": false,
+  "n_items": 8000,
+  "variant": "plain",
+  "note": "diagnostic pooling for the SyPr parity gap",
+  "split_counts": {
+    "test": 800,
+    "fit": 5760,
+    "unused": 800,
+    "val": 640
+  }
+}
