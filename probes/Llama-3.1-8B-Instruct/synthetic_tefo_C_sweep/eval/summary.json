@@ -1,0 +1,143 @@
+{
+  "selection": "One probe per contrastive pair, selected by validation AUROC; ties use validation accuracy then probe_id. Medians are over the 14 selected probes. Each row reports its cache’s target label.",
+  "sweep": "synthetic_tefo_C_sweep",
+  "n_probes_in_sweep": 2646,
+  "n_selected_probes": 14,
+  "datasets": [
+    {
+      "dataset": "aita_nta_flip_flipped_minority_balanced_seed0_flipped",
+      "target_label": "both_nta",
+      "n": 758,
+      "n_selected_probes": 14,
+      "median_auroc": 0.6202024491614511,
+      "median_balanced_accuracy": 0.5019788918205805,
+      "result_file": "aita_nta_flip_flipped_minority_balanced_seed0_flipped.jsonl"
+    },
+    {
+      "dataset": "aita_nta_og_verdict_nta_minority_balanced_seed0",
+      "target_label": "verdict_nta",
+      "n": 168,
+      "n_selected_probes": 14,
+      "median_auroc": 0.576530612244898,
+      "median_balanced_accuracy": 0.5,
+      "result_file": "aita_nta_og_verdict_nta_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "aita_yta_framing_minority_balanced_seed0",
+      "target_label": "framing",
+      "n": 988,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5053168384992378,
+      "median_balanced_accuracy": 0.5,
+      "result_file": "aita_yta_framing_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "aita_yta_indirectness_minority_balanced_seed0",
+      "target_label": "indirectness",
+      "n": 1248,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5359870664858646,
+      "median_balanced_accuracy": 0.500801282051282,
+      "result_file": "aita_yta_indirectness_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "aita_yta_validation_minority_balanced_seed0",
+      "target_label": "validation",
+      "n": 1196,
+      "n_selected_probes": 14,
+      "median_auroc": 0.6614131832977259,
+      "median_balanced_accuracy": 0.5012541806020068,
+      "result_file": "aita_yta_validation_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "ays_freeform_judged_minority_balanced_seed0",
+      "target_label": "syco",
+      "n": 518,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5047181765328483,
+      "median_balanced_accuracy": 0.5,
+      "result_file": "ays_freeform_judged_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "ays_mc_judged_minority_balanced_seed0",
+      "target_label": "syco",
+      "n": 742,
+      "n_selected_probes": 14,
+      "median_auroc": 0.4557145036725976,
+      "median_balanced_accuracy": 0.5,
+      "result_file": "ays_mc_judged_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "oeq_framing_minority_balanced_seed0",
+      "target_label": "framing",
+      "n": 606,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5892069404960298,
+      "median_balanced_accuracy": 0.5041254125412541,
+      "result_file": "oeq_framing_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "oeq_indirectness_minority_balanced_seed0",
+      "target_label": "indirectness",
+      "n": 504,
+      "n_selected_probes": 14,
+      "median_auroc": 0.7233717561098514,
+      "median_balanced_accuracy": 0.5,
+      "result_file": "oeq_indirectness_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "oeq_validation_minority_balanced_seed0",
+      "target_label": "validation",
+      "n": 1270,
+      "n_selected_probes": 14,
+      "median_auroc": 0.7225184450368901,
+      "median_balanced_accuracy": 0.5118110236220472,
+      "result_file": "oeq_validation_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "ss_framing_minority_balanced_seed0",
+      "target_label": "framing",
+      "n": 1314,
+      "n_selected_probes": 14,
+      "median_auroc": 0.545834694392898,
+      "median_balanced_accuracy": 0.5182648401826484,
+      "result_file": "ss_framing_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "ss_indirectness_minority_balanced_seed0",
+      "target_label": "indirectness",
+      "n": 550,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5685024793388429,
+      "median_balanced_accuracy": 0.51,
+      "result_file": "ss_indirectness_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "ss_validation_minority_balanced_seed0",
+      "target_label": "validation",
+      "n": 1062,
+      "n_selected_probes": 14,
+      "median_auroc": 0.7375399434673588,
+      "median_balanced_accuracy": 0.5842749529190208,
+      "result_file": "ss_validation_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "sypr_judged_minority_balanced_seed0",
+      "target_label": "sycophantic_praise",
+      "n": 3792,
+      "n_selected_probes": 14,
+      "median_auroc": 0.6043324609660132,
+      "median_balanced_accuracy": 0.5133175105485233,
+      "result_file": "sypr_judged_minority_balanced_seed0.jsonl"
+    },
+    {
+      "dataset": "tqa_false_answer_judged_minority_balanced_seed0",
+      "target_label": "false_answer",
+      "n": 2090,
+      "n_selected_probes": 14,
+      "median_auroc": 0.5391648542844715,
+      "median_balanced_accuracy": 0.5014354066985646,
+      "result_file": "tqa_false_answer_judged_minority_balanced_seed0.jsonl"
+    }
+  ]
+}

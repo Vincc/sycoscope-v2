@@ -1,0 +1,34 @@
+{
+  "output": "03_evaluation_dataset_clusters.svg",
+  "inputs": {
+    "reports/llama31_tefo_probe_transfer/validation_selected.csv": "006e5cf9c8bf2ac8022a9c027b0e9e82762ff0e0eaf25534b52a9a298eaf8ac5",
+    "reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250"
+  },
+  "git": {
+    "commit": "99cfb015cc3d9d9701bd49bec4ee4f57a68d516c",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/plot_probe_transfer.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "--targets",
+    "reports/llama31_tefo_probe_transfer/targets.csv",
+    "--out-dir",
+    "reports/llama31_tefo_probe_transfer"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
+    "out_dir": "reports/llama31_tefo_probe_transfer",
+    "extract": false
+  },
+  "counts": {
+    "n_in": 210,
+    "excluded": {},
+    "n_out": 210
+  },
+  "created_at": "2026-09-30T11:18:44+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_sweep": "synthetic_tefo_C_sweep"
+}

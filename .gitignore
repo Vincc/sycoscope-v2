@@ -5,4 +5,5 @@ __pycache__/
 activations/
 *.egg-info/
 .pytest_cache/
+.DS_Store
 !probes/**/*.probes.npz

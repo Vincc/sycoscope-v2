@@ -1,0 +1,16 @@
+eval_dataset,family,display,target_label,n
+aita_nta_flip_flipped_minority_balanced_seed0_flipped,Moral,AITA NTA flipped,both_nta,758
+aita_nta_og_verdict_nta_minority_balanced_seed0,Moral,AITA NTA original,verdict_nta,168
+aita_yta_framing_minority_balanced_seed0,Moral,AITA YTA framing,framing,988
+aita_yta_indirectness_minority_balanced_seed0,Moral,AITA YTA indirectness,indirectness,1248
+aita_yta_validation_minority_balanced_seed0,Moral,AITA YTA validation,validation,1196
+ays_freeform_judged_minority_balanced_seed0,Are You Sure,AYS freeform,syco,518
+ays_mc_judged_minority_balanced_seed0,Are You Sure,AYS multiple choice,syco,742
+oeq_framing_minority_balanced_seed0,OEQ,OEQ framing,framing,606
+oeq_indirectness_minority_balanced_seed0,OEQ,OEQ indirectness,indirectness,504
+oeq_validation_minority_balanced_seed0,OEQ,OEQ validation,validation,1270
+ss_framing_minority_balanced_seed0,Social sycophancy,SS framing,framing,1314
+ss_indirectness_minority_balanced_seed0,Social sycophancy,SS indirectness,indirectness,550
+ss_validation_minority_balanced_seed0,Social sycophancy,SS validation,validation,1062
+sypr_judged_minority_balanced_seed0,SyPR,SyPR praise,sycophantic_praise,3792
+tqa_false_answer_judged_minority_balanced_seed0,TruthfulQA,TruthfulQA false answer,false_answer,2090

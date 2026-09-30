@@ -1,0 +1,24 @@
+{
+  "output": "targets.csv",
+  "inputs": {
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/summary.json": "394ef887167e623b388a555d07786e42b5f8b8be1a7051814cf99e361242ec1f"
+  },
+  "git": {
+    "commit": "99cfb015cc3d9d9701bd49bec4ee4f57a68d516c",
+    "dirty": true
+  },
+  "argv": [
+    "-"
+  ],
+  "args": {
+    "source": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/summary.json",
+    "purpose": "explicit_balanced_target_and_family_labels"
+  },
+  "counts": {
+    "n_in": 15,
+    "excluded": {},
+    "n_out": 15
+  },
+  "created_at": "2026-09-30T11:13:53+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}
