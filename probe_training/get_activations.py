@@ -113,6 +113,9 @@ def main():
     ids = [r["id"] for r in all_rows]
     if len(set(ids)) != len(ids):
         raise ValueError(f"{args.input}: duplicate ids")
+    wrong_model = [r["id"] for r in all_rows if r["model"] != args.model]
+    if wrong_model:
+        raise ValueError(f"{args.input}: {len(wrong_model)} rows have a model other than {args.model}, e.g. {wrong_model[:3]}")
     selected_out = Counter()
     if args.aita_flipped_only:
         if any(r["benchmark"] != "elephant" or r["source"] != "AITA-NTA-FLIP" or
