@@ -7,3 +7,4 @@ activations/
 .pytest_cache/
 .DS_Store
 !probes/**/*.probes.npz
+external/
