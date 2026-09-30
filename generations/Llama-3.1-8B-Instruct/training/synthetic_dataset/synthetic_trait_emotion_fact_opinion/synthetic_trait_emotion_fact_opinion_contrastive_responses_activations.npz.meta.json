@@ -1,0 +1,76 @@
+{
+  "output": "synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl": "869587f4d6c7a8e57171ac42cf9b62357f49d9b0cc66cf7f9c513fa9f8c483b7"
+  },
+  "git": {
+    "commit": "3e17b69e2da72290a0f9de1240d4a892d38b39bb",
+    "dirty": false
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/get_activations.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "--layer-fracs",
+    "0.1",
+    "0.2",
+    "0.3",
+    "0.4",
+    "0.5",
+    "0.6",
+    "0.7",
+    "0.8",
+    "0.9",
+    "--max-length",
+    "4096",
+    "--batch-size",
+    "16"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "layers": null,
+    "layer_fracs": [
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "max_length": 4096,
+    "batch_size": 16
+  },
+  "counts": {
+    "n_in": 17920,
+    "excluded": {},
+    "n_out": 17920
+  },
+  "created_at": "2026-09-29T22:16:48+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_layers": 32,
+  "layers": [
+    3,
+    6,
+    10,
+    13,
+    16,
+    19,
+    22,
+    26,
+    29
+  ],
+  "layer_convention": "hidden_states[layer + 1]",
+  "positions": [
+    "last_prompt",
+    "first5",
+    "response"
+  ],
+  "dtype": "float32",
+  "skips": []
+}
