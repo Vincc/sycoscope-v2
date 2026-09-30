@@ -73,3 +73,13 @@ Tests: `tests/test_audit_layers.py`.
   (Fig. 1). Llama-3.1-8B curves are only in Fig. 8b (App. C.4, SIMPLE MATH), without numbers.
 - Persona Vectors "layer 16 for Llama": App. (p. 30) and Fig. 13, chosen by steering at each layer and taking the
   highest trait expression; the paper counts layers from 1. Verified.
+
+## Vennemeyer parity and pooling (user decision)
+
+On SIMPLE MATH (math_factorial, plain text) neither reconstructed pooling reproduces all three Fig. 8b curves:
+last-content-token pooling has SyA and GA within about 0.05 up to L20 but 0.05-0.09 higher late, and SyPr 0.1-0.2
+lower at L2-L10; whole-response mean (their `resp_all`, the Gemma default in `diffmean_analysis.py`) has SyPr within
+about 0.04 at L2-L28 but SyA and GA 0.05-0.11 lower at L20-L28. The diagnostic source is `data/audit/vennemeyer_diag/`
+(same rows and splits, extra `resp_all` span; the re-extracted last-content scores equal the main run exactly).
+The user chose to score both poolings on the benchmarks, each labelled, for the plain and chat variants
+(`probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_{plain,chat}_{last,respall}`). Layers are chosen on source val.

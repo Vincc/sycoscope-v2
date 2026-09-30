@@ -1,0 +1,55 @@
+{
+  "output": "syc.probes.npz",
+  "inputs": {
+    "activations/audit/pandey/directions/triviaqa_syc__faithful.npz": "8cd4ae4e33f58c0a293f4363e8ec22424fc76eb67f8b26a6e373766bb32e2088",
+    "reports/audit_existing_methods/source/triviaqa_syc__faithful.jsonl": "6606baf8e20fea8b981d2bb6013d1922e588cbe9f4a2ec282294fd85fa9e48e6"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/pandey/directions/triviaqa_syc__faithful.npz",
+    "--table",
+    "reports/audit_existing_methods/source/triviaqa_syc__faithful.jsonl",
+    "--name",
+    "pandey",
+    "--units",
+    "syc",
+    "--cell",
+    "Position-Verifiable / Explicit",
+    "--native-position",
+    "'assistant' header token (index n-3), TransformerLens pad bug, double BOS"
+  ],
+  "args": {
+    "directions": "activations/audit/pandey/directions/triviaqa_syc__faithful.npz",
+    "table": "reports/audit_existing_methods/source/triviaqa_syc__faithful.jsonl",
+    "name": "pandey",
+    "units": [
+      "syc"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "last_prompt",
+      "first5",
+      "response"
+    ],
+    "cell": "Position-Verifiable / Explicit",
+    "native_position": "'assistant' header token (index n-3), TransformerLens pad bug, double BOS",
+    "native_matches": null,
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_probes": 3
+  },
+  "created_at": "2026-09-30T22:38:54+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "pandey",
+  "cell": "Position-Verifiable / Explicit",
+  "native_position": "'assistant' header token (index n-3), TransformerLens pad bug, double BOS",
+  "native_matches_cached_position": null,
+  "source_repo": "https://github.com/MVPandey/shared-sycophancy-lying-circuit",
+  "source_commit": "c55356cf31e20f2cd5e1ff74dd0013929b49c96d"
+}

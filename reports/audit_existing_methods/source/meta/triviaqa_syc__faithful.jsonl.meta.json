@@ -1,0 +1,42 @@
+{
+  "output": "triviaqa_syc__faithful.jsonl",
+  "inputs": {
+    "activations/audit/pandey/triviaqa_syc.npz": "77ef9e799b6b2aa2bb5e4f50150b4ab3cb675f664a1635326a89b340382131ac"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/fit_directions.py",
+    "--activations",
+    "activations/audit/pandey/triviaqa_syc.npz",
+    "--pool",
+    "faithful",
+    "--select",
+    "27"
+  ],
+  "args": {
+    "activations": "activations/audit/pandey/triviaqa_syc.npz",
+    "pool": "faithful",
+    "select": "27",
+    "units": null
+  },
+  "counts": {
+    "n_in": 32,
+    "excluded": {},
+    "n_out": 32
+  },
+  "created_at": "2026-09-30T22:38:22+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "pandey",
+  "source_file": "data/audit/pandey/triviaqa_syc.jsonl",
+  "source_repo": "https://github.com/MVPandey/shared-sycophancy-lying-circuit",
+  "source_commit": "c55356cf31e20f2cd5e1ff74dd0013929b49c96d",
+  "selected_layers": {
+    "syc": 27
+  },
+  "units": [
+    "syc"
+  ]
+}

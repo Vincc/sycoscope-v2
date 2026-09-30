@@ -42,7 +42,7 @@ def test_packaged_sweep_scores_through_evaluate_probes(tmp_path, monkeypatch):
     directions = {"u__direction": d, "u__threshold": np.array([0.1, -0.2])}
     table = [{"unit": "u", "layer": L, "selected": L == 1, "select_rule": "val", "val_auroc": 0.9, "test_auroc": 0.8,
               "n_test": 40} for L in range(2)]
-    info = {"model": "org/fake-model", "audit_method": "fake", "cell": "c", "native_position": "response mean",
+    info = {"model": "org/fake-model", "audit_method": "fake", "cell": {"u": "c"}, "native_position": "response mean",
             "native_matches_cached_position": "response", "source_repo": "r", "source_commit": "abc"}
     probe_sets, manifest = package_directions.build_sweep(directions, table, ["u"], [], ["response"], info)
     sweep = tmp_path / "audit_fake"

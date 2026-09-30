@@ -1,0 +1,37 @@
+{
+  "output": "extract_rollouts.jsonl",
+  "inputs": {
+    "data/audit/persona/extract_prompts.jsonl": "c08d825f7208f5a65090af7c82d0ff83553bd48a310fbc480be91cfe457fc7af"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/generate_persona.py",
+    "--prompts",
+    "data/audit/persona/extract_prompts.jsonl",
+    "--batch-size",
+    "125",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "prompts": "data/audit/persona/extract_prompts.jsonl",
+    "batch_size": 125,
+    "seed": 0,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "max_new_tokens": 1000
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {},
+    "n_out": 2000
+  },
+  "created_at": "2026-09-30T22:48:33+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "n_truncated": 0,
+  "sampling_note": "HF generate (not vLLM); min_tokens=1 not enforced; responses stripped by utils.models.generate"
+}

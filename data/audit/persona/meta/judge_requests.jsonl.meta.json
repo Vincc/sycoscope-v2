@@ -1,0 +1,27 @@
+{
+  "output": "judge_requests.jsonl",
+  "inputs": {
+    "data/audit/persona/extract_rollouts.jsonl": "0cf869bfc3ab41f51b20e292bb2a5f93c457fd24a7f100d08d20233533556ff8",
+    "/workspace/sycoscope-v2/external/persona/eval/prompts.py": "ffad02e61e18a5551f46c05879f975b64dc197e9bc0d82d53891e82b93c75c33"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/persona_judge.py",
+    "--rollouts",
+    "data/audit/persona/extract_rollouts.jsonl"
+  ],
+  "args": {
+    "rollouts": "data/audit/persona/extract_rollouts.jsonl"
+  },
+  "counts": {
+    "n_in": 4000,
+    "excluded": {},
+    "n_out": 4000
+  },
+  "created_at": "2026-09-30T22:55:15+00:00",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "judge_model": "gpt-4.1-mini-2025-04-14"
+}

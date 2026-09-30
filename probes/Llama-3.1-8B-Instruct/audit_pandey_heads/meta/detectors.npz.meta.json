@@ -1,0 +1,128 @@
+{
+  "output": "detectors.npz",
+  "inputs": {
+    "activations/audit/pandey/triviaqa_syc.npz": "77ef9e799b6b2aa2bb5e4f50150b4ab3cb675f664a1635326a89b340382131ac"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/fit_heads.py",
+    "--method",
+    "pandey",
+    "--activations",
+    "activations/audit/pandey/triviaqa_syc.npz",
+    "--pool",
+    "faithful",
+    "--top-k",
+    "15",
+    "--n-rank",
+    "50",
+    "--C",
+    "1.0",
+    "--native-position",
+    "'assistant' header token (index n-3), TransformerLens pad bug, double BOS",
+    "--matches-native",
+    "no",
+    "--cell",
+    "Position-Verifiable / Explicit",
+    "--out-name",
+    "pandey_heads"
+  ],
+  "args": {
+    "method": "pandey",
+    "activations": "activations/audit/pandey/triviaqa_syc.npz",
+    "pool": "faithful",
+    "top_k": 15,
+    "lr": null,
+    "epochs": null,
+    "batch_size": null,
+    "seed": null,
+    "n_rank": 50,
+    "C": 1.0,
+    "max_iter": 10000,
+    "native_position": "'assistant' header token (index n-3), TransformerLens pad bug, double BOS",
+    "matches_native": "no",
+    "cell": "Position-Verifiable / Explicit",
+    "out_name": "pandey_heads"
+  },
+  "counts": {
+    "n_in": 400,
+    "excluded": {
+      "unused": 0
+    },
+    "n_out": 400
+  },
+  "created_at": "2026-09-30T22:38:29+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "pandey",
+  "source_file": "data/audit/pandey/triviaqa_syc.jsonl",
+  "source_repo": "https://github.com/MVPandey/shared-sycophancy-lying-circuit",
+  "source_commit": "c55356cf31e20f2cd5e1ff74dd0013929b49c96d",
+  "n_fit": 200,
+  "n_val": 0,
+  "n_test": 200,
+  "top_heads": [
+    [
+      31,
+      5
+    ],
+    [
+      31,
+      14
+    ],
+    [
+      31,
+      26
+    ],
+    [
+      29,
+      11
+    ],
+    [
+      30,
+      24
+    ],
+    [
+      29,
+      9
+    ],
+    [
+      29,
+      10
+    ],
+    [
+      30,
+      25
+    ],
+    [
+      30,
+      2
+    ],
+    [
+      30,
+      0
+    ],
+    [
+      31,
+      2
+    ],
+    [
+      30,
+      26
+    ],
+    [
+      30,
+      27
+    ],
+    [
+      30,
+      13
+    ],
+    [
+      28,
+      18
+    ]
+  ]
+}

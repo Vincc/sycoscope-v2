@@ -1,0 +1,63 @@
+{
+  "output": "ss_indirectness_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/ss_indirectness_minority_balanced_seed0_activations.npz": "5fd8b3bfef57ed9793399d21ac43aac0deb56d38c5721408b436ddfe51cc8bc0",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall/manifest.jsonl": "a1c1e922a4062cd76c1d4e6b98746a07d03947f56da4f9cc54c6fe5ca5587479",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/judging/ss_indirectness_minority_balanced_seed0_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+    "activations": "generations/Llama-3.1-8B-Instruct/judging/ss_indirectness_minority_balanced_seed0_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "framing": {
+      "n_in": 550,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 550
+    },
+    "indirectness": {
+      "n_in": 550,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 550
+    },
+    "validation": {
+      "n_in": 550,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 550
+    }
+  },
+  "created_at": "2026-09-30T23:11:58+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "5fd8b3bfef57ed9793399d21ac43aac0deb56d38c5721408b436ddfe51cc8bc0",
+  "labels": [
+    "framing",
+    "indirectness",
+    "validation"
+  ],
+  "n_probes": 9
+}

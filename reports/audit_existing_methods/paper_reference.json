@@ -1,0 +1,44 @@
+{
+  "caa": {
+    "paper": "Rimsky/Panickssery et al. 2024, Steering Llama 2 via Contrastive Activation Addition (arXiv 2312.06681)",
+    "model_in_paper": "Llama-2-7B/13B-Chat",
+    "llama31_number": null,
+    "statement": "Behavioural clustering (PCA) emerges about one-third of the way through the layers; suddenly at layer 10 for Llama 2 7B Chat (refusal example). Optimal steering layer 13 for 7B.",
+    "reference": "Sec. 3.2 and Fig. 2 (p. 4); Sec. 4.1 (p. 4-5)",
+    "comparison": "qualitative: layer where held-out separation emerges"
+  },
+  "vennemeyer": {
+    "paper": "Vennemeyer et al., Sycophancy Is Not One Thing (arXiv 2509.21305)",
+    "model_in_paper": "Llama-3.1-8B-Instruct (App. C.4, Fig. 8b); headline numbers are Qwen3-30B (Fig. 1)",
+    "reference": "App. C.4, Fig. 8b (p. 20), SIMPLE MATH; values read by eye from the figure at 400 dpi, about +-0.02; x axis is their layer index (L k = block k, L32 repeats block 31)",
+    "fig8b_read": {
+      "syc": {"2": 0.82, "5": 0.815, "8": 0.815, "10": 0.815, "12": 0.86, "15": 0.905, "20": 0.91, "25": 0.91, "28": 0.93, "30": 0.96, "31": 0.91},
+      "ga": {"2": 0.70, "5": 0.73, "8": 0.73, "10": 0.75, "12": 0.75, "15": 0.84, "20": 0.86, "25": 0.87, "28": 0.90, "30": 0.98, "31": 0.95},
+      "pr": {"2": 0.825, "5": 0.94, "8": 0.965, "10": 0.945, "12": 0.94, "15": 0.955, "20": 0.94, "25": 0.90, "28": 0.89, "30": 0.855, "31": 0.765}
+    },
+    "headline_qwen3_30b": "SyA vs GA AUROC > 0.97 by L20-30; SyPr separable by layer 8 (Sec. 4, Fig. 1, p. 4)",
+    "comparison": "our plain-text math test AUROC at the same layer indices; match if |diff| <= 0.05 at every listed layer"
+  },
+  "genadi": {
+    "paper": "Genadi et al. 2026, Sycophancy Hides Linearly in the Attention Heads (arXiv 2601.16644, EACL 2026)",
+    "model_in_paper": "Gemma-3-4B and Llama-3.2-3B; Llama-3.1-8B only in the repo's extension/ (no published numbers)",
+    "llama31_number": null,
+    "statement": "Sparse mid-layer heads reach high probe accuracy (Fig. 3, Gemma-3; Fig. 9 heatmaps, App.); Gemma-3 residual 99.6% at layer 15.",
+    "reference": "Sec. 4.1, Fig. 2-3 (p. 4); App. B Fig. 9-10; App. H Table 8 (p. 17)",
+    "comparison": "none possible for Llama-3.1-8B"
+  },
+  "pandey": {
+    "paper": "Pandey 2026, LLMs Know They're Wrong and Agree Anyway: The Shared Sycophancy-Lying Circuit (arXiv 2604.19117v3)",
+    "model_in_paper": "12 models incl. Llama-3.1-8B-Instruct",
+    "llama31_number": null,
+    "statement": "No within-sycophancy AUROC published. Probe transfer syc->lie is reported for Gemma-2-2B 0.83, Qwen3-8B 0.85, Mistral-7B 0.84, Qwen2.5-1.5B 0.61; Llama-3.1-8B not listed in Table 18.",
+    "reference": "Sec. 3.1-3.2 (p. 3-4); App. U, Table 18 (p. 24-25)",
+    "comparison": "none possible for Llama-3.1-8B"
+  },
+  "persona": {
+    "paper": "Chen et al. 2025, Persona Vectors (arXiv 2507.21509)",
+    "model_in_paper": "Qwen2.5-7B-Instruct and Llama-3.1-8B-Instruct",
+    "layer_16_for_llama": "verified: App. p. 30 and Fig. 13, chosen by steering at each layer; paper counts layers from 1 (block 15 here)",
+    "comparison": "held at the judge step"
+  }
+}

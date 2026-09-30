@@ -1,0 +1,69 @@
+{
+  "output": "ga.probes.npz",
+  "inputs": {
+    "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz": "b549cad5983b55bb47cb9e9eb15b6e1c1ed34070b2cb3cc8a242b975857b4397",
+    "reports/audit_existing_methods/source/math_factorial__chat__last_content.jsonl": "6f55061fea17ed47676cedfe786c1aabdbb2da99c51dd0467d7c03f68f1603ea"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz",
+    "--table",
+    "reports/audit_existing_methods/source/math_factorial__chat__last_content.jsonl",
+    "--name",
+    "vennemeyer_math_chat_last",
+    "--units",
+    "syc",
+    "ga",
+    "pr",
+    "--cell",
+    "syc=Position-Verifiable / Explicit",
+    "ga=Position-Verifiable / Explicit",
+    "pr=Person-Traits / Explicit",
+    "--native-position",
+    "last content token of the response (last token with an alphanumeric char)"
+  ],
+  "args": {
+    "directions": "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz",
+    "table": "reports/audit_existing_methods/source/math_factorial__chat__last_content.jsonl",
+    "name": "vennemeyer_math_chat_last",
+    "units": [
+      "syc",
+      "ga",
+      "pr"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "last_prompt",
+      "first5",
+      "response"
+    ],
+    "cell": [
+      "syc=Position-Verifiable / Explicit",
+      "ga=Position-Verifiable / Explicit",
+      "pr=Person-Traits / Explicit"
+    ],
+    "native_position": "last content token of the response (last token with an alphanumeric char)",
+    "native_matches": null,
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_probes": 3
+  },
+  "created_at": "2026-09-30T23:08:29+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "vennemeyer",
+  "cell": {
+    "syc": "Position-Verifiable / Explicit",
+    "ga": "Position-Verifiable / Explicit",
+    "pr": "Person-Traits / Explicit"
+  },
+  "native_position": "last content token of the response (last token with an alphanumeric char)",
+  "native_matches_cached_position": null,
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef"
+}

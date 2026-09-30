@@ -1,0 +1,46 @@
+{
+  "output": "sp_en_trans_pro_factorial__plain__last_content.jsonl",
+  "inputs": {
+    "activations/audit/vennemeyer/sp_en_trans_pro_factorial__plain.npz": "52bdd776b8ec58102477f5183482942986f9b4223f41bd9ee978d84003253adc"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/fit_directions.py",
+    "--activations",
+    "activations/audit/vennemeyer/sp_en_trans_pro_factorial__plain.npz",
+    "--pool",
+    "last_content",
+    "--select",
+    "val"
+  ],
+  "args": {
+    "activations": "activations/audit/vennemeyer/sp_en_trans_pro_factorial__plain.npz",
+    "pool": "last_content",
+    "select": "val",
+    "units": null
+  },
+  "counts": {
+    "n_in": 96,
+    "excluded": {},
+    "n_out": 96
+  },
+  "created_at": "2026-09-30T22:38:45+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "vennemeyer",
+  "source_file": "data/audit/vennemeyer/sp_en_trans_pro_factorial__plain.jsonl",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef",
+  "selected_layers": {
+    "ga": 6,
+    "pr": 28,
+    "syc": 7
+  },
+  "units": [
+    "ga",
+    "pr",
+    "syc"
+  ]
+}

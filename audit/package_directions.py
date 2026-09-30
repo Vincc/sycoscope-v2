@@ -39,7 +39,7 @@ def build_sweep(directions: dict, table: list[dict], units: list[str], extra_lay
                 probe_sets[unit][pid] = {"direction": d[L].astype(np.float64), "threshold": np.float64(thr[L])}
                 manifest.append({
                     "probe_id": pid, "file": f"{unit}.probes.npz", "probe_type": "audit", "method": "dim",
-                    "position": pos, "layer": L, "model": info["model"], "C": None, "cell": info["cell"],
+                    "position": pos, "layer": L, "model": info["model"], "C": None, "cell": info["cell"][unit],
                     "pair_type": "audit", "audit_method": info["audit_method"], "audit_unit": unit,
                     "layer_rule": rec["select_rule"] if L == selected[0] else "extra",
                     "native_position": info["native_position"],
@@ -64,14 +64,17 @@ def main():
     parser.add_argument("--units", nargs="+", required=True)
     parser.add_argument("--extra-layers", type=int, nargs="*", default=[])
     parser.add_argument("--positions", nargs="+", default=list(POSITIONS))
-    parser.add_argument("--cell", required=True, help="Ye et al. cell the detector was built on.")
+    parser.add_argument("--cell", nargs="+", required=True, help="<unit>=<Ye et al. cell the unit was built on>, one per unit.")
     parser.add_argument("--native-position", required=True, help="Where the method reads activations (text).")
     parser.add_argument("--native-matches", choices=list(POSITIONS), help="Cached position equal to the native one, if any.")
     parser.add_argument("--out-root", type=Path, default=REPO_ROOT / "probes")
     args = parser.parse_args()
 
     dmeta = read_json(meta_path(args.directions))
-    info = {"model": dmeta["model"], "audit_method": dmeta["method"], "cell": args.cell,
+    cells = dict(c.split("=", 1) for c in args.cell)
+    if sorted(cells) != sorted(args.units):
+        raise ValueError(f"--cell units {sorted(cells)} differ from --units {sorted(args.units)}")
+    info = {"model": dmeta["model"], "audit_method": dmeta["method"], "cell": cells,
             "native_position": args.native_position, "native_matches_cached_position": args.native_matches,
             "source_repo": dmeta["source_repo"], "source_commit": dmeta["source_commit"]}
     table = read_jsonl(args.table)

@@ -1,0 +1,138 @@
+{
+  "output": "detectors.npz",
+  "inputs": {
+    "activations/audit/genadi/truthfulqa_dialogues.npz": "77984ce33c3ca78b7d882d26d1cb6b0404f776e0c36abff1edd8387e177bcf22"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/fit_heads.py",
+    "--method",
+    "genadi",
+    "--activations",
+    "activations/audit/genadi/truthfulqa_dialogues.npz",
+    "--pool",
+    "answer_mean",
+    "--top-k",
+    "16",
+    "--lr",
+    "1e-3",
+    "--epochs",
+    "25",
+    "--batch-size",
+    "64",
+    "--seed",
+    "3407",
+    "--C",
+    "1.0",
+    "--native-position",
+    "answer_mean over the final assistant answer (extension/ answer slice incl. header newline)",
+    "--matches-native",
+    "approx",
+    "--cell",
+    "Position-Verifiable / Explicit",
+    "--out-name",
+    "genadi_heads"
+  ],
+  "args": {
+    "method": "genadi",
+    "activations": "activations/audit/genadi/truthfulqa_dialogues.npz",
+    "pool": "answer_mean",
+    "top_k": 16,
+    "lr": 0.001,
+    "epochs": 25,
+    "batch_size": 64,
+    "seed": 3407,
+    "n_rank": null,
+    "C": 1.0,
+    "max_iter": 10000,
+    "native_position": "answer_mean over the final assistant answer (extension/ answer slice incl. header newline)",
+    "matches_native": "approx",
+    "cell": "Position-Verifiable / Explicit",
+    "out_name": "genadi_heads"
+  },
+  "counts": {
+    "n_in": 6536,
+    "excluded": {
+      "unused": 0
+    },
+    "n_out": 6536
+  },
+  "created_at": "2026-09-30T22:52:27+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "genadi",
+  "source_file": "data/audit/genadi/truthfulqa_dialogues.jsonl",
+  "source_repo": "https://github.com/rifoagenadi/sycophancy",
+  "source_commit": "09d51c4474d9a43be0d22bebae37c9fadd38b699",
+  "n_fit": 3672,
+  "n_val": 1224,
+  "n_test": 1640,
+  "top_heads": [
+    [
+      12,
+      12
+    ],
+    [
+      12,
+      23
+    ],
+    [
+      12,
+      20
+    ],
+    [
+      12,
+      30
+    ],
+    [
+      16,
+      30
+    ],
+    [
+      14,
+      8
+    ],
+    [
+      10,
+      10
+    ],
+    [
+      9,
+      11
+    ],
+    [
+      11,
+      10
+    ],
+    [
+      12,
+      28
+    ],
+    [
+      10,
+      9
+    ],
+    [
+      10,
+      11
+    ],
+    [
+      16,
+      14
+    ],
+    [
+      16,
+      29
+    ],
+    [
+      31,
+      25
+    ],
+    [
+      9,
+      10
+    ]
+  ]
+}

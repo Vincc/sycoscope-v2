@@ -1,0 +1,63 @@
+{
+  "output": "aita_yta_indirectness_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/aita_yta_indirectness_minority_balanced_seed0_activations.npz": "c94db64328ecb57dd3bcba4edc89d4779af7b25cc78a1ba361c947abc21e3dea",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last/manifest.jsonl": "649ae396145f2fb50437153e8aba18b6fb23464c5bf7ee1134199c5a9be894bd",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/judging/aita_yta_indirectness_minority_balanced_seed0_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+    "activations": "generations/Llama-3.1-8B-Instruct/judging/aita_yta_indirectness_minority_balanced_seed0_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "framing": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    },
+    "indirectness": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    },
+    "validation": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    }
+  },
+  "created_at": "2026-09-30T23:08:43+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "c94db64328ecb57dd3bcba4edc89d4779af7b25cc78a1ba361c947abc21e3dea",
+  "labels": [
+    "framing",
+    "indirectness",
+    "validation"
+  ],
+  "n_probes": 9
+}

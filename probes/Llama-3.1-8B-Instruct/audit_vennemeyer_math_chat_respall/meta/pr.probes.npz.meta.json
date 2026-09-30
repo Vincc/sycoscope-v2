@@ -1,0 +1,71 @@
+{
+  "output": "pr.probes.npz",
+  "inputs": {
+    "activations/audit/vennemeyer_diag/directions/math_factorial__chat__resp_all.npz": "22767f19c10784035deeb1c1ecf6e28c82d899c73a5197370c3a7040b4116938",
+    "reports/audit_existing_methods/source/math_factorial__chat__resp_all.jsonl": "c7afd82c87b19b628b16332d5c4c57353b88f230ccf5e88c2fabf42e30a5ffe6"
+  },
+  "git": {
+    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/vennemeyer_diag/directions/math_factorial__chat__resp_all.npz",
+    "--table",
+    "reports/audit_existing_methods/source/math_factorial__chat__resp_all.jsonl",
+    "--name",
+    "vennemeyer_math_chat_respall",
+    "--units",
+    "syc",
+    "ga",
+    "pr",
+    "--cell",
+    "syc=Position-Verifiable / Explicit",
+    "ga=Position-Verifiable / Explicit",
+    "pr=Person-Traits / Explicit",
+    "--native-position",
+    "mean over response tokens (resp_all)",
+    "--native-matches",
+    "response"
+  ],
+  "args": {
+    "directions": "activations/audit/vennemeyer_diag/directions/math_factorial__chat__resp_all.npz",
+    "table": "reports/audit_existing_methods/source/math_factorial__chat__resp_all.jsonl",
+    "name": "vennemeyer_math_chat_respall",
+    "units": [
+      "syc",
+      "ga",
+      "pr"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "last_prompt",
+      "first5",
+      "response"
+    ],
+    "cell": [
+      "syc=Position-Verifiable / Explicit",
+      "ga=Position-Verifiable / Explicit",
+      "pr=Person-Traits / Explicit"
+    ],
+    "native_position": "mean over response tokens (resp_all)",
+    "native_matches": "response",
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_probes": 3
+  },
+  "created_at": "2026-09-30T23:08:29+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "vennemeyer_diag",
+  "cell": {
+    "syc": "Position-Verifiable / Explicit",
+    "ga": "Position-Verifiable / Explicit",
+    "pr": "Person-Traits / Explicit"
+  },
+  "native_position": "mean over response tokens (resp_all)",
+  "native_matches_cached_position": "response",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef"
+}
