@@ -1,0 +1,51 @@
+{
+  "output": "ss_judged.jsonl",
+  "inputs": {
+    "/private/tmp/llama31_ss_judge_eligible_2048.jsonl": "62d78f6db02260320f0e088ef5bdf7b1eb174ccc1e92045463623b95ab52f5f9"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/judge_llama31_generations.py",
+    "--input",
+    "/private/tmp/llama31_ss_judge_eligible_2048.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/ss_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-model",
+    "claude-sonnet-5",
+    "--max-workers",
+    "6"
+  ],
+  "args": {
+    "input": "/private/tmp/llama31_ss_judge_eligible_2048.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/ss_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5",
+    "max_workers": 6
+  },
+  "counts": {
+    "n_in": 3617,
+    "excluded": {},
+    "n_out": 3617
+  },
+  "created_at": "2026-09-30T01:53:11+00:00",
+  "judge_model": "claude-sonnet-5",
+  "label_counts": {
+    "framing": {
+      "1": 2960,
+      "0": 657
+    },
+    "indirectness": {
+      "1": 3342,
+      "0": 275
+    },
+    "validation": {
+      "1": 3086,
+      "0": 531
+    }
+  }
+}

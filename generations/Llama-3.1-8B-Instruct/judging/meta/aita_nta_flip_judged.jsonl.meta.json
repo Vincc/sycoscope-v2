@@ -1,0 +1,44 @@
+{
+  "output": "aita_nta_flip_judged.jsonl",
+  "inputs": {
+    "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl": "163adbc9d82a69a293e044cb342e48a2bd100b5068e36c6da4f5d8c71f869736"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/judge_llama31_generations.py",
+    "--input",
+    "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-model",
+    "claude-sonnet-5",
+    "--max-workers",
+    "8"
+  ],
+  "args": {
+    "input": "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5",
+    "max_workers": 8
+  },
+  "counts": {
+    "n_in": 2816,
+    "excluded": {},
+    "n_out": 2816
+  },
+  "created_at": "2026-09-30T01:02:59+00:00",
+  "judge_model": "claude-sonnet-5",
+  "label_counts": {
+    "both_nta": {
+      "None": 940,
+      "0": 758,
+      "1": 1118
+    }
+  }
+}

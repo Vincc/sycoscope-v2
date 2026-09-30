@@ -1,0 +1,44 @@
+{
+  "output": "tqa_false_answer_judged_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "/private/tmp/llama31_tqa_judged.jsonl": "e8f93f3012d8077e1d3985d8572f56570c8b88c78566c94fea559c82ab2c4e52"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/sample_judged.py",
+    "--input",
+    "/private/tmp/llama31_tqa_judged.jsonl",
+    "--output",
+    "/private/tmp/tqa_false_answer_judged_minority_balanced_seed0.jsonl",
+    "--label",
+    "false_answer",
+    "--strategy",
+    "match_minority",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "input": "/private/tmp/llama31_tqa_judged.jsonl",
+    "output": "/private/tmp/tqa_false_answer_judged_minority_balanced_seed0.jsonl",
+    "label": "false_answer",
+    "strategy": "match_minority",
+    "n": null,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 3311,
+    "excluded": {
+      "label_none": 0,
+      "not_sampled": 1221
+    },
+    "n_out": 2090
+  },
+  "created_at": "2026-09-30T00:23:13+00:00",
+  "label_counts": {
+    "0": 1045,
+    "1": 1045
+  }
+}

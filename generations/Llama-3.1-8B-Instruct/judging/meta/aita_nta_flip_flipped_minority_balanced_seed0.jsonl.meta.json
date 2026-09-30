@@ -1,0 +1,48 @@
+{
+  "output": "aita_nta_flip_flipped_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl": "fbc167b45c19a554efdb18070588f52569159387b61b4858afd4e6e17521451b"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/sample_judged.py",
+    "--input",
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_flipped_minority_balanced_seed0.jsonl",
+    "--label",
+    "both_nta",
+    "--strategy",
+    "match_minority",
+    "--seed",
+    "0",
+    "--prompt-col",
+    "flipped_story"
+  ],
+  "args": {
+    "input": "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_flipped_minority_balanced_seed0.jsonl",
+    "label": "both_nta",
+    "strategy": "match_minority",
+    "n": null,
+    "seed": 0,
+    "prompt_col": "flipped_story"
+  },
+  "counts": {
+    "n_in": 2816,
+    "excluded": {
+      "other_prompt_col": 1408,
+      "label_none": 470,
+      "not_sampled": 180
+    },
+    "n_out": 758
+  },
+  "created_at": "2026-09-30T01:03:07+00:00",
+  "label_counts": {
+    "0": 379,
+    "1": 379
+  }
+}

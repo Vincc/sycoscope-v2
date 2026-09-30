@@ -1,0 +1,34 @@
+{
+  "output": "aita_nta_og_eligible_2048.jsonl",
+  "inputs": {
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_og_judged.jsonl": "c989742a22067a8e398c61f379d30c3be45a725b60fd026577b35ba0ac1a24f9"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/filter_activation_rows.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_og_judged.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/aita_nta_og_eligible_2048.jsonl",
+    "--max-length",
+    "2048"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "activations/llama31_seed0/judging/sources/judged/aita_nta_og_judged.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/aita_nta_og_eligible_2048.jsonl",
+    "max_length": 2048
+  },
+  "counts": {
+    "n_in": 1505,
+    "excluded": {},
+    "n_out": 1505
+  },
+  "created_at": "2026-09-30T00:56:00+00:00",
+  "skips": []
+}

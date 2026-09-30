@@ -1,0 +1,46 @@
+{
+  "output": "ss_validation_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "activations/llama31_seed0/judging/sources/judged/ss_judged.jsonl": "9ff3c3a7a1b58e1d49a77384d58937862cad60e4125c803137881852a68b8945"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/sample_judged.py",
+    "--input",
+    "activations/llama31_seed0/judging/sources/judged/ss_judged.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/ss_validation_minority_balanced_seed0.jsonl",
+    "--label",
+    "validation",
+    "--strategy",
+    "match_minority",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "input": "activations/llama31_seed0/judging/sources/judged/ss_judged.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/ss_validation_minority_balanced_seed0.jsonl",
+    "label": "validation",
+    "strategy": "match_minority",
+    "n": null,
+    "seed": 0,
+    "prompt_col": null
+  },
+  "counts": {
+    "n_in": 3617,
+    "excluded": {
+      "other_prompt_col": 0,
+      "label_none": 0,
+      "not_sampled": 2555
+    },
+    "n_out": 1062
+  },
+  "created_at": "2026-09-30T01:53:21+00:00",
+  "label_counts": {
+    "0": 531,
+    "1": 531
+  }
+}

@@ -175,14 +175,21 @@ def extract(model, tokenizer, prepared: list[dict], layers: list[int], batch_siz
                             pooled_dir / f"{act_key(p, L)}.npy", mode="w+", dtype=np.float32, shape=(n, hidden)
                         ) for p in POSITIONS for L in layers}
                 for L in layers:
-                    block = hs[L + 1].float().cpu().numpy()  # final hidden state includes the model's final norm
+                    block = hs[L + 1]  # final hidden state includes the model's final norm
                     for r, i in enumerate(idxs):
+                        spans = prepared[i]["spans"]
+                        copy_start = min(s for s, _ in spans.values())
+                        copy_end = max(e for _, e in spans.values())
                         if archive is not None:
                             s, e = raw_token_span(prepared[i], raw_scope)
+                            copy_start = min(copy_start, s)
+                            copy_end = max(copy_end, e)
+                        selected = block[r, copy_start:copy_end].float().cpu().numpy()
+                        if archive is not None:
                             raw_row = len(shard_ids) - len(idxs) + r
-                            zip_array(archive, f"row{raw_row:04d}_L{L:02d}", block[r, s:e])
-                        for pos, (s, e) in prepared[i]["spans"].items():
-                            out[act_key(pos, L)][i] = block[r, s:e].mean(axis=0)  # pooled in float32
+                            zip_array(archive, f"row{raw_row:04d}_L{L:02d}", selected[s - copy_start:e - copy_start])
+                        for pos, (s, e) in spans.items():
+                            out[act_key(pos, L)][i] = selected[s - copy_start:e - copy_start].mean(axis=0)
                 print(f"  {min(b + batch_size, n)}/{n}", flush=True)
                 if archive is not None and ((batch_number + 1) % 32 == 0 or b + batch_size >= n):
                     zip_array(archive, "id", np.array(shard_ids))

@@ -1,0 +1,57 @@
+{
+  "output": "aita_yta_eligible_2048.jsonl",
+  "inputs": {
+    "activations/llama31_seed0/judging/sources/judged/aita_yta_judged.jsonl": "bc143e522cd123710261f2470e11ef4eae5b36faa3d5ab8c1edebcda98862b8e"
+  },
+  "git": {
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/filter_activation_rows.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "activations/llama31_seed0/judging/sources/judged/aita_yta_judged.jsonl",
+    "--output",
+    "activations/llama31_seed0/judging/sources/judged/aita_yta_eligible_2048.jsonl",
+    "--max-length",
+    "2048"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "activations/llama31_seed0/judging/sources/judged/aita_yta_judged.jsonl",
+    "output": "activations/llama31_seed0/judging/sources/judged/aita_yta_eligible_2048.jsonl",
+    "max_length": 2048
+  },
+  "counts": {
+    "n_in": 1871,
+    "excluded": {
+      "too_long": 4
+    },
+    "n_out": 1867
+  },
+  "created_at": "2026-09-30T01:13:43+00:00",
+  "skips": [
+    {
+      "id": "elephant__AITA-YTA__prompt__865",
+      "reason": "too_long",
+      "n_tokens": 2155
+    },
+    {
+      "id": "elephant__AITA-YTA__prompt__979",
+      "reason": "too_long",
+      "n_tokens": 2566
+    },
+    {
+      "id": "elephant__AITA-YTA__prompt__2142",
+      "reason": "too_long",
+      "n_tokens": 2078
+    },
+    {
+      "id": "elephant__AITA-YTA__prompt__1470",
+      "reason": "too_long",
+      "n_tokens": 2164
+    }
+  ]
+}

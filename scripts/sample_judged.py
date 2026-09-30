@@ -51,19 +51,22 @@ def main():
     parser.add_argument("--strategy", choices=("balanced", "minority_class", "match_minority"), required=True)
     parser.add_argument("--n", type=int)
     parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--prompt-col", help="Restrict paired inputs to one response side before balancing.")
     args = parser.parse_args()
 
     if args.output.exists():
         raise FileExistsError(args.output)
-    rows = read_jsonl(args.input)
-    ids = [r["id"] for r in rows]
+    all_rows = read_jsonl(args.input)
+    ids = [r["id"] for r in all_rows]
     if len(ids) != len(set(ids)):
         raise ValueError(f"{args.input}: duplicate ids")
+    rows = [r for r in all_rows if r["prompt_col"] == args.prompt_col] if args.prompt_col else all_rows
     chosen = sample_indices(rows, args.label, args.strategy, args.n, args.seed)
     sampled = [rows[i] for i in chosen]
     n_none = sum(r["labels"][args.label] is None for r in rows)
-    excluded = Counter({"label_none": n_none, "not_sampled": len(rows) - n_none - len(sampled)})
-    counts = check_counts(len(rows), excluded, len(sampled), args.input.name)
+    excluded = Counter({"other_prompt_col": len(all_rows) - len(rows), "label_none": n_none,
+                        "not_sampled": len(rows) - n_none - len(sampled)})
+    counts = check_counts(len(all_rows), excluded, len(sampled), args.input.name)
     write_jsonl(args.output, sampled)
     label_counts = Counter(r["labels"][args.label] for r in sampled)
     write_meta(args.output, [args.input], args, counts,
