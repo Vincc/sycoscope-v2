@@ -4,27 +4,31 @@
     "generations/Meta-Llama-3.1-8B-Instruct/judging/are_you_sure/are_you_sure_freeform/checkpoint.metadata.json": "51b196057addb966a91fd23f239fa525812b20fdcfd960c88bbd38f1f1a19e79"
   },
   "git": {
-    "commit": "3e17b69e2da72290a0f9de1240d4a892d38b39bb",
+    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
     "dirty": true
   },
   "argv": [
-    "/private/tmp/sycoscope_checkpoint_publish/scripts/validate_checkpoint_bundle.py",
+    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/validate_checkpoint_bundle.py",
     "--root",
     "generations/Meta-Llama-3.1-8B-Instruct/judging",
     "--model-slug",
-    "meta-llama/llama-3.1-8b-instruct"
+    "meta-llama/llama-3.1-8b-instruct",
+    "--exclude",
+    "are_you_sure/are_you_sure_mcq_pending"
   ],
   "args": {
     "root": "generations/Meta-Llama-3.1-8B-Instruct/judging",
     "model_slug": "meta-llama/llama-3.1-8b-instruct",
-    "exclude": []
+    "exclude": [
+      "are_you_sure/are_you_sure_mcq_pending"
+    ]
   },
   "counts": {
     "n_in": 1817,
     "excluded": {},
     "n_out": 1817
   },
-  "created_at": "2026-09-29T21:44:45+00:00",
+  "created_at": "2026-09-29T21:30:35+00:00",
   "model": "meta-llama/llama-3.1-8b-instruct",
   "artifact_sha256": "e266df2a247c992201978a86441922e4cb88e3f4033cddc318bb173b3528edba",
   "source": {
