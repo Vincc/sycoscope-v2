@@ -1,0 +1,17 @@
+{
+  "environment": {
+    "GPU": "NVIDIA A100-SXM4-80GB",
+    "GPU memory": "81920 MiB",
+    "NVIDIA driver": "580.173.02",
+    "CUDA (driver)": "13.0",
+    "torch": "2.12.1+cu130 (CUDA 13.0)",
+    "transformers": "5.13.0",
+    "numpy": "2.5.1",
+    "scikit-learn": "1.9.0",
+    "Python": "3.13.15",
+    "datasets (source build only)": "5.0.1",
+    "Instance": "vast.ai, /workspace not a volume",
+    "Model": "meta-llama/Llama-3.1-8B-Instruct, bfloat16"
+  },
+  "persona_judge_calls": 4000
+}

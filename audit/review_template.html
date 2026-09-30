@@ -1,0 +1,160 @@
+<title>Sycophancy detector audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column for prose; tables and the heatmap break out to full width inside their own scrollers. */
+:root {
+  --bg: #f7f7f4; --surface: #fcfcfb; --ink: #16181d; --ink-2: #4d5058; --muted: #858891; --rule: #dedfd9;
+  --accent: #2a5bd7; --ok: #0c7a3e; --warn: #b4550f; --held: #6b5bb8;
+  --div-lo: #e34948; --div-mid: #f0efec; --div-hi: #2a78d6;
+  --display: "IBM Plex Serif", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111214; --surface: #1a1a19; --ink: #eceae4; --ink-2: #b8b6ad; --muted: #8b8980; --rule: #2e2f31;
+  --accent: #7ea2ff; --ok: #4cc27f; --warn: #f09a55; --held: #a99bf0;
+  --div-lo: #e66767; --div-mid: #383835; --div-hi: #3987e5; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111214; --surface: #1a1a19; --ink: #eceae4; --ink-2: #b8b6ad; --muted: #8b8980; --rule: #2e2f31;
+  --accent: #7ea2ff; --ok: #4cc27f; --warn: #f09a55; --held: #a99bf0;
+  --div-lo: #e66767; --div-mid: #383835; --div-hi: #3987e5; color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 32px 64px; }
+header.top { display: grid; gap: 6px; border-bottom: 1px solid var(--rule); padding-block-end: 20px; }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 600 clamp(28px, 4vw, 40px)/1.1 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 600 22px/1.25 var(--display); margin: 44px 0 12px; text-wrap: balance; }
+h2 .n { font: 500 13px var(--mono); color: var(--muted); margin-right: 10px; }
+h3 { font: 600 15px/1.3 var(--body); margin: 24px 0 8px; }
+p, li { max-width: 72ch; }
+.note { color: var(--ink-2); font-size: 13.5px; }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11.5px/1.3 var(--mono); color: var(--ink-2); letter-spacing: .02em; background: var(--surface); position: sticky; top: 0; }
+table.num td { font-variant-numeric: tabular-nums; }
+.ci { color: var(--muted); font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+.pill { display: inline-block; font: 500 11.5px/1.2 var(--mono); padding: 3px 7px; border-radius: 99px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.held { color: var(--held); } .pill.muted { color: var(--muted); border-color: var(--rule); white-space: normal; }
+.bad { color: var(--warn); font-weight: 600; }
+ul.compact li { margin: 2px 0; }
+dl.env { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; font-size: 13px; }
+dl.env dt { font-family: var(--mono); color: var(--muted); } dl.env dd { margin: 0; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 12px 0; font-size: 13px; }
+.controls label { display: flex; gap: 6px; align-items: center; color: var(--ink-2); }
+select { font: inherit; padding: 4px 6px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); color: var(--ink); }
+select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.legend { display: flex; align-items: center; gap: 8px; font: 12px var(--mono); color: var(--ink-2); }
+.legend .bar { width: 180px; height: 10px; border-radius: 2px; }
+.heat { border-collapse: separate; border-spacing: 2px; font-size: 12px; width: max-content; }
+.heat th, .heat td { border: 0; padding: 0; }
+.heat thead th { vertical-align: bottom; height: 150px; font: 500 11px/1.2 var(--body); color: var(--ink-2); }
+.heat thead th .vl { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; padding: 4px 0; }
+.heat thead th.cellgroup { height: auto; font: 500 10.5px var(--mono); text-align: center; color: var(--muted); border-bottom: 1px solid var(--rule); padding-bottom: 3px; }
+.heat td.lbl { font-size: 12px; color: var(--ink); padding-right: 10px; white-space: nowrap; max-width: 520px; overflow: hidden; text-overflow: ellipsis; }
+.heat tr.ref td.lbl { font-weight: 600; }
+.heat tr.ref td.lbl::before { content: "REF "; font: 500 10.5px var(--mono); color: var(--muted); }
+.heat td.nat { font: 12px var(--mono); color: var(--muted); text-align: center; padding: 0 6px; }
+.heat td.c { width: 50px; height: 24px; text-align: center; font: 11px/24px var(--mono); border-radius: 2px; cursor: default; }
+.heat td.c:hover { outline: 2px solid var(--ink); }
+.heat td.gap { width: 6px; }
+#tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgb(0 0 0 / .15); max-width: 340px; z-index: 5; }
+#tip b { font-family: var(--mono); }
+ul.choices { padding-left: 0; list-style: none; display: grid; gap: 6px; }
+ul.choices li { max-width: none; font-size: 13.5px; }
+.tag { font: 500 10.5px/1 var(--mono); padding: 3px 6px; border-radius: 3px; border: 1px solid var(--rule); color: var(--ink-2); white-space: nowrap; }
+.tag-from-paper { color: var(--held); border-color: currentColor; } .tag-from-code { color: var(--accent); border-color: currentColor; } .tag-our-choice { color: var(--warn); border-color: currentColor; }
+img.png { border: 1px solid var(--rule); border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">audit/existing-methods · Llama-3.1-8B-Instruct</span>
+  <h1>Sycophancy detector audit</h1>
+  <p class="note">Published white-box sycophancy detectors, reproduced on their own source data and scored on this repo's balanced judged benchmarks, next to the committed contrastive probes. Numbers are generated from the CSV files in <code>reports/audit_existing_methods/</code>. Interpretation is left to the reader.</p>
+</header>
+
+<h2><span class="n">1</span>Summary</h2>
+<!--SUMMARY-->
+
+<h2><span class="n">2</span>Parity on source data</h2>
+<p class="note">Held-out AUROC of each detector on its own source data with a 95% stratified bootstrap CI (1,000 resamples, seed 0). A paper comparison is possible only where the paper reports Llama-3.1-8B.</p>
+<!--PARITY-->
+
+<h2><span class="n">3</span>Coverage on the benchmarks</h2>
+<p class="note">AUROC for each benchmark's target label. Columns are grouped by taxonomy cell (* marks a cell we inferred). Hover a cell for its 95% CI. Native column: ✓ scored at the method's own read position, ≈ approximately, ✗ not. Reference rows use the committed <code>synthetic_tefo_C_sweep</code> probes (re-scored, not re-fit; AUROC checked equal to the committed eval files).</p>
+<div class="controls">
+  <label for="fpos">Position <select id="fpos"><option value="">all</option><option>last_prompt</option><option>first5</option><option>response</option><option>answer_mean</option></select></label>
+  <label for="fmethod">Method <select id="fmethod"><option value="">all</option><option>caa</option><option>vennemeyer</option><option>pandey</option><option>genadi</option></select></label>
+  <span class="legend" aria-hidden="true">0.30 <span class="bar" id="lbar"></span> 0.95 <span>· 0.50 = chance</span></span>
+</div>
+<div class="scroll"><table class="heat" id="heat"></table></div>
+<div id="tip" hidden></div>
+<h3>Static figure</h3>
+<p class="note"><code>reports/audit_existing_methods/coverage_heatmap.png</code> has the same values in the style of <code>scripts/plot_probe_transfer.py</code>.</p>
+
+<h2><span class="n">4</span>Controls and length confound</h2>
+<h3>Held-out control pairs</h3>
+<p class="note">AUROC separating the two sides of each control pair on held-out TEFO rows (128 prompts per pair). A detector that tracks only sycophancy should sit near 0.5.</p>
+<!--CONTROLS-->
+<h3>Length confound</h3>
+<!--LENGTH-->
+
+<h2><span class="n">5</span>Design choices, assumptions and inferences</h2>
+<!--CHOICES-->
+
+<h2><span class="n">6</span>Regression evidence</h2>
+<!--REGRESSION-->
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+function colorFor(v) {
+  const lo = hex(css('--div-lo')), mid = hex(css('--div-mid')), hi = hex(css('--div-hi'));
+  let a, b, t;
+  if (v >= 0.5) { a = mid; b = hi; t = Math.min(1, (v - 0.5) / 0.45); } else { a = mid; b = lo; t = Math.min(1, (0.5 - v) / 0.2); }
+  const c = a.map((x, i) => Math.round(x + (b[i] - x) * t));
+  return { bg: `rgb(${c})`, strong: t > 0.55 };
+}
+function build() {
+  const pos = document.getElementById('fpos').value, meth = document.getElementById('fmethod').value;
+  const rows = DATA.rows.filter(r => r.role !== 'detector' || ((!pos || r.position === pos) && (!meth || r.method === meth)));
+  const groups = [];
+  DATA.benches.forEach((b, j) => { if (!groups.length || groups[groups.length - 1].cell !== b.cell) groups.push({ cell: b.cell, n: 0 }); groups[groups.length - 1].n++; });
+  let h = '<thead><tr><th></th><th></th>' + groups.map(g => `<th class="cellgroup" colspan="${g.n}">${g.cell}</th><th class="gap"></th>`).join('') + '</tr>';
+  h += '<tr><th scope="col">Detector</th><th scope="col">Native</th>';
+  let prev = null;
+  DATA.benches.forEach(b => { if (prev && prev !== b.cell) h += '<th class="gap"></th>'; prev = b.cell;
+    h += `<th scope="col"><div class="vl">${b.display}${b.inferred ? '*' : ''} · ${b.label}</div></th>`; });
+  h += '<th class="gap"></th></tr></thead><tbody>';
+  const nat = { yes: '✓', approx: '≈', no: '✗' };
+  rows.forEach((r, i) => {
+    h += `<tr class="${r.role === 'detector' ? '' : 'ref'}"><td class="lbl" title="${r.label}">${r.label}</td><td class="nat">${nat[r.native]}</td>`;
+    let pc = null;
+    r.cells.forEach((c, j) => { const b = DATA.benches[j]; if (pc && pc !== b.cell) h += '<td class="gap"></td>'; pc = b.cell;
+      const col = colorFor(c[0]);
+      h += `<td class="c" data-r="${DATA.rows.indexOf(r)}" data-j="${j}" style="background:${col.bg};color:${col.strong ? '#fff' : 'var(--ink)'}">${c[0].toFixed(2)}</td>`; });
+    h += '<td class="gap"></td></tr>';
+  });
+  document.getElementById('heat').innerHTML = h + '</tbody>';
+  document.getElementById('lbar').style.background = `linear-gradient(90deg, ${colorFor(0.3).bg}, ${colorFor(0.5).bg}, ${colorFor(0.95).bg})`;
+}
+const tip = document.getElementById('tip');
+document.getElementById('heat').addEventListener('mousemove', e => {
+  const td = e.target.closest('td.c'); if (!td) { tip.hidden = true; return; }
+  const r = DATA.rows[+td.dataset.r], b = DATA.benches[+td.dataset.j], c = r.cells[+td.dataset.j];
+  tip.innerHTML = `<div>${r.label}</div><div>${b.display} · ${b.cell}${b.inferred ? ' (inferred)' : ''} · label ${b.label} · n=${b.n}</div>` +
+    `<div>AUROC <b>${c[0].toFixed(3)}</b> [${c[1].toFixed(3)}, ${c[2].toFixed(3)}]</div>` + (r.role !== 'detector' ? `<div>pair: ${c[3]}</div>` : `<div>built on ${r.built_on}</div>`);
+  tip.hidden = false;
+  const x = Math.min(e.clientX + 14, innerWidth - 360), y = Math.min(e.clientY + 14, innerHeight - 120);
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+});
+document.getElementById('heat').addEventListener('mouseleave', () => { tip.hidden = true; });
+['fpos', 'fmethod'].forEach(id => document.getElementById(id).addEventListener('change', build));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', build);
+new MutationObserver(build).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+build();
+</script>

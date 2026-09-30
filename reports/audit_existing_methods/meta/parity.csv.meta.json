@@ -1,0 +1,32 @@
+{
+  "output": "parity.csv",
+  "inputs": {
+    "reports/audit_existing_methods/paper_reference.json": "e66d404c308f6a3b18618bd443066362451e402abc2ac10130e13fc6c32ca16e"
+  },
+  "git": {
+    "commit": "1f8ac2dfe5b7d67d63b2870fccc04471c63cf66b",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/parity.py",
+    "--out-dir",
+    "reports/audit_existing_methods",
+    "--n-boot",
+    "1000",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "out_dir": "reports/audit_existing_methods",
+    "n_boot": 1000,
+    "seed": 0,
+    "tolerance": 0.05
+  },
+  "counts": {
+    "n_in": 21,
+    "excluded": {},
+    "n_out": 21
+  },
+  "created_at": "2026-09-30T23:38:06+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

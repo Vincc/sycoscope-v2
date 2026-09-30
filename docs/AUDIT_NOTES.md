@@ -83,3 +83,12 @@ about 0.04 at L2-L28 but SyA and GA 0.05-0.11 lower at L20-L28. The diagnostic s
 (same rows and splits, extra `resp_all` span; the re-extracted last-content scores equal the main run exactly).
 The user chose to score both poolings on the benchmarks, each labelled, for the plain and chat variants
 (`probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_{plain,chat}_{last,respall}`). Layers are chosen on source val.
+
+## Stages and outputs
+
+`build_source` -> `extract_source` (GPU) -> `fit_directions` / `fit_heads` -> `package_directions` ->
+unchanged `probe_training.evaluate_probes` (residual) / `evaluate_heads` (heads, on `get_head_activations` caches) ->
+`analyze` (coverage, controls, length) and `parity` -> `write_review`. Persona: `generate_persona` (GPU) ->
+`extract_source --cache all` -> `persona_judge` (raises NotImplementedError). Results and the review are in
+`reports/audit_existing_methods/`. Activations (git-ignored) are under `activations/audit/`; the control-row
+activations are next to their JSONL under `generations/Llama-3.1-8B-Instruct/training/`.

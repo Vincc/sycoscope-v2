@@ -27,3 +27,12 @@ def test_terciles_partition_rows_and_bootstrap_brackets_point():
 
     assert lo <= probes.auroc(y, s) <= hi
     assert analyze.bootstrap_ci(y, s, 200, 0) == (lo, hi)
+
+
+def test_fast_auroc_equals_sklearn_with_ties():
+    from utils import probes
+
+    rng = np.random.default_rng(1)
+    s = np.round(rng.normal(size=200), 1)  # many ties
+    y = (rng.random(200) < 0.4).astype(int)
+    assert np.isclose(analyze.fast_auroc(s[y == 1], s[y == 0]), probes.auroc(y, s), atol=1e-12)

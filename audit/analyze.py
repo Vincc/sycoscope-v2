@@ -53,15 +53,20 @@ def write_csv(path: Path, rows: list[dict]) -> None:
         w.writerows(rows)
 
 
+def fast_auroc(pos_scores: np.ndarray, neg_scores: np.ndarray) -> float:
+    """Mann-Whitney AUROC: P(pos > neg) + 0.5 P(pos == neg); equals sklearn's roc_auc_score."""
+    neg = np.sort(neg_scores)
+    below = np.searchsorted(neg, pos_scores, side="left")
+    ties = np.searchsorted(neg, pos_scores, side="right") - below
+    return float((below + 0.5 * ties).sum() / (len(pos_scores) * len(neg)))
+
+
 def bootstrap_ci(y: np.ndarray, s: np.ndarray, n_boot: int, seed: int) -> tuple[float, float]:
     rng = np.random.default_rng(seed)
-    pos, neg = np.flatnonzero(y == 1), np.flatnonzero(y == 0)
+    pos, neg = s[y == 1], s[y == 0]
     if len(pos) == 0 or len(neg) == 0:
         raise ValueError("bootstrap needs both classes")
-    stats = []
-    for _ in range(n_boot):
-        idx = np.concatenate([rng.choice(pos, len(pos)), rng.choice(neg, len(neg))])
-        stats.append(probes.auroc(y[idx], s[idx]))
+    stats = [fast_auroc(rng.choice(pos, len(pos)), rng.choice(neg, len(neg))) for _ in range(n_boot)]
     lo, hi = np.percentile(stats, [2.5, 97.5])
     return float(lo), float(hi)
 
@@ -215,13 +220,17 @@ def main():
                                     **{f"t{k + 1}_{f}": terc[k][f] for k in range(3) for f in ("n", "n_pos", "max_tokens", "auroc")}})
         print(f"{stem}: {len(dets) + 3} rows", flush=True)
 
-    control_rows = controls(args, dets, refs)
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    for name, rows in (("coverage.csv", coverage), ("length_confound.csv", length_rows), ("controls.csv", control_rows)):
-        write_csv(args.out_dir / name, rows)
-        write_meta(args.out_dir / name, [args.targets, args.selected], args, check_counts(len(rows), {}, len(rows), name),
-                   {"model": "meta-llama/Llama-3.1-8B-Instruct", "n_boot": args.n_boot, "seed": args.seed})
+    save(args, "coverage.csv", coverage)
+    save(args, "length_confound.csv", length_rows)
     heatmap(args, coverage, targets)
+    save(args, "controls.csv", controls(args, dets, refs))
+
+
+def save(args, name: str, rows: list[dict]) -> None:
+    write_csv(args.out_dir / name, rows)
+    write_meta(args.out_dir / name, [args.targets, args.selected], args, check_counts(len(rows), {}, len(rows), name),
+               {"model": "meta-llama/Llama-3.1-8B-Instruct", "n_boot": args.n_boot, "seed": args.seed})
 
 
 def controls(args, dets, refs) -> list[dict]:
