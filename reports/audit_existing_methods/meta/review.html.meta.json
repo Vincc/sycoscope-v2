@@ -1,0 +1,32 @@
+{
+  "output": "review.html",
+  "inputs": {
+    "reports/audit_existing_methods/coverage.csv": "87f68cc08c45d5abce1797e9ef33d7ed3efc1f3cdfacb6ebdfb681d44ad69143",
+    "reports/audit_existing_methods/parity.csv": "276781a325901af508c363e417f902643a02f1dfadc4e5b69a2fe41ba76631ad",
+    "reports/audit_existing_methods/vennemeyer_fig8b.csv": "7c07852bde78f426dea322b5ef0d8227298cc40dbaf56eb6a8e75f46f46362e2",
+    "reports/audit_existing_methods/controls.csv": "9efac5ee3dbd2558cf31edda8efdbd55ed3983ac38a8ce6ff044a92a6d9eb81e",
+    "reports/audit_existing_methods/length_confound.csv": "e316be7778656adff701bdd66d34ac0faa679d6a1c93779cfa36bfb95140d0e5",
+    "reports/audit_existing_methods/design_choices.jsonl": "93a721111add4116998ee0fe7931d22b9d27ec207fcd26a4841b472e23a33de3",
+    "reports/audit_existing_methods/environment.json": "2837c442ecb81ce42b0db9fb3dca9ea25a79d817598c90fb55a8769895f306aa",
+    "reports/audit_existing_methods/regression.json": "aa40e989fb41f605cbabfcf6a00ff23b0a757cb3782b48c40c5e54521dcb854f"
+  },
+  "git": {
+    "commit": "b4d20ddb5005f9b6803875a67b733303bd31fcac",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/write_review.py",
+    "--dir",
+    "reports/audit_existing_methods"
+  ],
+  "args": {
+    "dir": "reports/audit_existing_methods"
+  },
+  "counts": {
+    "n_in": 765,
+    "excluded": {},
+    "n_out": 765
+  },
+  "created_at": "2026-09-30T23:44:07+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

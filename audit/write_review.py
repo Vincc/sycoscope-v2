@@ -10,7 +10,7 @@ import html
 import json
 from pathlib import Path
 
-from audit.analyze import CELLS, read_csv
+from audit.analyze import CELLS, read_csv, short_label
 from utils.io import check_counts, read_json, read_jsonl, write_meta
 
 NOT_IN_TASK = [
@@ -31,17 +31,16 @@ REF_NAMES = {"universal": "Contrastive universal (P00)", "matched_cell": "Contra
 
 
 def fnum(x, d=3):
-    return "" if x in (None, "", "None") else f"{float(x):.{d}f}"
+    if x in (None, "", "None"):
+        return ""
+    try:
+        return f"{float(x):.{d}f}"
+    except ValueError:
+        return str(x)
 
 
 def detector_label(r: dict) -> str:
-    if r["role"] != "detector":
-        return REF_NAMES[r["role"]]
-    layer = r["layer"]
-    layer = f"L{layer}" if not layer.startswith("[") else f"heads L{layer.strip('[]').replace(' ', '')}"
-    ours = " [our addition]" if r["our_addition"] == "True" else ""
-    variant = r["variant"].removeprefix("audit_").replace("_", " ")
-    return f"{r['audit_method']} · {r['unit']} · {variant} · {layer} · {r['position']}{ours}"
+    return short_label(r).removeprefix("REF ") if r["role"] == "detector" else REF_NAMES[r["role"]]
 
 
 def row_key(r: dict) -> str:
@@ -110,9 +109,9 @@ def main():
     cc = {(r["detector"], int(r["control_pair"])): r for r in controls}
     cdets = list(dict.fromkeys(r["detector"] for r in controls))
     cfirst = {r["detector"]: r for r in controls}
+    clabel = {k: detector_label(first[k]) if k in first else f"REF {cfirst[k]['unit']}" for k in cdets}
     md.append(md_table(["Detector", "Layer", "Position"] + [f"P{p:02d} {c}" for p, c in cpairs],
-                       [[f"{cfirst[k]['audit_method']} · {cfirst[k]['unit']} · {cfirst[k]['variant'].removeprefix('audit_')}",
-                         cfirst[k]["layer"], cfirst[k]["position"]] +
+                       [[clabel[k], cfirst[k]["layer"], cfirst[k]["position"]] +
                         [f"{fnum(cc[(k, p)]['auroc'], 2)} [{fnum(cc[(k, p)]['ci_lo'], 2)}, {fnum(cc[(k, p)]['ci_hi'], 2)}]" for p, _ in cpairs]
                         for k in cdets]))
     md.append("\nLength confound, summarised per detector over the 15 benchmarks (full rows in `length_confound.csv`): "
@@ -132,14 +131,14 @@ def main():
 
     # ---- HTML ----
     data = {"benches": [{"id": b[0], "display": b[1], "cell": b[2], "inferred": b[3] == "inferred", "label": b[4], "n": int(b[5])} for b in benches],
-            "rows": [{"key": k, "label": detector_label(first[k]), "role": first[k]["role"], "method": first[k]["audit_method"],
+            "rows": [{"key": k, "label": detector_label(first[k]), "role": first[k]["role"], "method": first[k]["audit_method"].removesuffix("_diag"),
                       "position": first[k]["position"], "native": first[k]["matches_native"], "built_on": first[k]["built_on"],
                       "cells": [[round(float(cov[(k, b[0])]["auroc"]), 4), round(float(cov[(k, b[0])]["ci_lo"]), 4),
                                  round(float(cov[(k, b[0])]["ci_hi"]), 4), cov[(k, b[0])]["unit"]] for b in benches]} for k in keys]}
     template = (Path(__file__).parent / "review_template.html").read_text(encoding="utf-8")
     page = template.replace("/*DATA*/null", json.dumps(data))
     page = page.replace("<!--SUMMARY-->", html_summary(env)).replace("<!--PARITY-->", html_parity(parity, fig8b))
-    page = page.replace("<!--CONTROLS-->", html_controls(controls, cpairs, cdets, cfirst, cc))
+    page = page.replace("<!--CONTROLS-->", html_controls(controls, cpairs, cdets, cfirst, cc, clabel))
     page = page.replace("<!--LENGTH-->", html_length(length)).replace("<!--CHOICES-->", html_choices(choices))
     page = page.replace("<!--REGRESSION-->", "<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in reg["lines"]) + "</ul>")
     (d / "review.html").write_text(page, encoding="utf-8")
@@ -187,11 +186,11 @@ def html_parity(parity, fig8b) -> str:
     return t + "<h3>Vennemeyer, SIMPLE MATH, plain text, by layer</h3><p class='note'>Fig. 8b values read by eye (about ±0.02). Differences above 0.05 are marked.</p>" + f
 
 
-def html_controls(controls, cpairs, cdets, cfirst, cc) -> str:
+def html_controls(controls, cpairs, cdets, cfirst, cc, clabel) -> str:
     rows = []
     for k in cdets:
         r = cfirst[k]
-        rows.append([esc(f"{r['audit_method']} · {r['unit']} · {r['variant'].removeprefix('audit_')}"), esc(r["layer"]), esc(r["position"])] +
+        rows.append([esc(clabel[k]), esc(r["layer"]), esc(r["position"])] +
                     [f"{fnum(cc[(k, p)]['auroc'], 2)} <span class='ci'>[{fnum(cc[(k, p)]['ci_lo'], 2)}, {fnum(cc[(k, p)]['ci_hi'], 2)}]</span>" for p, _ in cpairs])
     return html_table(["Detector", "Layer", "Position"] + [f"P{p:02d} {c}" for p, c in cpairs], rows, "num")
 
@@ -201,7 +200,7 @@ def length_summary(length):
 
     by = {}
     for r in length:
-        name = f"{r['audit_method']} · {r['unit']} · {r['variant'].removeprefix('audit_')} · L{r['layer']} · {r['position']} ({r['role']})"
+        name = short_label(r) if r["role"] == "detector" else f"REF {r['unit']} ({r['role'].replace('_', ' ')})"
         by.setdefault(name, []).append(r)
     out = []
     for name, rs in by.items():
@@ -228,7 +227,7 @@ def html_length(length) -> str:
                    [[esc(s["name"]), fnum(s["med_rho"], 2), f"{fnum(s['max_rho'], 2)} <span class='ci'>{esc(s['max_rho_b'])}</span>",
                      fnum(s["med_range"], 2), f"{fnum(s['max_range'], 2)} <span class='ci'>{esc(s['max_range_b'])}</span>"] for s in summ], "num")
     lr = html_table(["Benchmark", "n", "ρ(label, length)"], [[esc(b), esc(n), fnum(v, 2)] for b, n, v in label_rho], "num")
-    full = [[esc(f"{r['audit_method']} · {r['unit']} · {r['variant'].removeprefix('audit_')} · L{r['layer']} · {r['position']}"), esc(r["role"]),
+    full = [[esc(short_label(r) if r["role"] == "detector" else f"REF {r['unit']}"), esc(r["role"]),
              esc(r["display"]), esc(r["n"]), fnum(r["spearman_score_vs_n_response_tokens"], 2),
              fnum(r["t1_auroc"], 2), fnum(r["t2_auroc"], 2), fnum(r["t3_auroc"], 2)] for r in length]
     ft = html_table(["Detector", "Role", "Benchmark", "n", "ρ(score, length)", "AUROC T1 (short)", "T2", "T3 (long)"], full, "num")

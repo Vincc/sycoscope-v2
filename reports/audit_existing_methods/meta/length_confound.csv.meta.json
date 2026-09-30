@@ -1,0 +1,71 @@
+{
+  "output": "length_confound.csv",
+  "inputs": {
+    "reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250",
+    "reports/llama31_tefo_probe_transfer/validation_selected.csv": "006e5cf9c8bf2ac8022a9c027b0e9e82762ff0e0eaf25534b52a9a298eaf8ac5"
+  },
+  "git": {
+    "commit": "b4d20ddb5005f9b6803875a67b733303bd31fcac",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/analyze.py",
+    "--audit-sweeps",
+    "probes/Llama-3.1-8B-Instruct/audit_caa",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey",
+    "--head-dirs",
+    "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=answer_mean",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=last_prompt",
+    "--reference-sweep",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "--selected",
+    "reports/llama31_tefo_probe_transfer/validation_selected.csv",
+    "--targets",
+    "reports/llama31_tefo_probe_transfer/targets.csv",
+    "--controls-cache",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
+    "--controls-heads",
+    "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
+    "--n-boot",
+    "1000",
+    "--seed",
+    "0",
+    "--out-dir",
+    "reports/audit_existing_methods"
+  ],
+  "args": {
+    "audit_sweeps": [
+      "probes/Llama-3.1-8B-Instruct/audit_caa",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey"
+    ],
+    "head_dirs": [
+      "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=answer_mean",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=last_prompt"
+    ],
+    "reference_sweep": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "selected": "reports/llama31_tefo_probe_transfer/validation_selected.csv",
+    "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
+    "controls_cache": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
+    "controls_heads": "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
+    "n_boot": 1000,
+    "seed": 0,
+    "out_dir": "reports/audit_existing_methods"
+  },
+  "counts": {
+    "n_in": 750,
+    "excluded": {},
+    "n_out": 750
+  },
+  "created_at": "2026-09-30T23:41:02+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_boot": 1000,
+  "seed": 0
+}

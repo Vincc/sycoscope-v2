@@ -64,7 +64,7 @@ def main():
         y, s = residual_heldout(ACT / "caa" / "generate_dataset.npz", "letter", "caa", m["layer"])
         table = read_jsonl(SOURCE / "generate_dataset__letter.jsonl")
         emerge = next(r["layer"] for r in table if r["test_auroc"] >= 0.9)
-        add("CAA", "caa", f"layer rule {m['layer_rule']}", m["layer"], y, s, None, paper["caa"]["reference"],
+        add("CAA", "caa", {"extra": "recipe layer (paper's 7B steering layer)", "val": "val-selected layer"}[m["layer_rule"]], m["layer"], y, s, None, paper["caa"]["reference"],
             f"qualitative: held-out AUROC first >= 0.9 at L{emerge}; paper: behavioural clustering emerges ~1/3 depth (L10, Llama-2-7B)")
 
     # Vennemeyer math: both poolings, plain and chat; paper comparison for plain only
@@ -84,7 +84,7 @@ def main():
                     worst = max(diffs, key=lambda k: abs(diffs[k]))
                     verdict = ("match" if abs(diffs[worst]) <= args.tolerance else "mismatch") + \
                         f" (max |diff| {abs(diffs[worst]):.2f} at L{worst})"
-                    pv = fig[unit].get(str(sel))
+                    pv = "see by-layer table"
                     for k, v in fig[unit].items():
                         fig_rows.append({"pool": pool, "unit": unit, "layer": int(k), "paper_fig8b": v,
                                          "ours_test_auroc": by_layer[int(k)], "diff": by_layer[int(k)] - v})

@@ -166,7 +166,11 @@ def main():
     parser.add_argument("--n-boot", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--replot", action="store_true", help="Only redraw the heatmap from an existing coverage.csv.")
     args = parser.parse_args()
+    if args.replot:
+        heatmap(args, read_csv(args.out_dir / "coverage.csv"), read_csv(args.targets))
+        return
 
     targets = read_csv(args.targets)
     selected = read_csv(args.selected)
@@ -269,6 +273,28 @@ def controls(args, dets, refs) -> list[dict]:
     return rows
 
 
+def short_label(r: dict) -> str:
+    """Row label: method, unit, variant, layer, scored position, native mark."""
+    if r["role"] != "detector":
+        return {"universal": "REF universal P00", "matched_cell": "REF matched-cell pair",
+                "max_taxonomy_posthoc": "REF max over taxonomy pairs (post hoc)"}[r["role"]]
+    method = r["audit_method"].removesuffix("_diag")
+    variant = r["variant"].removeprefix("audit_").removeprefix(method).removeprefix("_").replace("_", " ")
+    variant = "" if variant in ("", "heads") else f" · {variant}"
+    layer = str(r["layer"])
+    if layer.startswith("["):
+        layers = layer.strip("[]").split(",")
+        layer = f"heads L{layers[0].strip()}" if len(layers) == 1 else f"heads in {len(layers)} layers"
+    else:
+        layer = f"L{layer}" + (" recipe" if r["layer_rule"] == "extra" else "")
+    nat = {"yes": "native", "approx": "≈native", "no": "non-native"}[r["matches_native"]]
+    tag = " [ours]" if str(r["our_addition"]) == "True" else ""
+    unit = "" if r["unit"] == method else " " + {"syc": "SyA", "ga": "GA", "pr": "SyPr"}.get(r["unit"], r["unit"])
+    if method == "pandey" and r["unit"] == "syc":
+        unit = " residual"
+    return f"{method}{unit}{variant} · {layer} · {r['position']} ({nat}){tag}"
+
+
 def heatmap(args, coverage: list[dict], targets: list[dict]) -> None:
     import matplotlib
 
@@ -280,24 +306,14 @@ def heatmap(args, coverage: list[dict], targets: list[dict]) -> None:
     cols = sorted(targets, key=lambda t: (CELLS.index(benchmark_cell(t["eval_dataset"])[0]), t["family"], t["display"]))
     row_keys = list(dict.fromkeys((r["role"], r["detector"] if r["role"] == "detector" else r["role"]) for r in coverage))
     lookup = {((r["role"], r["detector"] if r["role"] == "detector" else r["role"]), r["benchmark"]): r for r in coverage}
-    M = np.array([[lookup[(k, c["eval_dataset"])]["auroc"] for c in cols] for k in row_keys])
-    labels = []
-    for k in row_keys:
-        r = lookup[(k, cols[0]["eval_dataset"])]
-        if k[0] == "detector":
-            layer = r["layer"] if not isinstance(r["layer"], list) else f"{len(r['layer'])} layers"
-            tag = " [ours]" if r["our_addition"] else ""
-            nat = {"yes": "native", "approx": "≈native", "no": "non-native"}[r["matches_native"]]
-            labels.append(f"{r['audit_method']} {r['unit']} {r['variant'].removeprefix('audit_')} L{layer} {r['position']} ({nat}){tag}")
-        else:
-            labels.append({"universal": "REF universal P00", "matched_cell": "REF matched-cell pair",
-                           "max_taxonomy_posthoc": "REF max over taxonomy pairs (post hoc)"}[k[0]])
-    fig, ax = plt.subplots(figsize=(18, 0.32 * len(row_keys) + 4))
+    M = np.array([[float(lookup[(k, c["eval_dataset"])]["auroc"]) for c in cols] for k in row_keys])
+    labels = [short_label(lookup[(k, cols[0]["eval_dataset"])]) for k in row_keys]
+    fig, ax = plt.subplots(figsize=(19, 0.32 * len(row_keys) + 4))
     im = ax.imshow(M, aspect="auto", cmap="RdBu", norm=norm)
     for i in range(M.shape[0]):
         for j in range(M.shape[1]):
             ax.text(j, i, f"{M[i, j]:.2f}", ha="center", va="center", fontsize=6.5,
-                    color="white" if abs(M[i, j] - 0.5) > 0.3 else "#172033")
+                    color="white" if M[i, j] > 0.8 or M[i, j] < 0.36 else "#172033")
     ax.set_yticks(range(len(labels)), labels, fontsize=7.5)
     ax.set_xticks(range(len(cols)), [f"{c['display']}\n{benchmark_cell(c['eval_dataset'])[0]}" for c in cols],
                   rotation=60, ha="right", fontsize=7.5)
