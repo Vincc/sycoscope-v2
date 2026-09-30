@@ -225,6 +225,51 @@ def plot_eval_clusters(args, targets, rows):
     save_figure(fig, "03_evaluation_dataset_clusters", args, [args.out_dir / "validation_selected.csv", args.targets], len(rows))
 
 
+def plot_sypr_focus(args, rows):
+    sypr = [r for r in rows if r["eval_dataset"] == "sypr_judged_minority_balanced_seed0"]
+    if len(sypr) != 14 or any(r["target_label"] != "sycophantic_praise" or int(r["n"]) != 3792 for r in sypr):
+        raise ValueError("SyPR validation-selected rows are incomplete")
+    sypr.sort(key=lambda r: float(r["auroc"]), reverse=True)
+    colors = []
+    for r in sypr:
+        pair = int(r["pair_index"])
+        colors.append("#7c3aed" if pair in (5, 6) else "#d97706" if pair == 9 else "#64748b")
+    fig, axes = plt.subplots(1, 2, figsize=(16, 8), sharey=True)
+    fig.subplots_adjust(left=0.29, right=0.96, bottom=0.16, top=0.79, wspace=0.10)
+    y = np.arange(len(sypr))
+    labels = [f"P{int(r['pair_index']):02d}  {r['cell']}" for r in sypr]
+    for ax, field, title, limit in (
+        (axes[0], "auroc", "Ranking: AUROC", (0.24, 0.83)),
+        (axes[1], "balanced_accuracy", "Decision at score 0: balanced accuracy", (0.44, 0.66)),
+    ):
+        values = [float(r[field]) for r in sypr]
+        ax.axvline(0.5, color="#475569", linestyle="--", linewidth=1)
+        for i, (value, color) in enumerate(zip(values, colors)):
+            ax.plot([0.5, value], [i, i], color=color, linewidth=2.1, alpha=0.72)
+            ax.scatter(value, i, color=color, s=48, zorder=3)
+            ax.annotate(f"{value:.3f}", (value, i), xytext=(5 if value >= 0.5 else -5, 0),
+                        textcoords="offset points", va="center", ha="left" if value >= 0.5 else "right", fontsize=8.5)
+        ax.set_xlim(*limit)
+        ax.set_ylim(len(sypr) - 0.5, -0.5)
+        ax.set_title(title, fontsize=12, fontweight="bold", pad=12)
+        ax.set_xlabel("Score; dashed line is chance")
+        ax.grid(axis="x", color="#e2e8f0")
+        ax.spines[["top", "right", "left"]].set_visible(False)
+    axes[0].set_yticks(y, labels, fontsize=9)
+    axes[0].tick_params(axis="y", length=0)
+    axes[1].tick_params(axis="y", length=0)
+    fig.suptitle("SyPR: warranted praise versus person-traits probes", fontsize=18, fontweight="bold", y=0.96)
+    fig.text(0.5, 0.895, "3,792 balanced examples; one probe per system prompt cell selected on synthetic validation AUROC.",
+             ha="center", fontsize=10)
+    fig.legend(handles=[Patch(facecolor="#7c3aed", label="Person-traits sycophancy"),
+                        Patch(facecolor="#d97706", label="Warranted-praise control"),
+                        Patch(facecolor="#64748b", label="Other cells")],
+               loc="lower center", bbox_to_anchor=(0.5, 0.06), ncol=3, frameon=False, fontsize=9)
+    fig.text(0.5, 0.025, "P09 contrasts praise only when merited with no compliments; P05/P06 target inflated praise or deference.",
+             ha="center", fontsize=9, color="#475569")
+    save_figure(fig, "04_sypr_praise_vs_traits", args, [args.out_dir / "validation_selected.csv", args.targets], len(sypr))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sweep-dir", type=Path, required=True)
@@ -248,7 +293,8 @@ def main():
     plot_system_prompt_clusters(args, targets, val_rows)
     plot_best_probes(args, best_rows)
     plot_eval_clusters(args, targets, val_rows)
-    print(f"Wrote 3 PNG and 3 SVG figures to {args.out_dir}")
+    plot_sypr_focus(args, val_rows)
+    print(f"Wrote 4 PNG and 4 SVG figures to {args.out_dir}")
 
 
 if __name__ == "__main__":
