@@ -1,7 +1,7 @@
 {
   "output": "old_main_contrastive_responses_activations.npz",
   "inputs": {
-    "C:/Users/chang/OneDrive/Documents/Code/sycoscope-v2/generations/Meta-Llama-3-8B-Instruct/training/old_main_contrastive_responses.jsonl": "619e68fa49c0323cf0b58b0c1e055beb33fc903eefaf5ab3f60b4f50358e98a0"
+    "C:/Users/chang/OneDrive/Documents/Code/sycoscope-v2/generations/Meta-Llama-3-8B-Instruct/training/model_written_evals/perez_user_prompts/old_main_contrastive_responses.jsonl": "619e68fa49c0323cf0b58b0c1e055beb33fc903eefaf5ab3f60b4f50358e98a0"
   },
   "git": {
     "commit": "489c31891cd82e1fc6e58df36eafc2b68aec8e15",

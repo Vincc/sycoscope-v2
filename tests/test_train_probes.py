@@ -36,6 +36,8 @@ def run(tmp_path, monkeypatch, npz, *extra):
     argv = ["train_probes", "--activations", str(npz), "--sweep", "s", "--methods", "logistic", "dim",
             "--positions", "response", "--layers", "1", "--C", "0.1", "1", "--max-iter", "1000",
             "--test-frac", "0.25", "--seed", "0", *extra]
+    if "--val-frac" not in extra:
+        argv += ["--val-frac", "0"]
     monkeypatch.setattr(sys, "argv", argv)
     train_probes.main()
     return tmp_path / "probes" / "fake-model" / "s"
@@ -58,12 +60,28 @@ def test_pairs_never_split_and_manifest_matches_probes(tmp_path, monkeypatch):
             assert f"{m['probe_id']}__direction" in z
 
 
+def test_val_split_is_disjoint_and_reported(tmp_path, monkeypatch):
+    npz = tmp_path / "x_activations.npz"
+    fake_activations(npz)
+    out = run(tmp_path, monkeypatch, npz, "--cells", "all", "--val-frac", "0.25")
+
+    split = read_json(out / "split.json")
+    train, val, test = set(split["train"]), set(split["val"]), set(split["test"])
+    assert len(val) == len(test) == 5 and len(train) == 10
+    assert not (train & val or train & test or val & test)
+    assert len(split["train_ids"]) == 2 * 2 * len(train) and len(split["val_ids"]) == 2 * 2 * len(val)
+    for m in read_jsonl(out / "manifest.jsonl"):
+        assert m["n_train"] == 2 * len(train) and m["n_val"] == 2 * len(val) and m["n_test"] == 2 * len(test)
+        assert m["val_auroc"] is not None and m["n_val_pairs"] == len(val)
+
+
 def test_prompt_missing_a_partner_is_dropped(tmp_path, monkeypatch):
     npz = tmp_path / "x_activations.npz"
     fake_activations(npz, drop_id="pair00__neg__p03")
     out = run(tmp_path, monkeypatch, npz, "--cells", "0")
     manifest = read_jsonl(out / "manifest.jsonl")
     assert {m["n_train"] + m["n_test"] for m in manifest} == {2 * 19}
+    assert all(m["n_val"] == 0 and m["val_auroc"] is None for m in manifest)
 
 
 def test_complete_pairs():

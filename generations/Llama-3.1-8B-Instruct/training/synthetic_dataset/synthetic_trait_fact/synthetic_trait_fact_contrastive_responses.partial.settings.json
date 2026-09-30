@@ -1,0 +1,12 @@
+{
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "input": "data/training/synthetic_dataset/splits/synthetic_trait_fact.jsonl",
+  "system_prompts": "data/training/sycophancy_probe_prompt_pairs.json",
+  "max_new_tokens": 1024,
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "seed": 0,
+  "batch_size": null,
+  "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+  "provider": null
+}
