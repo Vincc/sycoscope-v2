@@ -1,0 +1,38 @@
+{
+  "output": "cities_pos_factorial__plain.jsonl",
+  "inputs": {
+    "/workspace/sycoscope-v2/external/vennemeyer/data/factorial/cities_pos_factorial.json": "655e64d88e5bddaa0a040d13cc01e4e33ac244c45f89be16ebf5b7fe5020bf28"
+  },
+  "git": {
+    "commit": "47b422471ab227b94f8ffbbc43065e911248ed8c",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/build_source.py",
+    "--method",
+    "vennemeyer"
+  ],
+  "args": {
+    "method": "vennemeyer",
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 3904,
+    "excluded": {},
+    "n_out": 3904
+  },
+  "created_at": "2026-09-30T22:16:49+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef",
+  "source_dirty": false,
+  "n_items": 3904,
+  "variant": "plain",
+  "split_counts": {
+    "fit": 2810,
+    "unused": 389,
+    "val": 313,
+    "test": 392
+  }
+}

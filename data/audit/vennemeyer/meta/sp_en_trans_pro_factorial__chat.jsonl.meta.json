@@ -1,0 +1,38 @@
+{
+  "output": "sp_en_trans_pro_factorial__chat.jsonl",
+  "inputs": {
+    "/workspace/sycoscope-v2/external/vennemeyer/data/factorial/sp_en_trans_pro_factorial.json": "568cb4d4ed513cd30984e19aa96003a9e43afd67d4d145bc1f07cc1f92c9c2e1"
+  },
+  "git": {
+    "commit": "47b422471ab227b94f8ffbbc43065e911248ed8c",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/build_source.py",
+    "--method",
+    "vennemeyer"
+  ],
+  "args": {
+    "method": "vennemeyer",
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 1880,
+    "excluded": {},
+    "n_out": 1880
+  },
+  "created_at": "2026-09-30T22:16:50+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef",
+  "source_dirty": false,
+  "n_items": 1880,
+  "variant": "chat",
+  "split_counts": {
+    "unused": 186,
+    "fit": 1353,
+    "test": 190,
+    "val": 151
+  }
+}

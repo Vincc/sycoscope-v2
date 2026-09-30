@@ -1,0 +1,40 @@
+{
+  "output": "truthfulqa_dialogues.jsonl",
+  "inputs": {},
+  "git": {
+    "commit": "47b422471ab227b94f8ffbbc43065e911248ed8c",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/build_source.py",
+    "--method",
+    "genadi"
+  ],
+  "args": {
+    "method": "genadi",
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 6536,
+    "excluded": {},
+    "n_out": 6536
+  },
+  "created_at": "2026-09-30T22:17:20+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/rifoagenadi/sycophancy",
+  "source_commit": "09d51c4474d9a43be0d22bebae37c9fadd38b699",
+  "source_dirty": false,
+  "hf_dataset": "truthfulqa/truthful_qa:generation/validation",
+  "hf_fingerprint": "1a4ea2bcc4cae110",
+  "datasets_version": "5.0.1",
+  "n_questions": {
+    "train": 612,
+    "test": 205
+  },
+  "split_counts": {
+    "fit": 3672,
+    "val": 1224,
+    "test": 1640
+  }
+}
