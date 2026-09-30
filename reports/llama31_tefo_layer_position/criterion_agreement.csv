@@ -1,0 +1,3 @@
+level,spearman_rho,best_by_val,best_by_val_ood_auroc,best_by_val_val_auroc,n_tied_at_max_val,best_by_ood,best_by_ood_ood_auroc,best_by_ood_val_auroc
+setting x position x layer (189),0.030693219559986697,C=0.0001 last_prompt 6,0.5078371237943904,1.0,118,C=0.0001 response 13,0.6073806080107157,0.9992327008928571
+position x layer (27),-0.15209924789003845,last_prompt 6,0.5069934437045329,1.0,7,response 13,0.5976637299685404,0.9985227000956632

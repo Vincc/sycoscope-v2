@@ -1,0 +1,64 @@
+{
+  "output": "02_strong_band_method.png",
+  "inputs": {
+    "reports/llama31_tefo_cross_position/strong_probes/split_auroc.csv": "29b5abfc75290e8637647ec8ecb4f82ef57fba1fc2d67f28107ab09102e270c7"
+  },
+  "git": {
+    "commit": "86443810d694503306992c4343fa684bac578058",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/probe_analysis/cross_position/strong_probes.py",
+    "--in-dir",
+    "reports/llama31_tefo_cross_position/strong_probes",
+    "--thresholds",
+    "0.7",
+    "0.75",
+    "--bands",
+    "early=3,6,10",
+    "mid=13,16,19",
+    "late=22,26,29",
+    "--min-units",
+    "20",
+    "--dpi",
+    "130"
+  ],
+  "args": {
+    "in_dir": "reports/llama31_tefo_cross_position/strong_probes",
+    "thresholds": [
+      0.7,
+      0.75
+    ],
+    "bands": [
+      "early=3,6,10",
+      "mid=13,16,19",
+      "late=22,26,29"
+    ],
+    "min_units": 20,
+    "dpi": 130
+  },
+  "counts": {
+    "n_in": 238140,
+    "excluded": {},
+    "n_out": 1
+  },
+  "created_at": "2026-09-30T21:07:18+00:00",
+  "bands": {
+    "early": [
+      3,
+      6,
+      10
+    ],
+    "mid": [
+      13,
+      16,
+      19
+    ],
+    "late": [
+      22,
+      26,
+      29
+    ]
+  },
+  "unit": "(probe, target, selection fold); measured on the other fold"
+}

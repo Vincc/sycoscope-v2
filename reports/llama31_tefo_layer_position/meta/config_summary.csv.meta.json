@@ -1,0 +1,159 @@
+{
+  "output": "config_summary.csv",
+  "inputs": {
+    "reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/manifest.jsonl": "87a35d3a87f52e8bfa88ecce9b102d1f7d6e33d1e23b78c3807a3ecfdd5dd753",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/aita_nta_flip_flipped_minority_balanced_seed0_flipped.jsonl": "f073d0559c27fb51995ee1c8b22fa41249bf1ed24f44c4e90cf768c708c45561",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/aita_nta_og_verdict_nta_minority_balanced_seed0.jsonl": "4c67bed5bfc3db19755623e87526438993026ec9d520766df5f8b5f3f210567c",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/aita_yta_framing_minority_balanced_seed0.jsonl": "bc3e82b97b1ef699b453dcf14953715049693e307e2d549c39bf53f80dce7d29",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/aita_yta_indirectness_minority_balanced_seed0.jsonl": "cd7287d5ec070ce45d277a31b1df4c9ec03d5497fa7c37de3ba33c8d239bc4ef",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/aita_yta_validation_minority_balanced_seed0.jsonl": "2e2ef94f81bea7caf9ad82ac3746837aedb13633f7631b90d7aa4db8c99e28c4",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/ays_freeform_judged_minority_balanced_seed0.jsonl": "b18bac032f85c816ee70e1206ee7c8f7a5e4a0176e041dd0185fa61a1d3a61f9",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/ays_mc_judged_minority_balanced_seed0.jsonl": "2247a0f8bd6ddd687dcc425ca65e7355d34988570a8f34d82f0ec80c0c767421",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/oeq_framing_minority_balanced_seed0.jsonl": "ad92f3270ab66c8964ff434a247f246c0dc19c93e50614b845e86e6964e200f0",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/oeq_indirectness_minority_balanced_seed0.jsonl": "e78d823aabe819b918840c33b67a04bebeeca46059548f38e7a753bf6163f1aa",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/oeq_validation_minority_balanced_seed0.jsonl": "f44aa140c5fac778f1e2d0931b388226971745b6f13bb1529e0293dd9ca19734",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/ss_framing_minority_balanced_seed0.jsonl": "ae61a260f020262cf4eb3550d93c102f8500db735afa959a39db1c5616e030b0",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/ss_indirectness_minority_balanced_seed0.jsonl": "90bef4f05761c21780dd4f084cfc8b992b759e0a47038114d7211322c7f284a7",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/ss_validation_minority_balanced_seed0.jsonl": "9c7ce700e598671b43b3e2cd669598a5e63d590c6e63e7ad8494cfc96af23cd4",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/sypr_judged_minority_balanced_seed0.jsonl": "4de515e483e884f4418dd3adf1a834d9cc06dfa42f8ca02726813b01950080ca",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/eval/tqa_false_answer_judged_minority_balanced_seed0.jsonl": "7268d625ecce53af289f2ff3b7e1b3e6aa24bc6294f5b65c5779c4144a8a38de"
+  },
+  "git": {
+    "commit": "86443810d694503306992c4343fa684bac578058",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/probe_analysis/layer_position.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "--targets",
+    "reports/llama31_tefo_probe_transfer/targets.csv",
+    "--out-dir",
+    "reports/llama31_tefo_layer_position",
+    "--dpi",
+    "130"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
+    "out_dir": "reports/llama31_tefo_layer_position",
+    "dpi": 130
+  },
+  "counts": {
+    "n_in": 39690,
+    "excluded": {},
+    "n_out": 189,
+    "eval_files": {
+      "aita_nta_flip_flipped_minority_balanced_seed0_flipped": {
+        "n_in": 2646,
+        "excluded": {
+          "off_target_label": 0
+        },
+        "n_out": 2646
+      },
+      "aita_nta_og_verdict_nta_minority_balanced_seed0": {
+        "n_in": 2646,
+        "excluded": {
+          "off_target_label": 0
+        },
+        "n_out": 2646
+      },
+      "aita_yta_framing_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "aita_yta_indirectness_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "aita_yta_validation_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "ays_freeform_judged_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "ays_mc_judged_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "oeq_framing_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "oeq_indirectness_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "oeq_validation_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "ss_framing_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "ss_indirectness_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "ss_validation_minority_balanced_seed0": {
+        "n_in": 7938,
+        "excluded": {
+          "off_target_label": 5292
+        },
+        "n_out": 2646
+      },
+      "sypr_judged_minority_balanced_seed0": {
+        "n_in": 2646,
+        "excluded": {
+          "off_target_label": 0
+        },
+        "n_out": 2646
+      },
+      "tqa_false_answer_judged_minority_balanced_seed0": {
+        "n_in": 2646,
+        "excluded": {
+          "off_target_label": 0
+        },
+        "n_out": 2646
+      }
+    }
+  },
+  "created_at": "2026-09-30T19:50:59+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_sweep": "synthetic_tefo_C_sweep",
+  "rank": "1 = best of 189 configs within each (cell, eval)"
+}

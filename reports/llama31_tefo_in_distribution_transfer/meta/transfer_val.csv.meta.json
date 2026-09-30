@@ -1,0 +1,54 @@
+{
+  "output": "transfer_val.csv",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz": "0480b6160035659b3187d8c3002aeb9bed6fb7d261df01dcdbe8b9b141a7bd59",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/manifest.jsonl": "87a35d3a87f52e8bfa88ecce9b102d1f7d6e33d1e23b78c3807a3ecfdd5dd753",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/split.json": "9ccaf70ee69bc25828d40a5593b20f39e832d16bc891e1b9bdf6339a8717a592",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair00.probes.npz": "cf16190601a176a7fe3cc2929e73ec12d375b8bd9223e78c8fff8358bb5fbc50",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair01.probes.npz": "cc60bc6b6fa18c310e8807c32e4a53d5f5a683bda1c5a782a4e399503c8aad0d",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair02.probes.npz": "35de7039c318be2f40cc72b56d9b34ca213b9064da9bfbe41c38178418f9fd07",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair03.probes.npz": "995e452741b1fdb0b28afae1c520551ffb3db577ccb3832e69f9c95f95999de9",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair04.probes.npz": "77527fcfcbe04f771377b0b4df5f78cf85b7d59e4d2cf970a44561b97f6d08f7",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair05.probes.npz": "3f99da16cf3d126acb0b80665d1e9b5b694caf97508fd8bce7b07c3c3e3be27e",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair06.probes.npz": "0e9cd73cdf6f7c2afd75f0209d7ba068af9bfb11015499834bb2e1bb0c68ec09",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair07.probes.npz": "ec05f4332225eb78143716f5134b8c5fd59481f6cfa3f5b78b8cf3a912c5179a",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair08.probes.npz": "0d9e71fbc490e797ae5f2766ec93d56540611e93d1626eaa0f632bd0041331a4",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair09.probes.npz": "cd14dbe02a8bf9ab2c65486485455f43f7b59a6a14ce2e07c64658583c9777fa",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair10.probes.npz": "af2b333b58fc310f9186c84710c826e428528e9db26d5b308b60d9056eb36733",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair11.probes.npz": "0dcf7ba8d13e91173dccade1927aa10b96073b80d7c3757e071c7822dc74cc6e",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair12.probes.npz": "81fa862f2661e45abb2786237c7515a94c55c1fc5accd1f3be51f8124237e38f",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair13.probes.npz": "d23a6363619dfd83791b7558026c6ca330055ca27df7e14818fc8b6d61e908f5"
+  },
+  "git": {
+    "commit": "86443810d694503306992c4343fa684bac578058",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/probe_analysis/in_distribution_transfer/compute_transfer.py",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "--out-dir",
+    "reports/llama31_tefo_in_distribution_transfer"
+  ],
+  "args": {
+    "activations": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_activations.npz",
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "out_dir": "reports/llama31_tefo_in_distribution_transfer"
+  },
+  "counts": {
+    "n_in": 17920,
+    "excluded": {
+      "not_val_prompt": 16128
+    },
+    "n_out": 1792
+  },
+  "created_at": "2026-09-30T19:50:15+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_probes": 2646,
+  "n_targets": 14,
+  "n_rows": 37044,
+  "eval_split": "val",
+  "diagonal_max_abs_diff_vs_manifest_val_auroc": 0.0
+}

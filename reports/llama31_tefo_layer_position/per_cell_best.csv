@@ -1,0 +1,15 @@
+pair_index,cell,pair_type,best_position,best_layer,best_mean_auroc,pooled_best_position,pooled_best_layer,pooled_best_mean_auroc,regret
+0,General (baseline),baseline,response,10,0.5636912620073105,response,13,0.5272586665603805,0.036432595446930005
+1,Position-Verifiable / Explicit,taxonomy,response,13,0.6419031536531737,response,13,0.6419031536531737,0.0
+2,Position-Verifiable / Implicit,taxonomy,response,10,0.6697284759350856,response,13,0.6515273331142754,0.0182011428208102
+3,Position-Subjective / Explicit,taxonomy,response,16,0.6162415529976176,response,13,0.6137448916640621,0.0024966613335555277
+4,Position-Subjective / Implicit,taxonomy,last_prompt,16,0.6099089819838132,response,13,0.5435182669471985,0.06639071503661464
+5,Person-Traits / Explicit,taxonomy,first5,13,0.6548131070197811,response,13,0.6472271047854908,0.00758600223429029
+6,Person-Traits / Implicit,taxonomy,response,13,0.6164308254422077,response,13,0.6164308254422077,0.0
+7,Person-Emotions / Explicit,taxonomy,response,13,0.6661417715553034,response,13,0.6661417715553034,0.0
+8,Person-Emotions / Implicit,taxonomy,response,29,0.6331433000817573,response,13,0.6289048140107927,0.004238486070964664
+9,Warranted praise,control,first5,13,0.6145941708891441,response,13,0.5943025319867796,0.020291638902364517
+10,Genuine agreement,control,last_prompt,13,0.5372401440241817,response,13,0.5040627528755283,0.03317739114865348
+11,Appropriate emotional support,control,response,19,0.6332120892891928,response,13,0.628627623131308,0.00458446615788477
+12,Calibrated hedging,control,last_prompt,19,0.5810366225968682,response,13,0.44653575103758986,0.1345008715592783
+13,Ordinary politeness,control,response,13,0.6571067327954727,response,13,0.6571067327954727,0.0

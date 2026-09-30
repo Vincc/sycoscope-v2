@@ -1,0 +1,1324 @@
+position,layer,config,block,n_cells,mean_auroc
+last_prompt,3,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.63916015625
+last_prompt,3,C=0.0001,all off-diagonal,182,0.6326636010473901
+last_prompt,3,C=0.0001,sycophancy->Warranted praise,9,0.3667263454861111
+last_prompt,3,C=0.0001,sycophancy->Genuine agreement,9,0.801025390625
+last_prompt,3,C=0.0001,sycophancy->Appropriate emotional support,9,0.6940646701388888
+last_prompt,3,C=0.0001,sycophancy->Calibrated hedging,9,0.486572265625
+last_prompt,3,C=0.0001,sycophancy->Ordinary politeness,9,0.6038953993055556
+last_prompt,3,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.6558329264322916
+last_prompt,3,C=0.001,all off-diagonal,182,0.6476017878605769
+last_prompt,3,C=0.001,sycophancy->Warranted praise,9,0.3589952256944444
+last_prompt,3,C=0.001,sycophancy->Genuine agreement,9,0.8209635416666666
+last_prompt,3,C=0.001,sycophancy->Appropriate emotional support,9,0.7173665364583334
+last_prompt,3,C=0.001,sycophancy->Calibrated hedging,9,0.4982638888888889
+last_prompt,3,C=0.001,sycophancy->Ordinary politeness,9,0.6219346788194444
+last_prompt,3,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.6670159233940972
+last_prompt,3,C=0.01,all off-diagonal,182,0.6566443810096154
+last_prompt,3,C=0.01,sycophancy->Warranted praise,9,0.35009765625
+last_prompt,3,C=0.01,sycophancy->Genuine agreement,9,0.8281792534722222
+last_prompt,3,C=0.01,sycophancy->Appropriate emotional support,9,0.7343207465277778
+last_prompt,3,C=0.01,sycophancy->Calibrated hedging,9,0.5091959635416666
+last_prompt,3,C=0.01,sycophancy->Ordinary politeness,9,0.6331108940972222
+last_prompt,3,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.6711629231770834
+last_prompt,3,C=0.1,all off-diagonal,182,0.6595526055975275
+last_prompt,3,C=0.1,sycophancy->Warranted praise,9,0.3444010416666667
+last_prompt,3,C=0.1,sycophancy->Genuine agreement,9,0.8265787760416666
+last_prompt,3,C=0.1,sycophancy->Appropriate emotional support,9,0.7435438368055556
+last_prompt,3,C=0.1,sycophancy->Calibrated hedging,9,0.5121527777777778
+last_prompt,3,C=0.1,sycophancy->Ordinary politeness,9,0.6381293402777778
+last_prompt,3,C=1,sycophancy->sycophancy (off-diagonal),72,0.6362236870659722
+last_prompt,3,C=1,all off-diagonal,182,0.6247598836710165
+last_prompt,3,C=1,sycophancy->Warranted praise,9,0.3594563802083333
+last_prompt,3,C=1,sycophancy->Genuine agreement,9,0.7945963541666666
+last_prompt,3,C=1,sycophancy->Appropriate emotional support,9,0.6870388454861112
+last_prompt,3,C=1,sycophancy->Calibrated hedging,9,0.4808213975694444
+last_prompt,3,C=1,sycophancy->Ordinary politeness,9,0.6078016493055556
+last_prompt,3,C=10,sycophancy->sycophancy (off-diagonal),72,0.6365186903211806
+last_prompt,3,C=10,all off-diagonal,182,0.6250630473042582
+last_prompt,3,C=10,sycophancy->Warranted praise,9,0.3581814236111111
+last_prompt,3,C=10,sycophancy->Genuine agreement,9,0.7950846354166666
+last_prompt,3,C=10,sycophancy->Appropriate emotional support,9,0.6871473524305556
+last_prompt,3,C=10,sycophancy->Calibrated hedging,9,0.4823133680555556
+last_prompt,3,C=10,sycophancy->Ordinary politeness,9,0.6097819010416666
+last_prompt,3,DIM,sycophancy->sycophancy (off-diagonal),72,0.5980122884114584
+last_prompt,3,DIM,all off-diagonal,182,0.5987213470123627
+last_prompt,3,DIM,sycophancy->Warranted praise,9,0.3957790798611111
+last_prompt,3,DIM,sycophancy->Genuine agreement,9,0.72705078125
+last_prompt,3,DIM,sycophancy->Appropriate emotional support,9,0.63720703125
+last_prompt,3,DIM,sycophancy->Calibrated hedging,9,0.4886338975694444
+last_prompt,3,DIM,sycophancy->Ordinary politeness,9,0.5716688368055556
+last_prompt,6,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.6981981065538194
+last_prompt,6,C=0.0001,all off-diagonal,182,0.7213496952266484
+last_prompt,6,C=0.0001,sycophancy->Warranted praise,9,0.21595594618055555
+last_prompt,6,C=0.0001,sycophancy->Genuine agreement,9,0.8668619791666666
+last_prompt,6,C=0.0001,sycophancy->Appropriate emotional support,9,0.8076714409722222
+last_prompt,6,C=0.0001,sycophancy->Calibrated hedging,9,0.8513454861111112
+last_prompt,6,C=0.0001,sycophancy->Ordinary politeness,9,0.7877061631944444
+last_prompt,6,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.69873046875
+last_prompt,6,C=0.001,all off-diagonal,182,0.7239896334134616
+last_prompt,6,C=0.001,sycophancy->Warranted praise,9,0.21006944444444445
+last_prompt,6,C=0.001,sycophancy->Genuine agreement,9,0.8727484809027778
+last_prompt,6,C=0.001,sycophancy->Appropriate emotional support,9,0.8106011284722222
+last_prompt,6,C=0.001,sycophancy->Calibrated hedging,9,0.8614637586805556
+last_prompt,6,C=0.001,sycophancy->Ordinary politeness,9,0.7894965277777778
+last_prompt,6,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.6974860297309028
+last_prompt,6,C=0.01,all off-diagonal,182,0.7253739912431318
+last_prompt,6,C=0.01,sycophancy->Warranted praise,9,0.2081976996527778
+last_prompt,6,C=0.01,sycophancy->Genuine agreement,9,0.8754340277777778
+last_prompt,6,C=0.01,sycophancy->Appropriate emotional support,9,0.8126898871527778
+last_prompt,6,C=0.01,sycophancy->Calibrated hedging,9,0.8668348524305556
+last_prompt,6,C=0.01,sycophancy->Ordinary politeness,9,0.7889539930555556
+last_prompt,6,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.7014736599392362
+last_prompt,6,C=0.1,all off-diagonal,182,0.7264672583276099
+last_prompt,6,C=0.1,sycophancy->Warranted praise,9,0.2113986545138889
+last_prompt,6,C=0.1,sycophancy->Genuine agreement,9,0.8677842881944444
+last_prompt,6,C=0.1,sycophancy->Appropriate emotional support,9,0.8290473090277778
+last_prompt,6,C=0.1,sycophancy->Calibrated hedging,9,0.8689507378472222
+last_prompt,6,C=0.1,sycophancy->Ordinary politeness,9,0.7899848090277778
+last_prompt,6,C=1,sycophancy->sycophancy (off-diagonal),72,0.6904500325520834
+last_prompt,6,C=1,all off-diagonal,182,0.7088140131353022
+last_prompt,6,C=1,sycophancy->Warranted praise,9,0.240478515625
+last_prompt,6,C=1,sycophancy->Genuine agreement,9,0.8358832465277778
+last_prompt,6,C=1,sycophancy->Appropriate emotional support,9,0.7965494791666666
+last_prompt,6,C=1,sycophancy->Calibrated hedging,9,0.8168402777777778
+last_prompt,6,C=1,sycophancy->Ordinary politeness,9,0.7811143663194444
+last_prompt,6,C=10,sycophancy->sycophancy (off-diagonal),72,0.690460205078125
+last_prompt,6,C=10,all off-diagonal,182,0.7088140131353022
+last_prompt,6,C=10,sycophancy->Warranted praise,9,0.2405327690972222
+last_prompt,6,C=10,sycophancy->Genuine agreement,9,0.8357204861111112
+last_prompt,6,C=10,sycophancy->Appropriate emotional support,9,0.7965494791666666
+last_prompt,6,C=10,sycophancy->Calibrated hedging,9,0.8167860243055556
+last_prompt,6,C=10,sycophancy->Ordinary politeness,9,0.7811414930555556
+last_prompt,6,DIM,sycophancy->sycophancy (off-diagonal),72,0.6812235514322916
+last_prompt,6,DIM,all off-diagonal,182,0.7002717741243132
+last_prompt,6,DIM,sycophancy->Warranted praise,9,0.2553439670138889
+last_prompt,6,DIM,sycophancy->Genuine agreement,9,0.8139377170138888
+last_prompt,6,DIM,sycophancy->Appropriate emotional support,9,0.78564453125
+last_prompt,6,DIM,sycophancy->Calibrated hedging,9,0.7938368055555556
+last_prompt,6,DIM,sycophancy->Ordinary politeness,9,0.7724880642361112
+last_prompt,10,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9079827202690972
+last_prompt,10,C=0.0001,all off-diagonal,182,0.6988780262706044
+last_prompt,10,C=0.0001,sycophancy->Warranted praise,9,0.2488335503472222
+last_prompt,10,C=0.0001,sycophancy->Genuine agreement,9,0.458984375
+last_prompt,10,C=0.0001,sycophancy->Appropriate emotional support,9,0.747314453125
+last_prompt,10,C=0.0001,sycophancy->Calibrated hedging,9,0.3365342881944444
+last_prompt,10,C=0.0001,sycophancy->Ordinary politeness,9,0.5766330295138888
+last_prompt,10,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9102410210503472
+last_prompt,10,C=0.001,all off-diagonal,182,0.6982891376201923
+last_prompt,10,C=0.001,sycophancy->Warranted praise,9,0.2428927951388889
+last_prompt,10,C=0.001,sycophancy->Genuine agreement,9,0.4566243489583333
+last_prompt,10,C=0.001,sycophancy->Appropriate emotional support,9,0.7350531684027778
+last_prompt,10,C=0.001,sycophancy->Calibrated hedging,9,0.3344184027777778
+last_prompt,10,C=0.001,sycophancy->Ordinary politeness,9,0.570556640625
+last_prompt,10,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9145439995659722
+last_prompt,10,C=0.01,all off-diagonal,182,0.6985601068853022
+last_prompt,10,C=0.01,sycophancy->Warranted praise,9,0.2378200954861111
+last_prompt,10,C=0.01,sycophancy->Genuine agreement,9,0.4561631944444444
+last_prompt,10,C=0.01,sycophancy->Appropriate emotional support,9,0.7318250868055556
+last_prompt,10,C=0.01,sycophancy->Calibrated hedging,9,0.3301323784722222
+last_prompt,10,C=0.01,sycophancy->Ordinary politeness,9,0.5702311197916666
+last_prompt,10,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9109700520833334
+last_prompt,10,C=0.1,all off-diagonal,182,0.6995353279532966
+last_prompt,10,C=0.1,sycophancy->Warranted praise,9,0.2444390190972222
+last_prompt,10,C=0.1,sycophancy->Genuine agreement,9,0.463134765625
+last_prompt,10,C=0.1,sycophancy->Appropriate emotional support,9,0.7737358940972222
+last_prompt,10,C=0.1,sycophancy->Calibrated hedging,9,0.3312717013888889
+last_prompt,10,C=0.1,sycophancy->Ordinary politeness,9,0.5728895399305556
+last_prompt,10,C=1,sycophancy->sycophancy (off-diagonal),72,0.9023708767361112
+last_prompt,10,C=1,all off-diagonal,182,0.6989075377747253
+last_prompt,10,C=1,sycophancy->Warranted praise,9,0.2609049479166667
+last_prompt,10,C=1,sycophancy->Genuine agreement,9,0.4622395833333333
+last_prompt,10,C=1,sycophancy->Appropriate emotional support,9,0.7638075086805556
+last_prompt,10,C=1,sycophancy->Calibrated hedging,9,0.3462185329861111
+last_prompt,10,C=1,sycophancy->Ordinary politeness,9,0.5870225694444444
+last_prompt,10,C=10,sycophancy->sycophancy (off-diagonal),72,0.9023640950520834
+last_prompt,10,C=10,all off-diagonal,182,0.6988981477506868
+last_prompt,10,C=10,sycophancy->Warranted praise,9,0.2608506944444444
+last_prompt,10,C=10,sycophancy->Genuine agreement,9,0.4622395833333333
+last_prompt,10,C=10,sycophancy->Appropriate emotional support,9,0.7638075086805556
+last_prompt,10,C=10,sycophancy->Calibrated hedging,9,0.3462185329861111
+last_prompt,10,C=10,sycophancy->Ordinary politeness,9,0.5869411892361112
+last_prompt,10,DIM,sycophancy->sycophancy (off-diagonal),72,0.8975084092881944
+last_prompt,10,DIM,all off-diagonal,182,0.7029076880151099
+last_prompt,10,DIM,sycophancy->Warranted praise,9,0.2766655815972222
+last_prompt,10,DIM,sycophancy->Genuine agreement,9,0.4757215711805556
+last_prompt,10,DIM,sycophancy->Appropriate emotional support,9,0.7742513020833334
+last_prompt,10,DIM,sycophancy->Calibrated hedging,9,0.3567979600694444
+last_prompt,10,DIM,sycophancy->Ordinary politeness,9,0.6054144965277778
+last_prompt,13,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9717949761284722
+last_prompt,13,C=0.0001,all off-diagonal,182,0.7734093299278846
+last_prompt,13,C=0.0001,sycophancy->Warranted praise,9,0.4646809895833333
+last_prompt,13,C=0.0001,sycophancy->Genuine agreement,9,0.6948784722222222
+last_prompt,13,C=0.0001,sycophancy->Appropriate emotional support,9,0.876708984375
+last_prompt,13,C=0.0001,sycophancy->Calibrated hedging,9,0.13487413194444445
+last_prompt,13,C=0.0001,sycophancy->Ordinary politeness,9,0.7068684895833334
+last_prompt,13,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9708896213107638
+last_prompt,13,C=0.001,all off-diagonal,182,0.7709679236778846
+last_prompt,13,C=0.001,sycophancy->Warranted praise,9,0.4636773003472222
+last_prompt,13,C=0.001,sycophancy->Genuine agreement,9,0.6932237413194444
+last_prompt,13,C=0.001,sycophancy->Appropriate emotional support,9,0.8701171875
+last_prompt,13,C=0.001,sycophancy->Calibrated hedging,9,0.141357421875
+last_prompt,13,C=0.001,sycophancy->Ordinary politeness,9,0.6991916232638888
+last_prompt,13,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9712761773003472
+last_prompt,13,C=0.01,all off-diagonal,182,0.7708673162774725
+last_prompt,13,C=0.01,sycophancy->Warranted praise,9,0.4685329861111111
+last_prompt,13,C=0.01,sycophancy->Genuine agreement,9,0.6889105902777778
+last_prompt,13,C=0.01,sycophancy->Appropriate emotional support,9,0.8719075520833334
+last_prompt,13,C=0.01,sycophancy->Calibrated hedging,9,0.13582356770833334
+last_prompt,13,C=0.01,sycophancy->Ordinary politeness,9,0.7029622395833334
+last_prompt,13,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9726664225260416
+last_prompt,13,C=0.1,all off-diagonal,182,0.7769453446943682
+last_prompt,13,C=0.1,sycophancy->Warranted praise,9,0.4654947916666667
+last_prompt,13,C=0.1,sycophancy->Genuine agreement,9,0.6878255208333334
+last_prompt,13,C=0.1,sycophancy->Appropriate emotional support,9,0.8881293402777778
+last_prompt,13,C=0.1,sycophancy->Calibrated hedging,9,0.12608506944444445
+last_prompt,13,C=0.1,sycophancy->Ordinary politeness,9,0.7192925347222222
+last_prompt,13,C=1,sycophancy->sycophancy (off-diagonal),72,0.9728834364149306
+last_prompt,13,C=1,all off-diagonal,182,0.7778749570741759
+last_prompt,13,C=1,sycophancy->Warranted praise,9,0.4680989583333333
+last_prompt,13,C=1,sycophancy->Genuine agreement,9,0.6902940538194444
+last_prompt,13,C=1,sycophancy->Appropriate emotional support,9,0.890869140625
+last_prompt,13,C=1,sycophancy->Calibrated hedging,9,0.1257595486111111
+last_prompt,13,C=1,sycophancy->Ordinary politeness,9,0.7256401909722222
+last_prompt,13,C=10,sycophancy->sycophancy (off-diagonal),72,0.9728834364149306
+last_prompt,13,C=10,all off-diagonal,182,0.7778749570741759
+last_prompt,13,C=10,sycophancy->Warranted praise,9,0.4680989583333333
+last_prompt,13,C=10,sycophancy->Genuine agreement,9,0.6902940538194444
+last_prompt,13,C=10,sycophancy->Appropriate emotional support,9,0.890869140625
+last_prompt,13,C=10,sycophancy->Calibrated hedging,9,0.1257595486111111
+last_prompt,13,C=10,sycophancy->Ordinary politeness,9,0.7256401909722222
+last_prompt,13,DIM,sycophancy->sycophancy (off-diagonal),72,0.973724365234375
+last_prompt,13,DIM,all off-diagonal,182,0.7770419277987637
+last_prompt,13,DIM,sycophancy->Warranted praise,9,0.4201117621527778
+last_prompt,13,DIM,sycophancy->Genuine agreement,9,0.6714138454861112
+last_prompt,13,DIM,sycophancy->Appropriate emotional support,9,0.9138997395833334
+last_prompt,13,DIM,sycophancy->Calibrated hedging,9,0.13175455729166666
+last_prompt,13,DIM,sycophancy->Ordinary politeness,9,0.7395833333333334
+last_prompt,16,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9952562120225694
+last_prompt,16,C=0.0001,all off-diagonal,182,0.8263261396806318
+last_prompt,16,C=0.0001,sycophancy->Warranted praise,9,0.6237250434027778
+last_prompt,16,C=0.0001,sycophancy->Genuine agreement,9,0.74951171875
+last_prompt,16,C=0.0001,sycophancy->Appropriate emotional support,9,0.9178059895833334
+last_prompt,16,C=0.0001,sycophancy->Calibrated hedging,9,0.13907877604166666
+last_prompt,16,C=0.0001,sycophancy->Ordinary politeness,9,0.8924696180555556
+last_prompt,16,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9942728678385416
+last_prompt,16,C=0.001,all off-diagonal,182,0.8251376309237637
+last_prompt,16,C=0.001,sycophancy->Warranted praise,9,0.6213650173611112
+last_prompt,16,C=0.001,sycophancy->Genuine agreement,9,0.7536349826388888
+last_prompt,16,C=0.001,sycophancy->Appropriate emotional support,9,0.8976508246527778
+last_prompt,16,C=0.001,sycophancy->Calibrated hedging,9,0.1362847222222222
+last_prompt,16,C=0.001,sycophancy->Ordinary politeness,9,0.8899197048611112
+last_prompt,16,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9931810167100694
+last_prompt,16,C=0.01,all off-diagonal,182,0.8231523115556318
+last_prompt,16,C=0.01,sycophancy->Warranted praise,9,0.620849609375
+last_prompt,16,C=0.01,sycophancy->Genuine agreement,9,0.7522243923611112
+last_prompt,16,C=0.01,sycophancy->Appropriate emotional support,9,0.8763563368055556
+last_prompt,16,C=0.01,sycophancy->Calibrated hedging,9,0.1369357638888889
+last_prompt,16,C=0.01,sycophancy->Ordinary politeness,9,0.8893771701388888
+last_prompt,16,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9883761935763888
+last_prompt,16,C=0.1,all off-diagonal,182,0.8204774961366759
+last_prompt,16,C=0.1,sycophancy->Warranted praise,9,0.6245930989583334
+last_prompt,16,C=0.1,sycophancy->Genuine agreement,9,0.7371148003472222
+last_prompt,16,C=0.1,sycophancy->Appropriate emotional support,9,0.8738335503472222
+last_prompt,16,C=0.1,sycophancy->Calibrated hedging,9,0.14051649305555555
+last_prompt,16,C=0.1,sycophancy->Ordinary politeness,9,0.9001193576388888
+last_prompt,16,C=1,sycophancy->sycophancy (off-diagonal),72,0.9952596028645834
+last_prompt,16,C=1,all off-diagonal,182,0.828369140625
+last_prompt,16,C=1,sycophancy->Warranted praise,9,0.6319715711805556
+last_prompt,16,C=1,sycophancy->Genuine agreement,9,0.7352701822916666
+last_prompt,16,C=1,sycophancy->Appropriate emotional support,9,0.9440375434027778
+last_prompt,16,C=1,sycophancy->Calibrated hedging,9,0.1571994357638889
+last_prompt,16,C=1,sycophancy->Ordinary politeness,9,0.9109157986111112
+last_prompt,16,C=10,sycophancy->sycophancy (off-diagonal),72,0.9952629937065972
+last_prompt,16,C=10,all off-diagonal,182,0.8283852378090659
+last_prompt,16,C=10,sycophancy->Warranted praise,9,0.6319715711805556
+last_prompt,16,C=10,sycophancy->Genuine agreement,9,0.7352701822916666
+last_prompt,16,C=10,sycophancy->Appropriate emotional support,9,0.9442003038194444
+last_prompt,16,C=10,sycophancy->Calibrated hedging,9,0.15733506944444445
+last_prompt,16,C=10,sycophancy->Ordinary politeness,9,0.9109157986111112
+last_prompt,16,DIM,sycophancy->sycophancy (off-diagonal),72,0.9952562120225694
+last_prompt,16,DIM,all off-diagonal,182,0.8307770110748627
+last_prompt,16,DIM,sycophancy->Warranted praise,9,0.635009765625
+last_prompt,16,DIM,sycophancy->Genuine agreement,9,0.7536078559027778
+last_prompt,16,DIM,sycophancy->Appropriate emotional support,9,0.9613715277777778
+last_prompt,16,DIM,sycophancy->Calibrated hedging,9,0.146240234375
+last_prompt,16,DIM,sycophancy->Ordinary politeness,9,0.9387478298611112
+last_prompt,19,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9903632269965278
+last_prompt,19,C=0.0001,all off-diagonal,182,0.8370857657967034
+last_prompt,19,C=0.0001,sycophancy->Warranted praise,9,0.6702745225694444
+last_prompt,19,C=0.0001,sycophancy->Genuine agreement,9,0.7607693142361112
+last_prompt,19,C=0.0001,sycophancy->Appropriate emotional support,9,0.9959038628472222
+last_prompt,19,C=0.0001,sycophancy->Calibrated hedging,9,0.1803656684027778
+last_prompt,19,C=0.0001,sycophancy->Ordinary politeness,9,0.8895941840277778
+last_prompt,19,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9895155164930556
+last_prompt,19,C=0.001,all off-diagonal,182,0.8342808314732143
+last_prompt,19,C=0.001,sycophancy->Warranted praise,9,0.6633029513888888
+last_prompt,19,C=0.001,sycophancy->Genuine agreement,9,0.7650553385416666
+last_prompt,19,C=0.001,sycophancy->Appropriate emotional support,9,0.9883083767361112
+last_prompt,19,C=0.001,sycophancy->Calibrated hedging,9,0.1587456597222222
+last_prompt,19,C=0.001,sycophancy->Ordinary politeness,9,0.8888075086805556
+last_prompt,19,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9884677463107638
+last_prompt,19,C=0.01,all off-diagonal,182,0.8319896656078297
+last_prompt,19,C=0.01,sycophancy->Warranted praise,9,0.6603190104166666
+last_prompt,19,C=0.01,sycophancy->Genuine agreement,9,0.7661404079861112
+last_prompt,19,C=0.01,sycophancy->Appropriate emotional support,9,0.9730902777777778
+last_prompt,19,C=0.01,sycophancy->Calibrated hedging,9,0.14851888020833334
+last_prompt,19,C=0.01,sycophancy->Ordinary politeness,9,0.8889973958333334
+last_prompt,19,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9879387749565972
+last_prompt,19,C=0.1,all off-diagonal,182,0.834358634529533
+last_prompt,19,C=0.1,sycophancy->Warranted praise,9,0.6633029513888888
+last_prompt,19,C=0.1,sycophancy->Genuine agreement,9,0.7577039930555556
+last_prompt,19,C=0.1,sycophancy->Appropriate emotional support,9,0.9644368489583334
+last_prompt,19,C=0.1,sycophancy->Calibrated hedging,9,0.15907118055555555
+last_prompt,19,C=0.1,sycophancy->Ordinary politeness,9,0.8964572482638888
+last_prompt,19,C=1,sycophancy->sycophancy (off-diagonal),72,0.9891933865017362
+last_prompt,19,C=1,all off-diagonal,182,0.8432094029017857
+last_prompt,19,C=1,sycophancy->Warranted praise,9,0.70068359375
+last_prompt,19,C=1,sycophancy->Genuine agreement,9,0.7506781684027778
+last_prompt,19,C=1,sycophancy->Appropriate emotional support,9,0.9994032118055556
+last_prompt,19,C=1,sycophancy->Calibrated hedging,9,0.2297092013888889
+last_prompt,19,C=1,sycophancy->Ordinary politeness,9,0.9033745659722222
+last_prompt,19,C=10,sycophancy->sycophancy (off-diagonal),72,0.9891933865017362
+last_prompt,19,C=10,all off-diagonal,182,0.8432094029017857
+last_prompt,19,C=10,sycophancy->Warranted praise,9,0.70068359375
+last_prompt,19,C=10,sycophancy->Genuine agreement,9,0.7506781684027778
+last_prompt,19,C=10,sycophancy->Appropriate emotional support,9,0.9994032118055556
+last_prompt,19,C=10,sycophancy->Calibrated hedging,9,0.2297092013888889
+last_prompt,19,C=10,sycophancy->Ordinary politeness,9,0.9033745659722222
+last_prompt,19,DIM,sycophancy->sycophancy (off-diagonal),72,0.9906446668836806
+last_prompt,19,DIM,all off-diagonal,182,0.8473316234546703
+last_prompt,19,DIM,sycophancy->Warranted praise,9,0.7144639756944444
+last_prompt,19,DIM,sycophancy->Genuine agreement,9,0.7550998263888888
+last_prompt,19,DIM,sycophancy->Appropriate emotional support,9,0.9997829861111112
+last_prompt,19,DIM,sycophancy->Calibrated hedging,9,0.24278428819444445
+last_prompt,19,DIM,sycophancy->Ordinary politeness,9,0.935546875
+last_prompt,22,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9805806477864584
+last_prompt,22,C=0.0001,all off-diagonal,182,0.8238619290865384
+last_prompt,22,C=0.0001,sycophancy->Warranted praise,9,0.6421169704861112
+last_prompt,22,C=0.0001,sycophancy->Genuine agreement,9,0.7634819878472222
+last_prompt,22,C=0.0001,sycophancy->Appropriate emotional support,9,0.9588758680555556
+last_prompt,22,C=0.0001,sycophancy->Calibrated hedging,9,0.2105034722222222
+last_prompt,22,C=0.0001,sycophancy->Ordinary politeness,9,0.8476291232638888
+last_prompt,22,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9788343641493056
+last_prompt,22,C=0.001,all off-diagonal,182,0.8213789384443682
+last_prompt,22,C=0.001,sycophancy->Warranted praise,9,0.6404351128472222
+last_prompt,22,C=0.001,sycophancy->Genuine agreement,9,0.7662760416666666
+last_prompt,22,C=0.001,sycophancy->Appropriate emotional support,9,0.9317762586805556
+last_prompt,22,C=0.001,sycophancy->Calibrated hedging,9,0.18717447916666666
+last_prompt,22,C=0.001,sycophancy->Ordinary politeness,9,0.8613009982638888
+last_prompt,22,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9762607150607638
+last_prompt,22,C=0.01,all off-diagonal,182,0.8178362165178571
+last_prompt,22,C=0.01,sycophancy->Warranted praise,9,0.6424153645833334
+last_prompt,22,C=0.01,sycophancy->Genuine agreement,9,0.7666829427083334
+last_prompt,22,C=0.01,sycophancy->Appropriate emotional support,9,0.895751953125
+last_prompt,22,C=0.01,sycophancy->Calibrated hedging,9,0.1780056423611111
+last_prompt,22,C=0.01,sycophancy->Ordinary politeness,9,0.8707411024305556
+last_prompt,22,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9793497721354166
+last_prompt,22,C=0.1,all off-diagonal,182,0.822135506095467
+last_prompt,22,C=0.1,sycophancy->Warranted praise,9,0.638427734375
+last_prompt,22,C=0.1,sycophancy->Genuine agreement,9,0.7565104166666666
+last_prompt,22,C=0.1,sycophancy->Appropriate emotional support,9,0.9123806423611112
+last_prompt,22,C=0.1,sycophancy->Calibrated hedging,9,0.18546549479166666
+last_prompt,22,C=0.1,sycophancy->Ordinary politeness,9,0.8711751302083334
+last_prompt,22,C=1,sycophancy->sycophancy (off-diagonal),72,0.9803602430555556
+last_prompt,22,C=1,all off-diagonal,182,0.8244186233688187
+last_prompt,22,C=1,sycophancy->Warranted praise,9,0.6483289930555556
+last_prompt,22,C=1,sycophancy->Genuine agreement,9,0.7566731770833334
+last_prompt,22,C=1,sycophancy->Appropriate emotional support,9,0.9729817708333334
+last_prompt,22,C=1,sycophancy->Calibrated hedging,9,0.22813585069444445
+last_prompt,22,C=1,sycophancy->Ordinary politeness,9,0.8270670572916666
+last_prompt,22,C=10,sycophancy->sycophancy (off-diagonal),72,0.9803704155815972
+last_prompt,22,C=10,all off-diagonal,182,0.824449476304945
+last_prompt,22,C=10,sycophancy->Warranted praise,9,0.6484646267361112
+last_prompt,22,C=10,sycophancy->Genuine agreement,9,0.7566731770833334
+last_prompt,22,C=10,sycophancy->Appropriate emotional support,9,0.9731987847222222
+last_prompt,22,C=10,sycophancy->Calibrated hedging,9,0.2282986111111111
+last_prompt,22,C=10,sycophancy->Ordinary politeness,9,0.8270941840277778
+last_prompt,22,DIM,sycophancy->sycophancy (off-diagonal),72,0.980712890625
+last_prompt,22,DIM,all off-diagonal,182,0.8347530155391484
+last_prompt,22,DIM,sycophancy->Warranted praise,9,0.6751030815972222
+last_prompt,22,DIM,sycophancy->Genuine agreement,9,0.7542317708333334
+last_prompt,22,DIM,sycophancy->Appropriate emotional support,9,0.9953884548611112
+last_prompt,22,DIM,sycophancy->Calibrated hedging,9,0.2778049045138889
+last_prompt,22,DIM,sycophancy->Ordinary politeness,9,0.8522677951388888
+last_prompt,26,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.972442626953125
+last_prompt,26,C=0.0001,all off-diagonal,182,0.8095273866758241
+last_prompt,26,C=0.0001,sycophancy->Warranted praise,9,0.6031629774305556
+last_prompt,26,C=0.0001,sycophancy->Genuine agreement,9,0.7515733506944444
+last_prompt,26,C=0.0001,sycophancy->Appropriate emotional support,9,0.9138726128472222
+last_prompt,26,C=0.0001,sycophancy->Calibrated hedging,9,0.21397569444444445
+last_prompt,26,C=0.0001,sycophancy->Ordinary politeness,9,0.8164333767361112
+last_prompt,26,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9706013997395834
+last_prompt,26,C=0.001,all off-diagonal,182,0.806760012448489
+last_prompt,26,C=0.001,sycophancy->Warranted praise,9,0.6019422743055556
+last_prompt,26,C=0.001,sycophancy->Genuine agreement,9,0.7558322482638888
+last_prompt,26,C=0.001,sycophancy->Appropriate emotional support,9,0.8741048177083334
+last_prompt,26,C=0.001,sycophancy->Calibrated hedging,9,0.19783528645833334
+last_prompt,26,C=0.001,sycophancy->Ordinary politeness,9,0.8189019097222222
+last_prompt,26,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9684109157986112
+last_prompt,26,C=0.01,all off-diagonal,182,0.8035298441792582
+last_prompt,26,C=0.01,sycophancy->Warranted praise,9,0.6006130642361112
+last_prompt,26,C=0.01,sycophancy->Genuine agreement,9,0.7578125
+last_prompt,26,C=0.01,sycophancy->Appropriate emotional support,9,0.8321940104166666
+last_prompt,26,C=0.01,sycophancy->Calibrated hedging,9,0.1928168402777778
+last_prompt,26,C=0.01,sycophancy->Ordinary politeness,9,0.818359375
+last_prompt,26,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.96990966796875
+last_prompt,26,C=0.1,all off-diagonal,182,0.8029879056490384
+last_prompt,26,C=0.1,sycophancy->Warranted praise,9,0.6028917100694444
+last_prompt,26,C=0.1,sycophancy->Genuine agreement,9,0.7437337239583334
+last_prompt,26,C=0.1,sycophancy->Appropriate emotional support,9,0.8297526041666666
+last_prompt,26,C=0.1,sycophancy->Calibrated hedging,9,0.1980523003472222
+last_prompt,26,C=0.1,sycophancy->Ordinary politeness,9,0.8020290798611112
+last_prompt,26,C=1,sycophancy->sycophancy (off-diagonal),72,0.9721713595920138
+last_prompt,26,C=1,all off-diagonal,182,0.8107091882726648
+last_prompt,26,C=1,sycophancy->Warranted praise,9,0.6091037326388888
+last_prompt,26,C=1,sycophancy->Genuine agreement,9,0.7424587673611112
+last_prompt,26,C=1,sycophancy->Appropriate emotional support,9,0.9361436631944444
+last_prompt,26,C=1,sycophancy->Calibrated hedging,9,0.23546006944444445
+last_prompt,26,C=1,sycophancy->Ordinary politeness,9,0.8122287326388888
+last_prompt,26,C=10,sycophancy->sycophancy (off-diagonal),72,0.9721781412760416
+last_prompt,26,C=10,all off-diagonal,182,0.8107212611607143
+last_prompt,26,C=10,sycophancy->Warranted praise,9,0.6091037326388888
+last_prompt,26,C=10,sycophancy->Genuine agreement,9,0.7424587673611112
+last_prompt,26,C=10,sycophancy->Appropriate emotional support,9,0.9362521701388888
+last_prompt,26,C=10,sycophancy->Calibrated hedging,9,0.23551432291666666
+last_prompt,26,C=10,sycophancy->Ordinary politeness,9,0.812255859375
+last_prompt,26,DIM,sycophancy->sycophancy (off-diagonal),72,0.9717610677083334
+last_prompt,26,DIM,all off-diagonal,182,0.8197584885817307
+last_prompt,26,DIM,sycophancy->Warranted praise,9,0.6436631944444444
+last_prompt,26,DIM,sycophancy->Genuine agreement,9,0.7504069010416666
+last_prompt,26,DIM,sycophancy->Appropriate emotional support,9,0.9652235243055556
+last_prompt,26,DIM,sycophancy->Calibrated hedging,9,0.2732476128472222
+last_prompt,26,DIM,sycophancy->Ordinary politeness,9,0.8257107204861112
+last_prompt,29,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9664103190104166
+last_prompt,29,C=0.0001,all off-diagonal,182,0.8075125558035714
+last_prompt,29,C=0.0001,sycophancy->Warranted praise,9,0.5989854600694444
+last_prompt,29,C=0.0001,sycophancy->Genuine agreement,9,0.7558051215277778
+last_prompt,29,C=0.0001,sycophancy->Appropriate emotional support,9,0.9175075954861112
+last_prompt,29,C=0.0001,sycophancy->Calibrated hedging,9,0.23399522569444445
+last_prompt,29,C=0.0001,sycophancy->Ordinary politeness,9,0.8147786458333334
+last_prompt,29,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9654947916666666
+last_prompt,29,C=0.001,all off-diagonal,182,0.8052093170501373
+last_prompt,29,C=0.001,sycophancy->Warranted praise,9,0.597412109375
+last_prompt,29,C=0.001,sycophancy->Genuine agreement,9,0.7586805555555556
+last_prompt,29,C=0.001,sycophancy->Appropriate emotional support,9,0.8840603298611112
+last_prompt,29,C=0.001,sycophancy->Calibrated hedging,9,0.2175564236111111
+last_prompt,29,C=0.001,sycophancy->Ordinary politeness,9,0.8154296875
+last_prompt,29,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9637925889756944
+last_prompt,29,C=0.01,all off-diagonal,182,0.802259508070055
+last_prompt,29,C=0.01,sycophancy->Warranted praise,9,0.5957573784722222
+last_prompt,29,C=0.01,sycophancy->Genuine agreement,9,0.7593587239583334
+last_prompt,29,C=0.01,sycophancy->Appropriate emotional support,9,0.8431532118055556
+last_prompt,29,C=0.01,sycophancy->Calibrated hedging,9,0.211669921875
+last_prompt,29,C=0.01,sycophancy->Ordinary politeness,9,0.8125813802083334
+last_prompt,29,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9614495171440972
+last_prompt,29,C=0.1,all off-diagonal,182,0.8028940054086539
+last_prompt,29,C=0.1,sycophancy->Warranted praise,9,0.5951334635416666
+last_prompt,29,C=0.1,sycophancy->Genuine agreement,9,0.7517361111111112
+last_prompt,29,C=0.1,sycophancy->Appropriate emotional support,9,0.85205078125
+last_prompt,29,C=0.1,sycophancy->Calibrated hedging,9,0.2180718315972222
+last_prompt,29,C=0.1,sycophancy->Ordinary politeness,9,0.8166232638888888
+last_prompt,29,C=1,sycophancy->sycophancy (off-diagonal),72,0.9625108506944444
+last_prompt,29,C=1,all off-diagonal,182,0.8056050394917582
+last_prompt,29,C=1,sycophancy->Warranted praise,9,0.5997992621527778
+last_prompt,29,C=1,sycophancy->Genuine agreement,9,0.7479654947916666
+last_prompt,29,C=1,sycophancy->Appropriate emotional support,9,0.9248046875
+last_prompt,29,C=1,sycophancy->Calibrated hedging,9,0.2545301649305556
+last_prompt,29,C=1,sycophancy->Ordinary politeness,9,0.8102484809027778
+last_prompt,29,C=10,sycophancy->sycophancy (off-diagonal),72,0.9625583224826388
+last_prompt,29,C=10,all off-diagonal,182,0.8056345509958791
+last_prompt,29,C=10,sycophancy->Warranted praise,9,0.5997992621527778
+last_prompt,29,C=10,sycophancy->Genuine agreement,9,0.7479654947916666
+last_prompt,29,C=10,sycophancy->Appropriate emotional support,9,0.9249403211805556
+last_prompt,29,C=10,sycophancy->Calibrated hedging,9,0.2544759114583333
+last_prompt,29,C=10,sycophancy->Ordinary politeness,9,0.8103841145833334
+last_prompt,29,DIM,sycophancy->sycophancy (off-diagonal),72,0.9684041341145834
+last_prompt,29,DIM,all off-diagonal,182,0.8111102764423077
+last_prompt,29,DIM,sycophancy->Warranted praise,9,0.6002332899305556
+last_prompt,29,DIM,sycophancy->Genuine agreement,9,0.7266981336805556
+last_prompt,29,DIM,sycophancy->Appropriate emotional support,9,0.9626736111111112
+last_prompt,29,DIM,sycophancy->Calibrated hedging,9,0.2792426215277778
+last_prompt,29,DIM,sycophancy->Ordinary politeness,9,0.8267957899305556
+first5,3,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.6160786946614584
+first5,3,C=0.0001,all off-diagonal,182,0.5956105661916209
+first5,3,C=0.0001,sycophancy->Warranted praise,9,0.5199924045138888
+first5,3,C=0.0001,sycophancy->Genuine agreement,9,0.6423611111111112
+first5,3,C=0.0001,sycophancy->Appropriate emotional support,9,0.6309950086805556
+first5,3,C=0.0001,sycophancy->Calibrated hedging,9,0.4813368055555556
+first5,3,C=0.0001,sycophancy->Ordinary politeness,9,0.6369086371527778
+first5,3,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.6515367296006944
+first5,3,C=0.001,all off-diagonal,182,0.6198475596668956
+first5,3,C=0.001,sycophancy->Warranted praise,9,0.5243055555555556
+first5,3,C=0.001,sycophancy->Genuine agreement,9,0.6359049479166666
+first5,3,C=0.001,sycophancy->Appropriate emotional support,9,0.62646484375
+first5,3,C=0.001,sycophancy->Calibrated hedging,9,0.4781087239583333
+first5,3,C=0.001,sycophancy->Ordinary politeness,9,0.690185546875
+first5,3,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.6479831271701388
+first5,3,C=0.01,all off-diagonal,182,0.6212963062328297
+first5,3,C=0.01,sycophancy->Warranted praise,9,0.5202907986111112
+first5,3,C=0.01,sycophancy->Genuine agreement,9,0.600830078125
+first5,3,C=0.01,sycophancy->Appropriate emotional support,9,0.6129828559027778
+first5,3,C=0.01,sycophancy->Calibrated hedging,9,0.4795464409722222
+first5,3,C=0.01,sycophancy->Ordinary politeness,9,0.7059461805555556
+first5,3,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.6297810872395834
+first5,3,C=0.1,all off-diagonal,182,0.614865481198489
+first5,3,C=0.1,sycophancy->Warranted praise,9,0.519287109375
+first5,3,C=0.1,sycophancy->Genuine agreement,9,0.5692816840277778
+first5,3,C=0.1,sycophancy->Appropriate emotional support,9,0.609375
+first5,3,C=0.1,sycophancy->Calibrated hedging,9,0.484130859375
+first5,3,C=0.1,sycophancy->Ordinary politeness,9,0.7093370225694444
+first5,3,C=1,sycophancy->sycophancy (off-diagonal),72,0.6205952962239584
+first5,3,C=1,all off-diagonal,182,0.6094393887362637
+first5,3,C=1,sycophancy->Warranted praise,9,0.519287109375
+first5,3,C=1,sycophancy->Genuine agreement,9,0.5579155815972222
+first5,3,C=1,sycophancy->Appropriate emotional support,9,0.6055501302083334
+first5,3,C=1,sycophancy->Calibrated hedging,9,0.4932725694444444
+first5,3,C=1,sycophancy->Ordinary politeness,9,0.7073296440972222
+first5,3,C=10,sycophancy->sycophancy (off-diagonal),72,0.6382480197482638
+first5,3,C=10,all off-diagonal,182,0.6089967161744505
+first5,3,C=10,sycophancy->Warranted praise,9,0.5161675347222222
+first5,3,C=10,sycophancy->Genuine agreement,9,0.5489637586805556
+first5,3,C=10,sycophancy->Appropriate emotional support,9,0.6127115885416666
+first5,3,C=10,sycophancy->Calibrated hedging,9,0.448486328125
+first5,3,C=10,sycophancy->Ordinary politeness,9,0.6697591145833334
+first5,3,DIM,sycophancy->sycophancy (off-diagonal),72,0.5689527723524306
+first5,3,DIM,all off-diagonal,182,0.5783785306490384
+first5,3,DIM,sycophancy->Warranted praise,9,0.5364583333333334
+first5,3,DIM,sycophancy->Genuine agreement,9,0.5749782986111112
+first5,3,DIM,sycophancy->Appropriate emotional support,9,0.5804578993055556
+first5,3,DIM,sycophancy->Calibrated hedging,9,0.5806477864583334
+first5,3,DIM,sycophancy->Ordinary politeness,9,0.7196723090277778
+first5,6,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.6226162380642362
+first5,6,C=0.0001,all off-diagonal,182,0.6122657859718407
+first5,6,C=0.0001,sycophancy->Warranted praise,9,0.4922960069444444
+first5,6,C=0.0001,sycophancy->Genuine agreement,9,0.6028917100694444
+first5,6,C=0.0001,sycophancy->Appropriate emotional support,9,0.6755642361111112
+first5,6,C=0.0001,sycophancy->Calibrated hedging,9,0.5327962239583334
+first5,6,C=0.0001,sycophancy->Ordinary politeness,9,0.7150336371527778
+first5,6,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.6607869466145834
+first5,6,C=0.001,all off-diagonal,182,0.6394431984031593
+first5,6,C=0.001,sycophancy->Warranted praise,9,0.4620496961805556
+first5,6,C=0.001,sycophancy->Genuine agreement,9,0.6040852864583334
+first5,6,C=0.001,sycophancy->Appropriate emotional support,9,0.6939561631944444
+first5,6,C=0.001,sycophancy->Calibrated hedging,9,0.5507269965277778
+first5,6,C=0.001,sycophancy->Ordinary politeness,9,0.7611762152777778
+first5,6,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.6671176486545138
+first5,6,C=0.01,all off-diagonal,182,0.648790296617445
+first5,6,C=0.01,sycophancy->Warranted praise,9,0.4411078559027778
+first5,6,C=0.01,sycophancy->Genuine agreement,9,0.6036512586805556
+first5,6,C=0.01,sycophancy->Appropriate emotional support,9,0.7042643229166666
+first5,6,C=0.01,sycophancy->Calibrated hedging,9,0.5737575954861112
+first5,6,C=0.01,sycophancy->Ordinary politeness,9,0.7826334635416666
+first5,6,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.6615939670138888
+first5,6,C=0.1,all off-diagonal,182,0.6509231735061813
+first5,6,C=0.1,sycophancy->Warranted praise,9,0.4287380642361111
+first5,6,C=0.1,sycophancy->Genuine agreement,9,0.6131727430555556
+first5,6,C=0.1,sycophancy->Appropriate emotional support,9,0.7113715277777778
+first5,6,C=0.1,sycophancy->Calibrated hedging,9,0.5934787326388888
+first5,6,C=0.1,sycophancy->Ordinary politeness,9,0.7867838541666666
+first5,6,C=1,sycophancy->sycophancy (off-diagonal),72,0.6605597601996528
+first5,6,C=1,all off-diagonal,182,0.6514248690762363
+first5,6,C=1,sycophancy->Warranted praise,9,0.4364691840277778
+first5,6,C=1,sycophancy->Genuine agreement,9,0.620849609375
+first5,6,C=1,sycophancy->Appropriate emotional support,9,0.7077094184027778
+first5,6,C=1,sycophancy->Calibrated hedging,9,0.5809461805555556
+first5,6,C=1,sycophancy->Ordinary politeness,9,0.7782931857638888
+first5,6,C=10,sycophancy->sycophancy (off-diagonal),72,0.6742994520399306
+first5,6,C=10,all off-diagonal,182,0.6512719458276099
+first5,6,C=10,sycophancy->Warranted praise,9,0.4705674913194444
+first5,6,C=10,sycophancy->Genuine agreement,9,0.5722113715277778
+first5,6,C=10,sycophancy->Appropriate emotional support,9,0.7020670572916666
+first5,6,C=10,sycophancy->Calibrated hedging,9,0.52294921875
+first5,6,C=10,sycophancy->Ordinary politeness,9,0.7335069444444444
+first5,6,DIM,sycophancy->sycophancy (off-diagonal),72,0.5807902018229166
+first5,6,DIM,all off-diagonal,182,0.5904943445226648
+first5,6,DIM,sycophancy->Warranted praise,9,0.5298394097222222
+first5,6,DIM,sycophancy->Genuine agreement,9,0.589599609375
+first5,6,DIM,sycophancy->Appropriate emotional support,9,0.6389973958333334
+first5,6,DIM,sycophancy->Calibrated hedging,9,0.5912814670138888
+first5,6,DIM,sycophancy->Ordinary politeness,9,0.7214898003472222
+first5,10,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.8217332628038194
+first5,10,C=0.0001,all off-diagonal,182,0.683962643801511
+first5,10,C=0.0001,sycophancy->Warranted praise,9,0.4091796875
+first5,10,C=0.0001,sycophancy->Genuine agreement,9,0.6138237847222222
+first5,10,C=0.0001,sycophancy->Appropriate emotional support,9,0.77587890625
+first5,10,C=0.0001,sycophancy->Calibrated hedging,9,0.3016764322916667
+first5,10,C=0.0001,sycophancy->Ordinary politeness,9,0.6310763888888888
+first5,10,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.8684488932291666
+first5,10,C=0.001,all off-diagonal,182,0.6933338877918956
+first5,10,C=0.001,sycophancy->Warranted praise,9,0.3585883246527778
+first5,10,C=0.001,sycophancy->Genuine agreement,9,0.5792914496527778
+first5,10,C=0.001,sycophancy->Appropriate emotional support,9,0.7713758680555556
+first5,10,C=0.001,sycophancy->Calibrated hedging,9,0.2429741753472222
+first5,10,C=0.001,sycophancy->Ordinary politeness,9,0.568115234375
+first5,10,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.8888278537326388
+first5,10,C=0.01,all off-diagonal,182,0.6964044256524725
+first5,10,C=0.01,sycophancy->Warranted praise,9,0.3355034722222222
+first5,10,C=0.01,sycophancy->Genuine agreement,9,0.5177680121527778
+first5,10,C=0.01,sycophancy->Appropriate emotional support,9,0.771240234375
+first5,10,C=0.01,sycophancy->Calibrated hedging,9,0.2451171875
+first5,10,C=0.01,sycophancy->Ordinary politeness,9,0.5439181857638888
+first5,10,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.8978610568576388
+first5,10,C=0.1,all off-diagonal,182,0.6975956172733516
+first5,10,C=0.1,sycophancy->Warranted praise,9,0.3199598524305556
+first5,10,C=0.1,sycophancy->Genuine agreement,9,0.4676649305555556
+first5,10,C=0.1,sycophancy->Appropriate emotional support,9,0.7697211371527778
+first5,10,C=0.1,sycophancy->Calibrated hedging,9,0.2596028645833333
+first5,10,C=0.1,sycophancy->Ordinary politeness,9,0.5406087239583334
+first5,10,C=1,sycophancy->sycophancy (off-diagonal),72,0.8804083930121528
+first5,10,C=1,all off-diagonal,182,0.6926591474931318
+first5,10,C=1,sycophancy->Warranted praise,9,0.3481174045138889
+first5,10,C=1,sycophancy->Genuine agreement,9,0.4771321614583333
+first5,10,C=1,sycophancy->Appropriate emotional support,9,0.7605794270833334
+first5,10,C=1,sycophancy->Calibrated hedging,9,0.2462836371527778
+first5,10,C=1,sycophancy->Ordinary politeness,9,0.5065646701388888
+first5,10,C=10,sycophancy->sycophancy (off-diagonal),72,0.8784654405381944
+first5,10,C=10,all off-diagonal,182,0.6918542882898352
+first5,10,C=10,sycophancy->Warranted praise,9,0.3567979600694444
+first5,10,C=10,sycophancy->Genuine agreement,9,0.4855685763888889
+first5,10,C=10,sycophancy->Appropriate emotional support,9,0.7583279079861112
+first5,10,C=10,sycophancy->Calibrated hedging,9,0.24498155381944445
+first5,10,C=10,sycophancy->Ordinary politeness,9,0.5016547309027778
+first5,10,DIM,sycophancy->sycophancy (off-diagonal),72,0.6569044325086806
+first5,10,DIM,all off-diagonal,182,0.6203103537087912
+first5,10,DIM,sycophancy->Warranted praise,9,0.4986165364583333
+first5,10,DIM,sycophancy->Genuine agreement,9,0.5659722222222222
+first5,10,DIM,sycophancy->Appropriate emotional support,9,0.7149522569444444
+first5,10,DIM,sycophancy->Calibrated hedging,9,0.4715983072916667
+first5,10,DIM,sycophancy->Ordinary politeness,9,0.6641167534722222
+first5,13,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9412468804253472
+first5,13,C=0.0001,all off-diagonal,182,0.7610386439732143
+first5,13,C=0.0001,sycophancy->Warranted praise,9,0.4730902777777778
+first5,13,C=0.0001,sycophancy->Genuine agreement,9,0.6488986545138888
+first5,13,C=0.0001,sycophancy->Appropriate emotional support,9,0.8221842447916666
+first5,13,C=0.0001,sycophancy->Calibrated hedging,9,0.18001302083333334
+first5,13,C=0.0001,sycophancy->Ordinary politeness,9,0.7811686197916666
+first5,13,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9576382107204862
+first5,13,C=0.001,all off-diagonal,182,0.7684822501717034
+first5,13,C=0.001,sycophancy->Warranted praise,9,0.4616427951388889
+first5,13,C=0.001,sycophancy->Genuine agreement,9,0.6311577690972222
+first5,13,C=0.001,sycophancy->Appropriate emotional support,9,0.8272026909722222
+first5,13,C=0.001,sycophancy->Calibrated hedging,9,0.20298936631944445
+first5,13,C=0.001,sycophancy->Ordinary politeness,9,0.7728135850694444
+first5,13,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9651387532552084
+first5,13,C=0.01,all off-diagonal,182,0.7724180116758241
+first5,13,C=0.01,sycophancy->Warranted praise,9,0.4625651041666667
+first5,13,C=0.01,sycophancy->Genuine agreement,9,0.6123860677083334
+first5,13,C=0.01,sycophancy->Appropriate emotional support,9,0.8328450520833334
+first5,13,C=0.01,sycophancy->Calibrated hedging,9,0.21988932291666666
+first5,13,C=0.01,sycophancy->Ordinary politeness,9,0.7609320746527778
+first5,13,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.96728515625
+first5,13,C=0.1,all off-diagonal,182,0.7725534963083791
+first5,13,C=0.1,sycophancy->Warranted praise,9,0.4636773003472222
+first5,13,C=0.1,sycophancy->Genuine agreement,9,0.6033528645833334
+first5,13,C=0.1,sycophancy->Appropriate emotional support,9,0.8390570746527778
+first5,13,C=0.1,sycophancy->Calibrated hedging,9,0.2272677951388889
+first5,13,C=0.1,sycophancy->Ordinary politeness,9,0.7448187934027778
+first5,13,C=1,sycophancy->sycophancy (off-diagonal),72,0.9176025390625
+first5,13,C=1,all off-diagonal,182,0.7441446492960165
+first5,13,C=1,sycophancy->Warranted praise,9,0.4506293402777778
+first5,13,C=1,sycophancy->Genuine agreement,9,0.6029188368055556
+first5,13,C=1,sycophancy->Appropriate emotional support,9,0.8106011284722222
+first5,13,C=1,sycophancy->Calibrated hedging,9,0.17317708333333334
+first5,13,C=1,sycophancy->Ordinary politeness,9,0.7626410590277778
+first5,13,C=10,sycophancy->sycophancy (off-diagonal),72,0.9182400173611112
+first5,13,C=10,all off-diagonal,182,0.7440346518715659
+first5,13,C=10,sycophancy->Warranted praise,9,0.4482964409722222
+first5,13,C=10,sycophancy->Genuine agreement,9,0.5980360243055556
+first5,13,C=10,sycophancy->Appropriate emotional support,9,0.8109266493055556
+first5,13,C=10,sycophancy->Calibrated hedging,9,0.1750759548611111
+first5,13,C=10,sycophancy->Ordinary politeness,9,0.7598470052083334
+first5,13,DIM,sycophancy->sycophancy (off-diagonal),72,0.8313191731770834
+first5,13,DIM,all off-diagonal,182,0.7069480812156593
+first5,13,DIM,sycophancy->Warranted praise,9,0.5098741319444444
+first5,13,DIM,sycophancy->Genuine agreement,9,0.5800509982638888
+first5,13,DIM,sycophancy->Appropriate emotional support,9,0.8155653211805556
+first5,13,DIM,sycophancy->Calibrated hedging,9,0.2815755208333333
+first5,13,DIM,sycophancy->Ordinary politeness,9,0.7557237413194444
+first5,16,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9257337782118056
+first5,16,C=0.0001,all off-diagonal,182,0.7621305696256868
+first5,16,C=0.0001,sycophancy->Warranted praise,9,0.5432671440972222
+first5,16,C=0.0001,sycophancy->Genuine agreement,9,0.7140028211805556
+first5,16,C=0.0001,sycophancy->Appropriate emotional support,9,0.8268500434027778
+first5,16,C=0.0001,sycophancy->Calibrated hedging,9,0.15519205729166666
+first5,16,C=0.0001,sycophancy->Ordinary politeness,9,0.8492296006944444
+first5,16,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9485677083333334
+first5,16,C=0.001,all off-diagonal,182,0.7759339049622253
+first5,16,C=0.001,sycophancy->Warranted praise,9,0.5471733940972222
+first5,16,C=0.001,sycophancy->Genuine agreement,9,0.7305230034722222
+first5,16,C=0.001,sycophancy->Appropriate emotional support,9,0.8456217447916666
+first5,16,C=0.001,sycophancy->Calibrated hedging,9,0.1561957465277778
+first5,16,C=0.001,sycophancy->Ordinary politeness,9,0.8705512152777778
+first5,16,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9590521918402778
+first5,16,C=0.01,all off-diagonal,182,0.7827389895260989
+first5,16,C=0.01,sycophancy->Warranted praise,9,0.5560709635416666
+first5,16,C=0.01,sycophancy->Genuine agreement,9,0.7362196180555556
+first5,16,C=0.01,sycophancy->Appropriate emotional support,9,0.8647189670138888
+first5,16,C=0.01,sycophancy->Calibrated hedging,9,0.1528591579861111
+first5,16,C=0.01,sycophancy->Ordinary politeness,9,0.8707139756944444
+first5,16,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9617852105034722
+first5,16,C=0.1,all off-diagonal,182,0.7850757640796703
+first5,16,C=0.1,sycophancy->Warranted praise,9,0.55615234375
+first5,16,C=0.1,sycophancy->Genuine agreement,9,0.7361924913194444
+first5,16,C=0.1,sycophancy->Appropriate emotional support,9,0.8701443142361112
+first5,16,C=0.1,sycophancy->Calibrated hedging,9,0.15199110243055555
+first5,16,C=0.1,sycophancy->Ordinary politeness,9,0.8597276475694444
+first5,16,C=1,sycophancy->sycophancy (off-diagonal),72,0.9063076443142362
+first5,16,C=1,all off-diagonal,182,0.7499986585679945
+first5,16,C=1,sycophancy->Warranted praise,9,0.5343153211805556
+first5,16,C=1,sycophancy->Genuine agreement,9,0.6747775607638888
+first5,16,C=1,sycophancy->Appropriate emotional support,9,0.7998589409722222
+first5,16,C=1,sycophancy->Calibrated hedging,9,0.1311577690972222
+first5,16,C=1,sycophancy->Ordinary politeness,9,0.8648817274305556
+first5,16,C=10,sycophancy->sycophancy (off-diagonal),72,0.907257080078125
+first5,16,C=10,all off-diagonal,182,0.750490964114011
+first5,16,C=10,sycophancy->Warranted praise,9,0.5343153211805556
+first5,16,C=10,sycophancy->Genuine agreement,9,0.6747233072916666
+first5,16,C=10,sycophancy->Appropriate emotional support,9,0.8006727430555556
+first5,16,C=10,sycophancy->Calibrated hedging,9,0.1309136284722222
+first5,16,C=10,sycophancy->Ordinary politeness,9,0.8661024305555556
+first5,16,DIM,sycophancy->sycophancy (off-diagonal),72,0.8206888834635416
+first5,16,DIM,all off-diagonal,182,0.7032001201923077
+first5,16,DIM,sycophancy->Warranted praise,9,0.5100640190972222
+first5,16,DIM,sycophancy->Genuine agreement,9,0.6559787326388888
+first5,16,DIM,sycophancy->Appropriate emotional support,9,0.7965223524305556
+first5,16,DIM,sycophancy->Calibrated hedging,9,0.23057725694444445
+first5,16,DIM,sycophancy->Ordinary politeness,9,0.781982421875
+first5,19,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9152662489149306
+first5,19,C=0.0001,all off-diagonal,182,0.7732416509271978
+first5,19,C=0.0001,sycophancy->Warranted praise,9,0.5985243055555556
+first5,19,C=0.0001,sycophancy->Genuine agreement,9,0.7215711805555556
+first5,19,C=0.0001,sycophancy->Appropriate emotional support,9,0.8746202256944444
+first5,19,C=0.0001,sycophancy->Calibrated hedging,9,0.1863064236111111
+first5,19,C=0.0001,sycophancy->Ordinary politeness,9,0.84765625
+first5,19,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9433966742621528
+first5,19,C=0.001,all off-diagonal,182,0.7871160821600275
+first5,19,C=0.001,sycophancy->Warranted praise,9,0.589111328125
+first5,19,C=0.001,sycophancy->Genuine agreement,9,0.7354329427083334
+first5,19,C=0.001,sycophancy->Appropriate emotional support,9,0.8990885416666666
+first5,19,C=0.001,sycophancy->Calibrated hedging,9,0.171630859375
+first5,19,C=0.001,sycophancy->Ordinary politeness,9,0.8605414496527778
+first5,19,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.95458984375
+first5,19,C=0.01,all off-diagonal,182,0.7933094737293956
+first5,19,C=0.01,sycophancy->Warranted praise,9,0.5907118055555556
+first5,19,C=0.01,sycophancy->Genuine agreement,9,0.7397189670138888
+first5,19,C=0.01,sycophancy->Appropriate emotional support,9,0.9117838541666666
+first5,19,C=0.01,sycophancy->Calibrated hedging,9,0.17293294270833334
+first5,19,C=0.01,sycophancy->Ordinary politeness,9,0.8664279513888888
+first5,19,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.95831298828125
+first5,19,C=0.1,all off-diagonal,182,0.7958635602678571
+first5,19,C=0.1,sycophancy->Warranted praise,9,0.5924479166666666
+first5,19,C=0.1,sycophancy->Genuine agreement,9,0.7386067708333334
+first5,19,C=0.1,sycophancy->Appropriate emotional support,9,0.9204915364583334
+first5,19,C=0.1,sycophancy->Calibrated hedging,9,0.17765299479166666
+first5,19,C=0.1,sycophancy->Ordinary politeness,9,0.8674858940972222
+first5,19,C=1,sycophancy->sycophancy (off-diagonal),72,0.9138658311631944
+first5,19,C=1,all off-diagonal,182,0.7702301360748627
+first5,19,C=1,sycophancy->Warranted praise,9,0.5707736545138888
+first5,19,C=1,sycophancy->Genuine agreement,9,0.709716796875
+first5,19,C=1,sycophancy->Appropriate emotional support,9,0.8727484809027778
+first5,19,C=1,sycophancy->Calibrated hedging,9,0.1382107204861111
+first5,19,C=1,sycophancy->Ordinary politeness,9,0.8685980902777778
+first5,19,C=10,sycophancy->sycophancy (off-diagonal),72,0.9156765407986112
+first5,19,C=10,all off-diagonal,182,0.7711382855425825
+first5,19,C=10,sycophancy->Warranted praise,9,0.5709092881944444
+first5,19,C=10,sycophancy->Genuine agreement,9,0.7099338107638888
+first5,19,C=10,sycophancy->Appropriate emotional support,9,0.8732096354166666
+first5,19,C=10,sycophancy->Calibrated hedging,9,0.1362575954861111
+first5,19,C=10,sycophancy->Ordinary politeness,9,0.8678114149305556
+first5,19,DIM,sycophancy->sycophancy (off-diagonal),72,0.8194240993923612
+first5,19,DIM,all off-diagonal,182,0.7198244870364011
+first5,19,DIM,sycophancy->Warranted praise,9,0.5938042534722222
+first5,19,DIM,sycophancy->Genuine agreement,9,0.6604546440972222
+first5,19,DIM,sycophancy->Appropriate emotional support,9,0.8382975260416666
+first5,19,DIM,sycophancy->Calibrated hedging,9,0.2744140625
+first5,19,DIM,sycophancy->Ordinary politeness,9,0.8033311631944444
+first5,22,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9317118326822916
+first5,22,C=0.0001,all off-diagonal,182,0.7821675394917582
+first5,22,C=0.0001,sycophancy->Warranted praise,9,0.6030815972222222
+first5,22,C=0.0001,sycophancy->Genuine agreement,9,0.7208658854166666
+first5,22,C=0.0001,sycophancy->Appropriate emotional support,9,0.9096950954861112
+first5,22,C=0.0001,sycophancy->Calibrated hedging,9,0.1711154513888889
+first5,22,C=0.0001,sycophancy->Ordinary politeness,9,0.8599446614583334
+first5,22,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9554646809895834
+first5,22,C=0.001,all off-diagonal,182,0.7921437693166209
+first5,22,C=0.001,sycophancy->Warranted praise,9,0.5886501736111112
+first5,22,C=0.001,sycophancy->Genuine agreement,9,0.7294921875
+first5,22,C=0.001,sycophancy->Appropriate emotional support,9,0.9259982638888888
+first5,22,C=0.001,sycophancy->Calibrated hedging,9,0.1466742621527778
+first5,22,C=0.001,sycophancy->Ordinary politeness,9,0.8693033854166666
+first5,22,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9649115668402778
+first5,22,C=0.01,all off-diagonal,182,0.7973471840659341
+first5,22,C=0.01,sycophancy->Warranted praise,9,0.5913628472222222
+first5,22,C=0.01,sycophancy->Genuine agreement,9,0.734619140625
+first5,22,C=0.01,sycophancy->Appropriate emotional support,9,0.9414876302083334
+first5,22,C=0.01,sycophancy->Calibrated hedging,9,0.14561631944444445
+first5,22,C=0.01,sycophancy->Ordinary politeness,9,0.8754069010416666
+first5,22,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9675157335069444
+first5,22,C=0.1,all off-diagonal,182,0.7999052949004121
+first5,22,C=0.1,sycophancy->Warranted praise,9,0.5930718315972222
+first5,22,C=0.1,sycophancy->Genuine agreement,9,0.733154296875
+first5,22,C=0.1,sycophancy->Appropriate emotional support,9,0.9541015625
+first5,22,C=0.1,sycophancy->Calibrated hedging,9,0.1486545138888889
+first5,22,C=0.1,sycophancy->Ordinary politeness,9,0.8768988715277778
+first5,22,C=1,sycophancy->sycophancy (off-diagonal),72,0.9378763834635416
+first5,22,C=1,all off-diagonal,182,0.7839167668269231
+first5,22,C=1,sycophancy->Warranted praise,9,0.5712076822916666
+first5,22,C=1,sycophancy->Genuine agreement,9,0.7173394097222222
+first5,22,C=1,sycophancy->Appropriate emotional support,9,0.9139539930555556
+first5,22,C=1,sycophancy->Calibrated hedging,9,0.11577690972222222
+first5,22,C=1,sycophancy->Ordinary politeness,9,0.8741861979166666
+first5,22,C=10,sycophancy->sycophancy (off-diagonal),72,0.9390665690104166
+first5,22,C=10,all off-diagonal,182,0.7849697909512363
+first5,22,C=10,sycophancy->Warranted praise,9,0.5763075086805556
+first5,22,C=10,sycophancy->Genuine agreement,9,0.7230902777777778
+first5,22,C=10,sycophancy->Appropriate emotional support,9,0.9142795138888888
+first5,22,C=10,sycophancy->Calibrated hedging,9,0.1149631076388889
+first5,22,C=10,sycophancy->Ordinary politeness,9,0.8739691840277778
+first5,22,DIM,sycophancy->sycophancy (off-diagonal),72,0.83587646484375
+first5,22,DIM,all off-diagonal,182,0.733528556404533
+first5,22,DIM,sycophancy->Warranted praise,9,0.6241590711805556
+first5,22,DIM,sycophancy->Genuine agreement,9,0.6514756944444444
+first5,22,DIM,sycophancy->Appropriate emotional support,9,0.8837619357638888
+first5,22,DIM,sycophancy->Calibrated hedging,9,0.2817925347222222
+first5,22,DIM,sycophancy->Ordinary politeness,9,0.8265787760416666
+first5,26,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9438307020399306
+first5,26,C=0.0001,all off-diagonal,182,0.7922242552369505
+first5,26,C=0.0001,sycophancy->Warranted praise,9,0.617919921875
+first5,26,C=0.0001,sycophancy->Genuine agreement,9,0.7279188368055556
+first5,26,C=0.0001,sycophancy->Appropriate emotional support,9,0.9366319444444444
+first5,26,C=0.0001,sycophancy->Calibrated hedging,9,0.1606716579861111
+first5,26,C=0.0001,sycophancy->Ordinary politeness,9,0.8643391927083334
+first5,26,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9631686740451388
+first5,26,C=0.001,all off-diagonal,182,0.8008912474244505
+first5,26,C=0.001,sycophancy->Warranted praise,9,0.6041666666666666
+first5,26,C=0.001,sycophancy->Genuine agreement,9,0.7327202690972222
+first5,26,C=0.001,sycophancy->Appropriate emotional support,9,0.9556477864583334
+first5,26,C=0.001,sycophancy->Calibrated hedging,9,0.140380859375
+first5,26,C=0.001,sycophancy->Ordinary politeness,9,0.8750542534722222
+first5,26,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9704047309027778
+first5,26,C=0.01,all off-diagonal,182,0.8048967633928571
+first5,26,C=0.01,sycophancy->Warranted praise,9,0.6091037326388888
+first5,26,C=0.01,sycophancy->Genuine agreement,9,0.7355143229166666
+first5,26,C=0.01,sycophancy->Appropriate emotional support,9,0.9701063368055556
+first5,26,C=0.01,sycophancy->Calibrated hedging,9,0.1377224392361111
+first5,26,C=0.01,sycophancy->Ordinary politeness,9,0.8786349826388888
+first5,26,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9718594021267362
+first5,26,C=0.1,all off-diagonal,182,0.8062019767342034
+first5,26,C=0.1,sycophancy->Warranted praise,9,0.6096733940972222
+first5,26,C=0.1,sycophancy->Genuine agreement,9,0.7347819010416666
+first5,26,C=0.1,sycophancy->Appropriate emotional support,9,0.9747721354166666
+first5,26,C=0.1,sycophancy->Calibrated hedging,9,0.14417860243055555
+first5,26,C=0.1,sycophancy->Ordinary politeness,9,0.8780381944444444
+first5,26,C=1,sycophancy->sycophancy (off-diagonal),72,0.9423251681857638
+first5,26,C=1,all off-diagonal,182,0.7913456172733516
+first5,26,C=1,sycophancy->Warranted praise,9,0.5663248697916666
+first5,26,C=1,sycophancy->Genuine agreement,9,0.7118326822916666
+first5,26,C=1,sycophancy->Appropriate emotional support,9,0.9427083333333334
+first5,26,C=1,sycophancy->Calibrated hedging,9,0.12779405381944445
+first5,26,C=1,sycophancy->Ordinary politeness,9,0.8658854166666666
+first5,26,C=10,sycophancy->sycophancy (off-diagonal),72,0.9447665744357638
+first5,26,C=10,all off-diagonal,182,0.7926991221668956
+first5,26,C=10,sycophancy->Warranted praise,9,0.5707465277777778
+first5,26,C=10,sycophancy->Genuine agreement,9,0.7134060329861112
+first5,26,C=10,sycophancy->Appropriate emotional support,9,0.9456922743055556
+first5,26,C=10,sycophancy->Calibrated hedging,9,0.1262478298611111
+first5,26,C=10,sycophancy->Ordinary politeness,9,0.8638237847222222
+first5,26,DIM,sycophancy->sycophancy (off-diagonal),72,0.8470187717013888
+first5,26,DIM,all off-diagonal,182,0.7451466990041209
+first5,26,DIM,sycophancy->Warranted praise,9,0.6655815972222222
+first5,26,DIM,sycophancy->Genuine agreement,9,0.6620008680555556
+first5,26,DIM,sycophancy->Appropriate emotional support,9,0.9068196614583334
+first5,26,DIM,sycophancy->Calibrated hedging,9,0.2791612413194444
+first5,26,DIM,sycophancy->Ordinary politeness,9,0.8407931857638888
+first5,29,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9469875759548612
+first5,29,C=0.0001,all off-diagonal,182,0.7930049686641484
+first5,29,C=0.0001,sycophancy->Warranted praise,9,0.6207682291666666
+first5,29,C=0.0001,sycophancy->Genuine agreement,9,0.7321506076388888
+first5,29,C=0.0001,sycophancy->Appropriate emotional support,9,0.9463975694444444
+first5,29,C=0.0001,sycophancy->Calibrated hedging,9,0.1515842013888889
+first5,29,C=0.0001,sycophancy->Ordinary politeness,9,0.8611111111111112
+first5,29,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9660678439670138
+first5,29,C=0.001,all off-diagonal,182,0.8020918290693682
+first5,29,C=0.001,sycophancy->Warranted praise,9,0.6044379340277778
+first5,29,C=0.001,sycophancy->Genuine agreement,9,0.7390950520833334
+first5,29,C=0.001,sycophancy->Appropriate emotional support,9,0.9642198350694444
+first5,29,C=0.001,sycophancy->Calibrated hedging,9,0.1306423611111111
+first5,29,C=0.001,sycophancy->Ordinary politeness,9,0.8739149305555556
+first5,29,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9734056260850694
+first5,29,C=0.01,all off-diagonal,182,0.8062851455185439
+first5,29,C=0.01,sycophancy->Warranted praise,9,0.6077473958333334
+first5,29,C=0.01,sycophancy->Genuine agreement,9,0.7421332465277778
+first5,29,C=0.01,sycophancy->Appropriate emotional support,9,0.9769694010416666
+first5,29,C=0.01,sycophancy->Calibrated hedging,9,0.12657335069444445
+first5,29,C=0.01,sycophancy->Ordinary politeness,9,0.8812120225694444
+first5,29,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9754909939236112
+first5,29,C=0.1,all off-diagonal,182,0.8083147321428571
+first5,29,C=0.1,sycophancy->Warranted praise,9,0.6097276475694444
+first5,29,C=0.1,sycophancy->Genuine agreement,9,0.7435709635416666
+first5,29,C=0.1,sycophancy->Appropriate emotional support,9,0.9836968315972222
+first5,29,C=0.1,sycophancy->Calibrated hedging,9,0.1322699652777778
+first5,29,C=0.1,sycophancy->Ordinary politeness,9,0.8846299913194444
+first5,29,C=1,sycophancy->sycophancy (off-diagonal),72,0.9533894856770834
+first5,29,C=1,all off-diagonal,182,0.7976114461710165
+first5,29,C=1,sycophancy->Warranted praise,9,0.5660536024305556
+first5,29,C=1,sycophancy->Genuine agreement,9,0.7177734375
+first5,29,C=1,sycophancy->Appropriate emotional support,9,0.9874131944444444
+first5,29,C=1,sycophancy->Calibrated hedging,9,0.12733289930555555
+first5,29,C=1,sycophancy->Ordinary politeness,9,0.8755154079861112
+first5,29,C=10,sycophancy->sycophancy (off-diagonal),72,0.9554951985677084
+first5,29,C=10,all off-diagonal,182,0.7986000815590659
+first5,29,C=10,sycophancy->Warranted praise,9,0.5656195746527778
+first5,29,C=10,sycophancy->Genuine agreement,9,0.7184787326388888
+first5,29,C=10,sycophancy->Appropriate emotional support,9,0.9899631076388888
+first5,29,C=10,sycophancy->Calibrated hedging,9,0.12339952256944445
+first5,29,C=10,sycophancy->Ordinary politeness,9,0.8770616319444444
+first5,29,DIM,sycophancy->sycophancy (off-diagonal),72,0.8634711371527778
+first5,29,DIM,all off-diagonal,182,0.752332750257555
+first5,29,DIM,sycophancy->Warranted praise,9,0.6699761284722222
+first5,29,DIM,sycophancy->Genuine agreement,9,0.6865234375
+first5,29,DIM,sycophancy->Appropriate emotional support,9,0.9266221788194444
+first5,29,DIM,sycophancy->Calibrated hedging,9,0.24430338541666666
+first5,29,DIM,sycophancy->Ordinary politeness,9,0.8395453559027778
+response,3,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9285820855034722
+response,3,C=0.0001,all off-diagonal,182,0.7760452438186813
+response,3,C=0.0001,sycophancy->Warranted praise,9,0.72265625
+response,3,C=0.0001,sycophancy->Genuine agreement,9,0.6005045572916666
+response,3,C=0.0001,sycophancy->Appropriate emotional support,9,0.963134765625
+response,3,C=0.0001,sycophancy->Calibrated hedging,9,0.19775390625
+response,3,C=0.0001,sycophancy->Ordinary politeness,9,0.8494737413194444
+response,3,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9281989203559028
+response,3,C=0.001,all off-diagonal,182,0.7691341861263736
+response,3,C=0.001,sycophancy->Warranted praise,9,0.6456705729166666
+response,3,C=0.001,sycophancy->Genuine agreement,9,0.61767578125
+response,3,C=0.001,sycophancy->Appropriate emotional support,9,0.938720703125
+response,3,C=0.001,sycophancy->Calibrated hedging,9,0.1701117621527778
+response,3,C=0.001,sycophancy->Ordinary politeness,9,0.8286675347222222
+response,3,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9248725043402778
+response,3,C=0.01,all off-diagonal,182,0.7633271269745879
+response,3,C=0.01,sycophancy->Warranted praise,9,0.6046549479166666
+response,3,C=0.01,sycophancy->Genuine agreement,9,0.6172417534722222
+response,3,C=0.01,sycophancy->Appropriate emotional support,9,0.9165581597222222
+response,3,C=0.01,sycophancy->Calibrated hedging,9,0.1635199652777778
+response,3,C=0.01,sycophancy->Ordinary politeness,9,0.8183322482638888
+response,3,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9224277072482638
+response,3,C=0.1,all off-diagonal,182,0.7605503627232143
+response,3,C=0.1,sycophancy->Warranted praise,9,0.5875922309027778
+response,3,C=0.1,sycophancy->Genuine agreement,9,0.6151529947916666
+response,3,C=0.1,sycophancy->Appropriate emotional support,9,0.9038357204861112
+response,3,C=0.1,sycophancy->Calibrated hedging,9,0.16395399305555555
+response,3,C=0.1,sycophancy->Ordinary politeness,9,0.810791015625
+response,3,C=1,sycophancy->sycophancy (off-diagonal),72,0.9153340657552084
+response,3,C=1,all off-diagonal,182,0.757326901614011
+response,3,C=1,sycophancy->Warranted praise,9,0.5860188802083334
+response,3,C=1,sycophancy->Genuine agreement,9,0.6029188368055556
+response,3,C=1,sycophancy->Appropriate emotional support,9,0.8910047743055556
+response,3,C=1,sycophancy->Calibrated hedging,9,0.1860622829861111
+response,3,C=1,sycophancy->Ordinary politeness,9,0.8056640625
+response,3,C=10,sycophancy->sycophancy (off-diagonal),72,0.9121059841579862
+response,3,C=10,all off-diagonal,182,0.7549418355082418
+response,3,C=10,sycophancy->Warranted praise,9,0.58544921875
+response,3,C=10,sycophancy->Genuine agreement,9,0.6052517361111112
+response,3,C=10,sycophancy->Appropriate emotional support,9,0.8830023871527778
+response,3,C=10,sycophancy->Calibrated hedging,9,0.1864691840277778
+response,3,C=10,sycophancy->Ordinary politeness,9,0.8068305121527778
+response,3,DIM,sycophancy->sycophancy (off-diagonal),72,0.9207424587673612
+response,3,DIM,all off-diagonal,182,0.7718076601133241
+response,3,DIM,sycophancy->Warranted praise,9,0.7859700520833334
+response,3,DIM,sycophancy->Genuine agreement,9,0.6075846354166666
+response,3,DIM,sycophancy->Appropriate emotional support,9,0.9831000434027778
+response,3,DIM,sycophancy->Calibrated hedging,9,0.2016330295138889
+response,3,DIM,sycophancy->Ordinary politeness,9,0.8770073784722222
+response,6,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9315965440538194
+response,6,C=0.0001,all off-diagonal,182,0.7775275261847527
+response,6,C=0.0001,sycophancy->Warranted praise,9,0.6856282552083334
+response,6,C=0.0001,sycophancy->Genuine agreement,9,0.6000162760416666
+response,6,C=0.0001,sycophancy->Appropriate emotional support,9,0.9485134548611112
+response,6,C=0.0001,sycophancy->Calibrated hedging,9,0.2261284722222222
+response,6,C=0.0001,sycophancy->Ordinary politeness,9,0.8119032118055556
+response,6,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9320475260416666
+response,6,C=0.001,all off-diagonal,182,0.7723281357314561
+response,6,C=0.001,sycophancy->Warranted praise,9,0.6121690538194444
+response,6,C=0.001,sycophancy->Genuine agreement,9,0.61669921875
+response,6,C=0.001,sycophancy->Appropriate emotional support,9,0.9297960069444444
+response,6,C=0.001,sycophancy->Calibrated hedging,9,0.19645182291666666
+response,6,C=0.001,sycophancy->Ordinary politeness,9,0.8196343315972222
+response,6,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9283481174045138
+response,6,C=0.01,all off-diagonal,182,0.7671555739182693
+response,6,C=0.01,sycophancy->Warranted praise,9,0.5703125
+response,6,C=0.01,sycophancy->Genuine agreement,9,0.6250271267361112
+response,6,C=0.01,sycophancy->Appropriate emotional support,9,0.9121907552083334
+response,6,C=0.01,sycophancy->Calibrated hedging,9,0.1936306423611111
+response,6,C=0.01,sycophancy->Ordinary politeness,9,0.8237575954861112
+response,6,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9248114691840278
+response,6,C=0.1,all off-diagonal,182,0.7648805052369505
+response,6,C=0.1,sycophancy->Warranted praise,9,0.5517035590277778
+response,6,C=0.1,sycophancy->Genuine agreement,9,0.6266818576388888
+response,6,C=0.1,sycophancy->Appropriate emotional support,9,0.9015028211805556
+response,6,C=0.1,sycophancy->Calibrated hedging,9,0.1985134548611111
+response,6,C=0.1,sycophancy->Ordinary politeness,9,0.8253309461805556
+response,6,C=1,sycophancy->sycophancy (off-diagonal),72,0.9173923068576388
+response,6,C=1,all off-diagonal,182,0.7616288740556318
+response,6,C=1,sycophancy->Warranted praise,9,0.5520290798611112
+response,6,C=1,sycophancy->Genuine agreement,9,0.6131727430555556
+response,6,C=1,sycophancy->Appropriate emotional support,9,0.89208984375
+response,6,C=1,sycophancy->Calibrated hedging,9,0.21986219618055555
+response,6,C=1,sycophancy->Ordinary politeness,9,0.8182779947916666
+response,6,C=10,sycophancy->sycophancy (off-diagonal),72,0.9126790364583334
+response,6,C=10,all off-diagonal,182,0.7583839500343407
+response,6,C=10,sycophancy->Warranted praise,9,0.5449761284722222
+response,6,C=10,sycophancy->Genuine agreement,9,0.6126844618055556
+response,6,C=10,sycophancy->Appropriate emotional support,9,0.8824598524305556
+response,6,C=10,sycophancy->Calibrated hedging,9,0.22013346354166666
+response,6,C=10,sycophancy->Ordinary politeness,9,0.8184678819444444
+response,6,DIM,sycophancy->sycophancy (off-diagonal),72,0.9233907063802084
+response,6,DIM,all off-diagonal,182,0.7718143672733516
+response,6,DIM,sycophancy->Warranted praise,9,0.7733018663194444
+response,6,DIM,sycophancy->Genuine agreement,9,0.6111382378472222
+response,6,DIM,sycophancy->Appropriate emotional support,9,0.9705403645833334
+response,6,DIM,sycophancy->Calibrated hedging,9,0.23291015625
+response,6,DIM,sycophancy->Ordinary politeness,9,0.8272840711805556
+response,10,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.94598388671875
+response,10,C=0.0001,all off-diagonal,182,0.7689691899896978
+response,10,C=0.0001,sycophancy->Warranted praise,9,0.60400390625
+response,10,C=0.0001,sycophancy->Genuine agreement,9,0.60595703125
+response,10,C=0.0001,sycophancy->Appropriate emotional support,9,0.9337293836805556
+response,10,C=0.0001,sycophancy->Calibrated hedging,9,0.14417860243055555
+response,10,C=0.0001,sycophancy->Ordinary politeness,9,0.7518988715277778
+response,10,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9501444498697916
+response,10,C=0.001,all off-diagonal,182,0.7653365921188187
+response,10,C=0.001,sycophancy->Warranted praise,9,0.5356987847222222
+response,10,C=0.001,sycophancy->Genuine agreement,9,0.6168077256944444
+response,10,C=0.001,sycophancy->Appropriate emotional support,9,0.9229058159722222
+response,10,C=0.001,sycophancy->Calibrated hedging,9,0.10633680555555555
+response,10,C=0.001,sycophancy->Ordinary politeness,9,0.7459038628472222
+response,10,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9509819878472222
+response,10,C=0.01,all off-diagonal,182,0.7608065762362637
+response,10,C=0.01,sycophancy->Warranted praise,9,0.4923231336805556
+response,10,C=0.01,sycophancy->Genuine agreement,9,0.6157497829861112
+response,10,C=0.01,sycophancy->Appropriate emotional support,9,0.9131401909722222
+response,10,C=0.01,sycophancy->Calibrated hedging,9,0.09464518229166667
+response,10,C=0.01,sycophancy->Ordinary politeness,9,0.7283257378472222
+response,10,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.950103759765625
+response,10,C=0.1,all off-diagonal,182,0.7591740534855769
+response,10,C=0.1,sycophancy->Warranted praise,9,0.4711371527777778
+response,10,C=0.1,sycophancy->Genuine agreement,9,0.6154242621527778
+response,10,C=0.1,sycophancy->Appropriate emotional support,9,0.9052191840277778
+response,10,C=0.1,sycophancy->Calibrated hedging,9,0.0995822482638889
+response,10,C=0.1,sycophancy->Ordinary politeness,9,0.7277560763888888
+response,10,C=1,sycophancy->sycophancy (off-diagonal),72,0.9443698459201388
+response,10,C=1,all off-diagonal,182,0.7572410499656593
+response,10,C=1,sycophancy->Warranted praise,9,0.4922960069444444
+response,10,C=1,sycophancy->Genuine agreement,9,0.5914713541666666
+response,10,C=1,sycophancy->Appropriate emotional support,9,0.9115939670138888
+response,10,C=1,sycophancy->Calibrated hedging,9,0.11705186631944445
+response,10,C=1,sycophancy->Ordinary politeness,9,0.7203504774305556
+response,10,C=10,sycophancy->sycophancy (off-diagonal),72,0.9435221354166666
+response,10,C=10,all off-diagonal,182,0.7555951128949175
+response,10,C=10,sycophancy->Warranted praise,9,0.4915364583333333
+response,10,C=10,sycophancy->Genuine agreement,9,0.5911458333333334
+response,10,C=10,sycophancy->Appropriate emotional support,9,0.9081759982638888
+response,10,C=10,sycophancy->Calibrated hedging,9,0.11577690972222222
+response,10,C=10,sycophancy->Ordinary politeness,9,0.723876953125
+response,10,DIM,sycophancy->sycophancy (off-diagonal),72,0.9295315212673612
+response,10,DIM,all off-diagonal,182,0.764152107657967
+response,10,DIM,sycophancy->Warranted praise,9,0.7356499565972222
+response,10,DIM,sycophancy->Genuine agreement,9,0.5919867621527778
+response,10,DIM,sycophancy->Appropriate emotional support,9,0.9525010850694444
+response,10,DIM,sycophancy->Calibrated hedging,9,0.2169867621527778
+response,10,DIM,sycophancy->Ordinary politeness,9,0.7671983506944444
+response,13,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9680379231770834
+response,13,C=0.0001,all off-diagonal,182,0.7619427691449175
+response,13,C=0.0001,sycophancy->Warranted praise,9,0.5450032552083334
+response,13,C=0.0001,sycophancy->Genuine agreement,9,0.5581325954861112
+response,13,C=0.0001,sycophancy->Appropriate emotional support,9,0.9363606770833334
+response,13,C=0.0001,sycophancy->Calibrated hedging,9,0.057427300347222224
+response,13,C=0.0001,sycophancy->Ordinary politeness,9,0.8090006510416666
+response,13,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9719170464409722
+response,13,C=0.001,all off-diagonal,182,0.7625075120192307
+response,13,C=0.001,sycophancy->Warranted praise,9,0.5080295138888888
+response,13,C=0.001,sycophancy->Genuine agreement,9,0.5646158854166666
+response,13,C=0.001,sycophancy->Appropriate emotional support,9,0.9239366319444444
+response,13,C=0.001,sycophancy->Calibrated hedging,9,0.043999565972222224
+response,13,C=0.001,sycophancy->Ordinary politeness,9,0.7981228298611112
+response,13,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9734225802951388
+response,13,C=0.01,all off-diagonal,182,0.7613055889423077
+response,13,C=0.01,sycophancy->Warranted praise,9,0.4820963541666667
+response,13,C=0.01,sycophancy->Genuine agreement,9,0.5602484809027778
+response,13,C=0.01,sycophancy->Appropriate emotional support,9,0.9120551215277778
+response,13,C=0.01,sycophancy->Calibrated hedging,9,0.04039171006944445
+response,13,C=0.01,sycophancy->Ordinary politeness,9,0.7855088975694444
+response,13,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9723612467447916
+response,13,C=0.1,all off-diagonal,182,0.7607891376201923
+response,13,C=0.1,sycophancy->Warranted praise,9,0.4657931857638889
+response,13,C=0.1,sycophancy->Genuine agreement,9,0.5575086805555556
+response,13,C=0.1,sycophancy->Appropriate emotional support,9,0.8991427951388888
+response,13,C=0.1,sycophancy->Calibrated hedging,9,0.047526041666666664
+response,13,C=0.1,sycophancy->Ordinary politeness,9,0.7837456597222222
+response,13,C=1,sycophancy->sycophancy (off-diagonal),72,0.9660000271267362
+response,13,C=1,all off-diagonal,182,0.761116447029533
+response,13,C=1,sycophancy->Warranted praise,9,0.4946831597222222
+response,13,C=1,sycophancy->Genuine agreement,9,0.5442979600694444
+response,13,C=1,sycophancy->Appropriate emotional support,9,0.9231499565972222
+response,13,C=1,sycophancy->Calibrated hedging,9,0.068115234375
+response,13,C=1,sycophancy->Ordinary politeness,9,0.7943793402777778
+response,13,C=10,sycophancy->sycophancy (off-diagonal),72,0.9658643934461806
+response,13,C=10,all off-diagonal,182,0.7598876953125
+response,13,C=10,sycophancy->Warranted praise,9,0.4914279513888889
+response,13,C=10,sycophancy->Genuine agreement,9,0.5399034288194444
+response,13,C=10,sycophancy->Appropriate emotional support,9,0.9208441840277778
+response,13,C=10,sycophancy->Calibrated hedging,9,0.067626953125
+response,13,C=10,sycophancy->Ordinary politeness,9,0.7809516059027778
+response,13,DIM,sycophancy->sycophancy (off-diagonal),72,0.9502156575520834
+response,13,DIM,all off-diagonal,182,0.7582457825377747
+response,13,DIM,sycophancy->Warranted praise,9,0.6563585069444444
+response,13,DIM,sycophancy->Genuine agreement,9,0.5461154513888888
+response,13,DIM,sycophancy->Appropriate emotional support,9,0.9522569444444444
+response,13,DIM,sycophancy->Calibrated hedging,9,0.1304253472222222
+response,13,DIM,sycophancy->Ordinary politeness,9,0.8307834201388888
+response,16,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9717949761284722
+response,16,C=0.0001,all off-diagonal,182,0.7832876352163461
+response,16,C=0.0001,sycophancy->Warranted praise,9,0.6276584201388888
+response,16,C=0.0001,sycophancy->Genuine agreement,9,0.5769856770833334
+response,16,C=0.0001,sycophancy->Appropriate emotional support,9,0.9753960503472222
+response,16,C=0.0001,sycophancy->Calibrated hedging,9,0.06952582465277778
+response,16,C=0.0001,sycophancy->Ordinary politeness,9,0.91845703125
+response,16,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.974456787109375
+response,16,C=0.001,all off-diagonal,182,0.7845351669814561
+response,16,C=0.001,sycophancy->Warranted praise,9,0.6062825520833334
+response,16,C=0.001,sycophancy->Genuine agreement,9,0.5970323350694444
+response,16,C=0.001,sycophancy->Appropriate emotional support,9,0.9699435763888888
+response,16,C=0.001,sycophancy->Calibrated hedging,9,0.05032009548611111
+response,16,C=0.001,sycophancy->Ordinary politeness,9,0.9104275173611112
+response,16,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9750434027777778
+response,16,C=0.01,all off-diagonal,182,0.7839207911229396
+response,16,C=0.01,sycophancy->Warranted praise,9,0.5930718315972222
+response,16,C=0.01,sycophancy->Genuine agreement,9,0.6044650607638888
+response,16,C=0.01,sycophancy->Appropriate emotional support,9,0.9612358940972222
+response,16,C=0.01,sycophancy->Calibrated hedging,9,0.04210069444444445
+response,16,C=0.01,sycophancy->Ordinary politeness,9,0.8994954427083334
+response,16,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9736735026041666
+response,16,C=0.1,all off-diagonal,182,0.7828476455185439
+response,16,C=0.1,sycophancy->Warranted praise,9,0.5846082899305556
+response,16,C=0.1,sycophancy->Genuine agreement,9,0.6034071180555556
+response,16,C=0.1,sycophancy->Appropriate emotional support,9,0.9512532552083334
+response,16,C=0.1,sycophancy->Calibrated hedging,9,0.04188368055555555
+response,16,C=0.1,sycophancy->Ordinary politeness,9,0.8978949652777778
+response,16,C=1,sycophancy->sycophancy (off-diagonal),72,0.969818115234375
+response,16,C=1,all off-diagonal,182,0.7865888993818682
+response,16,C=1,sycophancy->Warranted praise,9,0.6042209201388888
+response,16,C=1,sycophancy->Genuine agreement,9,0.585693359375
+response,16,C=1,sycophancy->Appropriate emotional support,9,0.9696180555555556
+response,16,C=1,sycophancy->Calibrated hedging,9,0.08355034722222222
+response,16,C=1,sycophancy->Ordinary politeness,9,0.9158528645833334
+response,16,C=10,sycophancy->sycophancy (off-diagonal),72,0.9692654079861112
+response,16,C=10,all off-diagonal,182,0.7863836602850275
+response,16,C=10,sycophancy->Warranted praise,9,0.6021864149305556
+response,16,C=10,sycophancy->Genuine agreement,9,0.5853407118055556
+response,16,C=10,sycophancy->Appropriate emotional support,9,0.9690483940972222
+response,16,C=10,sycophancy->Calibrated hedging,9,0.08330620659722222
+response,16,C=10,sycophancy->Ordinary politeness,9,0.9153645833333334
+response,16,DIM,sycophancy->sycophancy (off-diagonal),72,0.9565090603298612
+response,16,DIM,all off-diagonal,182,0.7701255043784341
+response,16,DIM,sycophancy->Warranted praise,9,0.6807725694444444
+response,16,DIM,sycophancy->Genuine agreement,9,0.5603841145833334
+response,16,DIM,sycophancy->Appropriate emotional support,9,0.9747721354166666
+response,16,DIM,sycophancy->Calibrated hedging,9,0.12025282118055555
+response,16,DIM,sycophancy->Ordinary politeness,9,0.9085286458333334
+response,19,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.965728759765625
+response,19,C=0.0001,all off-diagonal,182,0.7949943123282966
+response,19,C=0.0001,sycophancy->Warranted praise,9,0.6924641927083334
+response,19,C=0.0001,sycophancy->Genuine agreement,9,0.6141493055555556
+response,19,C=0.0001,sycophancy->Appropriate emotional support,9,0.9764811197916666
+response,19,C=0.0001,sycophancy->Calibrated hedging,9,0.1000705295138889
+response,19,C=0.0001,sycophancy->Ordinary politeness,9,0.8888888888888888
+response,19,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9662102593315972
+response,19,C=0.001,all off-diagonal,182,0.7959199004120879
+response,19,C=0.001,sycophancy->Warranted praise,9,0.6718478732638888
+response,19,C=0.001,sycophancy->Genuine agreement,9,0.6308322482638888
+response,19,C=0.001,sycophancy->Appropriate emotional support,9,0.9711642795138888
+response,19,C=0.001,sycophancy->Calibrated hedging,9,0.08317057291666667
+response,19,C=0.001,sycophancy->Ordinary politeness,9,0.8828396267361112
+response,19,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9642266167534722
+response,19,C=0.01,all off-diagonal,182,0.7954691792582418
+response,19,C=0.01,sycophancy->Warranted praise,9,0.6580132378472222
+response,19,C=0.01,sycophancy->Genuine agreement,9,0.6350640190972222
+response,19,C=0.01,sycophancy->Appropriate emotional support,9,0.9626736111111112
+response,19,C=0.01,sycophancy->Calibrated hedging,9,0.07948133680555555
+response,19,C=0.01,sycophancy->Ordinary politeness,9,0.8799099392361112
+response,19,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9595065646701388
+response,19,C=0.1,all off-diagonal,182,0.7941062843406593
+response,19,C=0.1,sycophancy->Warranted praise,9,0.6487087673611112
+response,19,C=0.1,sycophancy->Genuine agreement,9,0.6329210069444444
+response,19,C=0.1,sycophancy->Appropriate emotional support,9,0.9513346354166666
+response,19,C=0.1,sycophancy->Calibrated hedging,9,0.0835232204861111
+response,19,C=0.1,sycophancy->Ordinary politeness,9,0.8792860243055556
+response,19,C=1,sycophancy->sycophancy (off-diagonal),72,0.9617682562934028
+response,19,C=1,all off-diagonal,182,0.7961573338770604
+response,19,C=1,sycophancy->Warranted praise,9,0.6672092013888888
+response,19,C=1,sycophancy->Genuine agreement,9,0.6198459201388888
+response,19,C=1,sycophancy->Appropriate emotional support,9,0.968505859375
+response,19,C=1,sycophancy->Calibrated hedging,9,0.10799153645833333
+response,19,C=1,sycophancy->Ordinary politeness,9,0.883544921875
+response,19,C=10,sycophancy->sycophancy (off-diagonal),72,0.9611409505208334
+response,19,C=10,all off-diagonal,182,0.7965047647664835
+response,19,C=10,sycophancy->Warranted praise,9,0.6652560763888888
+response,19,C=10,sycophancy->Genuine agreement,9,0.6176486545138888
+response,19,C=10,sycophancy->Appropriate emotional support,9,0.9679633246527778
+response,19,C=10,sycophancy->Calibrated hedging,9,0.1076931423611111
+response,19,C=10,sycophancy->Ordinary politeness,9,0.883544921875
+response,19,DIM,sycophancy->sycophancy (off-diagonal),72,0.9559800889756944
+response,19,DIM,all off-diagonal,182,0.7858551360748627
+response,19,DIM,sycophancy->Warranted praise,9,0.73046875
+response,19,DIM,sycophancy->Genuine agreement,9,0.5992024739583334
+response,19,DIM,sycophancy->Appropriate emotional support,9,0.9832899305555556
+response,19,DIM,sycophancy->Calibrated hedging,9,0.14111328125
+response,19,DIM,sycophancy->Ordinary politeness,9,0.912109375
+response,22,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9661424424913194
+response,22,C=0.0001,all off-diagonal,182,0.796256599845467
+response,22,C=0.0001,sycophancy->Warranted praise,9,0.7018229166666666
+response,22,C=0.0001,sycophancy->Genuine agreement,9,0.6276041666666666
+response,22,C=0.0001,sycophancy->Appropriate emotional support,9,0.9837782118055556
+response,22,C=0.0001,sycophancy->Calibrated hedging,9,0.1008029513888889
+response,22,C=0.0001,sycophancy->Ordinary politeness,9,0.9005533854166666
+response,22,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9676140679253472
+response,22,C=0.001,all off-diagonal,182,0.7961881868131868
+response,22,C=0.001,sycophancy->Warranted praise,9,0.6720106336805556
+response,22,C=0.001,sycophancy->Genuine agreement,9,0.6418185763888888
+response,22,C=0.001,sycophancy->Appropriate emotional support,9,0.9801432291666666
+response,22,C=0.001,sycophancy->Calibrated hedging,9,0.08045789930555555
+response,22,C=0.001,sycophancy->Ordinary politeness,9,0.8912217881944444
+response,22,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9665730794270834
+response,22,C=0.01,all off-diagonal,182,0.7949473622081044
+response,22,C=0.01,sycophancy->Warranted praise,9,0.6521809895833334
+response,22,C=0.01,sycophancy->Genuine agreement,9,0.643798828125
+response,22,C=0.01,sycophancy->Appropriate emotional support,9,0.9736328125
+response,22,C=0.01,sycophancy->Calibrated hedging,9,0.073974609375
+response,22,C=0.01,sycophancy->Ordinary politeness,9,0.885986328125
+response,22,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.96343994140625
+response,22,C=0.1,all off-diagonal,182,0.7937883649553571
+response,22,C=0.1,sycophancy->Warranted praise,9,0.641357421875
+response,22,C=0.1,sycophancy->Genuine agreement,9,0.6374240451388888
+response,22,C=0.1,sycophancy->Appropriate emotional support,9,0.9661187065972222
+response,22,C=0.1,sycophancy->Calibrated hedging,9,0.07728407118055555
+response,22,C=0.1,sycophancy->Ordinary politeness,9,0.8833821614583334
+response,22,C=1,sycophancy->sycophancy (off-diagonal),72,0.9612901475694444
+response,22,C=1,all off-diagonal,182,0.793199476304945
+response,22,C=1,sycophancy->Warranted praise,9,0.6626519097222222
+response,22,C=1,sycophancy->Genuine agreement,9,0.6220431857638888
+response,22,C=1,sycophancy->Appropriate emotional support,9,0.9752332899305556
+response,22,C=1,sycophancy->Calibrated hedging,9,0.10652669270833333
+response,22,C=1,sycophancy->Ordinary politeness,9,0.89599609375
+response,22,C=10,sycophancy->sycophancy (off-diagonal),72,0.9588250054253472
+response,22,C=10,all off-diagonal,182,0.7910907451923077
+response,22,C=10,sycophancy->Warranted praise,9,0.6565483940972222
+response,22,C=10,sycophancy->Genuine agreement,9,0.6130642361111112
+response,22,C=10,sycophancy->Appropriate emotional support,9,0.9714898003472222
+response,22,C=10,sycophancy->Calibrated hedging,9,0.10356987847222222
+response,22,C=10,sycophancy->Ordinary politeness,9,0.8928765190972222
+response,22,DIM,sycophancy->sycophancy (off-diagonal),72,0.9564480251736112
+response,22,DIM,all off-diagonal,182,0.7919626759958791
+response,22,DIM,sycophancy->Warranted praise,9,0.7801378038194444
+response,22,DIM,sycophancy->Genuine agreement,9,0.6222873263888888
+response,22,DIM,sycophancy->Appropriate emotional support,9,0.9908582899305556
+response,22,DIM,sycophancy->Calibrated hedging,9,0.1259223090277778
+response,22,DIM,sycophancy->Ordinary politeness,9,0.9386664496527778
+response,26,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.964569091796875
+response,26,C=0.0001,all off-diagonal,182,0.7968360984718407
+response,26,C=0.0001,sycophancy->Warranted praise,9,0.731201171875
+response,26,C=0.0001,sycophancy->Genuine agreement,9,0.6357964409722222
+response,26,C=0.0001,sycophancy->Appropriate emotional support,9,0.9864637586805556
+response,26,C=0.0001,sycophancy->Calibrated hedging,9,0.095947265625
+response,26,C=0.0001,sycophancy->Ordinary politeness,9,0.8990342881944444
+response,26,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9660271538628472
+response,26,C=0.001,all off-diagonal,182,0.7966550051510989
+response,26,C=0.001,sycophancy->Warranted praise,9,0.6975640190972222
+response,26,C=0.001,sycophancy->Genuine agreement,9,0.6480848524305556
+response,26,C=0.001,sycophancy->Appropriate emotional support,9,0.9821506076388888
+response,26,C=0.001,sycophancy->Calibrated hedging,9,0.07804361979166667
+response,26,C=0.001,sycophancy->Ordinary politeness,9,0.8905164930555556
+response,26,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.96533203125
+response,26,C=0.01,all off-diagonal,182,0.7958219758756868
+response,26,C=0.01,sycophancy->Warranted praise,9,0.6778157552083334
+response,26,C=0.01,sycophancy->Genuine agreement,9,0.6513129340277778
+response,26,C=0.01,sycophancy->Appropriate emotional support,9,0.9756130642361112
+response,26,C=0.01,sycophancy->Calibrated hedging,9,0.0724826388888889
+response,26,C=0.01,sycophancy->Ordinary politeness,9,0.8856608072916666
+response,26,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.9628465440538194
+response,26,C=0.1,all off-diagonal,182,0.7946039556146978
+response,26,C=0.1,sycophancy->Warranted praise,9,0.662841796875
+response,26,C=0.1,sycophancy->Genuine agreement,9,0.6473795572916666
+response,26,C=0.1,sycophancy->Appropriate emotional support,9,0.9690212673611112
+response,26,C=0.1,sycophancy->Calibrated hedging,9,0.0739474826388889
+response,26,C=0.1,sycophancy->Ordinary politeness,9,0.8833821614583334
+response,26,C=1,sycophancy->sycophancy (off-diagonal),72,0.9598456488715278
+response,26,C=1,all off-diagonal,182,0.7926709520947802
+response,26,C=1,sycophancy->Warranted praise,9,0.6849772135416666
+response,26,C=1,sycophancy->Genuine agreement,9,0.6321614583333334
+response,26,C=1,sycophancy->Appropriate emotional support,9,0.9787055121527778
+response,26,C=1,sycophancy->Calibrated hedging,9,0.10064019097222222
+response,26,C=1,sycophancy->Ordinary politeness,9,0.8951009114583334
+response,26,C=10,sycophancy->sycophancy (off-diagonal),72,0.9571533203125
+response,26,C=10,all off-diagonal,182,0.7903033246050825
+response,26,C=10,sycophancy->Warranted praise,9,0.6771647135416666
+response,26,C=10,sycophancy->Genuine agreement,9,0.6229112413194444
+response,26,C=10,sycophancy->Appropriate emotional support,9,0.9743923611111112
+response,26,C=10,sycophancy->Calibrated hedging,9,0.09898546006944445
+response,26,C=10,sycophancy->Ordinary politeness,9,0.8931749131944444
+response,26,DIM,sycophancy->sycophancy (off-diagonal),72,0.956298828125
+response,26,DIM,all off-diagonal,182,0.793573735834478
+response,26,DIM,sycophancy->Warranted praise,9,0.8296169704861112
+response,26,DIM,sycophancy->Genuine agreement,9,0.6271430121527778
+response,26,DIM,sycophancy->Appropriate emotional support,9,0.9945203993055556
+response,26,DIM,sycophancy->Calibrated hedging,9,0.10777452256944445
+response,26,DIM,sycophancy->Ordinary politeness,9,0.9409450954861112
+response,29,C=0.0001,sycophancy->sycophancy (off-diagonal),72,0.9653828938802084
+response,29,C=0.0001,all off-diagonal,182,0.7909646505837912
+response,29,C=0.0001,sycophancy->Warranted praise,9,0.7106391059027778
+response,29,C=0.0001,sycophancy->Genuine agreement,9,0.6416015625
+response,29,C=0.0001,sycophancy->Appropriate emotional support,9,0.9845377604166666
+response,29,C=0.0001,sycophancy->Calibrated hedging,9,0.080078125
+response,29,C=0.0001,sycophancy->Ordinary politeness,9,0.8960503472222222
+response,29,C=0.001,sycophancy->sycophancy (off-diagonal),72,0.9682990180121528
+response,29,C=0.001,all off-diagonal,182,0.7932933765453297
+response,29,C=0.001,sycophancy->Warranted praise,9,0.6819932725694444
+response,29,C=0.001,sycophancy->Genuine agreement,9,0.6558159722222222
+response,29,C=0.001,sycophancy->Appropriate emotional support,9,0.98291015625
+response,29,C=0.001,sycophancy->Calibrated hedging,9,0.06453450520833333
+response,29,C=0.001,sycophancy->Ordinary politeness,9,0.8896484375
+response,29,C=0.01,sycophancy->sycophancy (off-diagonal),72,0.9689093695746528
+response,29,C=0.01,all off-diagonal,182,0.7941223815247253
+response,29,C=0.01,sycophancy->Warranted praise,9,0.6634657118055556
+response,29,C=0.01,sycophancy->Genuine agreement,9,0.6611056857638888
+response,29,C=0.01,sycophancy->Appropriate emotional support,9,0.9788953993055556
+response,29,C=0.01,sycophancy->Calibrated hedging,9,0.06032986111111111
+response,29,C=0.01,sycophancy->Ordinary politeness,9,0.8842230902777778
+response,29,C=0.1,sycophancy->sycophancy (off-diagonal),72,0.967620849609375
+response,29,C=0.1,all off-diagonal,182,0.7942618904532966
+response,29,C=0.1,sycophancy->Warranted praise,9,0.6515299479166666
+response,29,C=0.1,sycophancy->Genuine agreement,9,0.6599934895833334
+response,29,C=0.1,sycophancy->Appropriate emotional support,9,0.97265625
+response,29,C=0.1,sycophancy->Calibrated hedging,9,0.0625
+response,29,C=0.1,sycophancy->Ordinary politeness,9,0.8812120225694444
+response,29,C=1,sycophancy->sycophancy (off-diagonal),72,0.9603407118055556
+response,29,C=1,all off-diagonal,182,0.7867619441105769
+response,29,C=1,sycophancy->Warranted praise,9,0.6659342447916666
+response,29,C=1,sycophancy->Genuine agreement,9,0.6330295138888888
+response,29,C=1,sycophancy->Appropriate emotional support,9,0.9762641059027778
+response,29,C=1,sycophancy->Calibrated hedging,9,0.08260091145833333
+response,29,C=1,sycophancy->Ordinary politeness,9,0.8959418402777778
+response,29,C=10,sycophancy->sycophancy (off-diagonal),72,0.9593709309895834
+response,29,C=10,all off-diagonal,182,0.7858685503949175
+response,29,C=10,sycophancy->Warranted praise,9,0.6649576822916666
+response,29,C=10,sycophancy->Genuine agreement,9,0.6317816840277778
+response,29,C=10,sycophancy->Appropriate emotional support,9,0.9739040798611112
+response,29,C=10,sycophancy->Calibrated hedging,9,0.08284505208333333
+response,29,C=10,sycophancy->Ordinary politeness,9,0.8957248263888888
+response,29,DIM,sycophancy->sycophancy (off-diagonal),72,0.9527859157986112
+response,29,DIM,all off-diagonal,182,0.7831910521119505
+response,29,DIM,sycophancy->Warranted praise,9,0.7906901041666666
+response,29,DIM,sycophancy->Genuine agreement,9,0.6346299913194444
+response,29,DIM,sycophancy->Appropriate emotional support,9,0.9881727430555556
+response,29,DIM,sycophancy->Calibrated hedging,9,0.10023328993055555
+response,29,DIM,sycophancy->Ordinary politeness,9,0.9096950954861112

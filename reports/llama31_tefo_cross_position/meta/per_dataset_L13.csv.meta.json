@@ -1,0 +1,35 @@
+{
+  "output": "per_dataset_L13.csv",
+  "inputs": {
+    "reports/llama31_tefo_cross_position/cross_position.csv": "0f146be93bf436fde7be07769ab0ec1c0acd6defdba961e62d49a93a5450b1ea",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/manifest.jsonl": "87a35d3a87f52e8bfa88ecce9b102d1f7d6e33d1e23b78c3807a3ecfdd5dd753"
+  },
+  "git": {
+    "commit": "86443810d694503306992c4343fa684bac578058",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/probe_analysis/cross_position/analyze_cross_position.py",
+    "--in-dir",
+    "reports/llama31_tefo_cross_position",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "--layer",
+    "13",
+    "--dpi",
+    "130"
+  ],
+  "args": {
+    "in_dir": "reports/llama31_tefo_cross_position",
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
+    "layer": 13,
+    "dpi": 130
+  },
+  "counts": {
+    "n_in": 127008,
+    "excluded": {},
+    "n_out": 16
+  },
+  "created_at": "2026-09-30T20:52:48+00:00",
+  "columns": "train_position->eval_position, mean over pairs x settings"
+}
