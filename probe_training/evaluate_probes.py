@@ -50,10 +50,10 @@ def main():
     unknown = sorted(set(selected) - set(all_labels))
     if unknown:
         raise ValueError(f"labels {unknown} not in {args.activations} (has {sorted(all_labels)})")
-    for m in manifest:
-        key = act_key(m["position"], m["layer"])
-        if key not in z or m["layer"] not in act_meta["layers"]:
-            raise ValueError(f"{m['probe_id']} needs {key}, which {args.activations} lacks")
+    needed = {(act_key(m["position"], m["layer"]), m["layer"]) for m in manifest}
+    for key, layer in sorted(needed):
+        if key not in z or layer not in act_meta["layers"]:
+            raise ValueError(f"{args.activations} lacks required {key}")
         if z[key].shape[0] != len(ids):
             raise AssertionError(f"{key} has {z[key].shape[0]} rows, id has {len(ids)}")
 
