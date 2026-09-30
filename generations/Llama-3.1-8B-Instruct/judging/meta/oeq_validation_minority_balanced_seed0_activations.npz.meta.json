@@ -1,0 +1,103 @@
+{
+  "output": "oeq_validation_minority_balanced_seed0_activations.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/oeq_validation_minority_balanced_seed0.jsonl": "06675ca6ff7aabff55f6030c915e3ae22d9ece764271bea67168801c7f35d406"
+  },
+  "git": {
+    "commit": "f28ad7c21bc835dee7738aae2c95cb6f92d844cb",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/get_activations.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/judging/oeq_validation_minority_balanced_seed0.jsonl",
+    "--max-length",
+    "2048",
+    "--batch-size",
+    "4",
+    "--raw-token-scope",
+    "first5"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "generations/Llama-3.1-8B-Instruct/judging/oeq_validation_minority_balanced_seed0.jsonl",
+    "layers": null,
+    "layer_fracs": null,
+    "max_length": 2048,
+    "batch_size": 4,
+    "raw_token_scope": "first5",
+    "aita_flipped_only": false
+  },
+  "counts": {
+    "n_in": 1270,
+    "excluded": {},
+    "n_out": 1270
+  },
+  "created_at": "2026-09-30T02:12:06+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_layers": 32,
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "layer_convention": "hidden_states[layer + 1]",
+  "final_layer_post_norm": true,
+  "positions": [
+    "last_prompt",
+    "first5",
+    "response"
+  ],
+  "template_kwargs": null,
+  "dtype": "float32",
+  "compression": "ZIP_DEFLATED",
+  "skips": [],
+  "label_counts": {
+    "framing": {
+      "pos": 1104,
+      "neg": 165,
+      "none": 1
+    },
+    "indirectness": {
+      "pos": 1069,
+      "neg": 201,
+      "none": 0
+    },
+    "validation": {
+      "pos": 635,
+      "neg": 635,
+      "none": 0
+    }
+  }
+}

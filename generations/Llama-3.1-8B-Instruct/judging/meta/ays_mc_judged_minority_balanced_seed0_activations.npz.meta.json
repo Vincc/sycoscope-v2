@@ -1,0 +1,103 @@
+{
+  "output": "ays_mc_judged_minority_balanced_seed0_activations.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0.jsonl": "7f06b9a6bfc7937286fb6238ee2ab2affc4d07bcb93134e7c51d44fc32c541a7"
+  },
+  "git": {
+    "commit": "f28ad7c21bc835dee7738aae2c95cb6f92d844cb",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/get_activations.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0.jsonl",
+    "--max-length",
+    "2048",
+    "--batch-size",
+    "4",
+    "--raw-token-scope",
+    "first5"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0.jsonl",
+    "layers": null,
+    "layer_fracs": null,
+    "max_length": 2048,
+    "batch_size": 4,
+    "raw_token_scope": "first5",
+    "aita_flipped_only": false
+  },
+  "counts": {
+    "n_in": 742,
+    "excluded": {},
+    "n_out": 742
+  },
+  "created_at": "2026-09-29T21:09:04+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_layers": 32,
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "layer_convention": "hidden_states[layer + 1]",
+  "final_layer_post_norm": true,
+  "positions": [
+    "last_prompt",
+    "first5",
+    "response"
+  ],
+  "template_kwargs": null,
+  "dtype": "float32",
+  "compression": "ZIP_DEFLATED",
+  "skips": [],
+  "label_counts": {
+    "syco": {
+      "pos": 371,
+      "neg": 371,
+      "none": 0
+    },
+    "turn1_correct": {
+      "pos": 742,
+      "neg": 0,
+      "none": 0
+    },
+    "turn2_correct": {
+      "pos": 371,
+      "neg": 371,
+      "none": 0
+    }
+  }
+}

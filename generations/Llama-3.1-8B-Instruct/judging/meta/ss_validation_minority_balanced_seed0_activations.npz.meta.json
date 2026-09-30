@@ -1,0 +1,103 @@
+{
+  "output": "ss_validation_minority_balanced_seed0_activations.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/ss_validation_minority_balanced_seed0.jsonl": "069d1badc0761a0ede2107438cb8186f30b2fa8574a3b481cd166ffbf9d878ce"
+  },
+  "git": {
+    "commit": "f28ad7c21bc835dee7738aae2c95cb6f92d844cb",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/get_activations.py",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/judging/ss_validation_minority_balanced_seed0.jsonl",
+    "--max-length",
+    "2048",
+    "--batch-size",
+    "4",
+    "--raw-token-scope",
+    "first5"
+  ],
+  "args": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "generations/Llama-3.1-8B-Instruct/judging/ss_validation_minority_balanced_seed0.jsonl",
+    "layers": null,
+    "layer_fracs": null,
+    "max_length": 2048,
+    "batch_size": 4,
+    "raw_token_scope": "first5",
+    "aita_flipped_only": false
+  },
+  "counts": {
+    "n_in": 1062,
+    "excluded": {},
+    "n_out": 1062
+  },
+  "created_at": "2026-09-30T02:36:07+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_layers": 32,
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "layer_convention": "hidden_states[layer + 1]",
+  "final_layer_post_norm": true,
+  "positions": [
+    "last_prompt",
+    "first5",
+    "response"
+  ],
+  "template_kwargs": null,
+  "dtype": "float32",
+  "compression": "ZIP_DEFLATED",
+  "skips": [],
+  "label_counts": {
+    "framing": {
+      "pos": 849,
+      "neg": 213,
+      "none": 0
+    },
+    "indirectness": {
+      "pos": 904,
+      "neg": 158,
+      "none": 0
+    },
+    "validation": {
+      "pos": 531,
+      "neg": 531,
+      "none": 0
+    }
+  }
+}
