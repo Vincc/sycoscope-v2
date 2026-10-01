@@ -1,0 +1,72 @@
+{
+  "output": "split.json",
+  "inputs": {
+    "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz": "b549cad5983b55bb47cb9e9eb15b6e1c1ed34070b2cb3cc8a242b975857b4397"
+  },
+  "git": {
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz",
+    "--table",
+    "reports/audit_existing_methods/source/math_factorial__chat__last_content.jsonl",
+    "--name",
+    "vennemeyer_math_chat_last_native",
+    "--units",
+    "syc",
+    "ga",
+    "pr",
+    "--cell",
+    "syc=Position-Verifiable / Explicit",
+    "ga=Position-Verifiable / Explicit",
+    "pr=Person-Traits / Explicit",
+    "--positions",
+    "last_content",
+    "--native-matches",
+    "last_content",
+    "--native-position",
+    "last content token of the response; Llama-3.1 chat template"
+  ],
+  "args": {
+    "directions": "activations/audit/vennemeyer/directions/math_factorial__chat__last_content.npz",
+    "table": "reports/audit_existing_methods/source/math_factorial__chat__last_content.jsonl",
+    "name": "vennemeyer_math_chat_last_native",
+    "units": [
+      "syc",
+      "ga",
+      "pr"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "last_content"
+    ],
+    "cell": [
+      "syc=Position-Verifiable / Explicit",
+      "ga=Position-Verifiable / Explicit",
+      "pr=Person-Traits / Explicit"
+    ],
+    "native_position": "last content token of the response; Llama-3.1 chat template",
+    "native_matches": "last_content",
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_in": 3,
+    "excluded": {},
+    "n_out": 3
+  },
+  "created_at": "2026-10-01T00:14:00+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "vennemeyer",
+  "cell": {
+    "syc": "Position-Verifiable / Explicit",
+    "ga": "Position-Verifiable / Explicit",
+    "pr": "Person-Traits / Explicit"
+  },
+  "native_position": "last content token of the response; Llama-3.1 chat template",
+  "native_matches_cached_position": "last_content",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef"
+}

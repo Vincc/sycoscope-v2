@@ -12,12 +12,93 @@
     "model_in_paper": "Llama-3.1-8B-Instruct (App. C.4, Fig. 8b); headline numbers are Qwen3-30B (Fig. 1)",
     "reference": "App. C.4, Fig. 8b (p. 20), SIMPLE MATH; values read by eye from the figure at 400 dpi, about +-0.02; x axis is their layer index (L k = block k, L32 repeats block 31)",
     "fig8b_read": {
-      "syc": {"2": 0.82, "5": 0.815, "8": 0.815, "10": 0.815, "12": 0.86, "15": 0.905, "20": 0.91, "25": 0.91, "28": 0.93, "30": 0.96, "31": 0.91},
-      "ga": {"2": 0.70, "5": 0.73, "8": 0.73, "10": 0.75, "12": 0.75, "15": 0.84, "20": 0.86, "25": 0.87, "28": 0.90, "30": 0.98, "31": 0.95},
-      "pr": {"2": 0.825, "5": 0.94, "8": 0.965, "10": 0.945, "12": 0.94, "15": 0.955, "20": 0.94, "25": 0.90, "28": 0.89, "30": 0.855, "31": 0.765}
+      "syc": {
+        "2": 0.82,
+        "5": 0.815,
+        "8": 0.815,
+        "10": 0.815,
+        "12": 0.86,
+        "15": 0.905,
+        "20": 0.91,
+        "25": 0.91,
+        "28": 0.93,
+        "30": 0.96,
+        "31": 0.91
+      },
+      "ga": {
+        "2": 0.7,
+        "5": 0.73,
+        "8": 0.73,
+        "10": 0.75,
+        "12": 0.75,
+        "15": 0.84,
+        "20": 0.86,
+        "25": 0.87,
+        "28": 0.9,
+        "30": 0.98,
+        "31": 0.95
+      },
+      "pr": {
+        "2": 0.825,
+        "5": 0.94,
+        "8": 0.965,
+        "10": 0.945,
+        "12": 0.94,
+        "15": 0.955,
+        "20": 0.94,
+        "25": 0.9,
+        "28": 0.89,
+        "30": 0.855,
+        "31": 0.765
+      }
     },
     "headline_qwen3_30b": "SyA vs GA AUROC > 0.97 by L20-30; SyPr separable by layer 8 (Sec. 4, Fig. 1, p. 4)",
-    "comparison": "our plain-text math test AUROC at the same layer indices; match if |diff| <= 0.05 at every listed layer"
+    "comparison": "our plain-text math test AUROC at the same layer indices; match if |diff| <= 0.05 at every listed layer",
+    "fig10b_read": {
+      "note": "App. D.2, Fig. 10b (p. 22), Llama-3.1-8B-Instruct, SIMPLE MATH; cosine between behaviour directions per layer, read by eye at 400 dpi, about +-0.03",
+      "syc-ga": {
+        "2": 0.98,
+        "5": 1.0,
+        "8": 1.0,
+        "11": 0.99,
+        "13": 0.94,
+        "15": 0.8,
+        "16": 0.72,
+        "18": 0.66,
+        "20": 0.64,
+        "22": 0.61,
+        "25": 0.56,
+        "27": 0.52,
+        "29": 0.42,
+        "30": 0.08,
+        "31": -0.11
+      },
+      "syc-pr": {
+        "2": 0.03,
+        "5": -0.03,
+        "8": -0.07,
+        "11": 0.01,
+        "15": 0.0,
+        "20": 0.07,
+        "23": 0.16,
+        "25": 0.19,
+        "28": 0.2,
+        "30": 0.3,
+        "31": 0.45
+      },
+      "ga-pr": {
+        "2": 0.09,
+        "5": 0.0,
+        "8": -0.07,
+        "11": 0.02,
+        "15": -0.02,
+        "20": 0.03,
+        "25": 0.11,
+        "29": 0.12,
+        "30": -0.03,
+        "31": -0.24
+      }
+    }
   },
   "genadi": {
     "paper": "Genadi et al. 2026, Sycophancy Hides Linearly in the Attention Heads (arXiv 2601.16644, EACL 2026)",

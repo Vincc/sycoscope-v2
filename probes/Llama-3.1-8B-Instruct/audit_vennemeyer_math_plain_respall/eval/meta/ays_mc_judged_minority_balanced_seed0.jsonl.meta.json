@@ -2,11 +2,11 @@
   "output": "ays_mc_judged_minority_balanced_seed0.jsonl",
   "inputs": {
     "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0_activations.npz": "0927ad9fa5abc9664d1e58301f6ba417465d4f71666d4246dbc6562f094d8744",
-    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall/manifest.jsonl": "a1c1e922a4062cd76c1d4e6b98746a07d03947f56da4f9cc54c6fe5ca5587479",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall/manifest.jsonl": "b40f327329703a434cc1505d83995b7132aad8466b66f007030fb76a359b9fe3",
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
   },
   "git": {
-    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
     "dirty": true
   },
   "argv": [
@@ -51,7 +51,7 @@
       "n_out": 742
     }
   },
-  "created_at": "2026-09-30T23:11:37+00:00",
+  "created_at": "2026-10-01T00:14:31+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct",
   "eval_sha256": "0927ad9fa5abc9664d1e58301f6ba417465d4f71666d4246dbc6562f094d8744",
   "labels": [

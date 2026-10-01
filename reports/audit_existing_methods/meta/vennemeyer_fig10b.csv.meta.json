@@ -1,0 +1,27 @@
+{
+  "output": "vennemeyer_fig10b.csv",
+  "inputs": {
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/paper_reference.json": "011948620db26dbf9e53d6b234cbd4cf22b75a3ffe4a2e3986b59e4c226ff0c3",
+    "/workspace/sycoscope-v2/activations/audit/vennemeyer/directions/math_factorial__plain__last_content.npz": "eeb0374634bf4a092d230849bb58d6abbdf2ea54bd15148e4c7a2bca1fd9efbc",
+    "/workspace/sycoscope-v2/activations/audit/vennemeyer_diag/directions/math_factorial__plain__resp_all.npz": "b43a14f26c0fd5042787a8b982dd0813f6c7f97159aa11a9c7d8af851acd8518"
+  },
+  "git": {
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/vennemeyer_geometry.py",
+    "--tolerance",
+    "0.1"
+  ],
+  "args": {
+    "tolerance": 0.1
+  },
+  "counts": {
+    "n_in": 72,
+    "excluded": {},
+    "n_out": 72
+  },
+  "created_at": "2026-10-01T00:19:59+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

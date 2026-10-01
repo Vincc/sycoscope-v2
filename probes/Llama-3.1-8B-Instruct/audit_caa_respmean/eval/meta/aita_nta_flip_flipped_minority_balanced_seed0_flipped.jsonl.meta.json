@@ -1,0 +1,45 @@
+{
+  "output": "aita_nta_flip_flipped_minority_balanced_seed0_flipped.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/aita_nta_flip_flipped_minority_balanced_seed0_flipped_activations.npz": "7519e05e7da4a432a29531027bd0ffc685a50e9ddb46719cc128c43f7b902343",
+    "probes/Llama-3.1-8B-Instruct/audit_caa_respmean/manifest.jsonl": "326027171a967177c84dc6d2970b2c8a167fb7e74015eb5155292171d901063d",
+    "probes/Llama-3.1-8B-Instruct/audit_caa_respmean/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_caa_respmean",
+    "--activations",
+    "generations/Llama-3.1-8B-Instruct/judging/aita_nta_flip_flipped_minority_balanced_seed0_flipped_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_caa_respmean",
+    "activations": "generations/Llama-3.1-8B-Instruct/judging/aita_nta_flip_flipped_minority_balanced_seed0_flipped_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "both_nta": {
+      "n_in": 758,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 758
+    }
+  },
+  "created_at": "2026-10-01T00:15:24+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "7519e05e7da4a432a29531027bd0ffc685a50e9ddb46719cc128c43f7b902343",
+  "labels": [
+    "both_nta"
+  ],
+  "n_probes": 2
+}

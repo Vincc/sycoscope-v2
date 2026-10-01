@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-from audit.analyze import bootstrap_ci, write_csv
+from audit.analyze import bootstrap_ci, read_csv, write_csv
 from audit.fit_directions import directions_from_sums
 from audit.fit_heads import head_features
 from utils import probes
@@ -93,8 +93,18 @@ def main():
 
     # Pandey residual (recipe layer 27) and heads
     y, s = residual_heldout(ACT / "pandey" / "triviaqa_syc.npz", "faithful", "syc", 27)
-    add("Pandey", "residual DIM", "code-faithful position", 27, y, s, None, paper["pandey"]["reference"],
+    add("Pandey", "residual DIM-27 (our combination)", "code-faithful position", 27, y, s, None, paper["pandey"]["reference"],
         "no published Llama-3.1-8B value")
+    z = np.load(ACT / "pandey" / "triviaqa_syc.npz")
+    test = z["split"] == "test"
+    for name, sweep in (("LR-27 (their probe_transfer)", "audit_pandey_lr27_native"), ("DIM-19 (their steering direction)", "audit_pandey_dim19_native")):
+        (m,) = read_jsonl(PROBES / sweep / "manifest.jsonl")
+        probe = probes.load_probe(np.load(PROBES / sweep / m["file"]), m["probe_id"], m["method"])
+        s = probes.score(m["method"], probe, z["X__faithful"][test, m["layer"]].astype(np.float64))
+        if not np.isclose(probes.auroc(z["labels__syc"][test].astype(int), s), m["source_heldout_auroc"], atol=1e-9):
+            raise AssertionError(f"{sweep}: held-out AUROC differs from its manifest")
+        add("Pandey", name, "code-faithful position", m["layer"], z["labels__syc"][test].astype(int), s, None,
+            paper["pandey"]["reference"], "no published Llama-3.1-8B value")
     y, s, m = head_heldout(ACT / "pandey" / "triviaqa_syc.npz", "faithful", PROBES / "audit_pandey_heads", "pandey__lr_top15")
     add("Pandey", "LR top-15 heads [ours]", "code-faithful position", m["layers"], y, s, None, paper["pandey"]["reference"],
         "no published Llama-3.1-8B value", heads=m["heads"])
@@ -106,6 +116,26 @@ def main():
             add("Genadi", name, f"{pool} pooling", m["layers"], y, s, None, paper["genadi"]["reference"],
                 "no published Llama-3.1-8B value", heads=m["heads"], source_val_acc=m.get("source_val_acc"))
 
+    ov = read_json(REPO_ROOT / "reports" / "audit_existing_methods" / "pandey_overlap.json")
+    shared, rho = ov["overlap"]["32"]["shared"], ov["spearman_rho_all_heads"]
+    ok = abs(shared - 21) <= 3 and abs(rho - 0.88) <= 0.05
+    rows.append({"method": "Pandey", "unit": "head overlap, syc vs lie, K=32", "variant": f"first {ov['n_rank_pairs']} pairs per task",
+                 "layer": "all heads", "n_heldout": None, "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None,
+                 "paper_value": "21/32 shared; Spearman 0.88", "paper_reference": "Table 1 (p. 5), Llama-3.1-8B row",
+                 "verdict": f"{'match' if ok else 'mismatch'}: ours {shared}/32 shared (chance 1.0), Spearman {rho:.2f} "
+                            f"(criterion: within 3 heads and 0.05)"})
+    geo = read_csv(args.out_dir / "vennemeyer_fig10b.csv")
+    for pool in ("last_content", "resp_all"):
+        for pair in ("syc-ga", "syc-pr", "ga-pr"):
+            g = [r for r in geo if r["pool"] == pool and r["pair"] == pair]
+            worst = max(g, key=lambda r: abs(float(r["diff"])))
+            n_ok = sum(r["within_tolerance"] == "True" for r in g)
+            rows.append({"method": "Vennemeyer", "unit": f"cosine {pair.replace('syc', 'SyA').replace('ga', 'GA').replace('pr', 'SyPr')}",
+                         "variant": f"math plain {pool}", "layer": "by layer", "n_heldout": None, "n_heldout_pos": None,
+                         "auroc": None, "ci_lo": None, "ci_hi": None, "paper_value": "see by-layer table",
+                         "paper_reference": paper["vennemeyer"]["fig10b_read"]["note"],
+                         "verdict": f"{'match' if n_ok == len(g) else 'mismatch'}: {n_ok}/{len(g)} layers within 0.1; "
+                                    f"max |diff| {abs(float(worst['diff'])):.2f} at L{worst['layer']}"})
     rows.append({"method": "Persona Vectors", "unit": "sycophantic", "variant": "held at judge step", "layer": 15,
                  "n_heldout": None, "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None, "paper_value": None,
                  "paper_reference": paper["persona"]["layer_16_for_llama"], "verdict": "held: 4000 GPT-4.1-mini judge calls needed"})

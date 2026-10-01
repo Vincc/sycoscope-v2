@@ -5,7 +5,7 @@
     "reports/audit_existing_methods/source/math_factorial__plain__resp_all.jsonl": "c44a4454ddcfb82fc3fa7d90fa5443d800919c1aab2671c3b5767157da04e0a8"
   },
   "git": {
-    "commit": "5f34a3b39017fe5923c58c350468d405a7b6cb16",
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
     "dirty": true
   },
   "argv": [
@@ -25,9 +25,7 @@
     "ga=Position-Verifiable / Explicit",
     "pr=Person-Traits / Explicit",
     "--native-position",
-    "mean over response tokens (resp_all)",
-    "--native-matches",
-    "response"
+    "mean over 'Assistant: <response>' tokens in plain text (cached positions are chat-rendered, so none is native)"
   ],
   "args": {
     "directions": "activations/audit/vennemeyer_diag/directions/math_factorial__plain__resp_all.npz",
@@ -49,14 +47,14 @@
       "ga=Position-Verifiable / Explicit",
       "pr=Person-Traits / Explicit"
     ],
-    "native_position": "mean over response tokens (resp_all)",
-    "native_matches": "response",
+    "native_position": "mean over 'Assistant: <response>' tokens in plain text (cached positions are chat-rendered, so none is native)",
+    "native_matches": null,
     "out_root": "/workspace/sycoscope-v2/probes"
   },
   "counts": {
     "n_probes": 3
   },
-  "created_at": "2026-09-30T23:08:28+00:00",
+  "created_at": "2026-10-01T00:14:01+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct",
   "audit_method": "vennemeyer_diag",
   "cell": {
@@ -64,8 +62,8 @@
     "ga": "Position-Verifiable / Explicit",
     "pr": "Person-Traits / Explicit"
   },
-  "native_position": "mean over response tokens (resp_all)",
-  "native_matches_cached_position": "response",
+  "native_position": "mean over 'Assistant: <response>' tokens in plain text (cached positions are chat-rendered, so none is native)",
+  "native_matches_cached_position": null,
   "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
   "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef"
 }

@@ -66,7 +66,7 @@ def main():
     parser.add_argument("--positions", nargs="+", default=list(POSITIONS))
     parser.add_argument("--cell", nargs="+", required=True, help="<unit>=<Ye et al. cell the unit was built on>, one per unit.")
     parser.add_argument("--native-position", required=True, help="Where the method reads activations (text).")
-    parser.add_argument("--native-matches", choices=list(POSITIONS), help="Cached position equal to the native one, if any.")
+    parser.add_argument("--native-matches", help="Scored position name equal to the native one, if any.")
     parser.add_argument("--out-root", type=Path, default=REPO_ROOT / "probes")
     args = parser.parse_args()
 

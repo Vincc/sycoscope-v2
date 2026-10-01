@@ -1,7 +1,8 @@
 """Write reports/audit_existing_methods/REVIEW.md and review.html from the audit's result files.
 
-Every number comes from coverage.csv, parity.csv, vennemeyer_fig8b.csv, controls.csv, length_confound.csv,
-design_choices.jsonl, environment.json and regression.json in --dir.
+Sections: 1 summary; 2 reproduction on source data vs each paper's findings; 3 out-of-distribution performance per
+method at its own read position (cached-position scores kept as a secondary view); 4 controls and length; 5 design
+choices; 6 verification. Every number is read from the CSV/JSON files in --dir.
 
 Run from the repo root: python -m audit.write_review --dir reports/audit_existing_methods
 """
@@ -10,24 +11,26 @@ import html
 import json
 from pathlib import Path
 
+import numpy as np
+
 from audit.analyze import CELLS, read_csv, short_label
 from utils.io import check_counts, read_json, read_jsonl, write_meta
 
 NOT_IN_TASK = [
-    ("CLiF", "code not released."),
-    ("Baez et al.", "repository unreachable."),
+    ("CLiF", "code not released."), ("Baez et al.", "repository unreachable."),
     ("Cheng et al.", "labels need GPT-4o (OSF data not checked for labels in this pass)."),
-    ("Goodfire SAE features", "no sycophancy features published."),
-    ("Wang et al.", "not a detector."),
-    ("Papadatos & Freedman", "they probe a reward model."),
-    ("Beacon", "no code."),
-    ("Steering and causal tests", "out of scope for this pass."),
-    ("Other models", "Llama-3.1-8B-Instruct only."),
-    ("New detection methods", "out of scope."),
-    ("Any LLM API call", "none made; Persona Vectors held at the judge step."),
+    ("Goodfire SAE features", "no sycophancy features published."), ("Wang et al.", "not a detector."),
+    ("Papadatos & Freedman", "they probe a reward model."), ("Beacon", "no code."),
+    ("Steering and causal tests", "out of scope."), ("Other models", "Llama-3.1-8B-Instruct only."),
+    ("New detection methods", "out of scope."), ("Any LLM API call", "none made; Persona Vectors held at the judge step."),
 ]
+METHODS = [("caa", "CAA (Rimsky/Panickssery et al. 2024)"), ("vennemeyer", "Vennemeyer et al. (SyA, GA, SyPr)"),
+           ("genadi", "Genadi et al. (attention-head probes)"), ("pandey", "Pandey (shared sycophancy-lying circuit)"),
+           ("persona", "Persona Vectors (Chen et al. 2025)")]
 REF_NAMES = {"universal": "Contrastive universal (P00)", "matched_cell": "Contrastive matched-cell pair",
              "max_taxonomy_posthoc": "Contrastive max over taxonomy pairs (post hoc, optimistic)"}
+FLAG_TEXT = {"†": "Pandey's code-faithful index drifts on multi-turn prompts (AYS: last user turn's <|eot_id|>; multi-turn SyPR: inside the last user message)",
+             "‡": "plain Human:/Assistant: rendering of a multi-turn conversation uses our turn separator (AYS all rows; SyPR about half the rows)"}
 
 
 def fnum(x, d=3):
@@ -39,118 +42,35 @@ def fnum(x, d=3):
         return str(x)
 
 
-def detector_label(r: dict) -> str:
-    return short_label(r).removeprefix("REF ") if r["role"] == "detector" else REF_NAMES[r["role"]]
+def esc(x) -> str:
+    return html.escape(str(x))
+
+
+def method_of(r: dict) -> str:
+    return r["audit_method"].removesuffix("_diag")
+
+
+def label(r: dict) -> str:
+    return REF_NAMES[r["role"]] if r["role"] != "detector" else short_label(r)
 
 
 def row_key(r: dict) -> str:
     return r["detector"] if r["role"] == "detector" else r["role"]
 
 
-def md_table(header: list[str], rows: list[list[str]]) -> str:
+def flag(r: dict, bench: str) -> str:
+    if r["role"] != "detector" or not (bench.startswith("ays_") or bench.startswith("sypr")):
+        return ""
+    if method_of(r) == "pandey" and r["activations"].startswith("native"):
+        return "†"
+    if r["activations"] == "native plain":
+        return "‡"
+    return ""
+
+
+def md_table(header, rows) -> str:
     out = ["| " + " | ".join(header) + " |", "| " + " | ".join("---" for _ in header) + " |"]
-    out += ["| " + " | ".join(str(c).replace("|", "/") for c in row) + " |" for row in rows]
-    return "\n".join(out)
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--dir", type=Path, required=True)
-    args = parser.parse_args()
-    d = args.dir
-    coverage, parity = read_csv(d / "coverage.csv"), read_csv(d / "parity.csv")
-    fig8b, controls, length = read_csv(d / "vennemeyer_fig8b.csv"), read_csv(d / "controls.csv"), read_csv(d / "length_confound.csv")
-    choices, env, reg = read_jsonl(d / "design_choices.jsonl"), read_json(d / "environment.json"), read_json(d / "regression.json")
-
-    benches = sorted({(r["benchmark"], r["display"], r["benchmark_cell"], r["cell_source"], r["target_label"], r["n"]) for r in coverage},
-                     key=lambda b: (CELLS.index(b[2]), b[1]))
-    keys = list(dict.fromkeys(row_key(r) for r in coverage))
-    cov = {(row_key(r), r["benchmark"]): r for r in coverage}
-    first = {k: cov[(k, benches[0][0])] for k in keys}
-
-    # ---- Markdown ----
-    md = [f"# Sycophancy detector audit\n", "Branch `audit/existing-methods`. Model `meta-llama/Llama-3.1-8B-Instruct`. "
-          "All numbers are generated from the CSV files in this directory by `audit/write_review.py`.\n"]
-    md.append("## 1. Summary\n")
-    md.append(md_table(["Detector", "Status", "Reason"], [
-        ["CAA sycophancy vector", "reproduced", "difference-in-means on the 1,000 A/B items, Llama-3.1 chat template"],
-        ["Vennemeyer SyA, GA, SyPr", "reproduced, parity mismatch", "literal 'last' pooling selects BOS on Llama-3.1; two reconstructed poolings scored (user decision)"],
-        ["Genadi head probes", "reproduced", "extension/ recipe on TruthfulQA pushback dialogues; best head + LR on top-16 [our addition]"],
-        ["Pandey shared-circuit direction", "reproduced (code-faithful position)", "residual DIM at L27 and top-15 heads; LR on heads [our addition]"],
-        ["Persona Vectors (sycophantic)", "held at judge step", f"needs {env['persona_judge_calls']} GPT-4.1-mini calls; rollouts and activations cached"],
-    ]))
-    md.append("\nNot in this task:\n")
-    md += [f"- {n}: {t}" for n, t in NOT_IN_TASK]
-    md.append("\nEnvironment: " + "; ".join(f"{k} {v}" for k, v in env["environment"].items()) + "\n")
-
-    md.append("## 2. Parity (held-out AUROC on each method's own source data)\n")
-    md.append(md_table(["Method", "Unit", "Variant", "Layer", "Our AUROC [95% CI]", "n", "Paper value", "Paper reference", "Verdict"], [
-        [p["method"], p["unit"], p["variant"], p["layer"], f"{fnum(p['auroc'])} [{fnum(p['ci_lo'])}, {fnum(p['ci_hi'])}]" if p["auroc"] else "held",
-         p["n_heldout"], fnum(p["paper_value"], 2), p["paper_reference"], p["verdict"]] for p in parity]))
-    md.append("\nVennemeyer, SIMPLE MATH, plain text: our test AUROC by layer against Fig. 8b (read by eye, about ±0.02).\n")
-    md.append(md_table(["Pooling", "Unit", "Layer", "Paper", "Ours", "Diff"],
-                       [[r["pool"], r["unit"], r["layer"], r["paper_fig8b"], fnum(r["ours_test_auroc"], 2), f"{float(r['diff']):+.2f}"] for r in fig8b]))
-
-    md.append("\n## 3. Coverage (AUROC [95% CI] on the balanced judged benchmarks)\n")
-    md.append("Columns grouped by the benchmark's taxonomy cell (* = cell inferred, not in the SPEC table). "
-              "Native = the scored position equals where the method reads activations; ≈ approximate; ✗ not native. "
-              "Heatmap: `coverage_heatmap.png`.\n")
-    header = ["Detector", "Built on", "Native"] + [f"{b[1]}{'*' if b[3] == 'inferred' else ''} ({b[2]}; {b[4]}, n={b[5]})" for b in benches]
-    nat = {"yes": "✓", "approx": "≈", "no": "✗"}
-    md.append(md_table(header, [[detector_label(first[k]), first[k]["built_on"], nat[first[k]["matches_native"]]] +
-                                [f"{fnum(cov[(k, b[0])]['auroc'], 2)} [{fnum(cov[(k, b[0])]['ci_lo'], 2)}, {fnum(cov[(k, b[0])]['ci_hi'], 2)}]"
-                                 for b in benches] for k in keys]))
-    md.append("\nMatched-cell and post-hoc reference pairs per benchmark: " + "; ".join(
-        f"{b[1]}: {cov[('matched_cell', b[0])]['unit']} / {cov[('max_taxonomy_posthoc', b[0])]['unit']}" for b in benches) + "\n")
-
-    md.append("## 4. Controls and length confound\n")
-    md.append("Controls: AUROC separating the two sides of each held-out control pair (0.5 = the detector ignores that correlate).\n")
-    cpairs = sorted({(int(r["control_pair"]), r["control_cell"]) for r in controls})
-    cc = {(r["detector"], int(r["control_pair"])): r for r in controls}
-    cdets = list(dict.fromkeys(r["detector"] for r in controls))
-    cfirst = {r["detector"]: r for r in controls}
-    clabel = {k: detector_label(first[k]) if k in first else f"REF {cfirst[k]['unit']}" for k in cdets}
-    md.append(md_table(["Detector", "Layer", "Position"] + [f"P{p:02d} {c}" for p, c in cpairs],
-                       [[clabel[k], cfirst[k]["layer"], cfirst[k]["position"]] +
-                        [f"{fnum(cc[(k, p)]['auroc'], 2)} [{fnum(cc[(k, p)]['ci_lo'], 2)}, {fnum(cc[(k, p)]['ci_hi'], 2)}]" for p, _ in cpairs]
-                        for k in cdets]))
-    md.append("\nLength confound, summarised per detector over the 15 benchmarks (full rows in `length_confound.csv`): "
-              "Spearman ρ between detector score and n_response_tokens, and the spread of AUROC across length terciles.\n")
-    summ, label_rho = length_summary(length)
-    md.append(md_table(["Detector / role", "median ρ(score, length)", "max |ρ| (benchmark)", "median tercile AUROC range",
-                        "max tercile range (benchmark)"], [[s["name"], fnum(s["med_rho"], 2), f"{fnum(s['max_rho'], 2)} ({s['max_rho_b']})",
-                        fnum(s["med_range"], 2), f"{fnum(s['max_range'], 2)} ({s['max_range_b']})"] for s in summ]))
-    md.append("\nρ(label, length) per benchmark (same for every detector):\n")
-    md.append(md_table(["Benchmark", "n", "ρ(label, length)"], [[b, n, fnum(v, 2)] for b, n, v in label_rho]))
-    md.append("\n## 5. Design choices, assumptions and inferences\n")
-    md += [f"- *{c['tag']}* ({c['topic']}): {c['text']}" for c in choices]
-
-    md.append("\n## 6. Regression evidence\n")
-    md += [f"- {line}" for line in reg["lines"]]
-    (d / "REVIEW.md").write_text("\n".join(md) + "\n", encoding="utf-8")
-
-    # ---- HTML ----
-    data = {"benches": [{"id": b[0], "display": b[1], "cell": b[2], "inferred": b[3] == "inferred", "label": b[4], "n": int(b[5])} for b in benches],
-            "rows": [{"key": k, "label": detector_label(first[k]), "role": first[k]["role"], "method": first[k]["audit_method"].removesuffix("_diag"),
-                      "position": first[k]["position"], "native": first[k]["matches_native"], "built_on": first[k]["built_on"],
-                      "cells": [[round(float(cov[(k, b[0])]["auroc"]), 4), round(float(cov[(k, b[0])]["ci_lo"]), 4),
-                                 round(float(cov[(k, b[0])]["ci_hi"]), 4), cov[(k, b[0])]["unit"]] for b in benches]} for k in keys]}
-    template = (Path(__file__).parent / "review_template.html").read_text(encoding="utf-8")
-    page = template.replace("/*DATA*/null", json.dumps(data))
-    page = page.replace("<!--SUMMARY-->", html_summary(env)).replace("<!--PARITY-->", html_parity(parity, fig8b))
-    page = page.replace("<!--CONTROLS-->", html_controls(controls, cpairs, cdets, cfirst, cc, clabel))
-    page = page.replace("<!--LENGTH-->", html_length(length)).replace("<!--CHOICES-->", html_choices(choices))
-    page = page.replace("<!--REGRESSION-->", "<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in reg["lines"]) + "</ul>")
-    (d / "review.html").write_text(page, encoding="utf-8")
-    inputs = [d / n for n in ("coverage.csv", "parity.csv", "vennemeyer_fig8b.csv", "controls.csv", "length_confound.csv",
-                              "design_choices.jsonl", "environment.json", "regression.json")]
-    for name in ("REVIEW.md", "review.html"):
-        write_meta(d / name, inputs, args, check_counts(len(coverage), {}, len(coverage), name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
-    print(f"wrote {d / 'REVIEW.md'} and {d / 'review.html'}")
-
-
-def esc(x) -> str:
-    return html.escape(str(x))
+    return "\n".join(out + ["| " + " | ".join(str(c).replace("|", "/") for c in row) + " |" for row in rows])
 
 
 def html_table(header, rows, cls="") -> str:
@@ -159,87 +79,297 @@ def html_table(header, rows, cls="") -> str:
     return f'<div class="scroll"><table class="{cls}"><thead><tr>{h}</tr></thead><tbody>{b}</tbody></table></div>'
 
 
-def html_summary(env) -> str:
-    rows = [["CAA sycophancy vector", '<span class="pill ok">reproduced</span>', "Difference-in-means on the 1,000 A/B items, Llama-3.1 chat template."],
-            ["Vennemeyer SyA, GA, SyPr", '<span class="pill warn">parity mismatch</span>', "The literal 'last' pooling selects BOS on Llama-3.1. Two reconstructed poolings are scored (your decision)."],
-            ["Genadi head probes", '<span class="pill ok">reproduced</span>', "extension/ recipe on TruthfulQA pushback dialogues. Best head, plus LR on the top 16 heads (our addition)."],
-            ["Pandey shared circuit", '<span class="pill ok">reproduced</span>', "Code-faithful position. Residual DIM at L27 and the top 15 heads; LR on the heads (our addition)."],
-            ["Persona Vectors", '<span class="pill held">held</span>', f"Stopped at the judge step: {env['persona_judge_calls']} GPT-4.1-mini calls needed."]]
-    t = html_table(["Detector", "Status", "Reason"], [[esc(a), b, esc(c)] for a, b, c in rows])
-    nt = "<ul class='compact'>" + "".join(f"<li><b>{esc(n)}</b>: {esc(x)}</li>" for n, x in NOT_IN_TASK) + "</ul>"
-    ev = "<dl class='env'>" + "".join(f"<dt>{esc(k)}</dt><dd>{esc(v)}</dd>" for k, v in env["environment"].items()) + "</dl>"
-    return t + "<h3>Not in this task</h3>" + nt + "<h3>Environment</h3>" + ev
+def pill(verdict: str) -> str:
+    v = verdict.lower()
+    cls = "ok" if v.startswith(("match", "consistent")) else "warn" if v.startswith(("mismatch", "partly")) \
+        else "held" if v.startswith("held") else "muted"
+    return f"<span class='pill {cls}'>{esc(verdict)}</span>"
 
 
-def html_parity(parity, fig8b) -> str:
-    rows = []
-    for p in parity:
-        v = p["verdict"]
-        cls = "warn" if v.startswith("mismatch") else "held" if v.startswith("held") else "ok" if v.startswith("match") else "muted"
-        auc = f"{fnum(p['auroc'])} <span class='ci'>[{fnum(p['ci_lo'])}, {fnum(p['ci_hi'])}]</span>" if p["auroc"] else "held"
-        rows.append([esc(p["method"]), esc(p["unit"]), esc(p["variant"]), esc(p["layer"]), auc, esc(p["n_heldout"]),
-                     esc(fnum(p["paper_value"], 2)), esc(p["paper_reference"]), f"<span class='pill {cls}'>{esc(v)}</span>"])
-    t = html_table(["Method", "Unit", "Variant", "Layer", "Our AUROC [95% CI]", "n", "Paper", "Reference", "Verdict"], rows, "num")
-    f = html_table(["Pooling", "Unit", "Layer", "Paper (Fig. 8b)", "Ours", "Diff"],
-                   [[esc(r["pool"]), esc(r["unit"]), esc(r["layer"]), esc(r["paper_fig8b"]), fnum(r["ours_test_auroc"], 2),
-                     f"<span class='{'bad' if abs(float(r['diff'])) > 0.05 else ''}'>{float(r['diff']):+.2f}</span>"] for r in fig8b], "num")
-    return t + "<h3>Vennemeyer, SIMPLE MATH, plain text, by layer</h3><p class='note'>Fig. 8b values read by eye (about ±0.02). Differences above 0.05 are marked.</p>" + f
+class Doc:
+    """Markdown and HTML versions of each block, built side by side."""
+
+    def __init__(self):
+        self.md, self.html = [], []
+
+    def h(self, level, text, anchor=None):
+        self.md.append(f"\n{'#' * level} {text}\n")
+        self.html.append(f"<h{level}{f' id={chr(34)}{anchor}{chr(34)}' if anchor else ''}>{esc(text)}</h{level}>")
+
+    def p(self, text, note=False):
+        self.md.append(text + "\n")
+        self.html.append(f"<p class='{'note' if note else ''}'>{esc(text)}</p>")
+
+    def bullets(self, items):
+        self.md.append("\n".join(f"- {x}" for x in items) + "\n")
+        self.html.append("<ul>" + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul>")
+
+    def table(self, header, rows, html_rows=None, cls="num"):
+        self.md.append(md_table(header, rows) + "\n")
+        self.html.append(html_table(header, html_rows or [[esc(c) for c in r] for r in rows], cls))
+
+    def raw_html(self, s):
+        self.html.append(s)
 
 
-def html_controls(controls, cpairs, cdets, cfirst, cc, clabel) -> str:
-    rows = []
-    for k in cdets:
-        r = cfirst[k]
-        rows.append([esc(clabel[k]), esc(r["layer"]), esc(r["position"])] +
-                    [f"{fnum(cc[(k, p)]['auroc'], 2)} <span class='ci'>[{fnum(cc[(k, p)]['ci_lo'], 2)}, {fnum(cc[(k, p)]['ci_hi'], 2)}]</span>" for p, _ in cpairs])
-    return html_table(["Detector", "Layer", "Position"] + [f"P{p:02d} {c}" for p, c in cpairs], rows, "num")
+def reproduction(doc: Doc, d: Path, parity, paper, fig8b, fig10b, overlap):
+    doc.h(2, "2. Reproduction on source data, compared with each paper", "repro")
+    doc.p("Each detector is rebuilt on its own source data with its own recipe and read position; its held-out AUROC "
+          "(95% stratified bootstrap CI, 1,000 resamples, seed 0) is set against what the paper reports. A numeric comparison "
+          "is possible only where the paper reports Llama-3.1-8B; figure values are read by eye.", note=True)
+
+    def parity_rows(method):
+        rows = [p for p in parity if p["method"].lower().startswith(method)]
+        md = [[p["unit"], p["variant"], p["layer"], f"{fnum(p['auroc'])} [{fnum(p['ci_lo'])}, {fnum(p['ci_hi'])}]" if p["auroc"] else "",
+               p["n_heldout"], p["verdict"]] for p in rows]
+        ht = [[esc(p["unit"]), esc(p["variant"]), esc(p["layer"]),
+               f"{fnum(p['auroc'])} <span class='ci'>[{fnum(p['ci_lo'])}, {fnum(p['ci_hi'])}]</span>" if p["auroc"] else "",
+               esc(p["n_heldout"]), pill(p["verdict"])] for p in rows]
+        doc.table(["Unit", "Variant", "Layer", "Held-out AUROC [95% CI]", "n", "Verdict"], md, ht)
+
+    def curve_table(rows_csv, key, value, name_map, tol):
+        pools = ["last_content", "resp_all"]
+        for item in dict.fromkeys(r[key] for r in rows_csv):
+            layers = sorted({int(r["layer"]) for r in rows_csv if r[key] == item})
+            get = {(r["pool"], int(r["layer"])): r for r in rows_csv if r[key] == item}
+            paper_col = "paper_fig8b" if "paper_fig8b" in rows_csv[0] else "paper_fig10b"
+            tab = [["paper"] + [get[(pools[0], L)][paper_col] for L in layers]]
+            for pool in pools:
+                tab.append([pool] + [fnum(get[(pool, L)][value], 2) + ("*" if abs(float(get[(pool, L)]["diff"])) > tol else "")
+                                     for L in layers])
+            doc.p(name_map(item), note=True)
+            doc.table(["", *[f"L{L}" for L in layers]], tab)
+
+    caa = read_jsonl(d / "source" / "generate_dataset__letter.jsonl")
+    doc.h(3, METHODS[0][1])
+    doc.p(f"Paper: {paper['caa']['statement']} ({paper['caa']['reference']}). No detection AUROC is reported.")
+    doc.p("Ours (1,000 A/B items, answer-letter token, 20% of questions held out): held-out AUROC by layer "
+          + ", ".join(f"L{r['layer']} {r['test_auroc']:.2f}" for r in caa if 8 <= r["layer"] <= 16) + ".")
+    parity_rows("caa")
+
+    v = paper["vennemeyer"]
+    doc.h(3, METHODS[1][1])
+    doc.bullets([f"Layerwise AUROC, Llama-3.1-8B, SIMPLE MATH: {v['reference']}.",
+                 f"Direction geometry, Llama-3.1-8B, SIMPLE MATH: {v['fig10b_read']['note']}.",
+                 f"Headline numbers in the main text are for Qwen3-30B: {v['headline_qwen3_30b']}.",
+                 "Their code's 'last' pooling selects the BOS token on Llama-3.1 and gives zero vectors, so pooling was "
+                 "reconstructed two ways: last content token (the code's no-EOS rule) and whole-response mean (their resp_all)."])
+    parity_rows("vennemeyer")
+    names = {"syc": "SyA", "ga": "GA", "pr": "SyPr"}
+    doc.p("Layerwise AUROC against Fig. 8b, plain text (differences above 0.05 marked *):", note=True)
+    curve_table(fig8b, "unit", "ours_test_auroc", lambda u: names[u], 0.05)
+    doc.p("Cosine between behaviour directions against Fig. 10b, plain text (differences above 0.1 marked *):", note=True)
+    curve_table(fig10b, "pair", "ours_cosine", lambda p: "-".join(names[x] for x in p.split("-")), 0.1)
+
+    g = paper["genadi"]
+    heads_tab = read_jsonl(d / "source" / "genadi_heads__answer_mean.jsonl")
+    acc = np.array([r["best_val_acc"] for r in heads_tab])
+    top = sorted(heads_tab, key=lambda r: -r["best_val_acc"])[:16]
+    doc.h(3, METHODS[2][1])
+    doc.p(f"Paper: {g['statement']} ({g['reference']}). Models in the paper: {g['model_in_paper']}.")
+    doc.p(f"Ours (answer-mean pooling, 1,024 heads): median best val accuracy {np.median(acc):.1f}%, {(acc >= 75).sum()} heads at "
+          f"or above 75%, maximum {acc.max():.1f}% at L{top[0]['layer']}H{top[0]['head']}; layers of the top 16 heads: "
+          f"{sorted({r['layer'] for r in top})}.")
+    parity_rows("genadi")
+
+    p = paper["pandey"]
+    doc.h(3, METHODS[3][1])
+    doc.p(f"Paper: {p['statement']} ({p['reference']}). Table 1 (p. 5), Llama-3.1-8B: 21 of the top K=32 sycophancy heads "
+          "are also top-32 factual-lying heads; Spearman 0.88 over all 1,024 heads.")
+    doc.p(f"Ours: {overlap['overlap']['32']['shared']}/32 shared at K=32 and {overlap['overlap']['15']['shared']}/15 at K=15 "
+          f"(chance about 1 and 0.2); Spearman {overlap['spearman_rho_all_heads']:.2f}. Top-15 sycophancy heads: "
+          + ", ".join(f"L{a}H{b}" for a, b in overlap["top_syc"][:15]) + ".")
+    parity_rows("pandey")
+
+    doc.h(3, METHODS[4][1])
+    doc.p(f"Held at the judge step (4,000 GPT-4.1-mini calls). Paper layer choice: {paper['persona']['layer_16_for_llama']}. "
+          "The 2,000 rollouts and their response-mean activations at every layer are cached.")
 
 
-def length_summary(length):
-    import numpy as np
+def ood(doc: Doc, coverage, benches):
+    doc.h(2, "3. Out-of-distribution performance on the benchmarks", "ood")
+    doc.p("AUROC for each benchmark's target label with 95% CI, scored at each method's own read position. Benchmark rows "
+          "were re-extracted from Llama-3.1-8B-Instruct in the method's input format; rows and labels are identical to the "
+          "repo caches. Columns are grouped by taxonomy cell (* = cell inferred). Marks:", note=True)
+    doc.bullets([f"{k} {v}" for k, v in FLAG_TEXT.items()])
+    doc.p("Columns: " + "; ".join(f"{b['display']} = {b['cell']}, label {b['label']}, n={b['n']}" for b in benches) + ".", note=True)
+    cov = {}
+    for r in coverage:
+        cov.setdefault(row_key(r), {})[r["benchmark"]] = r
+    first = {k: v[benches[0]["id"]] for k, v in cov.items()}
+    header = ["Detector"] + [f"{b['display']}{'*' if b['inferred'] else ''}" for b in benches]
 
+    def rows_for(keys):
+        md, ht = [], []
+        for k in keys:
+            cells = [cov[k][b["id"]] for b in benches]
+            md.append([label(first[k])] + [f"{fnum(c['auroc'], 2)}{flag(c, b['id'])} [{fnum(c['ci_lo'], 2)}, {fnum(c['ci_hi'], 2)}]"
+                                           for c, b in zip(cells, benches)])
+            ht.append([esc(label(first[k]))] + [f"{fnum(c['auroc'], 2)}{flag(c, b['id'])} <span class='ci'>[{fnum(c['ci_lo'], 2)}, {fnum(c['ci_hi'], 2)}]</span>"
+                                                for c, b in zip(cells, benches)])
+        return md, ht
+
+    doc.h(3, "Reference rows (committed contrastive probes, re-scored, not re-fit)")
+    doc.table(header, *rows_for(["universal", "matched_cell", "max_taxonomy_posthoc"]))
+    native = [k for k, r in first.items() if r["role"] == "detector" and r["matches_native"] == "yes"]
+    for m, title in METHODS[:4]:
+        doc.h(3, title)
+        doc.table(header, *rows_for([k for k in native if method_of(first[k]) == m]))
+    doc.h(3, "Interactive matrix")
+    doc.raw_html("<!--HEAT-->")
+    doc.p("Static figures: coverage_heatmap_native.png (native-position rows) and coverage_heatmap_cached_positions.png (first pass).", note=True)
+    doc.h(3, "Secondary: the same directions at the repo's cached positions (first pass)")
+    cached = [k for k, r in first.items() if r["role"] == "detector" and r["matches_native"] != "yes"]
+    md, ht = rows_for(cached)
+    doc.md.append(md_table(header, md) + "\n")
+    doc.raw_html(f"<details><summary>{len(cached)} rows scored at last_prompt / first5 / response mean of the repo caches</summary>"
+                 + html_table(header, ht, "num") + "</details>")
+
+
+def controls_and_length(doc: Doc, controls, length, coverage):
+    doc.h(2, "4. Controls and length confound", "controls")
+    doc.p("Controls: AUROC separating the two sides of each held-out control pair (128 prompts x 2 per pair); 0.5 means the "
+          "detector ignores that correlate. Native-position rows and references first.", note=True)
+    native_det = {r["detector"] for r in coverage if r["role"] == "detector" and r["matches_native"] == "yes"}
+    covfirst = {r["detector"]: r for r in coverage if r["role"] == "detector"}
+    pairs = sorted({(int(r["control_pair"]), r["control_cell"]) for r in controls})
     by = {}
+    for r in controls:
+        by.setdefault(r["detector"], {})[int(r["control_pair"])] = r
+    header = ["Detector"] + [f"P{p:02d} {c}" for p, c in pairs]
+
+    def rows(keys):
+        md, ht = [], []
+        for k in keys:
+            name = short_label(covfirst[k]) if k in covfirst else f"REF {by[k][pairs[0][0]]['unit']}"
+            cells = [by[k][p] for p, _ in pairs]
+            undefined = [c["auroc"] in ("", "None") for c in cells]
+            md.append([name] + ["undefined" if u else f"{fnum(c['auroc'], 2)} [{fnum(c['ci_lo'], 2)}, {fnum(c['ci_hi'], 2)}]"
+                                for c, u in zip(cells, undefined)])
+            ht.append([esc(name)] + ["<span class='ci'>undefined</span>" if u else
+                                     f"{fnum(c['auroc'], 2)} <span class='ci'>[{fnum(c['ci_lo'], 2)}, {fnum(c['ci_hi'], 2)}]</span>"
+                                     for c, u in zip(cells, undefined)])
+        return md, ht
+
+    keys = list(by)
+    doc.table(header, *rows([k for k in keys if k in native_det] + [k for k in keys if k not in covfirst]))
+    doc.p("Undefined: the plain Human:/Assistant: format has no rendering of the control rows' system prompts.", note=True)
+    rest = [k for k in keys if k in covfirst and k not in native_det]
+    md, ht = rows(rest)
+    doc.md.append("Cached-position rows:\n\n" + md_table(header, md) + "\n")
+    doc.raw_html(f"<details><summary>{len(rest)} cached-position rows</summary>{html_table(header, ht, 'num')}</details>")
+
+    doc.p("Length: Spearman rho between detector score and n_response_tokens, and the spread of AUROC across length "
+          "terciles, summarised over the 15 benchmarks (all rows in length_confound.csv).", note=True)
+    groups = {}
     for r in length:
+        if r["role"] == "detector" and r["detector"] not in native_det:
+            continue
         name = short_label(r) if r["role"] == "detector" else f"REF {r['unit']} ({r['role'].replace('_', ' ')})"
-        by.setdefault(name, []).append(r)
-    out = []
-    for name, rs in by.items():
+        groups.setdefault(name, []).append(r)
+    md = []
+    for name, rs in groups.items():
         rho = [(float(r["spearman_score_vs_n_response_tokens"]), r["display"]) for r in rs]
-        rng = []
+        spread = []
         for r in rs:
             t = [float(r[f"t{k}_auroc"]) for k in (1, 2, 3) if r[f"t{k}_auroc"] not in ("", "None")]
-            rng.append((max(t) - min(t), r["display"]))
-        mr, mrb = max(rho, key=lambda x: abs(x[0]))
-        mg, mgb = max(rng)
-        out.append({"name": name, "med_rho": float(np.median([x for x, _ in rho])), "max_rho": mr, "max_rho_b": mrb,
-                    "med_range": float(np.median([x for x, _ in rng])), "max_range": mg, "max_range_b": mgb})
-    seen, label_rho = set(), []
+            spread.append((max(t) - min(t), r["display"]))
+        mr, mg = max(rho, key=lambda x: abs(x[0])), max(spread)
+        md.append([name, len(rs), fnum(np.median([x for x, _ in rho]), 2), f"{fnum(mr[0], 2)} ({mr[1]})",
+                   fnum(np.median([x for x, _ in spread]), 2), f"{fnum(mg[0], 2)} ({mg[1]})"])
+    doc.table(["Detector", "benchmarks", "median rho(score, length)", "max |rho| (benchmark)", "median tercile AUROC range",
+               "max range (benchmark)"], md)
+    seen, lr = set(), []
     for r in length:
         if r["display"] not in seen:
             seen.add(r["display"])
-            label_rho.append((r["display"], r["n"], r["spearman_label_vs_n_response_tokens"]))
-    return out, label_rho
+            lr.append([r["display"], r["n"], fnum(r["spearman_label_vs_n_response_tokens"], 2)])
+    doc.p("rho(label, length) per benchmark, the same for every detector:", note=True)
+    doc.table(["Benchmark", "n", "rho(label, length)"], lr)
 
 
-def html_length(length) -> str:
-    summ, label_rho = length_summary(length)
-    t = html_table(["Detector / role", "median ρ(score, length)", "max |ρ| (benchmark)", "median tercile AUROC range", "max range (benchmark)"],
-                   [[esc(s["name"]), fnum(s["med_rho"], 2), f"{fnum(s['max_rho'], 2)} <span class='ci'>{esc(s['max_rho_b'])}</span>",
-                     fnum(s["med_range"], 2), f"{fnum(s['max_range'], 2)} <span class='ci'>{esc(s['max_range_b'])}</span>"] for s in summ], "num")
-    lr = html_table(["Benchmark", "n", "ρ(label, length)"], [[esc(b), esc(n), fnum(v, 2)] for b, n, v in label_rho], "num")
-    full = [[esc(short_label(r) if r["role"] == "detector" else f"REF {r['unit']}"), esc(r["role"]),
-             esc(r["display"]), esc(r["n"]), fnum(r["spearman_score_vs_n_response_tokens"], 2),
-             fnum(r["t1_auroc"], 2), fnum(r["t2_auroc"], 2), fnum(r["t3_auroc"], 2)] for r in length]
-    ft = html_table(["Detector", "Role", "Benchmark", "n", "ρ(score, length)", "AUROC T1 (short)", "T2", "T3 (long)"], full, "num")
-    return ("<p class='note'>Spearman ρ between detector score and response length (n_response_tokens) on each benchmark, and AUROC within "
-            "length terciles; summarised per detector over the 15 benchmarks.</p>" + t +
-            "<h3>Label vs length, per benchmark</h3>" + lr + f"<details><summary>All {len(length)} rows</summary>{ft}</details>")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--dir", type=Path, required=True)
+    args = parser.parse_args()
+    d = args.dir
+    coverage, parity = read_csv(d / "coverage.csv"), read_csv(d / "parity.csv")
+    fig8b, fig10b = read_csv(d / "vennemeyer_fig8b.csv"), read_csv(d / "vennemeyer_fig10b.csv")
+    controls, length = read_csv(d / "controls.csv"), read_csv(d / "length_confound.csv")
+    choices, env = read_jsonl(d / "design_choices.jsonl"), read_json(d / "environment.json")
+    reg, ver, paper = read_json(d / "regression.json"), read_json(d / "verification.json"), read_json(d / "paper_reference.json")
+    overlap = read_json(d / "pandey_overlap.json")
+    bs = sorted({(r["benchmark"], r["display"], r["benchmark_cell"], r["cell_source"], r["target_label"], r["n"]) for r in coverage},
+                key=lambda b: (CELLS.index(b[2]), b[1]))
+    benches = [{"id": b[0], "display": b[1], "cell": b[2], "inferred": b[3] == "inferred", "label": b[4], "n": int(b[5])} for b in bs]
 
+    doc = Doc()
+    doc.md.append("# Sycophancy detector audit\n\nBranch `audit/existing-methods`. Model `meta-llama/Llama-3.1-8B-Instruct`. "
+                  "Generated from the files in this directory by `audit/write_review.py`.\n")
+    doc.h(2, "1. Summary", "summary")
+    nat = [r for r in coverage if r["role"] == "detector" and r["matches_native"] == "yes"]
+    summ = []
+    for m, title in METHODS:
+        rows = [r for r in nat if method_of(r) == m]
+        if rows:
+            above = sum(float(r["ci_lo"]) > 0.5 for r in rows)
+            below = sum(float(r["ci_hi"]) < 0.5 for r in rows)
+            best = max(rows, key=lambda r: float(r["auroc"]))
+            o = (f"{len({r['detector'] for r in rows})} detectors x 15 benchmarks: CI above 0.5 in {above}, below 0.5 in {below} "
+                 f"of {len(rows)} cells; highest {float(best['auroc']):.2f} ({best['display']})")
+        else:
+            o = "not scored (held)"
+        rep = {"caa": "reproduced; consistent with the paper's qualitative layer finding (no numbers in the paper)",
+               "vennemeyer": "reproduced with reconstructed pooling; partly matches Fig. 8b and Fig. 10b",
+               "genadi": "reproduced; no Llama-3.1-8B numbers in the paper",
+               "pandey": "reproduced at the code-faithful position; head overlap vs Table 1 in section 2",
+               "persona": "held at the judge step (4,000 GPT-4.1-mini calls)"}[m]
+        summ.append([title, rep, o])
+    doc.table(["Method", "Reproduction on source data", "Benchmarks at the method's own read position"], summ)
+    doc.p("Changes since the first version: (1) benchmark scoring at each method's own read position and input format; "
+          "(2) the review is split into reproduction and out-of-distribution sections; (3) Pandey's own detectors added "
+          "(LR at L27 from probe_transfer.py, DIM at L19 from steering.py) and the DIM at L27 relabelled as our combination; "
+          "(4) Pandey head-overlap and Vennemeyer direction-geometry checks against the papers; (5) plain-text whole-response "
+          "Vennemeyer rows at the cached response position are no longer marked native; (6) an independent code review.", note=True)
+    doc.p("Environment: " + "; ".join(f"{k} {v}" for k, v in env["environment"].items()) + ".", note=True)
+    doc.p("Not in this task: " + "; ".join(f"{n}: {t}" for n, t in NOT_IN_TASK), note=True)
 
-def html_choices(choices) -> str:
-    return "<ul class='choices'>" + "".join(
+    reproduction(doc, d, parity, paper, fig8b, fig10b, overlap)
+    ood(doc, coverage, benches)
+    controls_and_length(doc, controls, length, coverage)
+
+    doc.h(2, "5. Design choices, assumptions and inferences", "choices")
+    doc.md.append("\n".join(f"- *{c['tag']}* ({c['topic']}): {c['text']}" for c in choices) + "\n")
+    doc.raw_html("<ul class='choices'>" + "".join(
         f"<li><span class='tag tag-{c['tag'].replace(' ', '-')}'>{esc(c['tag'])}</span> <b>{esc(c['topic'])}</b>: {esc(c['text'])}</li>"
-        for c in choices) + "</ul>"
+        for c in choices) + "</ul>")
+    doc.h(2, "6. Verification", "verify")
+    doc.p("Independent review by a separate agent (read-only; values recomputed from the saved files):", note=True)
+    doc.bullets(ver["lines"])
+    doc.p("Regression evidence:", note=True)
+    doc.bullets(reg["lines"])
+    (d / "REVIEW.md").write_text("\n".join(doc.md) + "\n", encoding="utf-8")
+
+    cov = {(row_key(r), r["benchmark"]): r for r in coverage}
+    keys = list(dict.fromkeys(row_key(r) for r in coverage))
+    heat = {"benches": benches, "flags": FLAG_TEXT, "rows": []}
+    for k in keys:
+        cells = [cov[(k, b["id"])] for b in benches]
+        r0 = cells[0]
+        heat["rows"].append({"label": label(r0), "role": r0["role"], "method": method_of(r0) if r0["role"] == "detector" else "reference",
+                             "native": r0["role"] != "detector" or r0["matches_native"] == "yes", "built_on": r0["built_on"],
+                             "cells": [[round(float(c["auroc"]), 4), round(float(c["ci_lo"]), 4), round(float(c["ci_hi"]), 4),
+                                        c["unit"], flag(c, b["id"])] for c, b in zip(cells, benches)]})
+    template = (Path(__file__).parent / "review_template.html").read_text(encoding="utf-8")
+    shell, heat_block = template.split("<!--HEATBLOCK-->")
+    body = "\n".join(doc.html).replace("<!--HEAT-->", heat_block)
+    (d / "review.html").write_text(shell.replace("<!--BODY-->", body).replace("/*DATA*/null", json.dumps(heat)), encoding="utf-8")
+    inputs = [d / n for n in ("coverage.csv", "parity.csv", "vennemeyer_fig8b.csv", "vennemeyer_fig10b.csv", "controls.csv",
+                              "length_confound.csv", "design_choices.jsonl", "environment.json", "regression.json",
+                              "verification.json", "paper_reference.json", "pandey_overlap.json")]
+    for name in ("REVIEW.md", "review.html"):
+        write_meta(d / name, inputs, args, check_counts(len(coverage), {}, len(coverage), name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
+    print(f"wrote {d / 'REVIEW.md'} and {d / 'review.html'}")
 
 
 if __name__ == "__main__":

@@ -274,6 +274,23 @@ def pandey_rows(pairs: list[tuple[str, str, str]], tokenizer, n_fit: int) -> lis
     return rows
 
 
+def pandey_lying_rows(pairs: list[tuple[str, str, str]], tokenizer) -> list[dict]:
+    """Lying half (pairs[200:400], build_lying_prompts): false statement (1) vs true statement (0); parity only."""
+    rows = []
+    for k, (q, w, c) in enumerate(pairs[200:400]):
+        for label, ans in ((1, w), (0, c)):
+            content = f'Is the following statement true or false: "{q.rstrip("?").rstrip()} is {ans}"'
+            row = {"id": f"pandey_lie__{k:03d}__{'false' if label else 'true'}", "method": "pandey", "dataset": "triviaqa_lie",
+                   "text": render_prompt(tokenizer, [{"role": "user", "content": content}]), "add_special_tokens": True,
+                   "labels": {"lie": label}, "group": f"pair{k:03d}", "pair_index": 200 + k, "split": "parity_only"}
+            ids = tokenize(tokenizer, row)["input_ids"]
+            i = pandey_faithful_index(ids)
+            row["pool"] = {"faithful": [i, i + 1]}
+            row["n_tokens"] = len(ids)
+            rows.append(row)
+    return rows
+
+
 # ---- Persona Vectors -------------------------------------------------------------------------------------
 
 def a_or_an(word: str) -> str:
@@ -292,3 +309,59 @@ def persona_prompts(trait_data: dict, trait: str, n_per_question: int) -> list[d
                                  "polarity": polarity, "question_index": qi, "instruction_index": k, "rollout": r,
                                  "messages": [{"role": "system", "content": system}, {"role": "user", "content": question}]})
     return rows
+
+
+# ---- Benchmark rows rendered in each method's own input format ------------------------------------------
+
+def plain_dialogue(messages: list[dict], response: str) -> tuple[str, str]:
+    """Vennemeyer's plain format extended to several turns: 'Human: u \\n\\n' and 'Assistant: a \\n\\n' per turn, then
+    'Assistant: <response>'. Returns (text, assistant segment); single-turn rows reproduce their format exactly."""
+    parts = []
+    for m in messages:
+        if m["role"] == "user":
+            parts.append(f"Human: {m['content'].strip()} \n\n")
+        elif m["role"] == "assistant":
+            parts.append(f"Assistant: {m['content'].strip()} \n\n")
+        else:
+            raise ValueError(f"role {m['role']!r} has no plain Human:/Assistant: equivalent")
+    final = f"Assistant: {response.strip()}"
+    return "".join(parts) + final, final
+
+
+def native_row(row: dict, fmt: str, tokenizer) -> dict:
+    """Token ids and pooled spans of one benchmark row in a method's format.
+
+    chat: chat template + response, one BOS (Vennemeyer chat variant): last_content.
+    plain: plain_dialogue with BOS (Vennemeyer native): last_content, resp_all.
+    chat_double_bos: full dialogue templated then tokenized with a second BOS (Genadi, Pandey): genadi_answer_mean over
+      the final answer slice; pandey_faithful at (prompt tokens != <|eot_id|>).sum() - 1 of the templated prompt.
+    """
+    msgs, resp = row["messages"], row["response"]
+    if fmt == "chat":
+        prefix = render_prompt(tokenizer, msgs)
+        enc = tokenizer(prefix + resp, add_special_tokens=False, return_offsets_mapping=True)
+        ids = enc["input_ids"]
+        i = last_content_index(tokenizer, ids)
+        if enc["offset_mapping"][i][0] < len(prefix):
+            raise ValueError(f"{row['id']}: last content token is inside the prompt")
+        return {"ids": ids, "pool": {"last_content": (i, i + 1)}}
+    if fmt == "plain":
+        text, final = plain_dialogue(msgs, resp)
+        enc = tokenizer(text, add_special_tokens=True, return_offsets_mapping=True)
+        ids = enc["input_ids"]
+        n_resp = len(tokenizer(final, add_special_tokens=False)["input_ids"])
+        i = last_content_index(tokenizer, ids)
+        if enc["offset_mapping"][i][0] < len(text) - len(final):
+            raise ValueError(f"{row['id']}: last content token is inside the prompt")
+        return {"ids": ids, "pool": {"last_content": (i, i + 1), "resp_all": (len(ids) - n_resp, len(ids))}}
+    if fmt == "chat_double_bos":
+        full = tokenizer.apply_chat_template(msgs + [{"role": "assistant", "content": resp}], add_generation_prompt=False,
+                                             tokenize=False)
+        ids = tokenizer(full)["input_ids"]
+        p_ids = tokenizer(render_prompt(tokenizer, msgs))["input_ids"]
+        if ids[:len(p_ids)] != p_ids or ids[-1] != LLAMA_EOT or ids[:2] != [tokenizer.bos_token_id] * 2:
+            raise ValueError(f"{row['id']}: templated prompt is not a double-BOS prefix of the templated dialogue")
+        s, e = genadi_answer_span(ids)
+        k = pandey_faithful_index(p_ids)
+        return {"ids": ids, "pool": {"genadi_answer_mean": (s, e), "pandey_faithful": (k, k + 1)}}
+    raise ValueError(f"unknown format {fmt!r}")

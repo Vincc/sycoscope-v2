@@ -36,7 +36,8 @@ def main():
     act_meta = read_json(meta_path(args.activations))
     if {m["model"] for m in manifest} != {act_meta["model"]}:
         raise ValueError("detectors and activations come from different models")
-    stem = args.activations.name.removesuffix("_heads.npz")
+    name = args.activations.name
+    stem = name.removesuffix("_heads.npz") if name.endswith("_heads.npz") else name.removesuffix("_activations.npz")
     out_path = args.detector_dir / "eval" / f"{stem}__{args.pooling}.jsonl"
     if out_path.exists():
         raise FileExistsError(out_path)

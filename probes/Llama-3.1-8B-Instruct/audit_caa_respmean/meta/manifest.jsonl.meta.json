@@ -1,0 +1,67 @@
+{
+  "output": "manifest.jsonl",
+  "inputs": {
+    "activations/audit/caa/directions/generate_dataset__letter.npz": "553ef6d30c63be1cfb651152e909d65efa331a08e4c8c155f1a4ee62db449790",
+    "reports/audit_existing_methods/source/generate_dataset__letter.jsonl": "a14c58c27e09c4bd546cd30eb9f0581313e6c0b8d8a69160972b35219c8fdd05"
+  },
+  "git": {
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/caa/directions/generate_dataset__letter.npz",
+    "--table",
+    "reports/audit_existing_methods/source/generate_dataset__letter.jsonl",
+    "--name",
+    "caa_respmean",
+    "--units",
+    "caa",
+    "--extra-layers",
+    "13",
+    "--cell",
+    "caa=Position-Subjective / Explicit",
+    "--positions",
+    "response",
+    "--native-matches",
+    "response",
+    "--native-position",
+    "mean projection over response tokens (our construction: the A/B letter does not exist in free-form responses)"
+  ],
+  "args": {
+    "directions": "activations/audit/caa/directions/generate_dataset__letter.npz",
+    "table": "reports/audit_existing_methods/source/generate_dataset__letter.jsonl",
+    "name": "caa_respmean",
+    "units": [
+      "caa"
+    ],
+    "extra_layers": [
+      13
+    ],
+    "positions": [
+      "response"
+    ],
+    "cell": [
+      "caa=Position-Subjective / Explicit"
+    ],
+    "native_position": "mean projection over response tokens (our construction: the A/B letter does not exist in free-form responses)",
+    "native_matches": "response",
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_in": 2,
+    "excluded": {},
+    "n_out": 2
+  },
+  "created_at": "2026-10-01T00:14:01+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "caa",
+  "cell": {
+    "caa": "Position-Subjective / Explicit"
+  },
+  "native_position": "mean projection over response tokens (our construction: the A/B letter does not exist in free-form responses)",
+  "native_matches_cached_position": "response",
+  "source_repo": "https://github.com/nrimsky/CAA",
+  "source_commit": "5dabbbd9a0bca5f25e174501e959de378806aa48"
+}

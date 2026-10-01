@@ -1,0 +1,71 @@
+{
+  "output": "pr.probes.npz",
+  "inputs": {
+    "activations/audit/vennemeyer_diag/directions/math_factorial__plain__resp_all.npz": "b43a14f26c0fd5042787a8b982dd0813f6c7f97159aa11a9c7d8af851acd8518",
+    "reports/audit_existing_methods/source/math_factorial__plain__resp_all.jsonl": "c44a4454ddcfb82fc3fa7d90fa5443d800919c1aab2671c3b5767157da04e0a8"
+  },
+  "git": {
+    "commit": "9e57067937e6ca8f551c9217e285b816d60ca769",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/vennemeyer_diag/directions/math_factorial__plain__resp_all.npz",
+    "--table",
+    "reports/audit_existing_methods/source/math_factorial__plain__resp_all.jsonl",
+    "--name",
+    "vennemeyer_math_plain_respall_native",
+    "--units",
+    "syc",
+    "ga",
+    "pr",
+    "--cell",
+    "syc=Position-Verifiable / Explicit",
+    "ga=Position-Verifiable / Explicit",
+    "pr=Person-Traits / Explicit",
+    "--positions",
+    "resp_all",
+    "--native-matches",
+    "resp_all",
+    "--native-position",
+    "mean over 'Assistant: <response>' tokens; plain text with BOS (multi-turn separator is our construction)"
+  ],
+  "args": {
+    "directions": "activations/audit/vennemeyer_diag/directions/math_factorial__plain__resp_all.npz",
+    "table": "reports/audit_existing_methods/source/math_factorial__plain__resp_all.jsonl",
+    "name": "vennemeyer_math_plain_respall_native",
+    "units": [
+      "syc",
+      "ga",
+      "pr"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "resp_all"
+    ],
+    "cell": [
+      "syc=Position-Verifiable / Explicit",
+      "ga=Position-Verifiable / Explicit",
+      "pr=Person-Traits / Explicit"
+    ],
+    "native_position": "mean over 'Assistant: <response>' tokens; plain text with BOS (multi-turn separator is our construction)",
+    "native_matches": "resp_all",
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_probes": 1
+  },
+  "created_at": "2026-10-01T00:14:00+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "vennemeyer_diag",
+  "cell": {
+    "syc": "Position-Verifiable / Explicit",
+    "ga": "Position-Verifiable / Explicit",
+    "pr": "Person-Traits / Explicit"
+  },
+  "native_position": "mean over 'Assistant: <response>' tokens; plain text with BOS (multi-turn separator is our construction)",
+  "native_matches_cached_position": "resp_all",
+  "source_repo": "https://github.com/cincynlp/disentangle-sycophancy",
+  "source_commit": "217b89808d07e978a7c8fac37e8ff363e29ad8ef"
+}

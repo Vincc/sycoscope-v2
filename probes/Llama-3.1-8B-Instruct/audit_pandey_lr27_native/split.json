@@ -1,0 +1,9 @@
+{
+  "train": [],
+  "val": [],
+  "test": [],
+  "train_ids": [],
+  "val_ids": [],
+  "group_field": "audit_no_group_field",
+  "note": "audit detectors are fit on external source data; no benchmark row is used for fitting"
+}

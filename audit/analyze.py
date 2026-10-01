@@ -20,6 +20,7 @@ from utils.io import REPO_ROOT, check_counts, read_json, read_jsonl, write_meta
 
 JUDGING = REPO_ROOT / "generations" / "Llama-3.1-8B-Instruct" / "judging"
 HEAD_CACHE = REPO_ROOT / "activations" / "audit" / "heads"
+NATIVE = REPO_ROOT / "activations" / "audit" / "native"
 CELLS = ("Position-Verifiable / Explicit", "Position-Subjective / Explicit", "Position-Subjective / Implicit",
          "Person-Traits / Explicit", "Person-Traits / Implicit")
 # Benchmark taxonomy cell, from the docs/SPEC.md benchmark table; "inferred" = not listed there.
@@ -88,27 +89,38 @@ def tercile_aurocs(y, s, length) -> list[dict]:
     return out
 
 
-def residual_detectors(sweep_dirs: list[Path]) -> list[dict]:
+def split_spec(spec: str) -> list[str]:
+    return spec.split("=")
+
+
+def residual_detectors(specs: list[str]) -> list[dict]:
+    """<sweep dir> (scored on the repo caches) or <sweep dir>=<format> (on activations/audit/native/<stem>__<format>)."""
     dets = []
-    for d in sweep_dirs:
+    for spec in specs:
+        parts = split_spec(spec)
+        d, fmt = Path(parts[0]), (parts[1] if len(parts) == 2 else None)
         for m in read_jsonl(d / "manifest.jsonl"):
             dets.append({"detector": f"{d.name}:{m['probe_id']}", "kind": "residual", "sweep": d, "manifest": m,
                          "audit_method": m["audit_method"], "unit": m["audit_unit"], "variant": d.name,
                          "layer": m["layer"], "position": m["position"], "layer_rule": m["layer_rule"],
                          "native_position": m["native_position"], "matches_native": "yes" if m["position_matches_native"] else "no",
-                         "built_on": m["cell"], "our_addition": False})
+                         "built_on": m["cell"], "our_addition": False, "format": fmt})
     return dets
 
 
-def head_detectors(head_dirs: list[tuple[Path, str]]) -> list[dict]:
+def head_detectors(specs: list[str]) -> list[dict]:
+    """<detector dir>=<pooling> (repo-format head caches) or <detector dir>=<pooling>=<format> (native files)."""
     dets = []
-    for d, pooling in head_dirs:
+    for spec in specs:
+        parts = split_spec(spec)
+        d, pooling, fmt = Path(parts[0]), parts[1], (parts[2] if len(parts) == 3 else None)
         for m in read_jsonl(d / "manifest.jsonl"):
             dets.append({"detector": f"{d.name}:{m['probe_id']}", "kind": "heads", "sweep": d, "manifest": m,
                          "audit_method": m["audit_method"], "unit": m["audit_unit"], "variant": d.name,
                          "layer": m["layers"], "position": pooling, "layer_rule": "source val" if m["audit_method"] == "genadi" else "recipe",
-                         "native_position": m["native_position"], "matches_native": m["matches_native"],
-                         "built_on": m["cell"], "our_addition": m["our_addition"]})
+                         "native_position": m["native_position"],
+                         "matches_native": "yes" if fmt else m["matches_native"],
+                         "built_on": m["cell"], "our_addition": m["our_addition"], "format": fmt})
     return dets
 
 
@@ -129,23 +141,26 @@ def reference_detectors(ref_sweep: Path, selected: list[dict]) -> list[dict]:
                      "audit_method": "contrastive", "unit": f"P{pair:02d} {m['cell']}", "variant": "validation_selected",
                      "layer": m["layer"], "position": m["position"], "layer_rule": "synthetic val",
                      "native_position": m["position"], "matches_native": "yes", "built_on": m["cell"],
-                     "our_addition": False, "pair_index": pair})
+                     "our_addition": False, "pair_index": pair, "format": None})
     return dets
 
 
-def score(det: dict, z, zh, cache: dict) -> np.ndarray:
+def score(det: dict, zs: dict, zh, cache: dict) -> np.ndarray:
+    """zs: {None: repo cache, <format>: native file}; zh: repo-format head cache."""
     m = det["manifest"]
     if det["kind"] == "heads":
+        src = zh if det["format"] is None else zs[det["format"]]
         return probes.score_logistic(probes.load_probe(np.load(det["sweep"] / "detectors.npz"), m["probe_id"], "logistic"),
-                                     features(zh, det["position"], m["heads"]))
+                                     features(src, det["position"], m["heads"]))
     key = act_key(m["position"], m["layer"])
-    if key not in cache:
-        cache[key] = z[key]
+    if (det["format"], key) not in cache:
+        cache[(det["format"], key)] = zs[det["format"]][key]
     probe = probes.load_probe(np.load(det["sweep"] / m["file"]), m["probe_id"], m["method"])
-    return probes.score(m["method"], probe, cache[key])
+    return probes.score(m["method"], probe, cache[(det["format"], key)])
 
 
 def eval_auroc(det: dict, stem: str, label: str) -> float:
+    stem = stem if det["format"] is None else f"{stem}__{det['format']}"
     if det["kind"] == "heads":
         rows = read_jsonl(det["sweep"] / "eval" / f"{stem}__{det['position']}.jsonl")
     else:
@@ -169,13 +184,13 @@ def main():
     parser.add_argument("--replot", action="store_true", help="Only redraw the heatmap from an existing coverage.csv.")
     args = parser.parse_args()
     if args.replot:
-        heatmap(args, read_csv(args.out_dir / "coverage.csv"), read_csv(args.targets))
+        heatmaps(args, read_csv(args.out_dir / "coverage.csv"), read_csv(args.targets))
         return
 
     targets = read_csv(args.targets)
     selected = read_csv(args.selected)
-    head_dirs = [(Path(x.split("=")[0]), x.split("=")[1]) for x in args.head_dirs]
-    dets = residual_detectors(args.audit_sweeps) + head_detectors(head_dirs)
+    dets = residual_detectors(args.audit_sweeps) + head_detectors(args.head_dirs)
+    formats = sorted({d["format"] for d in dets if d["format"]})
     refs = reference_detectors(args.reference_sweep, selected)
     coverage, length_rows = [], []
     for t in targets:
@@ -185,6 +200,10 @@ def main():
         zh = np.load(HEAD_CACHE / f"{stem}_heads.npz")
         if not np.array_equal(z["id"], zh["id"]):
             raise AssertionError(f"{stem}: head cache rows differ from the benchmark cache")
+        zs = {None: z} | {f: np.load(NATIVE / f"{stem}__{f}_activations.npz") for f in formats}
+        for f in formats:
+            if not np.array_equal(zs[f]["id"], z["id"]) or not np.array_equal(read_labels(zs[f])[label], read_labels(z)[label]):
+                raise AssertionError(f"{stem}: native {f} rows or labels differ from the benchmark cache")
         y_all = read_labels(z)[label].astype(int)
         keep = y_all != NO_LABEL
         y, length = y_all[keep], z["n_response_tokens"][keep]
@@ -203,7 +222,7 @@ def main():
                     continue
             else:
                 roles = ["detector"]
-            s = score(det, z, zh, cache)[keep]
+            s = score(det, zs, zh, cache)[keep]
             auc = probes.auroc(y, s)
             ref_auc, ref_n = eval_auroc(det, stem, label)
             if ref_n != len(y) or not np.isclose(auc, ref_auc, rtol=0, atol=1e-9):
@@ -211,6 +230,7 @@ def main():
             lo, hi = bootstrap_ci(y, s, args.n_boot, args.seed)
             base = {k: det[k] for k in ("detector", "audit_method", "unit", "variant", "layer", "position", "layer_rule",
                                         "matches_native", "built_on", "our_addition")}
+            base["activations"] = "repo cache" if det["format"] is None else f"native {det['format']}"
             for role in roles:
                 coverage.append({**base, "role": role, "benchmark": stem, "display": t["display"], "family": t["family"],
                                  "benchmark_cell": cell, "cell_source": cell_source, "target_label": label, "n": len(y),
@@ -227,8 +247,18 @@ def main():
     args.out_dir.mkdir(parents=True, exist_ok=True)
     save(args, "coverage.csv", coverage)
     save(args, "length_confound.csv", length_rows)
-    heatmap(args, coverage, targets)
+    heatmaps(args, coverage, targets)
     save(args, "controls.csv", controls(args, dets, refs))
+
+
+def heatmaps(args, coverage: list[dict], targets: list[dict]) -> None:
+    """Native-position detectors (primary) and cached-position detectors, each with the reference rows."""
+    native = [r for r in coverage if r["role"] != "detector" or r["matches_native"] == "yes"]
+    cached = [r for r in coverage if r["role"] != "detector" or r["matches_native"] != "yes"]
+    heatmap(args, native, targets, "coverage_heatmap_native.png",
+            "Existing detectors at their own read positions, on the balanced judged benchmarks (Llama-3.1-8B-Instruct)")
+    heatmap(args, cached, targets, "coverage_heatmap_cached_positions.png",
+            "Existing detectors at the repo's cached positions (not their own), on the balanced judged benchmarks")
 
 
 def save(args, name: str, rows: list[dict]) -> None:
@@ -251,10 +281,33 @@ def controls(args, dets, refs) -> list[dict]:
     head_idx = np.array([order[i] for i in ids])
     y_all, pair = z["label"][ctrl].astype(int), z["pair_index"][ctrl]
     cells = z["cell"][ctrl]
+    stem = args.controls_cache.name.removesuffix("_activations.npz")
+    native = {}
+    for f in sorted({d["format"] for d in dets if d["format"]}):
+        if f == "plain":
+            continue  # control rows carry system prompts, which have no plain Human:/Assistant: rendering
+        native[f] = np.load(NATIVE / f"{stem}__{f}_activations.npz")
+        if not np.array_equal(native[f]["id"], z["id"]):
+            raise AssertionError(f"native {f} control rows differ from the control cache")
     rows, cache = [], {}
     for det in dets + refs:
-        if det["kind"] == "heads":
-            s_all = score(det, None, zh, cache)[head_idx]
+        fmt = det["format"]
+        if fmt == "plain":
+            for p in sorted(set(pair.tolist())):
+                m = pair == p
+                rows.append({"detector": det["detector"], "audit_method": det["audit_method"], "unit": det["unit"],
+                             "variant": det["variant"], "layer": det["layer"], "position": det["position"],
+                             "our_addition": det["our_addition"], "activations": f"native {fmt}", "control_pair": int(p),
+                             "control_cell": str(cells[m][0]), "n": int(m.sum()), "n_pos": int((y_all[m] == 1).sum()),
+                             "auroc": None, "ci_lo": None, "ci_hi": None,
+                             "note": f"undefined: control rows have system prompts, which have no {fmt} rendering"})
+            continue
+        if det["kind"] == "heads" and fmt is not None:
+            s_all = score(det, {fmt: native[fmt]}, None, {})[ctrl]
+        elif fmt is not None:
+            s_all = score(det, {fmt: native[fmt]}, None, {})[ctrl]
+        elif det["kind"] == "heads":
+            s_all = score(det, {}, zh, cache)[head_idx]
         else:
             key = act_key(det["manifest"]["position"], det["manifest"]["layer"])
             if key not in cache:
@@ -267,9 +320,10 @@ def controls(args, dets, refs) -> list[dict]:
             lo, hi = bootstrap_ci(y_all[m], s_all[m], args.n_boot, args.seed)
             rows.append({"detector": det["detector"], "audit_method": det["audit_method"], "unit": det["unit"],
                          "variant": det["variant"], "layer": det["layer"], "position": det["position"],
-                         "our_addition": det["our_addition"], "control_pair": int(p), "control_cell": str(cells[m][0]),
+                         "our_addition": det["our_addition"], "activations": "repo cache" if fmt is None else f"native {fmt}",
+                         "control_pair": int(p), "control_cell": str(cells[m][0]),
                          "n": int(m.sum()), "n_pos": int((y_all[m] == 1).sum()), "auroc": probes.auroc(y_all[m], s_all[m]),
-                         "ci_lo": lo, "ci_hi": hi})
+                         "ci_lo": lo, "ci_hi": hi, "note": ""})
     return rows
 
 
@@ -290,12 +344,16 @@ def short_label(r: dict) -> str:
     nat = {"yes": "native", "approx": "≈native", "no": "non-native"}[r["matches_native"]]
     tag = " [ours]" if str(r["our_addition"]) == "True" else ""
     unit = "" if r["unit"] == method else " " + {"syc": "SyA", "ga": "GA", "pr": "SyPr"}.get(r["unit"], r["unit"])
-    if method == "pandey" and r["unit"] == "syc":
-        unit = " residual"
-    return f"{method}{unit}{variant} · {layer} · {r['position']} ({nat}){tag}"
+    if method == "pandey":
+        unit = {"syc": " residual DIM-27 (our combination)", "syc_lr27": " LR-27 (their probe)",
+                "syc_dim19": " DIM-19 (their steering dir.)"}.get(r["unit"], unit)
+    fmt = r.get("activations", "repo cache")
+    where = "" if fmt == "repo cache" else f" [{fmt.removeprefix('native ').replace('_', ' ')}]"
+    pos = r["position"].removeprefix("oproj_")
+    return f"{method}{unit}{variant} · {layer} · {pos}{where} ({nat}){tag}"
 
 
-def heatmap(args, coverage: list[dict], targets: list[dict]) -> None:
+def heatmap(args, coverage: list[dict], targets: list[dict], name: str, title: str) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
@@ -321,10 +379,9 @@ def heatmap(args, coverage: list[dict], targets: list[dict]) -> None:
         if benchmark_cell(cols[j]["eval_dataset"])[0] != benchmark_cell(cols[j - 1]["eval_dataset"])[0]:
             ax.axvline(j - 0.5, color="#172033", linewidth=1.7)
     fig.colorbar(im, ax=ax, shrink=0.6, pad=0.01, label="AUROC")
-    ax.set_title("Existing sycophancy detectors on the balanced judged benchmarks (Llama-3.1-8B-Instruct)",
-                 fontsize=14, fontweight="bold")
+    ax.set_title(title, fontsize=14, fontweight="bold")
     fig.tight_layout()
-    path = args.out_dir / "coverage_heatmap.png"
+    path = args.out_dir / name
     fig.savefig(path, dpi=200, facecolor="white")
     plt.close(fig)
     write_meta(path, [args.out_dir / "coverage.csv"], args, check_counts(len(coverage), {}, len(coverage), path.name),

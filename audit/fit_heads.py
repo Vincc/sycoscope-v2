@@ -69,6 +69,19 @@ def o_proj_weights(model: str, layers: list[int]) -> dict[int, np.ndarray]:
     return out
 
 
+def head_deltas(H: np.ndarray, y: np.ndarray, rows: np.ndarray, w_o: dict[int, np.ndarray]) -> list[dict]:
+    """||mean_pos - mean_neg|| of each head's output z_h @ W_O[:, h].T over the selected rows (W_O applied to the mean
+    difference of z_h, equal by linearity)."""
+    out = []
+    for L in range(H.shape[1]):
+        dz = H[rows & (y == 1), L].astype(np.float64).mean(0) - H[rows & (y == 0), L].astype(np.float64).mean(0)
+        per_head = heads.head_outputs(dz[None], w_o[L].astype(np.float64), N_HEADS)[0]  # (n_heads, hidden)
+        for h in range(N_HEADS):
+            out.append({"layer": L, "head": h, "delta_norm": float(np.linalg.norm(per_head[h])),
+                        "n_rank_pos": int((rows & (y == 1)).sum()), "n_rank_neg": int((rows & (y == 0)).sum())})
+    return out
+
+
 def logistic_detector(Xfit, yfit, C: float, max_iter: int) -> dict:
     return probes.fit_logistic(Xfit, yfit, C=C, max_iter=max_iter)
 
@@ -144,13 +157,7 @@ def main():
             f"lr_top{args.top_k}", True, {"C": args.C})
     else:
         rank = fit & (z["group"] < f"pair{args.n_rank:03d}")  # pairs 0..n_rank-1
-        w_o = o_proj_weights(prov["model"], list(range(n_layers)))
-        for L in range(n_layers):
-            dz = H[rank & (y == 1), L].astype(np.float64).mean(0) - H[rank & (y == 0), L].astype(np.float64).mean(0)
-            per_head = heads.head_outputs(dz[None], w_o[L].astype(np.float64), N_HEADS)[0]  # (n_heads, hidden)
-            for h in range(N_HEADS):
-                head_rows.append({"layer": L, "head": h, "delta_norm": float(np.linalg.norm(per_head[h])),
-                                  "n_rank_pos": int((rank & (y == 1)).sum()), "n_rank_neg": int((rank & (y == 0)).sum())})
+        head_rows = head_deltas(H, y, rank, o_proj_weights(prov["model"], list(range(n_layers))))
         top = [(r["layer"], r["head"]) for r in sorted(head_rows, key=lambda r: -r["delta_norm"])[:args.top_k]]
         Xfit = head_features(H[fit], top)
         add(f"pandey__lr_top{args.top_k}", logistic_detector(Xfit, y[fit], args.C, args.max_iter), top,
