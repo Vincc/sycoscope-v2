@@ -1,0 +1,63 @@
+{
+  "output": "aita_yta_indirectness_minority_balanced_seed0__plain.jsonl",
+  "inputs": {
+    "activations/audit/native/aita_yta_indirectness_minority_balanced_seed0__plain_activations.npz": "306c35eda121a7fb5ee6a891aba91c03def3b52fe37d88e044ba45781b29a116",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native/manifest.jsonl": "bfc7e37c928a17e7cfad341c30c7627d6d3fa7a817ada23f373dcf65dcc8607f",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native",
+    "--activations",
+    "activations/audit/native/aita_yta_indirectness_minority_balanced_seed0__plain_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native",
+    "activations": "activations/audit/native/aita_yta_indirectness_minority_balanced_seed0__plain_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "framing": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    },
+    "indirectness": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    },
+    "validation": {
+      "n_in": 1248,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1248
+    }
+  },
+  "created_at": "2026-10-01T01:31:57+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "306c35eda121a7fb5ee6a891aba91c03def3b52fe37d88e044ba45781b29a116",
+  "labels": [
+    "framing",
+    "indirectness",
+    "validation"
+  ],
+  "n_probes": 3
+}

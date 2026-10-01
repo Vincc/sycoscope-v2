@@ -1,17 +1,17 @@
 {
-  "output": "coverage_heatmap.png",
+  "output": "coverage_heatmap_cached_positions.png",
   "inputs": {
-    "reports/audit_existing_methods/coverage.csv": "87f68cc08c45d5abce1797e9ef33d7ed3efc1f3cdfacb6ebdfb681d44ad69143"
+    "reports/audit_existing_methods/coverage.csv": "e67071bb397c2f33066659fe0bc44f3214b0e51f7a4dd8f1a27e828a98f21ade"
   },
   "git": {
-    "commit": "b4d20ddb5005f9b6803875a67b733303bd31fcac",
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
     "dirty": true
   },
   "argv": [
     "/workspace/sycoscope-v2/audit/analyze.py",
     "--replot",
     "--audit-sweeps",
-    "probes/Llama-3.1-8B-Instruct/audit_caa",
+    "x",
     "--head-dirs",
     "x=y",
     "--reference-sweep",
@@ -21,9 +21,9 @@
     "--targets",
     "reports/llama31_tefo_probe_transfer/targets.csv",
     "--controls-cache",
-    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/x.npz",
     "--controls-heads",
-    "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
+    "x",
     "--n-boot",
     "1000",
     "--seed",
@@ -33,7 +33,7 @@
   ],
   "args": {
     "audit_sweeps": [
-      "probes/Llama-3.1-8B-Instruct/audit_caa"
+      "x"
     ],
     "head_dirs": [
       "x=y"
@@ -41,18 +41,18 @@
     "reference_sweep": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
     "selected": "reports/llama31_tefo_probe_transfer/validation_selected.csv",
     "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
-    "controls_cache": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
-    "controls_heads": "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
+    "controls_cache": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/x.npz",
+    "controls_heads": "x",
     "n_boot": 1000,
     "seed": 0,
     "out_dir": "reports/audit_existing_methods",
     "replot": true
   },
   "counts": {
-    "n_in": 765,
+    "n_in": 720,
     "excluded": {},
-    "n_out": 765
+    "n_out": 720
   },
-  "created_at": "2026-09-30T23:43:16+00:00",
+  "created_at": "2026-10-01T01:41:37+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

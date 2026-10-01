@@ -1,0 +1,51 @@
+{
+  "output": "ss_indirectness_minority_balanced_seed0__chat_double_bos__oproj_pandey_faithful.jsonl",
+  "inputs": {
+    "activations/audit/native/ss_indirectness_minority_balanced_seed0__chat_double_bos_activations.npz": "b2afb8e6089cae7dad0ed45f2aa79a58ae2622ba3f7f31c01cd057774b127464",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads/manifest.jsonl": "4e3e00b86a1091e95793a7cd731f6e9029136968a8f3cdcb61b6b0a5148b9bd1"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/evaluate_heads.py",
+    "--detector-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads",
+    "--activations",
+    "activations/audit/native/ss_indirectness_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "--pooling",
+    "oproj_pandey_faithful"
+  ],
+  "args": {
+    "detector_dir": "probes/Llama-3.1-8B-Instruct/audit_pandey_heads",
+    "activations": "activations/audit/native/ss_indirectness_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "pooling": "oproj_pandey_faithful"
+  },
+  "counts": {
+    "framing": {
+      "n_in": 550,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 550
+    },
+    "indirectness": {
+      "n_in": 550,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 550
+    },
+    "validation": {
+      "n_in": 550,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 550
+    }
+  },
+  "created_at": "2026-10-01T01:33:54+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "b2afb8e6089cae7dad0ed45f2aa79a58ae2622ba3f7f31c01cd057774b127464"
+}

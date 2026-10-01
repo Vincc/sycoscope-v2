@@ -1,0 +1,39 @@
+{
+  "output": "pandey_overlap.json",
+  "inputs": {
+    "activations/audit/pandey/triviaqa_syc.npz": "77ef9e799b6b2aa2bb5e4f50150b4ab3cb675f664a1635326a89b340382131ac",
+    "activations/audit/pandey/triviaqa_lie.npz": "6be3b752ce3031b58b6eb900c605741b03ccad068ffec9dc6aa631972a86ef80"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/pandey_overlap.py",
+    "--syc",
+    "activations/audit/pandey/triviaqa_syc.npz",
+    "--lie",
+    "activations/audit/pandey/triviaqa_lie.npz",
+    "--n-rank",
+    "50",
+    "--k",
+    "15",
+    "32"
+  ],
+  "args": {
+    "syc": "activations/audit/pandey/triviaqa_syc.npz",
+    "lie": "activations/audit/pandey/triviaqa_lie.npz",
+    "n_rank": 50,
+    "k": [
+      15,
+      32
+    ]
+  },
+  "counts": {
+    "n_in": 1024,
+    "excluded": {},
+    "n_out": 1024
+  },
+  "created_at": "2026-10-01T01:11:47+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

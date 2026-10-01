@@ -1,17 +1,21 @@
 {
   "output": "REVIEW.md",
   "inputs": {
-    "reports/audit_existing_methods/coverage.csv": "87f68cc08c45d5abce1797e9ef33d7ed3efc1f3cdfacb6ebdfb681d44ad69143",
-    "reports/audit_existing_methods/parity.csv": "276781a325901af508c363e417f902643a02f1dfadc4e5b69a2fe41ba76631ad",
+    "reports/audit_existing_methods/coverage.csv": "e67071bb397c2f33066659fe0bc44f3214b0e51f7a4dd8f1a27e828a98f21ade",
+    "reports/audit_existing_methods/parity.csv": "278144855273fb70cfb53921b33f587d63134d82c8a7c4d373439477236f9ca9",
     "reports/audit_existing_methods/vennemeyer_fig8b.csv": "7c07852bde78f426dea322b5ef0d8227298cc40dbaf56eb6a8e75f46f46362e2",
-    "reports/audit_existing_methods/controls.csv": "9efac5ee3dbd2558cf31edda8efdbd55ed3983ac38a8ce6ff044a92a6d9eb81e",
-    "reports/audit_existing_methods/length_confound.csv": "e316be7778656adff701bdd66d34ac0faa679d6a1c93779cfa36bfb95140d0e5",
-    "reports/audit_existing_methods/design_choices.jsonl": "93a721111add4116998ee0fe7931d22b9d27ec207fcd26a4841b472e23a33de3",
+    "reports/audit_existing_methods/vennemeyer_fig10b.csv": "9866fd7336bb534238a515ebe48d2e2c0f6ae2fb13bfada3399531f7ea6bc0a0",
+    "reports/audit_existing_methods/controls.csv": "7492f95f2041699980887a05942ece595c9c3ad87b0c69f6c9ebe1aed747f654",
+    "reports/audit_existing_methods/length_confound.csv": "d4a86a68ca158a3bd743c8573c0e409d5463a7a50c011be469451a160587dfb8",
+    "reports/audit_existing_methods/design_choices.jsonl": "7f7fd319ed63a198407b4a8d3012e4264d8f65f06dd3b8c53d6c5f83e9521540",
     "reports/audit_existing_methods/environment.json": "2837c442ecb81ce42b0db9fb3dca9ea25a79d817598c90fb55a8769895f306aa",
-    "reports/audit_existing_methods/regression.json": "aa40e989fb41f605cbabfcf6a00ff23b0a757cb3782b48c40c5e54521dcb854f"
+    "reports/audit_existing_methods/regression.json": "aa40e989fb41f605cbabfcf6a00ff23b0a757cb3782b48c40c5e54521dcb854f",
+    "reports/audit_existing_methods/verification.json": "0bc323c656fc2a3f44a3126adc404a84c4cd5c2b5cff0a438287896b886e84e6",
+    "reports/audit_existing_methods/paper_reference.json": "011948620db26dbf9e53d6b234cbd4cf22b75a3ffe4a2e3986b59e4c226ff0c3",
+    "reports/audit_existing_methods/pandey_overlap.json": "c1191e94553e5874ec9824478514c0559a8a3ceac7c53b4a9f36eaaf5f9fb156"
   },
   "git": {
-    "commit": "b4d20ddb5005f9b6803875a67b733303bd31fcac",
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
     "dirty": true
   },
   "argv": [
@@ -23,10 +27,10 @@
     "dir": "reports/audit_existing_methods"
   },
   "counts": {
-    "n_in": 765,
+    "n_in": 1020,
     "excluded": {},
-    "n_out": 765
+    "n_out": 1020
   },
-  "created_at": "2026-09-30T23:44:06+00:00",
+  "created_at": "2026-10-01T01:41:37+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

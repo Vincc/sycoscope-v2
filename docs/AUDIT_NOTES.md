@@ -92,3 +92,17 @@ unchanged `probe_training.evaluate_probes` (residual) / `evaluate_heads` (heads,
 `extract_source --cache all` -> `persona_judge` (raises NotImplementedError). Results and the review are in
 `reports/audit_existing_methods/`. Activations (git-ignored) are under `activations/audit/`; the control-row
 activations are next to their JSONL under `generations/Llama-3.1-8B-Instruct/training/`.
+
+## Native-position scoring on the benchmarks (second pass)
+
+Benchmark rows are re-extracted in each method's own input format by `audit/get_native_activations.py`
+(`audit/sources.py::native_row`), in the row order of the repo caches, with labels copied and asserted equal:
+- `plain` (Vennemeyer native): `Human: ... \n\nAssistant: ...` with BOS; multi-turn conversations use our separator.
+- `chat` (Vennemeyer chat variant): chat template + response, one BOS.
+- `chat_double_bos` (Genadi, Pandey): full dialogue templated, then tokenized with a second BOS; Genadi answer slice
+  and Pandey code-faithful index (which drifts on multi-turn prompts, flagged per cell).
+CAA's mean projection over response tokens and Vennemeyer chat whole-response equal the cached response-mean scores.
+Pandey's own detectors (LR at L27 from `probe_transfer.py`, DIM at L19 from `steering.py`) are added by
+`audit/fit_pandey_probe.py`; the earlier DIM at L27 is our combination. Parity extras: `audit/pandey_overlap.py`
+(Table 1 head overlap) and `audit/vennemeyer_geometry.py` (Fig. 10b cosines). Two independent read-only reviews by a
+separate agent are summarised in `reports/audit_existing_methods/verification.json`.

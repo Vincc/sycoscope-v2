@@ -1,0 +1,63 @@
+{
+  "output": "ss_validation_minority_balanced_seed0__chat_double_bos_L19.jsonl",
+  "inputs": {
+    "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_L19_activations.npz": "9d6567c988772ea5e8495b43790b04a30265b96dc2744a8cd7905bd234a356a5",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native/manifest.jsonl": "a00ba91bdaa00adfc8b1fe98e15a1401fef73487d955541bc6fad16423bbac2d",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native",
+    "--activations",
+    "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_L19_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native",
+    "activations": "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_L19_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "framing": {
+      "n_in": 1062,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1062
+    },
+    "indirectness": {
+      "n_in": 1062,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1062
+    },
+    "validation": {
+      "n_in": 1062,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 1062
+    }
+  },
+  "created_at": "2026-10-01T01:34:04+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "9d6567c988772ea5e8495b43790b04a30265b96dc2744a8cd7905bd234a356a5",
+  "labels": [
+    "framing",
+    "indirectness",
+    "validation"
+  ],
+  "n_probes": 1
+}

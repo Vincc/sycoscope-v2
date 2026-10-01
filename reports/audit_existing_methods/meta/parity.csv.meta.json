@@ -1,10 +1,10 @@
 {
   "output": "parity.csv",
   "inputs": {
-    "reports/audit_existing_methods/paper_reference.json": "e66d404c308f6a3b18618bd443066362451e402abc2ac10130e13fc6c32ca16e"
+    "reports/audit_existing_methods/paper_reference.json": "011948620db26dbf9e53d6b234cbd4cf22b75a3ffe4a2e3986b59e4c226ff0c3"
   },
   "git": {
-    "commit": "b4d20ddb5005f9b6803875a67b733303bd31fcac",
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
     "dirty": true
   },
   "argv": [
@@ -23,10 +23,10 @@
     "tolerance": 0.05
   },
   "counts": {
-    "n_in": 21,
+    "n_in": 30,
     "excluded": {},
-    "n_out": 21
+    "n_out": 30
   },
-  "created_at": "2026-09-30T23:43:49+00:00",
+  "created_at": "2026-10-01T01:22:07+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

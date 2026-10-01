@@ -1,0 +1,51 @@
+{
+  "output": "ss_validation_minority_balanced_seed0__chat_double_bos__oproj_genadi_answer_mean.jsonl",
+  "inputs": {
+    "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_activations.npz": "9fbb8f608fe84cfd8b76e34cc366ceaec68fbe7c28f72bdceaf541553cf0368f",
+    "probes/Llama-3.1-8B-Instruct/audit_genadi_heads/manifest.jsonl": "c6a7dcf235ef56c6bf1ed303d2eb64cd01379cdf43c6c0a87a152bb4e1e4776d"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/evaluate_heads.py",
+    "--detector-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_genadi_heads",
+    "--activations",
+    "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "--pooling",
+    "oproj_genadi_answer_mean"
+  ],
+  "args": {
+    "detector_dir": "probes/Llama-3.1-8B-Instruct/audit_genadi_heads",
+    "activations": "activations/audit/native/ss_validation_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "pooling": "oproj_genadi_answer_mean"
+  },
+  "counts": {
+    "framing": {
+      "n_in": 1062,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 1062
+    },
+    "indirectness": {
+      "n_in": 1062,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 1062
+    },
+    "validation": {
+      "n_in": 1062,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 1062
+    }
+  },
+  "created_at": "2026-10-01T01:34:06+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "9fbb8f608fe84cfd8b76e34cc366ceaec68fbe7c28f72bdceaf541553cf0368f"
+}

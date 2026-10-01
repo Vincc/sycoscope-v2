@@ -100,7 +100,7 @@ def residual_detectors(specs: list[str]) -> list[dict]:
         parts = split_spec(spec)
         d, fmt = Path(parts[0]), (parts[1] if len(parts) == 2 else None)
         for m in read_jsonl(d / "manifest.jsonl"):
-            dets.append({"detector": f"{d.name}:{m['probe_id']}", "kind": "residual", "sweep": d, "manifest": m,
+            dets.append({"detector": f"{d.name}:{m['probe_id']}" + (f"@{fmt}" if fmt else ""), "kind": "residual", "sweep": d, "manifest": m,
                          "audit_method": m["audit_method"], "unit": m["audit_unit"], "variant": d.name,
                          "layer": m["layer"], "position": m["position"], "layer_rule": m["layer_rule"],
                          "native_position": m["native_position"], "matches_native": "yes" if m["position_matches_native"] else "no",
@@ -115,7 +115,7 @@ def head_detectors(specs: list[str]) -> list[dict]:
         parts = split_spec(spec)
         d, pooling, fmt = Path(parts[0]), parts[1], (parts[2] if len(parts) == 3 else None)
         for m in read_jsonl(d / "manifest.jsonl"):
-            dets.append({"detector": f"{d.name}:{m['probe_id']}", "kind": "heads", "sweep": d, "manifest": m,
+            dets.append({"detector": f"{d.name}:{m['probe_id']}" + (f"@{fmt}" if fmt else ""), "kind": "heads", "sweep": d, "manifest": m,
                          "audit_method": m["audit_method"], "unit": m["audit_unit"], "variant": d.name,
                          "layer": m["layers"], "position": pooling, "layer_rule": "source val" if m["audit_method"] == "genadi" else "recipe",
                          "native_position": m["native_position"],
@@ -171,7 +171,7 @@ def eval_auroc(det: dict, stem: str, label: str) -> float:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--audit-sweeps", type=Path, nargs="+", required=True)
+    parser.add_argument("--audit-sweeps", nargs="+", required=True, help="<sweep dir> or <sweep dir>=<native format>")
     parser.add_argument("--head-dirs", nargs="+", required=True, help="<detector dir>=<pooling>")
     parser.add_argument("--reference-sweep", type=Path, required=True)
     parser.add_argument("--selected", type=Path, required=True, help="validation_selected.csv")
@@ -333,8 +333,9 @@ def short_label(r: dict) -> str:
         return {"universal": "REF universal P00", "matched_cell": "REF matched-cell pair",
                 "max_taxonomy_posthoc": "REF max over taxonomy pairs (post hoc)"}[r["role"]]
     method = r["audit_method"].removesuffix("_diag")
-    variant = r["variant"].removeprefix("audit_").removeprefix(method).removeprefix("_").replace("_", " ")
-    variant = "" if variant in ("", "heads") else f" · {variant}"
+    variant = r["variant"].removeprefix("audit_").removeprefix(method).removeprefix("_").removesuffix("_native")
+    variant = variant.replace("_", " ")
+    variant = "" if variant in ("", "heads", "lr27", "dim19", "native") else f" · {variant}"
     layer = str(r["layer"])
     if layer.startswith("["):
         layers = layer.strip("[]").split(",")
@@ -345,11 +346,13 @@ def short_label(r: dict) -> str:
     tag = " [ours]" if str(r["our_addition"]) == "True" else ""
     unit = "" if r["unit"] == method else " " + {"syc": "SyA", "ga": "GA", "pr": "SyPr"}.get(r["unit"], r["unit"])
     if method == "pandey":
-        unit = {"syc": " residual DIM-27 (our combination)", "syc_lr27": " LR-27 (their probe)",
-                "syc_dim19": " DIM-19 (their steering dir.)"}.get(r["unit"], unit)
+        unit = {"syc": " DIM-27 (our combination)", "syc_lr27": " LR-27 (their probe)",
+                "syc_dim19": " DIM-19 (their steering)"}.get(r["unit"], unit)
     fmt = r.get("activations", "repo cache")
-    where = "" if fmt == "repo cache" else f" [{fmt.removeprefix('native ').replace('_', ' ')}]"
-    pos = r["position"].removeprefix("oproj_")
+    where = "" if fmt == "repo cache" else " [" + {"plain": "plain", "chat": "chat", "chat_double_bos": "2xBOS",
+                                                     "chat_double_bos_L19": "2xBOS"}[fmt.removeprefix("native ")] + "]"
+    pos = {"pandey_faithful": "faithful", "genadi_answer_mean": "answer mean"}.get(r["position"].removeprefix("oproj_"),
+                                                                                    r["position"].removeprefix("oproj_"))
     return f"{method}{unit}{variant} · {layer} · {pos}{where} ({nat}){tag}"
 
 

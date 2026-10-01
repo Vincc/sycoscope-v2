@@ -1,0 +1,51 @@
+{
+  "output": "oeq_validation_minority_balanced_seed0__chat_double_bos__oproj_pandey_faithful.jsonl",
+  "inputs": {
+    "activations/audit/native/oeq_validation_minority_balanced_seed0__chat_double_bos_activations.npz": "cf081edf8b684d06e70f826d20fd19f5f9ae007cc19005c7efe6a60431f613d1",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads/manifest.jsonl": "4e3e00b86a1091e95793a7cd731f6e9029136968a8f3cdcb61b6b0a5148b9bd1"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/evaluate_heads.py",
+    "--detector-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads",
+    "--activations",
+    "activations/audit/native/oeq_validation_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "--pooling",
+    "oproj_pandey_faithful"
+  ],
+  "args": {
+    "detector_dir": "probes/Llama-3.1-8B-Instruct/audit_pandey_heads",
+    "activations": "activations/audit/native/oeq_validation_minority_balanced_seed0__chat_double_bos_activations.npz",
+    "pooling": "oproj_pandey_faithful"
+  },
+  "counts": {
+    "framing": {
+      "n_in": 1270,
+      "excluded": {
+        "label_none": 1
+      },
+      "n_out": 1269
+    },
+    "indirectness": {
+      "n_in": 1270,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 1270
+    },
+    "validation": {
+      "n_in": 1270,
+      "excluded": {
+        "label_none": 0
+      },
+      "n_out": 1270
+    }
+  },
+  "created_at": "2026-10-01T01:33:27+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "cf081edf8b684d06e70f826d20fd19f5f9ae007cc19005c7efe6a60431f613d1"
+}

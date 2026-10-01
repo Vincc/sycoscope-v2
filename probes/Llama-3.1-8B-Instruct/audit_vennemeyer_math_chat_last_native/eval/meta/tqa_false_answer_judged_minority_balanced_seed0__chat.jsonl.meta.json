@@ -1,0 +1,45 @@
+{
+  "output": "tqa_false_answer_judged_minority_balanced_seed0__chat.jsonl",
+  "inputs": {
+    "activations/audit/native/tqa_false_answer_judged_minority_balanced_seed0__chat_activations.npz": "2c55b2922425b22977b69ad87e259ee1d78912ac0283d3babcdf35b6c80bc160",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native/manifest.jsonl": "f1bc4414614c0aa3f4e346ad13e3cdcd6b6aa3926e6d109c16c50daf73d7c898",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native/split.json": "4519db55a6d34b91bdaa89009d6498eaedb4fd1832ecc8ce45918e9e7a345089"
+  },
+  "git": {
+    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/probe_training/evaluate_probes.py",
+    "--sweep-dir",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native",
+    "--activations",
+    "activations/audit/native/tqa_false_answer_judged_minority_balanced_seed0__chat_activations.npz",
+    "--labels",
+    "all"
+  ],
+  "args": {
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native",
+    "activations": "activations/audit/native/tqa_false_answer_judged_minority_balanced_seed0__chat_activations.npz",
+    "labels": [
+      "all"
+    ]
+  },
+  "counts": {
+    "false_answer": {
+      "n_in": 2090,
+      "excluded": {
+        "in_probe_train": 0,
+        "label_none": 0
+      },
+      "n_out": 2090
+    }
+  },
+  "created_at": "2026-10-01T01:34:35+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "eval_sha256": "2c55b2922425b22977b69ad87e259ee1d78912ac0283d3babcdf35b6c80bc160",
+  "labels": [
+    "false_answer"
+  ],
+  "n_probes": 3
+}
