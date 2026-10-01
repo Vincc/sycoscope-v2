@@ -5,7 +5,7 @@
     "reports/llama31_tefo_probe_transfer/validation_selected.csv": "006e5cf9c8bf2ac8022a9c027b0e9e82762ff0e0eaf25534b52a9a298eaf8ac5"
   },
   "git": {
-    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
     "dirty": true
   },
   "argv": [
@@ -18,6 +18,7 @@
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
     "probes/Llama-3.1-8B-Instruct/audit_pandey",
+    "probes/Llama-3.1-8B-Instruct/audit_persona",
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native=plain",
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall_native=plain",
     "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native=chat",
@@ -55,6 +56,7 @@
       "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
       "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
       "probes/Llama-3.1-8B-Instruct/audit_pandey",
+      "probes/Llama-3.1-8B-Instruct/audit_persona",
       "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native=plain",
       "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall_native=plain",
       "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native=chat",
@@ -79,11 +81,11 @@
     "replot": false
   },
   "counts": {
-    "n_in": 1005,
+    "n_in": 1020,
     "excluded": {},
-    "n_out": 1005
+    "n_out": 1020
   },
-  "created_at": "2026-10-01T01:40:09+00:00",
+  "created_at": "2026-10-01T15:34:54+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct",
   "n_boot": 1000,
   "seed": 0

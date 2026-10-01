@@ -1,0 +1,63 @@
+{
+  "output": "manifest.jsonl",
+  "inputs": {
+    "activations/audit/persona/directions/extract_rollouts__response_mean.npz": "9f6773969b2f6ef9ebe73688154bc9820b29186c63fe4f9ea86d873a5d9625d6",
+    "reports/audit_existing_methods/source/extract_rollouts__response_mean.jsonl": "22a75f0774fbea5b60342a2c215b7590ed1103832230ea621d70acb616076cf1"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/package_directions.py",
+    "--directions",
+    "activations/audit/persona/directions/extract_rollouts__response_mean.npz",
+    "--table",
+    "reports/audit_existing_methods/source/extract_rollouts__response_mean.jsonl",
+    "--name",
+    "persona",
+    "--units",
+    "persona",
+    "--cell",
+    "persona=Mixed (Position + Person-Traits)",
+    "--positions",
+    "response",
+    "--native-matches",
+    "response",
+    "--native-position",
+    "mean over response tokens (response_avg)"
+  ],
+  "args": {
+    "directions": "activations/audit/persona/directions/extract_rollouts__response_mean.npz",
+    "table": "reports/audit_existing_methods/source/extract_rollouts__response_mean.jsonl",
+    "name": "persona",
+    "units": [
+      "persona"
+    ],
+    "extra_layers": [],
+    "positions": [
+      "response"
+    ],
+    "cell": [
+      "persona=Mixed (Position + Person-Traits)"
+    ],
+    "native_position": "mean over response tokens (response_avg)",
+    "native_matches": "response",
+    "out_root": "/workspace/sycoscope-v2/probes"
+  },
+  "counts": {
+    "n_in": 1,
+    "excluded": {},
+    "n_out": 1
+  },
+  "created_at": "2026-10-01T15:16:55+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "audit_method": "persona",
+  "cell": {
+    "persona": "Mixed (Position + Person-Traits)"
+  },
+  "native_position": "mean over response tokens (response_avg)",
+  "native_matches_cached_position": "response",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "source_commit": "b8e0f044fe2410a6fad579f38324f03f13b4e917"
+}

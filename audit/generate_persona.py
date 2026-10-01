@@ -23,10 +23,10 @@ def persona_row(prompt_row: dict, response: str, truncated: bool, tokenizer) -> 
     prompt_len = len(tokenizer(prompt, add_special_tokens=False)["input_ids"])
     if ids[:prompt_len] != tokenizer(prompt, add_special_tokens=False)["input_ids"] or prompt_len >= len(ids):
         raise ValueError(f"{prompt_row['id']}: response merges with the prompt or is empty")
-    return {**prompt_row, "dataset": "sycophantic_extract", "response": response, "truncated": truncated, "text": text,
-            "add_special_tokens": False, "labels": {"persona": 1 if prompt_row["polarity"] == "pos" else 0},
-            "group": f"q{prompt_row['question_index']:02d}", "split": "judge_pending",
-            "pool": {"response_mean": [prompt_len, len(ids)]}, "n_tokens": len(ids)}
+    labels = {"persona": 1 if prompt_row["polarity"] == "pos" else 0} if "polarity" in prompt_row else {"system_index": prompt_row["system_index"]}
+    return {**prompt_row, "response": response, "truncated": truncated, "text": text,
+            "add_special_tokens": False, "labels": labels, "group": f"q{prompt_row['question_index']:02d}", "split": "judge_pending",
+            "pool": {"response_mean": [prompt_len, len(ids)], "last_prompt": [prompt_len - 1, prompt_len]}, "n_tokens": len(ids)}
 
 
 def main():
@@ -34,6 +34,7 @@ def main():
     parser.add_argument("--prompts", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--out-name", required=True, help="data/audit/persona/<out-name>.jsonl")
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top-p", type=float, default=1.0)
     parser.add_argument("--max-new-tokens", type=int, default=1000)
@@ -41,7 +42,7 @@ def main():
 
     import torch
 
-    out_path = REPO_ROOT / "data" / "audit" / "persona" / "extract_rollouts.jsonl"
+    out_path = REPO_ROOT / "data" / "audit" / "persona" / f"{args.out_name}.jsonl"
     if out_path.exists():
         raise FileExistsError(out_path)
     prompt_rows = read_jsonl(args.prompts)

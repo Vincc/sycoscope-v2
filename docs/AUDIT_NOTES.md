@@ -35,7 +35,7 @@ package is imported; the pieces below were ported line by line.
 | Pandey residual layer and n | pandey `src/shared_circuits/analyses/probe_transfer.py` 20-21, 90-108 | layer int(0.85 L) = 27, first 100 pairs |
 | `audit/sources.py::persona_prompts` | persona `eval/eval_persona.py` 137-158, 240-256 | system prompts, 10 rollouts per question, temperature 1.0 |
 | `audit/generate_persona.py::persona_row` | persona `generate_vec.py` 14-35 | response mean after len(encode(prompt)) |
-| `audit/persona_judge.py` | persona `eval/prompts.py` 3-21; `judge.py` 39-103; `generate_vec.py` 40-43 | judge prompts, call pattern, filter rule (not run) |
+| `audit/persona_judge.py` | persona `eval/prompts.py` 3-21; `judge.py` 39-103; `generate_vec.py` 40-43 | judge prompts, call pattern and filter rule (run after the user supplied an OpenAI key) |
 
 ## Layer indices
 
@@ -89,7 +89,8 @@ The user chose to score both poolings on the benchmarks, each labelled, for the 
 `build_source` -> `extract_source` (GPU) -> `fit_directions` / `fit_heads` -> `package_directions` ->
 unchanged `probe_training.evaluate_probes` (residual) / `evaluate_heads` (heads, on `get_head_activations` caches) ->
 `analyze` (coverage, controls, length) and `parity` -> `write_review`. Persona: `generate_persona` (GPU) ->
-`extract_source --cache all` -> `persona_judge` (raises NotImplementedError). Results and the review are in
+`extract_source --cache all` -> `persona_judge` (GPT-4.1-mini, user-supplied key) -> `persona_vector` ->
+`package_directions`; parity via `persona_monitor` (Table 2 system-prompt monitoring). Per-token heatmaps: `token_scores` -> `write_token_page`. Results and the review are in
 `reports/audit_existing_methods/`. Activations (git-ignored) are under `activations/audit/`; the control-row
 activations are next to their JSONL under `generations/Llama-3.1-8B-Instruct/training/`.
 

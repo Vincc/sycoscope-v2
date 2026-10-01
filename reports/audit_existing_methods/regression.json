@@ -1,7 +1,7 @@
 {
   "lines": [
     "pytest before any change (main at 64970ce): 57 passed (run as uv run --with matplotlib pytest; matplotlib is not declared in pyproject.toml).",
-    "pytest at the end: 77 passed = 57 + 20 new tests in tests/test_audit_*.py.",
+    "pytest at the end: 79 passed = 57 + 22 new tests in tests/test_audit_*.py.",
     "evaluate_probes regression: synthetic_tefo_C_sweep copied without eval/ to a temp dir; the unchanged evaluate_probes re-run on oeq_framing_minority_balanced_seed0_activations.npz; all 7,938 rows (2,646 probes x 3 labels) identical to the committed eval/*.jsonl in auroc, balanced_accuracy, n, n_pos, n_neg, exclusions and eval_sha256; max |dAUROC| = 0.0.",
     "Comparison used: SHA-256. The benchmark caches were downloaded from SycoScope/activations (user approved) and all 15 match the SHA-256 recorded in the committed eval metas, so no numerical AUROC tolerance was needed.",
     "Every audit AUROC in coverage.csv was re-computed from scores and asserted equal (atol 1e-9) to the eval JSONL written by the unchanged evaluate_probes (residual detectors and references) or audit/evaluate_heads.py (head detectors).",

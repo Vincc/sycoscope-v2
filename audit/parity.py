@@ -32,6 +32,23 @@ def residual_heldout(npz: Path, pool: str, unit: str, layer: int):
     return y, z[f"X__{pool}"][test, layer] @ d[layer]
 
 
+def persona_heldout(z, meta: dict, layer: int):
+    """Projection of the held-out questions' kept pairs onto the vector refit on the other questions' kept pairs."""
+    from audit.persona_vector import effective_pairs, ROLLOUTS, JUDGE
+
+    rows = read_jsonl(ROLLOUTS)
+    scores = {(r["rollout_id"], r["metric"]): r["score"] for r in read_jsonl(JUDGE)}
+    kept, _ = effective_pairs(rows, scores, 50)
+    test_q = set(meta["test_questions"])
+    is_te = np.array([f"q{rows[p]['question_index']:02d}" in test_q for p, _ in kept])
+    pos, neg = np.array([p for p, _ in kept]), np.array([n for _, n in kept])
+    X = z["X__response_mean"][:, layer].astype(np.float64)
+    d = X[pos[~is_te]].mean(0) - X[neg[~is_te]].mean(0)
+    d /= np.linalg.norm(d)
+    idx = np.concatenate([pos[is_te], neg[is_te]])
+    return np.concatenate([np.ones(is_te.sum(), int), np.zeros(is_te.sum(), int)]), X[idx] @ d
+
+
 def head_heldout(npz: Path, pool: str, det_dir: Path, probe_id: str):
     z = np.load(npz)
     m = next(r for r in read_jsonl(det_dir / "manifest.jsonl") if r["probe_id"] == probe_id)
@@ -139,9 +156,24 @@ def main():
                          "paper_reference": paper["vennemeyer"]["fig10b_read"]["note"],
                          "verdict": f"{'match' if n_ok == len(g) else 'mismatch'}: {n_ok}/{len(g)} layers within 0.1; "
                                     f"max |diff| {abs(float(worst['diff'])):.2f} at L{worst['layer']}"})
-    rows.append({"method": "Persona Vectors", "unit": "sycophantic", "variant": "held at judge step", "layer": 15,
-                 "n_heldout": None, "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None, "paper_value": None,
-                 "paper_reference": paper["persona"]["layer_16_for_llama"], "verdict": "held: 4000 GPT-4.1-mini judge calls needed"})
+    pz = np.load(ACT / "persona" / "extract_rollouts.npz")
+    pmeta = read_json(REPO_ROOT / "activations/audit/persona/directions/meta/extract_rollouts__response_mean.npz.meta.json")
+    ptab = read_jsonl(SOURCE / "extract_rollouts__response_mean.jsonl")
+    sel = next(r["layer"] for r in ptab if r["selected"])
+    y_p, s_p = persona_heldout(pz, pmeta, sel)
+    if not np.isclose(probes.auroc(y_p, s_p), ptab[sel]["test_auroc"], atol=1e-9):
+        raise AssertionError("persona held-out AUROC differs from its source table")
+    pc = pmeta["pair_counts"]
+    add("Persona Vectors", "sycophantic (response-mean vector)", f"kept {pc['n_out']} of {pc['n_in']} judged pairs", sel, y_p, s_p,
+        None, paper["persona"]["layer_16_for_llama"], "no published held-out AUROC (our check: refit on 80% of questions)")
+    mon = read_json(REPO_ROOT / "reports" / "audit_existing_methods" / "persona_monitor.json")
+    ref = mon["paper_table2_sycophancy_system_prompting"]
+    for name, ours, theirs in (("overall", mon["overall_pearson_r"], ref["overall"]),
+                               ("within-condition", mon["within_condition_mean_r"], ref["within_condition"])):
+        rows.append({"method": "Persona Vectors", "unit": f"monitoring Pearson r, {name}", "variant": "8 system prompts x 20 eval questions x 10 rollouts",
+                     "layer": sel, "n_heldout": mon["n_points"], "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None,
+                     "paper_value": theirs, "paper_reference": ref["reference"],
+                     "verdict": f"{'match' if abs(ours - theirs) <= 0.1 else 'mismatch'}: ours {ours:.2f} vs {theirs} (criterion: within 0.1)"})
     for r in rows:
         r.setdefault("heads", None)
         r.setdefault("source_val_acc", None)

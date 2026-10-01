@@ -44,6 +44,7 @@ def main():
     parser.add_argument("--method", required=True, choices=sorted(EXTERNAL))
     parser.add_argument("--val-frac", type=float, default=0.1, help="caa, vennemeyer: val fraction for layer choice.")
     parser.add_argument("--seed", type=int, default=0, help="caa, vennemeyer: seed of our split / val carve.")
+    parser.add_argument("--persona-monitor", action="store_true", help="persona: the monitoring prompts (8 system prompts x eval questions).")
     parser.add_argument("--pandey-lying-only", action="store_true", help="Only write the lying half (pairs 200-399), for parity.")
     parser.add_argument("--pandey-lie-breadth", action="store_true", help="With --pandey-lying-only: breadth.py pairs 100-129.")
     parser.add_argument("--vennemeyer-resp-all-diag", action="store_true",
@@ -133,6 +134,11 @@ def main():
         trait_data = json.loads(extract.read_text(encoding="utf-8"))
         rows = sources.persona_prompts(trait_data, "sycophantic", n_per_question=10)
         outputs.append((out_dir / "extract_prompts.jsonl", rows, [extract], {"n_per_question": 10}))
+        if args.persona_monitor:
+            evalf, sysf = ext_dir / "data_generation/trait_data_eval/sycophantic.json", out_dir / "monitor_system_prompts.json"
+            outputs = [(out_dir / "monitor_prompts.jsonl", sources.persona_monitor_prompts(
+                json.loads(evalf.read_text(encoding="utf-8")), json.loads(sysf.read_text(encoding="utf-8"))["system_prompts"], 10),
+                [evalf, sysf], {"n_per_question": 10})]
 
     for path, rows, inputs, extra in outputs:
         ids = [r["id"] for r in rows]

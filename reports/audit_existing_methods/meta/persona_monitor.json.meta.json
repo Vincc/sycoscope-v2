@@ -1,0 +1,28 @@
+{
+  "output": "persona_monitor.json",
+  "inputs": {
+    "/workspace/sycoscope-v2/data/audit/persona/monitor_rollouts.jsonl": "8f30a7480fcaf76fa3a95383e120856e5531e10296d7ecc2d6d9fd48bcfd0ca7",
+    "/workspace/sycoscope-v2/data/audit/persona/monitor_judge_results.jsonl": "ba967fa299a4a68f58544c0456d528611c2d82e3fa5d806e5829c7c609c96766",
+    "/workspace/sycoscope-v2/activations/audit/persona/monitor_rollouts.npz": "e6c341eed7ba3a1e85147139d4bf77dc1ab468bb0ac6962e0268a166eeb5ff25",
+    "/workspace/sycoscope-v2/activations/audit/persona/directions/extract_rollouts__response_mean.npz": "9f6773969b2f6ef9ebe73688154bc9820b29186c63fe4f9ea86d873a5d9625d6"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/persona_monitor.py",
+    "--layer",
+    "15"
+  ],
+  "args": {
+    "layer": 15
+  },
+  "counts": {
+    "n_in": 1600,
+    "excluded": {},
+    "n_out": 1600
+  },
+  "created_at": "2026-10-01T15:36:01+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

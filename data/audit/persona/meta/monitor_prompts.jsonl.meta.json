@@ -1,0 +1,38 @@
+{
+  "output": "monitor_prompts.jsonl",
+  "inputs": {
+    "/workspace/sycoscope-v2/external/persona/data_generation/trait_data_eval/sycophantic.json": "442a623cb55aa24bda2ba38962a276136771f0637f8f32bd690a144240bba39c",
+    "/workspace/sycoscope-v2/data/audit/persona/monitor_system_prompts.json": "818232511b45c8037ace05eed8cb80911b60e78df8034408623fb1a4e51357c4"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/build_source.py",
+    "--method",
+    "persona",
+    "--persona-monitor"
+  ],
+  "args": {
+    "method": "persona",
+    "val_frac": 0.1,
+    "seed": 0,
+    "persona_monitor": true,
+    "pandey_lying_only": false,
+    "pandey_lie_breadth": false,
+    "vennemeyer_resp_all_diag": false
+  },
+  "counts": {
+    "n_in": 1600,
+    "excluded": {},
+    "n_out": 1600
+  },
+  "created_at": "2026-10-01T15:03:06+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "source_commit": "b8e0f044fe2410a6fad579f38324f03f13b4e917",
+  "source_dirty": false,
+  "n_per_question": 10,
+  "split_counts": null
+}

@@ -1,0 +1,117 @@
+<title>Detector token heatmaps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>
+/* Layout: control bar, then one card per benchmark with its two samples stacked; tokens wrap like running text. */
+:root {
+  --bg: #f7f7f4; --surface: #fcfcfb; --ink: #16181d; --ink-2: #4d5058; --muted: #858891; --rule: #dedfd9; --accent: #2a5bd7;
+  --div-lo: #e34948; --div-mid: #f0efec; --div-hi: #2a78d6; --mark: #16181d;
+  --display: "IBM Plex Serif", Georgia, serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111214; --surface: #1a1a19; --ink: #eceae4; --ink-2: #b8b6ad; --muted: #8b8980; --rule: #2e2f31; --accent: #7ea2ff;
+  --div-lo: #e66767; --div-mid: #383835; --div-hi: #3987e5; --mark: #eceae4; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #111214; --surface: #1a1a19; --ink: #eceae4; --ink-2: #b8b6ad; --muted: #8b8980; --rule: #2e2f31; --accent: #7ea2ff;
+  --div-lo: #e66767; --div-mid: #383835; --div-hi: #3987e5; --mark: #eceae4; color-scheme: dark; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1100px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; }
+h1 { font: 600 clamp(26px, 4vw, 36px)/1.1 var(--display); margin: 4px 0 8px; text-wrap: balance; }
+h2 { font: 600 19px/1.3 var(--display); margin: 0; }
+.eyebrow { font: 500 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.note { color: var(--ink-2); font-size: 13.5px; max-width: 80ch; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 3; background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; padding-block: 10px; margin-block: 12px 18px; font-size: 13px; }
+.bar label { display: flex; gap: 6px; align-items: center; color: var(--ink-2); }
+select { font: inherit; padding: 4px 6px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); color: var(--ink); max-width: 100%; }
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.legend { display: flex; align-items: center; gap: 8px; font: 12px var(--mono); color: var(--ink-2); }
+.legend .ramp { width: 160px; height: 10px; border-radius: 2px; }
+.detinfo { font-size: 13px; color: var(--ink-2); margin: -6px 0 16px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; margin-block-end: 16px; }
+.cardhead { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-block-end: 8px; }
+.cell { font: 12px var(--mono); color: var(--muted); }
+.sample { border-top: 1px solid var(--rule); padding-block: 10px 6px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12.5px; color: var(--ink-2); margin-block-end: 6px; }
+.pill { font: 500 11.5px/1.2 var(--mono); padding: 2px 7px; border-radius: 99px; border: 1px solid currentColor; }
+.pill.y1 { color: var(--div-hi); } .pill.y0 { color: var(--muted); }
+.toks { font: 13px/1.85 var(--mono); white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+.toks span { border-radius: 2px; padding: 1px 0; }
+.toks span.native { outline: 2px solid var(--mark); outline-offset: 0; }
+.toks span.user { opacity: .78; }
+.seg { font: 500 10.5px var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; display: block; margin-top: 4px; }
+#tip { position: fixed; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px;
+  padding: 6px 8px; font: 12px var(--mono); box-shadow: 0 4px 16px rgb(0 0 0 / .15); z-index: 5; }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">audit/existing-methods · Llama-3.1-8B-Instruct · per-token scores</span>
+  <h1>Detector token heatmaps</h1>
+  <p class="note">Each existing detector's score applied to every token's activation, on two balanced-benchmark rows per dataset: one the judge labelled sycophantic (target label 1) and one it did not, drawn with a fixed seed among rows with short responses. Blue means the token pushes toward the detector's sycophantic side, red the other way; colour is scaled per detector (98th percentile of |score| over all tokens shown), so compare tokens within a detector, not across detectors. Detectors fit on pooled vectors (a response mean or a single position) are not calibrated per token. The outlined token is the method's own read position where it is a single token. Shown: the last user message (at most 120 tokens) and the full response.</p>
+  <div class="bar">
+    <label for="det">Detector <select id="det"></select></label>
+    <label for="ds">Dataset <select id="ds"><option value="">all</option></select></label>
+    <span class="legend" aria-hidden="true">− <span class="ramp" id="ramp"></span> + <span>(per-detector scale)</span></span>
+  </div>
+  <p class="detinfo" id="detinfo"></p>
+  <div id="cards"></div>
+</div>
+<div id="tip" hidden></div>
+<script>
+const DATA = /*DATA*/null;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+function col(v, s) {
+  const t = Math.max(-1, Math.min(1, v / s)), mid = hex(css('--div-mid')), end = hex(css(t >= 0 ? '--div-hi' : '--div-lo'));
+  const a = Math.abs(t);
+  return { bg: `rgb(${mid.map((x, i) => Math.round(x + (end[i] - x) * a))})`, strong: a > 0.6 };
+}
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const NATIVE = { 'Vennemeyer': 'last_content', 'Pandey': 'pandey_faithful' };
+const detSel = document.getElementById('det'), dsSel = document.getElementById('ds');
+DATA.detectors.forEach((d, i) => detSel.add(new Option(d.name, i)));
+[...new Set(DATA.samples.map(s => s.display))].forEach(d => dsSel.add(new Option(d, d)));
+function render() {
+  const det = DATA.detectors[+detSel.value], s = DATA.scale[det.name];
+  document.getElementById('detinfo').textContent = `Layer ${det.layer} · input format ${det.format} · own read position: ${det.native_position} · built on ${det.built_on}`;
+  document.getElementById('ramp').style.background = `linear-gradient(90deg, ${col(-s, s).bg}, ${col(0, s).bg}, ${col(s, s).bg})`;
+  const nkey = Object.keys(NATIVE).find(k => det.name.startsWith(k));
+  const groups = {};
+  DATA.samples.filter(x => !dsSel.value || x.display === dsSel.value).forEach(x => (groups[x.display] ??= []).push(x));
+  let h = '';
+  for (const [name, xs] of Object.entries(groups)) {
+    h += `<section class="card"><div class="cardhead"><h2>${esc(name)}</h2><span class="cell">${esc(xs[0].cell)} · label ${esc(xs[0].target_label)}</span></div>`;
+    for (const x of xs) {
+      const sc = x.scores[det.name], ni = nkey ? x.native_index[NATIVE[nkey]] : -1;
+      const resp = x.segment.map((g, i) => g === 'response' ? sc[i] : null).filter(v => v !== null);
+      const mean = resp.reduce((a, b) => a + b, 0) / resp.length;
+      h += `<div class="sample"><div class="meta"><span class="pill ${x.label ? 'y1' : 'y0'}">label ${x.label} · ${x.label ? 'sycophantic' : 'not sycophantic'}</span>` +
+           `<span>${x.n_turns} message${x.n_turns > 1 ? 's' : ''}${x.user_truncated ? ', user message truncated' : ''}</span>` +
+           `<span>mean score over response tokens ${mean.toFixed(2)}</span>` + (ni >= 0 ? `<span>score at own read position ${sc[ni].toFixed(2)}</span>` : '') +
+           `<span>${esc(x.id)}</span></div><div class="toks">`;
+      let prev = null;
+      x.tokens.forEach((t, i) => {
+        const g = x.segment[i];
+        if (g !== prev && g !== 'template') h += `<span class="seg">${g === 'user' ? 'user (last message)' : 'assistant response'}</span>`;
+        prev = g;
+        const c = col(sc[i], s), txt = esc(t).replace(/\n/g, '↵\n');
+        h += `<span class="${g}${i === ni ? ' native' : ''}" data-v="${sc[i]}" style="background:${c.bg};color:${c.strong ? '#fff' : 'var(--ink)'}">${txt}</span>`;
+      });
+      h += '</div></div>';
+    }
+    h += '</section>';
+  }
+  document.getElementById('cards').innerHTML = h;
+}
+const tip = document.getElementById('tip');
+document.getElementById('cards').addEventListener('mousemove', e => {
+  const sp = e.target.closest('.toks span[data-v]'); if (!sp) { tip.hidden = true; return; }
+  tip.textContent = `score ${(+sp.dataset.v).toFixed(3)}`; tip.hidden = false;
+  tip.style.left = Math.min(e.clientX + 12, innerWidth - 140) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
+});
+document.getElementById('cards').addEventListener('mouseleave', () => { tip.hidden = true; });
+[detSel, dsSel].forEach(el => el.addEventListener('change', render));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+render();
+</script>

@@ -22,7 +22,7 @@ NOT_IN_TASK = [
     ("Goodfire SAE features", "no sycophancy features published."), ("Wang et al.", "not a detector."),
     ("Papadatos & Freedman", "they probe a reward model."), ("Beacon", "no code."),
     ("Steering and causal tests", "out of scope."), ("Other models", "Llama-3.1-8B-Instruct only."),
-    ("New detection methods", "out of scope."), ("Any LLM API call", "none made; Persona Vectors held at the judge step."),
+    ("New detection methods", "out of scope."), ("LLM API calls", "only the Persona Vectors GPT-4.1-mini judge, after the user supplied a key; cost in section 2."),
 ]
 METHODS = [("caa", "CAA (Rimsky/Panickssery et al. 2024)"), ("vennemeyer", "Vennemeyer et al. (SyA, GA, SyPr)"),
            ("genadi", "Genadi et al. (attention-head probes)"), ("pandey", "Pandey (shared sycophancy-lying circuit)"),
@@ -184,8 +184,23 @@ def reproduction(doc: Doc, d: Path, parity, paper, fig8b, fig10b, overlap):
     parity_rows("pandey")
 
     doc.h(3, METHODS[4][1])
-    doc.p(f"Held at the judge step (4,000 GPT-4.1-mini calls). Paper layer choice: {paper['persona']['layer_16_for_llama']}. "
-          "The 2,000 rollouts and their response-mean activations at every layer are cached.")
+    mon = read_json(d / "persona_monitor.json")
+    doc.p(f"Paper: vector = mean response activation of trait-expressing minus trait-suppressing rollouts kept by a GPT-4.1-mini "
+          f"judge filter; layer: {paper['persona']['layer_16_for_llama']}. Detection claim: the last-prompt-token projection "
+          f"tracks trait expression across graded system prompts, Pearson r = {mon['paper_table2_sycophancy_system_prompting']['overall']} "
+          f"overall and {mon['paper_table2_sycophancy_system_prompting']['within_condition']} within condition for sycophancy "
+          f"({mon['paper_table2_sycophancy_system_prompting']['reference']}).")
+    doc.p(f"Ours: the same 8 system prompts (App. C.3), 20 eval questions and 10 rollouts each ({mon['n_rollouts']} rollouts, "
+          f"{mon['n_score_none']} trait scores None): overall r = {mon['overall_pearson_r']:.3f}, within-condition mean r = "
+          f"{mon['within_condition_mean_r']:.3f} (conditions excluded for SD < 1: {mon['conditions_excluded_sd_below_1'] or 'none'}). "
+          "Mean trait score by system prompt (1 = most sycophantic): "
+          + ", ".join(f"{k}: {v:.1f}" for k, v in mon["mean_trait_by_system_prompt"].items()) + ".")
+    use = [read_json(d.parent.parent / "data/audit/persona/meta" / f"{n}_judge_results.jsonl.meta.json") for n in ("extract", "monitor")]
+    tok_in, tok_out = sum(u["prompt_tokens"] for u in use), sum(u["completion_tokens"] for u in use)
+    doc.p(f"Judge usage: {tok_in:,} prompt and {tok_out:,} completion tokens on gpt-4.1-mini-2025-04-14 (extraction trait + coherence "
+          f"for 2,000 rollouts; monitoring trait for 1,600); about ${tok_in * 0.40e-6 + tok_out * 1.60e-6:.2f} at $0.40 / $1.60 per million "
+          "tokens; no score was None.", note=True)
+    parity_rows("persona")
 
 
 def ood(doc: Doc, coverage, benches):
@@ -214,7 +229,7 @@ def ood(doc: Doc, coverage, benches):
     doc.h(3, "Reference rows (committed contrastive probes, re-scored, not re-fit)")
     doc.table(header, *rows_for(["universal", "matched_cell", "max_taxonomy_posthoc"]))
     native = [k for k, r in first.items() if r["role"] == "detector" and r["matches_native"] == "yes"]
-    for m, title in METHODS[:4]:
+    for m, title in METHODS:
         doc.h(3, title)
         doc.table(header, *rows_for([k for k in native if method_of(first[k]) == m]))
     doc.h(3, "Interactive matrix")
@@ -325,14 +340,16 @@ def main():
                "vennemeyer": "reproduced with reconstructed pooling; partly matches Fig. 8b and Fig. 10b",
                "genadi": "reproduced; no Llama-3.1-8B numbers in the paper",
                "pandey": "reproduced at the code-faithful position; head overlap vs Table 1 in section 2",
-               "persona": "held at the judge step (4,000 GPT-4.1-mini calls)"}[m]
+               "persona": "reproduced with the GPT-4.1-mini judge; monitoring correlation vs Table 2 in section 2"}[m]
         summ.append([title, rep, o])
     doc.table(["Method", "Reproduction on source data", "Benchmarks at the method's own read position"], summ)
     doc.p("Changes since the first version: (1) benchmark scoring at each method's own read position and input format; "
           "(2) the review is split into reproduction and out-of-distribution sections; (3) Pandey's own detectors added "
           "(LR at L27 from probe_transfer.py, DIM at L19 from steering.py) and the DIM at L27 relabelled as our combination; "
           "(4) Pandey head-overlap and Vennemeyer direction-geometry checks against the papers; (5) plain-text whole-response "
-          "Vennemeyer rows at the cached response position are no longer marked native; (6) an independent code review.", note=True)
+          "Vennemeyer rows at the cached response position are no longer marked native; (6) independent code reviews; (7) Persona "
+          "Vectors completed with the GPT-4.1-mini judge (user-supplied key) and scored like the other methods; (8) per-token "
+          "heatmaps on two rows per benchmark in a separate page (token_heatmaps.html).", note=True)
     doc.p("Environment: " + "; ".join(f"{k} {v}" for k, v in env["environment"].items()) + ".", note=True)
     doc.p("Not in this task: " + "; ".join(f"{n}: {t}" for n, t in NOT_IN_TASK), note=True)
 
@@ -369,7 +386,7 @@ def main():
     inputs = [d / n for n in ("coverage.csv", "parity.csv", "vennemeyer_fig8b.csv", "vennemeyer_fig10b.csv", "controls.csv",
                               "length_confound.csv", "design_choices.jsonl", "environment.json", "regression.json",
                               "verification.json", "paper_reference.json", "pandey_overlap_circuit_overlap.json",
-                              "pandey_overlap_breadth.json")]
+                              "pandey_overlap_breadth.json", "persona_monitor.json")]
     for name in ("REVIEW.md", "review.html"):
         write_meta(d / name, inputs, args, check_counts(len(coverage), {}, len(coverage), name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
     print(f"wrote {d / 'REVIEW.md'} and {d / 'review.html'}")

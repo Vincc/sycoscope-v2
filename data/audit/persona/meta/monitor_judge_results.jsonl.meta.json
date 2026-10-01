@@ -1,0 +1,49 @@
+{
+  "output": "monitor_judge_results.jsonl",
+  "inputs": {
+    "data/audit/persona/monitor_rollouts.jsonl": "8f30a7480fcaf76fa3a95383e120856e5531e10296d7ecc2d6d9fd48bcfd0ca7",
+    "/workspace/sycoscope-v2/external/persona/eval/prompts.py": "ffad02e61e18a5551f46c05879f975b64dc197e9bc0d82d53891e82b93c75c33"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/persona_judge.py",
+    "--rollouts",
+    "data/audit/persona/monitor_rollouts.jsonl",
+    "--name",
+    "monitor",
+    "--metrics",
+    "sycophantic",
+    "--max-calls",
+    "1600",
+    "--per-minute",
+    "240"
+  ],
+  "args": {
+    "rollouts": "data/audit/persona/monitor_rollouts.jsonl",
+    "name": "monitor",
+    "metrics": [
+      "sycophantic"
+    ],
+    "concurrency": 16,
+    "per_minute": 240,
+    "max_calls": 1600
+  },
+  "counts": {
+    "n_in": 1600,
+    "excluded": {},
+    "n_out": 1600
+  },
+  "created_at": "2026-10-01T15:24:42+00:00",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "judge_model": "gpt-4.1-mini-2025-04-14",
+  "prompt_tokens": 818435,
+  "completion_tokens": 1600,
+  "n_score_none": 0,
+  "n_empty_logprobs": 0,
+  "returned_models": [
+    "gpt-4.1-mini-2025-04-14"
+  ]
+}

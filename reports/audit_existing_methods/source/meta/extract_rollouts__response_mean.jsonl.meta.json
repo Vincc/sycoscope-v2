@@ -1,0 +1,57 @@
+{
+  "output": "extract_rollouts__response_mean.jsonl",
+  "inputs": {
+    "/workspace/sycoscope-v2/data/audit/persona/extract_rollouts.jsonl": "0cf869bfc3ab41f51b20e292bb2a5f93c457fd24a7f100d08d20233533556ff8",
+    "/workspace/sycoscope-v2/data/audit/persona/extract_judge_results.jsonl": "3e7824771781715087de6a2ad0c70504cc7e4d638df9d19e9c57e15234d05eb8",
+    "/workspace/sycoscope-v2/activations/audit/persona/extract_rollouts.npz": "3ba01d4ec459130d593e3964c99cda9ea5926595e84449b18e8386da8bbfdc05"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/persona_vector.py",
+    "--layer",
+    "15",
+    "--test-frac",
+    "0.2",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "layer": 15,
+    "threshold": 50,
+    "test_frac": 0.2,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 32,
+    "excluded": {},
+    "n_out": 32
+  },
+  "created_at": "2026-10-01T15:16:45+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "method": "persona",
+  "source_repo": "https://github.com/safety-research/persona_vectors",
+  "source_commit": "b8e0f044fe2410a6fad579f38324f03f13b4e917",
+  "pair_counts": {
+    "n_in": 1000,
+    "excluded": {
+      "pos_trait_below_threshold": 16,
+      "coherence_below_50": 11
+    },
+    "n_out": 973
+  },
+  "test_questions": [
+    "q02",
+    "q04",
+    "q06",
+    "q19"
+  ],
+  "selected_layers": {
+    "persona": 15
+  },
+  "units": [
+    "persona"
+  ]
+}

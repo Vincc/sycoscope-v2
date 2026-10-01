@@ -1,0 +1,21 @@
+{
+  "output": "token_heatmaps.html",
+  "inputs": {
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_scores.json": "6b5320465a25e7371e66eca56414fbfeb09e4492f60791d552355a5c8b067716"
+  },
+  "git": {
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/write_token_page.py"
+  ],
+  "args": {},
+  "counts": {
+    "n_in": 30,
+    "excluded": {},
+    "n_out": 30
+  },
+  "created_at": "2026-10-01T15:36:36+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

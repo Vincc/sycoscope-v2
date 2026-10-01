@@ -1,19 +1,34 @@
 {
   "output": "coverage_heatmap_native.png",
   "inputs": {
-    "reports/audit_existing_methods/coverage.csv": "e67071bb397c2f33066659fe0bc44f3214b0e51f7a4dd8f1a27e828a98f21ade"
+    "reports/audit_existing_methods/coverage.csv": "1c5c8a2ced20249c36eb8868d9c9204492b93661e13c1411eaf81790c3934713"
   },
   "git": {
-    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
     "dirty": true
   },
   "argv": [
     "/workspace/sycoscope-v2/audit/analyze.py",
-    "--replot",
     "--audit-sweeps",
-    "x",
+    "probes/Llama-3.1-8B-Instruct/audit_caa",
+    "probes/Llama-3.1-8B-Instruct/audit_caa_respmean",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey",
+    "probes/Llama-3.1-8B-Instruct/audit_persona",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native=plain",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall_native=plain",
+    "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native=chat",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_native=chat_double_bos",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_lr27_native=chat_double_bos",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native=chat_double_bos_L19",
     "--head-dirs",
-    "x=y",
+    "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=answer_mean",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=last_prompt",
+    "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=oproj_genadi_answer_mean=chat_double_bos",
+    "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=oproj_pandey_faithful=chat_double_bos",
     "--reference-sweep",
     "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
     "--selected",
@@ -21,9 +36,9 @@
     "--targets",
     "reports/llama31_tefo_probe_transfer/targets.csv",
     "--controls-cache",
-    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/x.npz",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
     "--controls-heads",
-    "x",
+    "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
     "--n-boot",
     "1000",
     "--seed",
@@ -33,26 +48,42 @@
   ],
   "args": {
     "audit_sweeps": [
-      "x"
+      "probes/Llama-3.1-8B-Instruct/audit_caa",
+      "probes/Llama-3.1-8B-Instruct/audit_caa_respmean",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_respall",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey",
+      "probes/Llama-3.1-8B-Instruct/audit_persona",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_last_native=plain",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_plain_respall_native=plain",
+      "probes/Llama-3.1-8B-Instruct/audit_vennemeyer_math_chat_last_native=chat",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_native=chat_double_bos",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_lr27_native=chat_double_bos",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_dim19_native=chat_double_bos_L19"
     ],
     "head_dirs": [
-      "x=y"
+      "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=answer_mean",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=last_prompt",
+      "probes/Llama-3.1-8B-Instruct/audit_genadi_heads=oproj_genadi_answer_mean=chat_double_bos",
+      "probes/Llama-3.1-8B-Instruct/audit_pandey_heads=oproj_pandey_faithful=chat_double_bos"
     ],
     "reference_sweep": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep",
     "selected": "reports/llama31_tefo_probe_transfer/validation_selected.csv",
     "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
-    "controls_cache": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/x.npz",
-    "controls_heads": "x",
+    "controls_cache": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_controls_test_activations.npz",
+    "controls_heads": "activations/audit/heads/synthetic_trait_emotion_fact_opinion_controls_test_heads.npz",
     "n_boot": 1000,
     "seed": 0,
     "out_dir": "reports/audit_existing_methods",
-    "replot": true
+    "replot": false
   },
   "counts": {
-    "n_in": 345,
+    "n_in": 360,
     "excluded": {},
-    "n_out": 345
+    "n_out": 360
   },
-  "created_at": "2026-10-01T01:41:34+00:00",
+  "created_at": "2026-10-01T15:34:57+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

@@ -366,3 +366,15 @@ def native_row(row: dict, fmt: str, tokenizer) -> dict:
         k = pandey_faithful_index(p_ids)
         return {"ids": ids, "pool": {"genadi_answer_mean": (s, e), "pandey_faithful": (k, k + 1)}}
     raise ValueError(f"unknown format {fmt!r}")
+
+
+def persona_monitor_prompts(eval_data: dict, system_prompts: list[str], n_per_question: int) -> list[dict]:
+    """Monitoring set (paper Sec. 3.3 / App. C): each graded system prompt x eval question x n rollouts."""
+    rows = []
+    for si, system in enumerate(system_prompts):
+        for qi, question in enumerate(eval_data["questions"]):
+            for r in range(n_per_question):
+                rows.append({"id": f"persona_monitor__s{si + 1}__q{qi:02d}__r{r:02d}", "method": "persona", "system_index": si + 1,
+                             "question_index": qi, "rollout": r,
+                             "messages": [{"role": "system", "content": system}, {"role": "user", "content": question}]})
+    return rows
