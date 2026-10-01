@@ -1,12 +1,16 @@
 {
   "reviewer": "independent agent, read-only, CPU only",
   "lines": [
-    "No bug that changes a reported number was found. Recomputed exactly from saved files: Pandey residual DIM-27 held-out AUROC 0.9243; Vennemeyer math plain last-content SyPr L11 0.9383 and SyA L29 0.9942 (independent val argmax and split counts 5760/640/800/800); coverage cells Pandey L27 last_prompt on AYS-MC 0.346 and Genadi best head on AYS-MC 0.642.",
+    "Review 1 (source reproductions): No bug that changes a reported number was found. Recomputed exactly from saved files: Pandey residual DIM-27 held-out AUROC 0.9243; Vennemeyer math plain last-content SyPr L11 0.9383 and SyA L29 0.9942 (independent val argmax and split counts 5760/640/800/800); coverage cells Pandey L27 last_prompt on AYS-MC 0.346 and Genadi best head on AYS-MC 0.642.",
     "Ports checked line by line against the pinned repos: CAA letter index (-2 for all 2,000 rows), Vennemeyer split, pooling and resp_all span, Genadi templates, RNG order and combined order (their construct_samples run and compared: identical), answer slice, 75/25 split, TriviaQA pairing, Pandey index (n-3 on all 400 source rows) and head ranking, Persona prompts, layer mappings.",
     "Found and acted on: the Pandey residual DIM at L27 was tagged from code but combines probe_transfer.py (layer 27, n=100, logistic regression) with a difference-in-means; relabelled as our combination, and Pandey own LR-27 and DIM-19 detectors added.",
     "Found and acted on: the Pandey code-faithful index drifts on multi-turn benchmarks (AYS, multi-turn SyPR); marked with a dagger in every affected cell.",
     "Found and fixed: analyze.py would have reported controls as undefined for any missing native control file; it now raises unless the format is plain (the only format without a rendering of system prompts).",
     "Recorded: Vennemeyer ran in float32 and fit on their full 80% train (we use bf16 and 72%); Genadi seed 3407 is nominal (their RNG stream is not reproducible).",
-    "Unsure, low risk (reviewer): whether older datasets versions consume the global RNG between random.seed and the persuasion template draw in Genadi extract_activations.py."
+    "Unsure, low risk (reviewer): whether older datasets versions consume the global RNG between random.seed and the persuasion template draw in Genadi extract_activations.py.",
+    "Review 2 (native-position scoring): no bug that changes a number. Stored spans re-derived for 300 random rows each of OEQ validation, AYS MC and SyPR in all three formats (0 mismatches); 8 native AUROCs recomputed from raw arrays (e.g. Vennemeyer plain SyA L29 on OEQ validation 0.351, Pandey LR-27 on AYS MC 0.568, Genadi best head on SyPR 0.565) equal the eval files exactly; all 64 native files have ids, labels and metadata equal to their repo caches; Pandey LR-27/DIM-19 refits reproduce (coefficient cosine 1.0, 59 iterations); head overlap K=32 27/32 and rho 0.965 reproduced independently.",
+    "Review 2, acted on: two upstream scripts claim Pandey Table 1 (circuit_overlap.py and breadth.py, different prompts and pairs); both are now run and reported (27/32, rho 0.97; 23/32, rho 0.96; paper 21/32, 0.88).",
+    "Review 2, acted on: corrected the SyPR drift counts for Pandey's index (1,899 single-turn rows on the header token; multi-turn rows 2, 4 or 20 tokens inside the last user message); marked the first-pass cached-position entry as such; AUDIT_NOTES no longer claims labels are asserted where they are only copied.",
+    "Note: the lying-head extraction was rerun at batch size 1 (as breadth.py) after re-keying lying row ids by absolute pair number; the circuit_overlap Spearman moved from 0.9649 to 0.9652 (bf16 batch numerics), overlap counts unchanged."
   ]
 }

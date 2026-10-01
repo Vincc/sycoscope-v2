@@ -136,7 +136,7 @@ Ours (answer-mean pooling, 1,024 heads): median best val accuracy 62.1%, 64 head
 
 Paper: No within-sycophancy AUROC published. Probe transfer syc->lie is reported for Gemma-2-2B 0.83, Qwen3-8B 0.85, Mistral-7B 0.84, Qwen2.5-1.5B 0.61; Llama-3.1-8B not listed in Table 18. (Sec. 3.1-3.2 (p. 3-4); App. U, Table 18 (p. 24-25)). Table 1 (p. 5), Llama-3.1-8B: 21 of the top K=32 sycophancy heads are also top-32 factual-lying heads; Spearman 0.88 over all 1,024 heads.
 
-Ours: 27/32 shared at K=32 and 14/15 at K=15 (chance about 1 and 0.2); Spearman 0.96. Top-15 sycophancy heads: L31H5, L31H14, L31H26, L29H11, L30H24, L29H9, L29H10, L30H25, L30H2, L30H0, L31H2, L30H26, L30H27, L30H13, L28H18.
+The repo has two scripts that each claim Table 1, with different settings; both are run. circuit_overlap: 27/32 shared at K=32, 14/15 at K=15, Spearman 0.97. breadth: 23/32 shared at K=32, 13/15 at K=15, Spearman 0.96. Top-15 sycophancy heads (circuit_overlap ranking): L31H5, L31H14, L31H26, L29H11, L30H24, L29H9, L29H10, L30H25, L30H2, L30H0, L31H2, L30H26, L30H27, L30H13, L28H18.
 
 | Unit | Variant | Layer | Held-out AUROC [95% CI] | n | Verdict |
 | --- | --- | --- | --- | --- | --- |
@@ -144,7 +144,8 @@ Ours: 27/32 shared at K=32 and 14/15 at K=15 (chance about 1 and 0.2); Spearman 
 | LR-27 (their probe_transfer) | code-faithful position | 27 | 0.946 [0.917, 0.972] | 200 | no published Llama-3.1-8B value |
 | DIM-19 (their steering direction) | code-faithful position | 19 | 0.939 [0.905, 0.967] | 200 | no published Llama-3.1-8B value |
 | LR top-15 heads [ours] | code-faithful position | [28, 29, 30, 31] | 0.912 [0.870, 0.948] | 200 | no published Llama-3.1-8B value |
-| head overlap, syc vs lie, K=32 | first 50 pairs per task | all heads |  |  | mismatch: ours 27/32 shared (chance 1.0), Spearman 0.96 (criterion: within 3 heads and 0.05) |
+| head overlap, syc vs lie, K=32 | circuit_overlap.py: first 50 pairs per task, lying pairs 200-249 | all heads |  |  | mismatch: ours 27/32 shared (chance 1.0), Spearman 0.97 (criterion: within 3 heads; within 0.05) |
+| head overlap, syc vs lie, K=32 | breadth.py: first 30 pairs per task, lying pairs 100-129 | all heads |  |  | partly matches: ours 23/32 shared (chance 1.0), Spearman 0.96 (criterion: within 3 heads; within 0.05) |
 
 
 ### Persona Vectors (Chen et al. 2025)
@@ -430,7 +431,7 @@ rho(label, length) per benchmark, the same for every detector:
 - *our choice* (position): Vennemeyer native position: last token string containing an alphanumeric character (the code's no-EOS branch). The literal code on Llama-3.1 pools BOS (special id at position 0) and then masks it, giving zero vectors. Paper says EOS token.
 - *from code* (position): Genadi primary pooling: mean of o_proj inputs from after the last <|end_header_id|> to before the final <|eot_id|> (extension/); it includes the '\n\n' header token. Secondary: last token (probe/), which is <|eot_id|>.
 - *from code* (position): Pandey position (user decision: code-faithful only): (tokens != pad).sum() - 1 with pad = <|eot_id|>, which is the 'assistant' header token (n - 3), not the final '\n\n'.
-- *our choice* (position): Benchmark scoring uses only the repo's cached positions (last_prompt, first5, response mean). No cached position equals the native position of CAA, Vennemeyer or Pandey; all are marked non-native. Genadi heads are scored on the answer mean (marked approximate: benchmark spans exclude the '\n\n' header token). Pandey heads are scored at last_prompt (non-native).
+- *our choice* (position): First pass (kept as the secondary, cached-position view): Benchmark scoring uses only the repo's cached positions (last_prompt, first5, response mean). No cached position equals the native position of CAA, Vennemeyer or Pandey; all are marked non-native. Genadi heads are scored on the answer mean (marked approximate: benchmark spans exclude the '\n\n' header token). Pandey heads are scored at last_prompt (non-native).
 - *our choice* (threshold): DIM thresholds: midpoint of projected class means on the method's own fit rows (utils.probes.fit_dim rule). AUROC does not depend on it; balanced accuracy on benchmarks is reported by evaluate_probes but not used.
 - *our choice* (layer choice): CAA: layer by max val AUROC on a 10% val group split of the A/B items (groups = question; test 20%, seed 0); recipe layer 13 (paper's steering layer for Llama-2-7B, same depth index) also scored.
 - *our choice* (layer choice): Vennemeyer: their split (stratified 80/20, seed 42, test balanced on syc); we carve 10% of their train (stratified, seed 0) as val and pick the layer by max val AUROC per unit. Their code picks the steering layer on test AUROC.
@@ -457,13 +458,13 @@ rho(label, length) per benchmark, the same for every detector:
 - *our choice* (controls): Control rows: the downloaded TEFO cache has only the sweep layers (3, 6, ..., 29), so the 1,280 held-out control rows (5 pairs x 128 test prompts x 2) were filtered to their own JSONL and re-extracted with the unchanged get_activations at all 32 layers (max length 4096). At shared layers the regenerated vectors differ from the downloaded cache at bf16 level (max relative difference 0.4-1.9%); detectors and references are all scored on the regenerated file.
 - *from code* (pandey): Pandey LR-27: unstandardised LogisticRegression(C=1, max_iter=2000) at layer 27 on the first 100 sycophancy pairs (probe_transfer.py, stats/probes.py:41-80; the probe behind their App. U); converged in 59 iterations.
 - *from code* (pandey): Pandey DIM-19: unit mean(wrong) - mean(correct) at layer int(0.6*32)=19 on the first 100 pairs (steering.py:15-21, 48-55, 87-98).
-- *from paper* (pandey): Head-overlap parity: their Table 1 reports, for Llama-3.1-8B, 21 of the top K=32 sycophancy heads shared with the top 32 factual-lying heads and Spearman rho 0.88 over all heads; we rank both tasks on their first 50 pairs (circuit_overlap.py) with the lying prompts of prompts/lying.py on pairs 200-399.
+- *from paper* (pandey): Head-overlap parity: their Table 1 reports, for Llama-3.1-8B, 21 of the top K=32 sycophancy heads shared with the top 32 factual-lying heads and Spearman 0.88 over all heads. Two upstream scripts each claim Table 1 and both are run: circuit_overlap.py (first 50 pairs per task, lying pairs 200-249) and breadth.py (first 30 pairs, lying pairs 100-129, batch size 1). Lying prompts from prompts/lying.py. Match criteria (ours): within 3 heads; Spearman within 0.05.
 - *our choice* (vennemeyer): Their run script uses --dtype float32 and fits on their full 80% train split; we run in bf16 and fit on 72% (their train minus our 10% val carve). Either could contribute to the Fig. 8b gap. Flagged by the independent review.
 - *from paper* (vennemeyer): Geometry parity: cosine between the SyA, GA and SyPr directions per layer is compared with Fig. 10b (App. D.2, Llama-3.1-8B, SIMPLE MATH), read by eye.
 - *our choice* (native scoring): Out-of-distribution scoring at each method's own read position: benchmark rows are re-extracted from Llama-3.1-8B-Instruct in the method's input format (audit/get_native_activations.py), in the row order of the repo caches, with identical labels asserted.
 - *our choice* (native scoring): CAA on free-form benchmarks: mean projection over response tokens (user decision), which equals the projection of the cached response-mean vector, so the repo cache is used. Their A/B-letter position does not exist in free-form responses.
 - *our choice* (native scoring): Vennemeyer plain format on multi-turn benchmarks (AYS, multi-turn SyPR): 'Human: u \n\nAssistant: a \n\n' per earlier turn, then 'Assistant: <response>'; the separator after assistant turns is our construction (their data are single-turn). Plain format is undefined for the control rows (system prompts), reported as undefined.
-- *from code* (native scoring): Pandey code-faithful position on multi-turn prompts drifts back one token per <|eot_id|> in the prompt: it lands on the last user turn's <|eot_id|> in AYS and about 20 tokens inside the last user message in multi-turn SyPR; on single-turn benchmarks it is the 'assistant' header token. Reproduced literally and flagged per cell.
+- *from code* (native scoring): Pandey code-faithful position on multi-turn prompts drifts back one token per <|eot_id|> in the prompt. AYS (all 742 MC and 518 free-form rows): the last user turn's <|eot_id|>. SyPR: 1,899 single-turn rows on the 'assistant' header token; multi-turn rows inside the last user message (1,210 rows 4 tokens in, 379 rows 2 tokens in, 303 rows 20 tokens in) and 1 row on the last user <|eot_id|> (counts from the independent review). Reproduced literally and flagged per cell.
 - *our choice* (native scoring): Benchmark conversations keep their own messages (no system prompt) in every format; Genadi's source dialogues had the system prompt 'You are a helpful assistant.', which is not added to benchmark rows.
 
 
@@ -471,18 +472,22 @@ rho(label, length) per benchmark, the same for every detector:
 
 Independent review by a separate agent (read-only; values recomputed from the saved files):
 
-- No bug that changes a reported number was found. Recomputed exactly from saved files: Pandey residual DIM-27 held-out AUROC 0.9243; Vennemeyer math plain last-content SyPr L11 0.9383 and SyA L29 0.9942 (independent val argmax and split counts 5760/640/800/800); coverage cells Pandey L27 last_prompt on AYS-MC 0.346 and Genadi best head on AYS-MC 0.642.
+- Review 1 (source reproductions): No bug that changes a reported number was found. Recomputed exactly from saved files: Pandey residual DIM-27 held-out AUROC 0.9243; Vennemeyer math plain last-content SyPr L11 0.9383 and SyA L29 0.9942 (independent val argmax and split counts 5760/640/800/800); coverage cells Pandey L27 last_prompt on AYS-MC 0.346 and Genadi best head on AYS-MC 0.642.
 - Ports checked line by line against the pinned repos: CAA letter index (-2 for all 2,000 rows), Vennemeyer split, pooling and resp_all span, Genadi templates, RNG order and combined order (their construct_samples run and compared: identical), answer slice, 75/25 split, TriviaQA pairing, Pandey index (n-3 on all 400 source rows) and head ranking, Persona prompts, layer mappings.
 - Found and acted on: the Pandey residual DIM at L27 was tagged from code but combines probe_transfer.py (layer 27, n=100, logistic regression) with a difference-in-means; relabelled as our combination, and Pandey own LR-27 and DIM-19 detectors added.
 - Found and acted on: the Pandey code-faithful index drifts on multi-turn benchmarks (AYS, multi-turn SyPR); marked with a dagger in every affected cell.
 - Found and fixed: analyze.py would have reported controls as undefined for any missing native control file; it now raises unless the format is plain (the only format without a rendering of system prompts).
 - Recorded: Vennemeyer ran in float32 and fit on their full 80% train (we use bf16 and 72%); Genadi seed 3407 is nominal (their RNG stream is not reproducible).
 - Unsure, low risk (reviewer): whether older datasets versions consume the global RNG between random.seed and the persuasion template draw in Genadi extract_activations.py.
+- Review 2 (native-position scoring): no bug that changes a number. Stored spans re-derived for 300 random rows each of OEQ validation, AYS MC and SyPR in all three formats (0 mismatches); 8 native AUROCs recomputed from raw arrays (e.g. Vennemeyer plain SyA L29 on OEQ validation 0.351, Pandey LR-27 on AYS MC 0.568, Genadi best head on SyPR 0.565) equal the eval files exactly; all 64 native files have ids, labels and metadata equal to their repo caches; Pandey LR-27/DIM-19 refits reproduce (coefficient cosine 1.0, 59 iterations); head overlap K=32 27/32 and rho 0.965 reproduced independently.
+- Review 2, acted on: two upstream scripts claim Pandey Table 1 (circuit_overlap.py and breadth.py, different prompts and pairs); both are now run and reported (27/32, rho 0.97; 23/32, rho 0.96; paper 21/32, 0.88).
+- Review 2, acted on: corrected the SyPR drift counts for Pandey's index (1,899 single-turn rows on the header token; multi-turn rows 2, 4 or 20 tokens inside the last user message); marked the first-pass cached-position entry as such; AUDIT_NOTES no longer claims labels are asserted where they are only copied.
+- Note: the lying-head extraction was rerun at batch size 1 (as breadth.py) after re-keying lying row ids by absolute pair number; the circuit_overlap Spearman moved from 0.9649 to 0.9652 (bf16 batch numerics), overlap counts unchanged.
 
 Regression evidence:
 
 - pytest before any change (main at 64970ce): 57 passed (run as uv run --with matplotlib pytest; matplotlib is not declared in pyproject.toml).
-- pytest at the end: 76 passed = 57 + 19 new tests in tests/test_audit_*.py.
+- pytest at the end: 77 passed = 57 + 20 new tests in tests/test_audit_*.py.
 - evaluate_probes regression: synthetic_tefo_C_sweep copied without eval/ to a temp dir; the unchanged evaluate_probes re-run on oeq_framing_minority_balanced_seed0_activations.npz; all 7,938 rows (2,646 probes x 3 labels) identical to the committed eval/*.jsonl in auroc, balanced_accuracy, n, n_pos, n_neg, exclusions and eval_sha256; max |dAUROC| = 0.0.
 - Comparison used: SHA-256. The benchmark caches were downloaded from SycoScope/activations (user approved) and all 15 match the SHA-256 recorded in the committed eval metas, so no numerical AUROC tolerance was needed.
 - Every audit AUROC in coverage.csv was re-computed from scores and asserted equal (atol 1e-9) to the eval JSONL written by the unchanged evaluate_probes (residual detectors and references) or audit/evaluate_heads.py (head detectors).

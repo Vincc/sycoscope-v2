@@ -45,6 +45,7 @@ def main():
     parser.add_argument("--val-frac", type=float, default=0.1, help="caa, vennemeyer: val fraction for layer choice.")
     parser.add_argument("--seed", type=int, default=0, help="caa, vennemeyer: seed of our split / val carve.")
     parser.add_argument("--pandey-lying-only", action="store_true", help="Only write the lying half (pairs 200-399), for parity.")
+    parser.add_argument("--pandey-lie-breadth", action="store_true", help="With --pandey-lying-only: breadth.py pairs 100-129.")
     parser.add_argument("--vennemeyer-resp-all-diag", action="store_true",
                         help="Diagnostic: math sets with the extra resp_all pooling, as method vennemeyer_diag.")
     args = parser.parse_args()
@@ -116,8 +117,12 @@ def main():
             saved = json.loads((out_dir / "triviaqa_pairs.json").read_text(encoding="utf-8"))
             if [list(p) for p in pairs] != saved:
                 raise ValueError("re-streamed TriviaQA pairs differ from the saved triviaqa_pairs.json")
-            outputs.append((out_dir / "triviaqa_lie.jsonl", sources.pandey_lying_rows(pairs, tokenizer),
-                            [out_dir / "triviaqa_pairs.json"], {**provenance, "note": "lying half, parity only"}))
+            if args.pandey_lie_breadth:
+                outputs.append((out_dir / "triviaqa_lie_breadth.jsonl", sources.pandey_lying_rows(pairs, tokenizer, 100, 130),
+                                [out_dir / "triviaqa_pairs.json"], {**provenance, "note": "breadth.py lying pairs 100-129, parity only"}))
+            else:
+                outputs.append((out_dir / "triviaqa_lie.jsonl", sources.pandey_lying_rows(pairs, tokenizer),
+                                [out_dir / "triviaqa_pairs.json"], {**provenance, "note": "lying half, parity only"}))
         else:
             write_json(out_dir / "triviaqa_pairs.json", [list(p) for p in pairs])
             outputs.append((out_dir / "triviaqa_syc.jsonl", sources.pandey_rows(pairs, tokenizer, n_fit=100),

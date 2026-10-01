@@ -116,14 +116,17 @@ def main():
             add("Genadi", name, f"{pool} pooling", m["layers"], y, s, None, paper["genadi"]["reference"],
                 "no published Llama-3.1-8B value", heads=m["heads"], source_val_acc=m.get("source_val_acc"))
 
-    ov = read_json(REPO_ROOT / "reports" / "audit_existing_methods" / "pandey_overlap.json")
-    shared, rho = ov["overlap"]["32"]["shared"], ov["spearman_rho_all_heads"]
-    ok = abs(shared - 21) <= 3 and abs(rho - 0.88) <= 0.05
-    rows.append({"method": "Pandey", "unit": "head overlap, syc vs lie, K=32", "variant": f"first {ov['n_rank_pairs']} pairs per task",
-                 "layer": "all heads", "n_heldout": None, "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None,
-                 "paper_value": "21/32 shared; Spearman 0.88", "paper_reference": "Table 1 (p. 5), Llama-3.1-8B row",
-                 "verdict": f"{'match' if ok else 'mismatch'}: ours {shared}/32 shared (chance 1.0), Spearman {rho:.2f} "
-                            f"(criterion: within 3 heads and 0.05)"})
+    for recipe, desc in (("circuit_overlap", "circuit_overlap.py: first 50 pairs per task, lying pairs 200-249"),
+                         ("breadth", "breadth.py: first 30 pairs per task, lying pairs 100-129")):
+        ov = read_json(REPO_ROOT / "reports" / "audit_existing_methods" / f"pandey_overlap_{recipe}.json")
+        shared, rho = ov["overlap"]["32"]["shared"], ov["spearman_rho_all_heads"]
+        ok_s, ok_r = abs(shared - 21) <= 3, abs(rho - 0.88) <= 0.05
+        verdict = "match" if ok_s and ok_r else "partly matches" if ok_s or ok_r else "mismatch"
+        rows.append({"method": "Pandey", "unit": "head overlap, syc vs lie, K=32", "variant": desc,
+                     "layer": "all heads", "n_heldout": None, "n_heldout_pos": None, "auroc": None, "ci_lo": None, "ci_hi": None,
+                     "paper_value": "21/32 shared; Spearman 0.88", "paper_reference": "Table 1 (p. 5), Llama-3.1-8B row",
+                     "verdict": f"{verdict}: ours {shared}/32 shared (chance 1.0), Spearman {rho:.2f} "
+                                f"(criterion: within 3 heads; within 0.05)"})
     geo = read_csv(args.out_dir / "vennemeyer_fig10b.csv")
     for pool in ("last_content", "resp_all"):
         for pair in ("syc-ga", "syc-pr", "ga-pr"):

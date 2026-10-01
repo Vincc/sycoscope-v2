@@ -1,5 +1,5 @@
 {
-  "output": "triviaqa_lie.jsonl",
+  "output": "triviaqa_lie_breadth.jsonl",
   "inputs": {
     "/workspace/sycoscope-v2/data/audit/pandey/triviaqa_pairs.json": "6b3c8601ab527922bb13b09897d754ec591906a600c99c5126c817eeb13cb5b4"
   },
@@ -11,30 +11,31 @@
     "/workspace/sycoscope-v2/audit/build_source.py",
     "--method",
     "pandey",
-    "--pandey-lying-only"
+    "--pandey-lying-only",
+    "--pandey-lie-breadth"
   ],
   "args": {
     "method": "pandey",
     "val_frac": 0.1,
     "seed": 0,
     "pandey_lying_only": true,
-    "pandey_lie_breadth": false,
+    "pandey_lie_breadth": true,
     "vennemeyer_resp_all_diag": false
   },
   "counts": {
-    "n_in": 400,
+    "n_in": 60,
     "excluded": {},
-    "n_out": 400
+    "n_out": 60
   },
-  "created_at": "2026-10-01T01:44:10+00:00",
+  "created_at": "2026-10-01T01:43:44+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct",
   "source_repo": "https://github.com/MVPandey/shared-sycophancy-lying-circuit",
   "source_commit": "c55356cf31e20f2cd5e1ff74dd0013929b49c96d",
   "source_dirty": false,
   "hf_dataset": "mandarjoshi/trivia_qa:unfiltered.nocontext/validation (streamed)",
   "datasets_version": "5.0.1",
-  "note": "lying half, parity only",
+  "note": "breadth.py lying pairs 100-129, parity only",
   "split_counts": {
-    "parity_only": 400
+    "parity_only": 60
   }
 }

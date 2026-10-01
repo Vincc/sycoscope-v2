@@ -1,11 +1,11 @@
 {
-  "output": "pandey_overlap.json",
+  "output": "pandey_overlap_circuit_overlap.json",
   "inputs": {
     "activations/audit/pandey/triviaqa_syc.npz": "77ef9e799b6b2aa2bb5e4f50150b4ab3cb675f664a1635326a89b340382131ac",
-    "activations/audit/pandey/triviaqa_lie.npz": "6be3b752ce3031b58b6eb900c605741b03ccad068ffec9dc6aa631972a86ef80"
+    "activations/audit/pandey/triviaqa_lie.npz": "2b7a355ed588f3849788fbf8848f855b75dc144d873c79154852eca5fc7f42b2"
   },
   "git": {
-    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "commit": "4bab914fae8c3ae842c71de0fcf994f826110921",
     "dirty": true
   },
   "argv": [
@@ -18,12 +18,15 @@
     "50",
     "--k",
     "15",
-    "32"
+    "32",
+    "--recipe",
+    "circuit_overlap"
   ],
   "args": {
     "syc": "activations/audit/pandey/triviaqa_syc.npz",
     "lie": "activations/audit/pandey/triviaqa_lie.npz",
     "n_rank": 50,
+    "recipe": "circuit_overlap",
     "k": [
       15,
       32
@@ -34,6 +37,6 @@
     "excluded": {},
     "n_out": 1024
   },
-  "created_at": "2026-10-01T01:11:47+00:00",
+  "created_at": "2026-10-01T01:44:50+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

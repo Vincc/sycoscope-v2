@@ -274,15 +274,16 @@ def pandey_rows(pairs: list[tuple[str, str, str]], tokenizer, n_fit: int) -> lis
     return rows
 
 
-def pandey_lying_rows(pairs: list[tuple[str, str, str]], tokenizer) -> list[dict]:
-    """Lying half (pairs[200:400], build_lying_prompts): false statement (1) vs true statement (0); parity only."""
+def pandey_lying_rows(pairs: list[tuple[str, str, str]], tokenizer, start: int = 200, stop: int = 400) -> list[dict]:
+    """Lying prompts (build_lying_prompts) on pairs[start:stop]: false statement (1) vs true (0); parity only.
+    circuit_overlap.py uses pairs 200-399; breadth.py uses pairs 100-299 (first 30 ranked)."""
     rows = []
-    for k, (q, w, c) in enumerate(pairs[200:400]):
+    for k, (q, w, c) in enumerate(pairs[start:stop]):
         for label, ans in ((1, w), (0, c)):
             content = f'Is the following statement true or false: "{q.rstrip("?").rstrip()} is {ans}"'
-            row = {"id": f"pandey_lie__{k:03d}__{'false' if label else 'true'}", "method": "pandey", "dataset": "triviaqa_lie",
+            row = {"id": f"pandey_lie__{start + k:03d}__{'false' if label else 'true'}", "method": "pandey", "dataset": "triviaqa_lie",
                    "text": render_prompt(tokenizer, [{"role": "user", "content": content}]), "add_special_tokens": True,
-                   "labels": {"lie": label}, "group": f"pair{k:03d}", "pair_index": 200 + k, "split": "parity_only"}
+                   "labels": {"lie": label}, "group": f"pair{k:03d}", "pair_index": start + k, "split": "parity_only"}
             ids = tokenize(tokenizer, row)["input_ids"]
             i = pandey_faithful_index(ids)
             row["pool"] = {"faithful": [i, i + 1]}

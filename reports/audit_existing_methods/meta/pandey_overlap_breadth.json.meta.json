@@ -1,0 +1,42 @@
+{
+  "output": "pandey_overlap_breadth.json",
+  "inputs": {
+    "activations/audit/pandey/triviaqa_syc.npz": "77ef9e799b6b2aa2bb5e4f50150b4ab3cb675f664a1635326a89b340382131ac",
+    "activations/audit/pandey/triviaqa_lie_breadth.npz": "b4fd94ffb4e67e0618a212b922f2193eac3e2c7bb7ba9a9400d6bc751ea0a2ff"
+  },
+  "git": {
+    "commit": "4bab914fae8c3ae842c71de0fcf994f826110921",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/pandey_overlap.py",
+    "--syc",
+    "activations/audit/pandey/triviaqa_syc.npz",
+    "--lie",
+    "activations/audit/pandey/triviaqa_lie_breadth.npz",
+    "--n-rank",
+    "30",
+    "--k",
+    "15",
+    "32",
+    "--recipe",
+    "breadth"
+  ],
+  "args": {
+    "syc": "activations/audit/pandey/triviaqa_syc.npz",
+    "lie": "activations/audit/pandey/triviaqa_lie_breadth.npz",
+    "n_rank": 30,
+    "recipe": "breadth",
+    "k": [
+      15,
+      32
+    ]
+  },
+  "counts": {
+    "n_in": 1024,
+    "excluded": {},
+    "n_out": 1024
+  },
+  "created_at": "2026-10-01T01:44:58+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}

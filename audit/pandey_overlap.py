@@ -20,7 +20,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--syc", type=Path, required=True)
     parser.add_argument("--lie", type=Path, required=True)
-    parser.add_argument("--n-rank", type=int, required=True)
+    parser.add_argument("--n-rank", type=int, required=True, help="First n rows' pairs of each file used to rank heads.")
+    parser.add_argument("--recipe", required=True, help="Upstream script this run follows; names the output file.")
     parser.add_argument("--k", type=int, nargs="+", required=True)
     args = parser.parse_args()
     from scipy.stats import spearmanr
@@ -34,12 +35,12 @@ def main():
     syc = np.array([r["delta_norm"] for r in ranked["syc"]])
     lie = np.array([r["delta_norm"] for r in ranked["lie"]])
     order = lambda v: [(int(i) // 32, int(i) % 32) for i in np.argsort(-v, kind="stable")]
-    out = {"n_rank_pairs": args.n_rank, "spearman_rho_all_heads": float(spearmanr(syc, lie).statistic), "overlap": {}}
+    out = {"recipe": args.recipe, "n_rank_pairs": args.n_rank, "spearman_rho_all_heads": float(spearmanr(syc, lie).statistic), "overlap": {}}
     for k in args.k:
         shared = set(order(syc)[:k]) & set(order(lie)[:k])
         out["overlap"][str(k)] = {"shared": len(shared), "chance": k * k / 1024, "heads_shared": sorted(shared)}
     out["top_syc"], out["top_lie"] = order(syc)[:max(args.k)], order(lie)[:max(args.k)]
-    path = REPO_ROOT / "reports" / "audit_existing_methods" / "pandey_overlap.json"
+    path = REPO_ROOT / "reports" / "audit_existing_methods" / f"pandey_overlap_{args.recipe}.json"
     write_json(path, out)
     write_meta(path, [args.syc, args.lie], args, check_counts(1024, {}, 1024, "heads"), {"model": MODEL})
     print({k: v["shared"] for k, v in out["overlap"].items()}, "rho", out["spearman_rho_all_heads"])

@@ -96,7 +96,7 @@ activations are next to their JSONL under `generations/Llama-3.1-8B-Instruct/tra
 ## Native-position scoring on the benchmarks (second pass)
 
 Benchmark rows are re-extracted in each method's own input format by `audit/get_native_activations.py`
-(`audit/sources.py::native_row`), in the row order of the repo caches, with labels copied and asserted equal:
+(`audit/sources.py::native_row`), in the row order of the repo caches, with labels copied (analyze asserts ids and the target label; an independent check found all label and metadata arrays equal):
 - `plain` (Vennemeyer native): `Human: ... \n\nAssistant: ...` with BOS; multi-turn conversations use our separator.
 - `chat` (Vennemeyer chat variant): chat template + response, one BOS.
 - `chat_double_bos` (Genadi, Pandey): full dialogue templated, then tokenized with a second BOS; Genadi answer slice

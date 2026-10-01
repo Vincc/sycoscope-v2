@@ -176,9 +176,11 @@ def reproduction(doc: Doc, d: Path, parity, paper, fig8b, fig10b, overlap):
     doc.h(3, METHODS[3][1])
     doc.p(f"Paper: {p['statement']} ({p['reference']}). Table 1 (p. 5), Llama-3.1-8B: 21 of the top K=32 sycophancy heads "
           "are also top-32 factual-lying heads; Spearman 0.88 over all 1,024 heads.")
-    doc.p(f"Ours: {overlap['overlap']['32']['shared']}/32 shared at K=32 and {overlap['overlap']['15']['shared']}/15 at K=15 "
-          f"(chance about 1 and 0.2); Spearman {overlap['spearman_rho_all_heads']:.2f}. Top-15 sycophancy heads: "
-          + ", ".join(f"L{a}H{b}" for a, b in overlap["top_syc"][:15]) + ".")
+    doc.p("The repo has two scripts that each claim Table 1, with different settings; both are run. "
+          + " ".join(f"{name}: {o['overlap']['32']['shared']}/32 shared at K=32, {o['overlap']['15']['shared']}/15 at K=15, "
+                     f"Spearman {o['spearman_rho_all_heads']:.2f}." for name, o in overlap.items())
+          + " Top-15 sycophancy heads (circuit_overlap ranking): "
+          + ", ".join(f"L{a}H{b}" for a, b in overlap["circuit_overlap"]["top_syc"][:15]) + ".")
     parity_rows("pandey")
 
     doc.h(3, METHODS[4][1])
@@ -298,7 +300,7 @@ def main():
     controls, length = read_csv(d / "controls.csv"), read_csv(d / "length_confound.csv")
     choices, env = read_jsonl(d / "design_choices.jsonl"), read_json(d / "environment.json")
     reg, ver, paper = read_json(d / "regression.json"), read_json(d / "verification.json"), read_json(d / "paper_reference.json")
-    overlap = read_json(d / "pandey_overlap.json")
+    overlap = {r: read_json(d / f"pandey_overlap_{r}.json") for r in ("circuit_overlap", "breadth")}
     bs = sorted({(r["benchmark"], r["display"], r["benchmark_cell"], r["cell_source"], r["target_label"], r["n"]) for r in coverage},
                 key=lambda b: (CELLS.index(b[2]), b[1]))
     benches = [{"id": b[0], "display": b[1], "cell": b[2], "inferred": b[3] == "inferred", "label": b[4], "n": int(b[5])} for b in bs]
@@ -366,7 +368,8 @@ def main():
     (d / "review.html").write_text(shell.replace("<!--BODY-->", body).replace("/*DATA*/null", json.dumps(heat)), encoding="utf-8")
     inputs = [d / n for n in ("coverage.csv", "parity.csv", "vennemeyer_fig8b.csv", "vennemeyer_fig10b.csv", "controls.csv",
                               "length_confound.csv", "design_choices.jsonl", "environment.json", "regression.json",
-                              "verification.json", "paper_reference.json", "pandey_overlap.json")]
+                              "verification.json", "paper_reference.json", "pandey_overlap_circuit_overlap.json",
+                              "pandey_overlap_breadth.json")]
     for name in ("REVIEW.md", "review.html"):
         write_meta(d / name, inputs, args, check_counts(len(coverage), {}, len(coverage), name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
     print(f"wrote {d / 'REVIEW.md'} and {d / 'review.html'}")

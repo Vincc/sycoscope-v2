@@ -2,20 +2,21 @@
   "output": "REVIEW.md",
   "inputs": {
     "reports/audit_existing_methods/coverage.csv": "e67071bb397c2f33066659fe0bc44f3214b0e51f7a4dd8f1a27e828a98f21ade",
-    "reports/audit_existing_methods/parity.csv": "278144855273fb70cfb53921b33f587d63134d82c8a7c4d373439477236f9ca9",
+    "reports/audit_existing_methods/parity.csv": "060f0838a30971700b0676ae485b1189db942fb6e36a04020348863282d95bab",
     "reports/audit_existing_methods/vennemeyer_fig8b.csv": "7c07852bde78f426dea322b5ef0d8227298cc40dbaf56eb6a8e75f46f46362e2",
     "reports/audit_existing_methods/vennemeyer_fig10b.csv": "9866fd7336bb534238a515ebe48d2e2c0f6ae2fb13bfada3399531f7ea6bc0a0",
     "reports/audit_existing_methods/controls.csv": "7492f95f2041699980887a05942ece595c9c3ad87b0c69f6c9ebe1aed747f654",
     "reports/audit_existing_methods/length_confound.csv": "d4a86a68ca158a3bd743c8573c0e409d5463a7a50c011be469451a160587dfb8",
-    "reports/audit_existing_methods/design_choices.jsonl": "7f7fd319ed63a198407b4a8d3012e4264d8f65f06dd3b8c53d6c5f83e9521540",
+    "reports/audit_existing_methods/design_choices.jsonl": "50b81a29bca4223f0c69be31d0d5862a01592d79b539e32f19f9c9d047e5adc7",
     "reports/audit_existing_methods/environment.json": "2837c442ecb81ce42b0db9fb3dca9ea25a79d817598c90fb55a8769895f306aa",
-    "reports/audit_existing_methods/regression.json": "aa40e989fb41f605cbabfcf6a00ff23b0a757cb3782b48c40c5e54521dcb854f",
-    "reports/audit_existing_methods/verification.json": "0bc323c656fc2a3f44a3126adc404a84c4cd5c2b5cff0a438287896b886e84e6",
+    "reports/audit_existing_methods/regression.json": "651fa60f176e04040c61f47563114b2c29b0236c5af86ad80874c5a656867566",
+    "reports/audit_existing_methods/verification.json": "15b2625b6a57b15cbd5bbb8a2afaa4d91d0be0dd50eac50dd95da1edfbf2209c",
     "reports/audit_existing_methods/paper_reference.json": "011948620db26dbf9e53d6b234cbd4cf22b75a3ffe4a2e3986b59e4c226ff0c3",
-    "reports/audit_existing_methods/pandey_overlap.json": "c1191e94553e5874ec9824478514c0559a8a3ceac7c53b4a9f36eaaf5f9fb156"
+    "reports/audit_existing_methods/pandey_overlap_circuit_overlap.json": "f30a5790514aa804937bf494cdf498eedd8dff931c06c419df49a0ade33d3b41",
+    "reports/audit_existing_methods/pandey_overlap_breadth.json": "b16425e649de4c9df5c4c6f6a11f733014530f66e1ad9aaf4fcd155f8c1bc1a6"
   },
   "git": {
-    "commit": "40192ddc0ba6d1b03f2dea65862236f16972e3e6",
+    "commit": "4bab914fae8c3ae842c71de0fcf994f826110921",
     "dirty": true
   },
   "argv": [
@@ -31,6 +32,6 @@
     "excluded": {},
     "n_out": 1020
   },
-  "created_at": "2026-10-01T01:41:37+00:00",
+  "created_at": "2026-10-01T01:46:20+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }
