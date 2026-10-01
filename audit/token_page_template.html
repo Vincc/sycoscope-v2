@@ -35,6 +35,8 @@ select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .meta { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12.5px; color: var(--ink-2); margin-block-end: 6px; }
 .pill { font: 500 11.5px/1.2 var(--mono); padding: 2px 7px; border-radius: 99px; border: 1px solid currentColor; }
 .pill.y1 { color: var(--div-hi); } .pill.y0 { color: var(--muted); }
+.pill.agree { color: var(--ink-2); } .pill.disagree { color: var(--div-lo); }
+.empty { font-size: 13px; color: var(--muted); padding-block: 8px; }
 .toks { font: 13px/1.85 var(--mono); white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
 .toks span { border-radius: 2px; padding: 1px 0; }
 .toks span.native { outline: 2px solid var(--mark); outline-offset: 0; }
@@ -47,8 +49,9 @@ select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 <div class="wrap">
   <span class="eyebrow">audit/existing-methods · Llama-3.1-8B-Instruct · per-token scores</span>
   <h1>Detector token heatmaps</h1>
-  <p class="note">Each existing detector's score applied to every token's activation, on eight balanced-benchmark rows per dataset: four the judge labelled sycophantic (target label 1) and four it did not, drawn with fixed seeds among rows with responses of at most 300 tokens. Blue means the token pushes toward the detector's sycophantic side, red the other way; colour is scaled per detector (98th percentile of |score| over all tokens shown), so compare tokens within a detector, not across detectors. Detectors fit on pooled vectors (a response mean or a single position) are not calibrated per token. The outlined token is the method's own read position where it is a single token. Shown: the last user message (at most 120 tokens) and the full response.</p>
+  <p class="note">Each existing detector's score applied to every token's activation, on eight balanced-benchmark rows per dataset: four the judge labelled sycophantic (target label 1) and four it did not, drawn with fixed seeds among rows with responses of at most 300 tokens. Blue means the token pushes toward the detector's sycophantic side, red the other way; colour is scaled per detector (98th percentile of |score| over all tokens shown), so compare tokens within a detector, not across detectors. Detectors fit on pooled vectors (a response mean or a single position) are not calibrated per token. The outlined token is the method's own read position where it is a single token. The second view shows, for each detector and dataset, one row per outcome of judge label × detector prediction, where the prediction uses the detector's own decision threshold from its source data (score ≥ 0 for difference-in-means, &gt; 0 for logistic) on its pooled score; the AUROCs equal those of the review. Shown: the last user message (at most 120 tokens) and the full response.</p>
   <div class="bar">
+    <label for="mode">View <select id="mode"><option value="samples">4 + 4 rows per dataset</option><option value="outcomes">one row per outcome (judge x detector)</option></select></label>
     <label for="det">Detector <select id="det"></select></label>
     <label for="ds">Dataset <select id="ds"><option value="">all (slow)</option></select></label>
     <span class="legend" aria-hidden="true">− <span class="ramp" id="ramp"></span> + <span>(per-detector scale)</span></span>
@@ -68,39 +71,65 @@ function col(v, s) {
 }
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const NATIVE = { 'Vennemeyer': 'last_content', 'Pandey': 'pandey_faithful' };
-const detSel = document.getElementById('det'), dsSel = document.getElementById('ds');
+const detSel = document.getElementById('det'), dsSel = document.getElementById('ds'), modeSel = document.getElementById('mode');
 DATA.detectors.forEach((d, i) => detSel.add(new Option(d.name, i)));
 [...new Set(DATA.samples.map(s => s.display))].forEach(d => dsSel.add(new Option(d, d)));
 dsSel.selectedIndex = 1;
+function tokensHtml(x, sc, s, ni) {
+  let h = '<div class="toks">', prev = null;
+  x.tokens.forEach((t, i) => {
+    const g = x.segment[i];
+    if (g !== prev && g !== 'template') h += `<span class="seg">${g === 'user' ? 'user (last message)' : 'assistant response'}</span>`;
+    prev = g;
+    const c = col(sc[i], s), txt = esc(t).replace(/\n/g, '↵\n');
+    h += `<span class="${g}${i === ni ? ' native' : ''}" data-v="${sc[i]}" style="background:${c.bg};color:${c.strong ? '#fff' : 'var(--ink)'}">${txt}</span>`;
+  });
+  return h + '</div>';
+}
+function respMean(x, sc) {
+  const r = x.segment.map((g, i) => g === 'response' ? sc[i] : null).filter(v => v !== null);
+  return r.reduce((a, b) => a + b, 0) / r.length;
+}
+const OUTCOME = { t1p1: ['judge: sycophantic', 'detector: sycophantic', 'agree'], t1p0: ['judge: sycophantic', 'detector: not sycophantic', 'disagree'],
+                  t0p1: ['judge: not sycophantic', 'detector: sycophantic', 'disagree'], t0p0: ['judge: not sycophantic', 'detector: not sycophantic', 'agree'] };
 function render() {
   const det = DATA.detectors[+detSel.value], s = DATA.scale[det.name];
   document.getElementById('detinfo').textContent = `Layer ${det.layer} · input format ${det.format} · own read position: ${det.native_position} · built on ${det.built_on}`;
   document.getElementById('ramp').style.background = `linear-gradient(90deg, ${col(-s, s).bg}, ${col(0, s).bg}, ${col(s, s).bg})`;
   const nkey = Object.keys(NATIVE).find(k => det.name.startsWith(k));
-  const groups = {};
-  DATA.samples.filter(x => !dsSel.value || x.display === dsSel.value).sort((a, b) => b.label - a.label).forEach(x => (groups[x.display] ??= []).push(x));
   let h = '';
-  for (const [name, xs] of Object.entries(groups)) {
-    h += `<section class="card"><div class="cardhead"><h2>${esc(name)}</h2><span class="cell">${esc(xs[0].cell)} · label ${esc(xs[0].target_label)} · ${xs.filter(x => x.label).length} sycophantic, ${xs.filter(x => !x.label).length} not</span></div>`;
-    for (const x of xs) {
-      const sc = x.scores[det.name], ni = nkey ? x.native_index[NATIVE[nkey]] : -1;
-      const resp = x.segment.map((g, i) => g === 'response' ? sc[i] : null).filter(v => v !== null);
-      const mean = resp.reduce((a, b) => a + b, 0) / resp.length;
-      h += `<div class="sample"><div class="meta"><span class="pill ${x.label ? 'y1' : 'y0'}">label ${x.label} · ${x.label ? 'sycophantic' : 'not sycophantic'}</span>` +
-           `<span>${x.n_turns} message${x.n_turns > 1 ? 's' : ''}${x.user_truncated ? ', user message truncated' : ''}</span>` +
-           `<span>mean score over response tokens ${mean.toFixed(2)}</span>` + (ni >= 0 ? `<span>score at own read position ${sc[ni].toFixed(2)}</span>` : '') +
-           `<span>${esc(x.id)}</span></div><div class="toks">`;
-      let prev = null;
-      x.tokens.forEach((t, i) => {
-        const g = x.segment[i];
-        if (g !== prev && g !== 'template') h += `<span class="seg">${g === 'user' ? 'user (last message)' : 'assistant response'}</span>`;
-        prev = g;
-        const c = col(sc[i], s), txt = esc(t).replace(/\n/g, '↵\n');
-        h += `<span class="${g}${i === ni ? ' native' : ''}" data-v="${sc[i]}" style="background:${c.bg};color:${c.strong ? '#fff' : 'var(--ink)'}">${txt}</span>`;
-      });
-      h += '</div></div>';
+  if (modeSel.value === 'outcomes') {
+    const tab = DATA.outcomes[det.name];
+    for (const [stem, b] of Object.entries(tab)) {
+      const x0 = DATA.samples.find(x => x.benchmark === stem);
+      if (dsSel.value && x0.display !== dsSel.value) continue;
+      const n = Object.values(b.cells).reduce((a, c) => a + c.n, 0);
+      h += `<section class="card"><div class="cardhead"><h2>${esc(x0.display)}</h2><span class="cell">${esc(x0.cell)} · label ${esc(x0.target_label)} · AUROC ${b.auroc.toFixed(3)} · detector predicts sycophantic when ${esc(b.rule)} (its own threshold) · ${n} rows</span></div>`;
+      for (const [k, c] of Object.entries(b.cells)) {
+        const [tl, pl, ag] = OUTCOME[k];
+        h += `<div class="sample"><div class="meta"><span class="pill ${c.target ? 'y1' : 'y0'}">${tl}</span><span class="pill ${ag}">${pl}</span><span>${c.n} of ${n} rows have this outcome</span>`;
+        if (!c.n) { h += '</div><p class="empty">No row of this benchmark has this outcome.</p></div>'; continue; }
+        const x = DATA.outcome_rows[c.row], sc = x.scores[det.name], ni = nkey ? x.native_index[NATIVE[nkey]] : -1;
+        h += `<span>pooled score ${c.pooled_score.toFixed(2)} at the own read position</span><span>mean over response tokens ${respMean(x, sc).toFixed(2)}</span>` +
+             (c.long_response ? `<span>no row under ${DATA.max_response_tokens} response tokens; shortest shown (${c.n_response_tokens})</span>` : '') +
+             `<span>${esc(x.id)}</span></div>` + tokensHtml(x, sc, s, ni) + '</div>';
+      }
+      h += '</section>';
     }
-    h += '</section>';
+  } else {
+    const groups = {};
+    DATA.samples.filter(x => !dsSel.value || x.display === dsSel.value).sort((a, b) => b.label - a.label).forEach(x => (groups[x.display] ??= []).push(x));
+    for (const [name, xs] of Object.entries(groups)) {
+      h += `<section class="card"><div class="cardhead"><h2>${esc(name)}</h2><span class="cell">${esc(xs[0].cell)} · label ${esc(xs[0].target_label)} · ${xs.filter(x => x.label).length} sycophantic, ${xs.filter(x => !x.label).length} not</span></div>`;
+      for (const x of xs) {
+        const sc = x.scores[det.name], ni = nkey ? x.native_index[NATIVE[nkey]] : -1;
+        h += `<div class="sample"><div class="meta"><span class="pill ${x.label ? 'y1' : 'y0'}">label ${x.label} · ${x.label ? 'sycophantic' : 'not sycophantic'}</span>` +
+             `<span>${x.n_turns} message${x.n_turns > 1 ? 's' : ''}${x.user_truncated ? ', user message truncated' : ''}</span>` +
+             `<span>mean score over response tokens ${respMean(x, sc).toFixed(2)}</span>` + (ni >= 0 ? `<span>score at own read position ${sc[ni].toFixed(2)}</span>` : '') +
+             `<span>${esc(x.id)}</span></div>` + tokensHtml(x, sc, s, ni) + '</div>';
+      }
+      h += '</section>';
+    }
   }
   document.getElementById('cards').innerHTML = h;
 }
@@ -111,7 +140,7 @@ document.getElementById('cards').addEventListener('mousemove', e => {
   tip.style.left = Math.min(e.clientX + 12, innerWidth - 140) + 'px'; tip.style.top = (e.clientY + 14) + 'px';
 });
 document.getElementById('cards').addEventListener('mouseleave', () => { tip.hidden = true; });
-[detSel, dsSel].forEach(el => el.addEventListener('change', render));
+[detSel, dsSel, modeSel].forEach(el => el.addEventListener('change', render));
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
 new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 render();

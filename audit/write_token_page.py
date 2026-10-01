@@ -20,13 +20,14 @@ def main():
     for det in data["detectors"]:
         vals = np.concatenate([np.abs(s["scores"][det["name"]]) for s in data["samples"]])
         scale[det["name"]] = float(np.percentile(vals, 98))
+    conf = read_json(DIR / "token_confusion.json")
     payload = {"detectors": data["detectors"], "scale": scale, "samples": data["samples"], "seed": data["seed"],
-               "max_response_tokens": data["max_response_tokens"]}
+               "max_response_tokens": data["max_response_tokens"], "outcomes": conf["table"], "outcome_rows": conf["rows"]}
     page = (DIR.parent.parent / "audit" / "token_page_template.html").read_text(encoding="utf-8")
     out = DIR / "token_heatmaps.html"
     out.write_text(page.replace("/*DATA*/null", json.dumps(payload)), encoding="utf-8")
     n = len(data["samples"])
-    write_meta(out, [DIR / "token_scores.json"], args, check_counts(n, {}, n, out.name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
+    write_meta(out, [DIR / "token_scores.json", DIR / "token_confusion.json"], args, check_counts(n, {}, n, out.name), {"model": "meta-llama/Llama-3.1-8B-Instruct"})
     print(f"wrote {out} ({out.stat().st_size / 1e6:.2f} MB)")
 
 

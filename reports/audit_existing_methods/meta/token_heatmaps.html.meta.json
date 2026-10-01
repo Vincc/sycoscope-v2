@@ -1,10 +1,11 @@
 {
   "output": "token_heatmaps.html",
   "inputs": {
-    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_scores.json": "088867a59f0a66034f086c93933264e7126359ecbc2e3a224bbb80b99df29ae0"
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_scores.json": "088867a59f0a66034f086c93933264e7126359ecbc2e3a224bbb80b99df29ae0",
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_confusion.json": "c234c00de831314f112a5d35ebd7a5e6cb07f17b03b56353e1ec2edc9338867f"
   },
   "git": {
-    "commit": "27c149bb219709fbf2318c472921041f7e2868da",
+    "commit": "3a0d43d8fa28f50fb23ff6c20a026488eac06f16",
     "dirty": true
   },
   "argv": [
@@ -16,6 +17,6 @@
     "excluded": {},
     "n_out": 120
   },
-  "created_at": "2026-10-01T15:47:02+00:00",
+  "created_at": "2026-10-01T15:58:01+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

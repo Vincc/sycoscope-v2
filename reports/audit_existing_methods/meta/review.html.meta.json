@@ -7,7 +7,7 @@
     "reports/audit_existing_methods/vennemeyer_fig10b.csv": "9866fd7336bb534238a515ebe48d2e2c0f6ae2fb13bfada3399531f7ea6bc0a0",
     "reports/audit_existing_methods/controls.csv": "4c6bddaa7f082645e3aa2099fbc0186120cd6005a757dc2ce74fb50880c5a5bf",
     "reports/audit_existing_methods/length_confound.csv": "d0cd189e3e20fefdeb836dfa9d48b53371d03dd63b660e192cd24d9636a4b1bd",
-    "reports/audit_existing_methods/design_choices.jsonl": "5ad4f58f1336063c7b1a52e339bd4b8dbd7d10d11be6c3216e33a3ab731427aa",
+    "reports/audit_existing_methods/design_choices.jsonl": "e3bdaa460eb3fff5b3a3b11577df63b29d5ba17f05fef8e20583273590cff31b",
     "reports/audit_existing_methods/environment.json": "2837c442ecb81ce42b0db9fb3dca9ea25a79d817598c90fb55a8769895f306aa",
     "reports/audit_existing_methods/regression.json": "dbd6edeb63213847d730d73afca9e2b7f50469afd77530f175563871fb102fad",
     "reports/audit_existing_methods/verification.json": "eaec27139a158dc2c562d2fe30a244ad54a7e2ea83598519fb35a82b83768413",
@@ -17,7 +17,7 @@
     "reports/audit_existing_methods/persona_monitor.json": "7afe82d684739d4601afa473b59f11289bc509287934cf7be0dbf6b1c252bac6"
   },
   "git": {
-    "commit": "27c149bb219709fbf2318c472921041f7e2868da",
+    "commit": "3a0d43d8fa28f50fb23ff6c20a026488eac06f16",
     "dirty": true
   },
   "argv": [
@@ -33,6 +33,6 @@
     "excluded": {},
     "n_out": 1035
   },
-  "created_at": "2026-10-01T15:47:02+00:00",
+  "created_at": "2026-10-01T15:59:37+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

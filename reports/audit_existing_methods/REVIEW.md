@@ -491,6 +491,7 @@ rho(label, length) per benchmark, the same for every detector:
 - *our choice* (persona): Rate limits: the judge runs with up to 6 concurrent requests and 30 client retries; finished requests are cached and never re-called, so a restart does not change scores.
 - *our choice* (persona): Activations are taken in bf16 (utils.models); upstream generate_vec.py loads the model without a dtype (float32 on older transformers).
 - *our choice* (token heatmaps): Per-token heatmaps: each detector's own scoring rule applied to every token's activation on 8 rows per benchmark (4 judged sycophantic, 4 not; responses of at most 300 tokens; the first row per label drawn with seed 0, the other 3 from the remaining rows with seed 1000); colour scaled per detector by the 98th percentile of |score| over shown tokens. Detectors fit on pooled vectors are not calibrated per token.
+- *our choice* (token heatmaps, outcomes): Outcome view: for each heatmap detector and benchmark, one example row per outcome of judge label x detector prediction. Prediction = the detector's own decision rule on its pooled score at its own read position (DIM: score >= 0; logistic: score > 0), thresholds from its source data, not tuned on benchmarks. Example drawn with a generator seeded by (0, detector, benchmark, outcome) among rows with at most 300 response tokens; if none, the shortest row (9 cases, flagged); empty outcomes (91 of 540, where a detector predicts one class only) are shown as empty. Pooled-score AUROCs were asserted equal to coverage.csv.
 
 
 ## 6. Verification

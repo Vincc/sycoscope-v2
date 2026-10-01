@@ -1,0 +1,33 @@
+{
+  "output": "token_confusion.json",
+  "inputs": {
+    "/workspace/sycoscope-v2/reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250",
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/coverage.csv": "1c5c8a2ced20249c36eb8868d9c9204492b93661e13c1411eaf81790c3934713"
+  },
+  "git": {
+    "commit": "3a0d43d8fa28f50fb23ff6c20a026488eac06f16",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/audit/token_confusion.py",
+    "--seed",
+    "0",
+    "--max-response-tokens",
+    "300"
+  ],
+  "args": {
+    "seed": 0,
+    "max_response_tokens": 300,
+    "max_user_tokens": 120
+  },
+  "counts": {
+    "n_in": 540,
+    "excluded": {
+      "empty_cell": 91
+    },
+    "n_out": 449
+  },
+  "created_at": "2026-10-01T15:57:25+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_rows": 414
+}
