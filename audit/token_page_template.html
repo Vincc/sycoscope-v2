@@ -47,10 +47,10 @@ select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 <div class="wrap">
   <span class="eyebrow">audit/existing-methods · Llama-3.1-8B-Instruct · per-token scores</span>
   <h1>Detector token heatmaps</h1>
-  <p class="note">Each existing detector's score applied to every token's activation, on two balanced-benchmark rows per dataset: one the judge labelled sycophantic (target label 1) and one it did not, drawn with a fixed seed among rows with short responses. Blue means the token pushes toward the detector's sycophantic side, red the other way; colour is scaled per detector (98th percentile of |score| over all tokens shown), so compare tokens within a detector, not across detectors. Detectors fit on pooled vectors (a response mean or a single position) are not calibrated per token. The outlined token is the method's own read position where it is a single token. Shown: the last user message (at most 120 tokens) and the full response.</p>
+  <p class="note">Each existing detector's score applied to every token's activation, on eight balanced-benchmark rows per dataset: four the judge labelled sycophantic (target label 1) and four it did not, drawn with fixed seeds among rows with responses of at most 300 tokens. Blue means the token pushes toward the detector's sycophantic side, red the other way; colour is scaled per detector (98th percentile of |score| over all tokens shown), so compare tokens within a detector, not across detectors. Detectors fit on pooled vectors (a response mean or a single position) are not calibrated per token. The outlined token is the method's own read position where it is a single token. Shown: the last user message (at most 120 tokens) and the full response.</p>
   <div class="bar">
     <label for="det">Detector <select id="det"></select></label>
-    <label for="ds">Dataset <select id="ds"><option value="">all</option></select></label>
+    <label for="ds">Dataset <select id="ds"><option value="">all (slow)</option></select></label>
     <span class="legend" aria-hidden="true">− <span class="ramp" id="ramp"></span> + <span>(per-detector scale)</span></span>
   </div>
   <p class="detinfo" id="detinfo"></p>
@@ -71,16 +71,17 @@ const NATIVE = { 'Vennemeyer': 'last_content', 'Pandey': 'pandey_faithful' };
 const detSel = document.getElementById('det'), dsSel = document.getElementById('ds');
 DATA.detectors.forEach((d, i) => detSel.add(new Option(d.name, i)));
 [...new Set(DATA.samples.map(s => s.display))].forEach(d => dsSel.add(new Option(d, d)));
+dsSel.selectedIndex = 1;
 function render() {
   const det = DATA.detectors[+detSel.value], s = DATA.scale[det.name];
   document.getElementById('detinfo').textContent = `Layer ${det.layer} · input format ${det.format} · own read position: ${det.native_position} · built on ${det.built_on}`;
   document.getElementById('ramp').style.background = `linear-gradient(90deg, ${col(-s, s).bg}, ${col(0, s).bg}, ${col(s, s).bg})`;
   const nkey = Object.keys(NATIVE).find(k => det.name.startsWith(k));
   const groups = {};
-  DATA.samples.filter(x => !dsSel.value || x.display === dsSel.value).forEach(x => (groups[x.display] ??= []).push(x));
+  DATA.samples.filter(x => !dsSel.value || x.display === dsSel.value).sort((a, b) => b.label - a.label).forEach(x => (groups[x.display] ??= []).push(x));
   let h = '';
   for (const [name, xs] of Object.entries(groups)) {
-    h += `<section class="card"><div class="cardhead"><h2>${esc(name)}</h2><span class="cell">${esc(xs[0].cell)} · label ${esc(xs[0].target_label)}</span></div>`;
+    h += `<section class="card"><div class="cardhead"><h2>${esc(name)}</h2><span class="cell">${esc(xs[0].cell)} · label ${esc(xs[0].target_label)} · ${xs.filter(x => x.label).length} sycophantic, ${xs.filter(x => !x.label).length} not</span></div>`;
     for (const x of xs) {
       const sc = x.scores[det.name], ni = nkey ? x.native_index[NATIVE[nkey]] : -1;
       const resp = x.segment.map((g, i) => g === 'response' ? sc[i] : null).filter(v => v !== null);

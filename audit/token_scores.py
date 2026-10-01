@@ -58,6 +58,8 @@ def main():
     parser.add_argument("--per-label", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--max-response-tokens", type=int, required=True)
+    parser.add_argument("--extra-per-label", type=int, default=0,
+                        help="Further rows per label, drawn from the remaining rows with a second generator (seed + 1000), so the first draw is unchanged.")
     parser.add_argument("--max-user-tokens", type=int, default=120, help="Show at most this many tokens of the last user message.")
     args = parser.parse_args()
     import torch
@@ -71,7 +73,7 @@ def main():
     res_layers = sorted({d[4] for d in DETECTORS if d[3] != "head"} | {m["layer"] for m in refs.values()})
     store, ostore = {}, {}
     handles = heads.register_block_outputs(model, res_layers, store) + heads.register_oproj_inputs(model, [12], ostore)
-    rng = np.random.default_rng(args.seed)
+    rng, rng_extra = np.random.default_rng(args.seed), np.random.default_rng(args.seed + 1000)
     samples, n_seen = [], 0
     try:
         for t in targets:
@@ -83,9 +85,12 @@ def main():
             cell = benchmark_cell(stem)[0]
             for want in (1, 0):
                 pool = np.flatnonzero((y == want) & (n_resp <= args.max_response_tokens))
-                if len(pool) < args.per_label:
+                if len(pool) < args.per_label + args.extra_per_label:
                     raise ValueError(f"{stem}: {len(pool)} rows with label {want} and short responses")
-                for i in rng.choice(pool, args.per_label, replace=False):
+                first = rng.choice(pool, args.per_label, replace=False)
+                rest = np.setdiff1d(pool, first)
+                extra = rng_extra.choice(rest, args.extra_per_label, replace=False) if args.extra_per_label else []
+                for draw, i in [("first", k) for k in first] + [("extra", k) for k in extra]:
                     row = by_id[z["id"][i]]
                     n_seen += 1
                     (prep,), skips = prepare([row], tokenizer, 4096)
@@ -123,7 +128,7 @@ def main():
                         s = probes.score(m["method"], pr, outs["chat"][0][m["layer"]][span].astype(np.float64))
                         det_scores[f"{tag}"] = [round(float(v), 4) for v in s]
                     toks = [tokenizer.decode([chat_ids[k]]) for k in span]
-                    samples.append({"benchmark": stem, "display": t["display"], "cell": cell, "target_label": label,
+                    samples.append({"benchmark": stem, "display": t["display"], "cell": cell, "target_label": label, "draw": draw,
                                     "label": int(y[i]), "id": row["id"], "tokens": toks,
                                     "segment": ["user" if k < p0 - 5 else "template" if k < a0 else "response" for k in span],
                                     "n_turns": len(row["messages"]), "user_truncated": u0 > next(
@@ -143,7 +148,7 @@ def main():
                   {"name": "Contrastive matched-cell pair", "probe_id": "per benchmark cell (validation-selected)", "layer": "per pair",
                    "format": "chat", "native_position": "per pair", "built_on": "the benchmark's own cell"}]
     out = REPO_ROOT / "reports" / "audit_existing_methods" / "token_scores.json"
-    write_json(out, {"detectors": meta_dets, "seed": args.seed, "per_label": args.per_label,
+    write_json(out, {"detectors": meta_dets, "seed": args.seed, "per_label": args.per_label, "extra_per_label": args.extra_per_label,
                      "max_response_tokens": args.max_response_tokens, "samples": samples})
     write_meta(out, [TARGETS, SELECTED], args, check_counts(n_seen, {}, len(samples), "samples"), {"model": MODEL})
     print(f"{len(samples)} samples -> {out}")

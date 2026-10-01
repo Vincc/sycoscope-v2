@@ -1,10 +1,10 @@
 {
   "output": "token_heatmaps.html",
   "inputs": {
-    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_scores.json": "6b5320465a25e7371e66eca56414fbfeb09e4492f60791d552355a5c8b067716"
+    "/workspace/sycoscope-v2/reports/audit_existing_methods/token_scores.json": "088867a59f0a66034f086c93933264e7126359ecbc2e3a224bbb80b99df29ae0"
   },
   "git": {
-    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "commit": "27c149bb219709fbf2318c472921041f7e2868da",
     "dirty": true
   },
   "argv": [
@@ -12,10 +12,10 @@
   ],
   "args": {},
   "counts": {
-    "n_in": 30,
+    "n_in": 120,
     "excluded": {},
-    "n_out": 30
+    "n_out": 120
   },
-  "created_at": "2026-10-01T15:36:36+00:00",
+  "created_at": "2026-10-01T15:47:02+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }

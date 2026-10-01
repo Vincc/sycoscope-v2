@@ -349,7 +349,7 @@ def main():
           "(4) Pandey head-overlap and Vennemeyer direction-geometry checks against the papers; (5) plain-text whole-response "
           "Vennemeyer rows at the cached response position are no longer marked native; (6) independent code reviews; (7) Persona "
           "Vectors completed with the GPT-4.1-mini judge (user-supplied key) and scored like the other methods; (8) per-token "
-          "heatmaps on two rows per benchmark in a separate page (token_heatmaps.html).", note=True)
+          "heatmaps on eight rows per benchmark (4 sycophantic, 4 not) in a separate page (token_heatmaps.html).", note=True)
     doc.p("Environment: " + "; ".join(f"{k} {v}" for k, v in env["environment"].items()) + ".", note=True)
     doc.p("Not in this task: " + "; ".join(f"{n}: {t}" for n, t in NOT_IN_TASK), note=True)
 

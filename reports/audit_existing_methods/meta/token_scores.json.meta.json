@@ -5,13 +5,15 @@
     "/workspace/sycoscope-v2/reports/llama31_tefo_probe_transfer/validation_selected.csv": "006e5cf9c8bf2ac8022a9c027b0e9e82762ff0e0eaf25534b52a9a298eaf8ac5"
   },
   "git": {
-    "commit": "d628aa5dffd262181627b1bc7ea8b2c7b258cbbd",
+    "commit": "27c149bb219709fbf2318c472921041f7e2868da",
     "dirty": true
   },
   "argv": [
     "/workspace/sycoscope-v2/audit/token_scores.py",
     "--per-label",
     "1",
+    "--extra-per-label",
+    "3",
     "--seed",
     "0",
     "--max-response-tokens",
@@ -21,13 +23,14 @@
     "per_label": 1,
     "seed": 0,
     "max_response_tokens": 300,
+    "extra_per_label": 3,
     "max_user_tokens": 120
   },
   "counts": {
-    "n_in": 30,
+    "n_in": 120,
     "excluded": {},
-    "n_out": 30
+    "n_out": 120
   },
-  "created_at": "2026-10-01T15:19:25+00:00",
+  "created_at": "2026-10-01T15:46:33+00:00",
   "model": "meta-llama/Llama-3.1-8B-Instruct"
 }
