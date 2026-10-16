@@ -8,7 +8,10 @@ requires-python = "==3.13.*"
 dependencies = [
     "accelerate==1.14.0",
     "anthropic>=1.8.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.11.2",
     "numpy==2.5.1",
+    "pandas>=3.0.6",
     "scikit-learn==1.9.0",
     "scipy==1.18.0",
     "torch==2.12.1",
@@ -26,5 +29,5 @@ build-backend = "hatchling.build"
 packages = ["utils"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "evaluations_validation"]
 pythonpath = [".", "scripts"]
