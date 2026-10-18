@@ -23,7 +23,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from utils.contrastive import LABEL, POLARITIES, TAG
-from utils.io import REPO_ROOT, plain, read_json, read_jsonl, write_json, write_jsonl
+from utils.io import REPO_ROOT, check_counts, plain, read_json, read_jsonl, write_json, write_jsonl, write_meta
 from utils.models import generate, load_model_and_tokenizer, model_spec, render_prompt
 
 
@@ -58,7 +58,7 @@ def work_items(prompts: list[dict], pairs: list[dict] | None) -> list[dict]:
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 RETRY_STATUSES = (429, 500, 502, 503, 504)
-MAX_ATTEMPTS = 5
+MAX_ATTEMPTS = 8
 
 
 def openrouter_generate(messages: list[dict], args, api_key: str) -> dict:
@@ -71,8 +71,11 @@ def openrouter_generate(messages: list[dict], args, api_key: str) -> dict:
         "top_p": args.top_p,
         "seed": args.seed,
     }
+    if args.openrouter_no_reasoning:
+        body["reasoning"] = {"enabled": False}
     if args.provider:
-        body["provider"] = {"order": [args.provider], "allow_fallbacks": False}
+        body["provider"] = {"order": [args.provider], "allow_fallbacks": False,
+                            "require_parameters": True}
     request = urllib.request.Request(
         OPENROUTER_URL,
         data=json.dumps(body).encode("utf-8"),
@@ -86,7 +89,7 @@ def openrouter_generate(messages: list[dict], args, api_key: str) -> dict:
         except urllib.error.HTTPError as e:
             if e.code not in RETRY_STATUSES or attempt == MAX_ATTEMPTS:
                 raise RuntimeError(f"OpenRouter HTTP {e.code}: {e.read().decode('utf-8', 'replace')}") from e
-            time.sleep(2**attempt)
+            time.sleep(min(2**attempt, 60))
     if "error" in out:
         raise RuntimeError(f"OpenRouter error: {out['error']}")
     choice = out["choices"][0]
@@ -133,13 +136,14 @@ def main():
     parser.add_argument("--batch-size", type=int, help="Local generation only.")
     parser.add_argument("--openrouter-model", help="OpenRouter model id; generate through the API instead of locally.")
     parser.add_argument("--provider", help="OpenRouter only: pin this provider, no fallbacks.")
+    parser.add_argument("--openrouter-no-reasoning", action="store_true", help="OpenRouter only: disable model reasoning.")
     parser.add_argument("--max-workers", type=int, help="OpenRouter only: concurrent requests.")
     args = parser.parse_args()
 
     if args.openrouter_model:
         if args.max_workers is None or args.batch_size is not None:
             raise ValueError("--openrouter-model needs --max-workers and takes no --batch-size")
-    elif args.batch_size is None or args.max_workers is not None or args.provider:
+    elif args.batch_size is None or args.max_workers is not None or args.provider or args.openrouter_no_reasoning:
         raise ValueError("local generation needs --batch-size and takes no --max-workers or --provider")
 
     prompts = read_jsonl(args.input)
@@ -196,6 +200,10 @@ def main():
     rows = [done[item["id"]] for item in items]
     assert len(rows) == len(items) == len(done)
     write_jsonl(out_path, rows)
+    inputs = [args.input] + ([args.system_prompts] if args.system_prompts else [])
+    write_meta(out_path, inputs, args, check_counts(len(items), {}, len(rows), out_path.as_posix()),
+               {"model": args.model, "generation_backend": "openrouter" if args.openrouter_model else "local",
+                "truncated_rows": sum(row["truncated"] for row in rows)})
     partial_path.unlink()
     settings_path.unlink()
     print(f"Wrote {len(rows)} rows to {out_path}")

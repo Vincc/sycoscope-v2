@@ -270,6 +270,52 @@ def plot_sypr_focus(args, rows):
     save_figure(fig, "04_sypr_praise_vs_traits", args, [args.out_dir / "validation_selected.csv", args.targets], len(sypr))
 
 
+def plot_top_probes_per_eval(args, targets, rows):
+    by_eval = defaultdict(list)
+    for row in rows:
+        by_eval[row["eval_dataset"]].append(row)
+    if set(by_eval) != {t["eval_dataset"] for t in targets}:
+        raise ValueError("validation-selected rows do not match evaluation targets")
+    ranked = []
+    for target in targets:
+        candidates = by_eval[target["eval_dataset"]]
+        if len(candidates) != 14 or len({int(r["pair_index"]) for r in candidates}) != 14:
+            raise ValueError(f"{target['eval_dataset']}: expected one probe per system prompt cell")
+        ranked.append(sorted(candidates, key=lambda r: (float(r["auroc"]),
+                           float(r["balanced_accuracy"]), r["probe_id"]), reverse=True)[:3])
+
+    fig, ax = plt.subplots(figsize=(17.5, 10.5))
+    fig.subplots_adjust(left=0.21, right=0.98, bottom=0.12, top=0.87)
+    ax.set_xlim(-0.5, 2.5)
+    ax.set_ylim(len(targets) - 0.5, -0.5)
+    ax.set_xticks(range(3), ["Best", "Second", "Third"], fontsize=11, fontweight="bold")
+    ax.xaxis.tick_top()
+    ax.set_yticks(range(len(targets)), [t["display"] for t in targets], fontsize=9)
+    ax.tick_params(length=0)
+    ax.spines[:].set_visible(False)
+    for i, (target, top) in enumerate(zip(targets, ranked)):
+        ax.add_patch(plt.Rectangle((-0.52, i - 0.43), 0.025, 0.86,
+                                   color=FAMILY_COLORS[target["family"]], clip_on=False))
+        for j, row in enumerate(top):
+            color = TYPE_COLORS[row["pair_type"]]
+            ax.add_patch(plt.Rectangle((j - 0.485, i - 0.42), 0.97, 0.84,
+                                       facecolor=color, alpha=0.12, edgecolor="none"))
+            ax.text(j - 0.45, i - 0.15, f"P{int(row['pair_index']):02d}  {row['cell']}",
+                    ha="left", va="center", fontsize=8.1, color="#172033")
+            ax.text(j - 0.45, i + 0.18, f"AUROC {float(row['auroc']):.3f}",
+                    ha="left", va="center", fontsize=8.5, fontweight="bold", color=color)
+        if i and target["family"] != targets[i - 1]["family"]:
+            ax.axhline(i - 0.5, color="#cbd5e1", linewidth=1)
+    fig.suptitle("Top probes for each evaluation target", fontsize=18, fontweight="bold", y=0.97)
+    fig.text(0.5, 0.925, "Top three of 14 probes selected on synthetic validation, ranked by evaluation AUROC.",
+             ha="center", fontsize=10)
+    fig.legend(handles=[Patch(facecolor=TYPE_COLORS[k], alpha=0.6, label=k.title()) for k in TYPE_COLORS],
+               loc="lower center", bbox_to_anchor=(0.5, 0.06), ncol=3, frameon=False, fontsize=9)
+    fig.text(0.5, 0.025, "Ranking uses evaluation labels and is descriptive; selected AUROCs can be optimistic.",
+             ha="center", fontsize=9, color="#475569")
+    save_figure(fig, "05_top_probes_per_eval", args, [args.out_dir / "validation_selected.csv", args.targets], len(rows))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sweep-dir", type=Path, required=True)
@@ -294,7 +340,8 @@ def main():
     plot_best_probes(args, best_rows)
     plot_eval_clusters(args, targets, val_rows)
     plot_sypr_focus(args, val_rows)
-    print(f"Wrote 4 PNG and 4 SVG figures to {args.out_dir}")
+    plot_top_probes_per_eval(args, targets, val_rows)
+    print(f"Wrote 5 PNG and 5 SVG figures to {args.out_dir}")
 
 
 if __name__ == "__main__":

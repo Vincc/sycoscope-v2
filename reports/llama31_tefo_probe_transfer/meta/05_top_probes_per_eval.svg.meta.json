@@ -1,0 +1,27 @@
+{
+  "output": "05_top_probes_per_eval.svg",
+  "inputs": {
+    "reports/llama31_tefo_probe_transfer/validation_selected.csv": "006e5cf9c8bf2ac8022a9c027b0e9e82762ff0e0eaf25534b52a9a298eaf8ac5",
+    "reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250"
+  },
+  "git": {
+    "commit": "8ad718dbd16e54b96977c00808ea76b380d506a5",
+    "dirty": true
+  },
+  "argv": [
+    "-"
+  ],
+  "args": {
+    "out_dir": "reports/llama31_tefo_probe_transfer",
+    "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
+    "sweep_dir": "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep"
+  },
+  "counts": {
+    "n_in": 210,
+    "excluded": {},
+    "n_out": 210
+  },
+  "created_at": "2026-09-30T13:35:59+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source_sweep": "synthetic_tefo_C_sweep"
+}

@@ -1,0 +1,46 @@
+{
+  "output": "sypr_warranted_praise_judged_minority_balanced_seed0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/sypr_warranted_praise_judged.jsonl": "4b34ca25dcb0e9026f20ec03b741cb951ce6c963bba201d1e34a80b83a4ad9c8"
+  },
+  "git": {
+    "commit": "8ad718dbd16e54b96977c00808ea76b380d506a5",
+    "dirty": true
+  },
+  "argv": [
+    "scripts/sample_judged.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/judging/sypr_warranted_praise_judged.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/judging/sypr_warranted_praise_judged_minority_balanced_seed0.jsonl",
+    "--label",
+    "warranted_praise",
+    "--strategy",
+    "match_minority",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/judging/sypr_warranted_praise_judged.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/judging/sypr_warranted_praise_judged_minority_balanced_seed0.jsonl",
+    "label": "warranted_praise",
+    "strategy": "match_minority",
+    "n": null,
+    "seed": 0,
+    "prompt_col": null
+  },
+  "counts": {
+    "n_in": 4691,
+    "excluded": {
+      "other_prompt_col": 0,
+      "label_none": 0,
+      "not_sampled": 3875
+    },
+    "n_out": 816
+  },
+  "created_at": "2026-09-30T13:15:45+00:00",
+  "label_counts": {
+    "0": 408,
+    "1": 408
+  }
+}
