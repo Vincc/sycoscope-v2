@@ -1,0 +1,476 @@
+{
+  "method": "Original three-class CLiF probes trained on Anthropic levels {-3,0,+3}. Binary AUROC uses ordered class expectation for LR and the +3 minus -3 decision margin for SVM. Balanced accuracy maps predicted +3 to positive and -3/0 to negative.",
+  "train": {
+    "features": "/workspace/replications/cascading_linear_features/results/feats_L19_n210_seed0.npz",
+    "n_prompts": 168,
+    "n_rows": 504,
+    "n_clif_features": 11883
+  },
+  "datasets": {
+    "aita_nta_flip_flipped_minority_balanced_seed0_flipped": {
+      "clif_lr": {
+        "n": 758,
+        "positive": 379,
+        "auroc": 0.5078703155784212,
+        "balanced_accuracy_extreme_classes": 0.5171503957783641
+      },
+      "clif_svm": {
+        "n": 758,
+        "positive": 379,
+        "auroc": 0.5299740324837616,
+        "balanced_accuracy_extreme_classes": 0.5065963060686016
+      },
+      "residual_lr": {
+        "n": 758,
+        "positive": 379,
+        "auroc": 0.5040830960519629,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 758,
+        "positive": 379,
+        "auroc": 0.5325429369052012,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 595,
+        "0": 0,
+        "3": 163
+      }
+    },
+    "aita_nta_og_verdict_nta_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 168,
+        "positive": 84,
+        "auroc": 0.5255810657596371,
+        "balanced_accuracy_extreme_classes": 0.5119047619047619
+      },
+      "clif_svm": {
+        "n": 168,
+        "positive": 84,
+        "auroc": 0.5542800453514738,
+        "balanced_accuracy_extreme_classes": 0.5178571428571429
+      },
+      "residual_lr": {
+        "n": 168,
+        "positive": 84,
+        "auroc": 0.45904195011337867,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 168,
+        "positive": 84,
+        "auroc": 0.4746315192743764,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 134,
+        "0": 0,
+        "3": 34
+      }
+    },
+    "aita_yta_framing_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 988,
+        "positive": 494,
+        "auroc": 0.4965148584635054,
+        "balanced_accuracy_extreme_classes": 0.5050607287449392
+      },
+      "clif_svm": {
+        "n": 988,
+        "positive": 494,
+        "auroc": 0.47565523119539743,
+        "balanced_accuracy_extreme_classes": 0.4898785425101215
+      },
+      "residual_lr": {
+        "n": 988,
+        "positive": 494,
+        "auroc": 0.4998729695618679,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 988,
+        "positive": 494,
+        "auroc": 0.49854119883951553,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 781,
+        "0": 0,
+        "3": 207
+      }
+    },
+    "aita_yta_indirectness_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 1248,
+        "positive": 624,
+        "auroc": 0.5705783099112426,
+        "balanced_accuracy_extreme_classes": 0.5440705128205128
+      },
+      "clif_svm": {
+        "n": 1248,
+        "positive": 624,
+        "auroc": 0.5589455950032873,
+        "balanced_accuracy_extreme_classes": 0.5040064102564102
+      },
+      "residual_lr": {
+        "n": 1248,
+        "positive": 624,
+        "auroc": 0.7665521244247205,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 1248,
+        "positive": 624,
+        "auroc": 0.7459473619329389,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 991,
+        "0": 0,
+        "3": 257
+      }
+    },
+    "aita_yta_validation_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 1196,
+        "positive": 598,
+        "auroc": 0.5729480095300947,
+        "balanced_accuracy_extreme_classes": 0.5392976588628763
+      },
+      "clif_svm": {
+        "n": 1196,
+        "positive": 598,
+        "auroc": 0.6243414503193476,
+        "balanced_accuracy_extreme_classes": 0.5275919732441472
+      },
+      "residual_lr": {
+        "n": 1196,
+        "positive": 598,
+        "auroc": 0.6363994809901455,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 1196,
+        "positive": 598,
+        "auroc": 0.6494614154204092,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 955,
+        "0": 0,
+        "3": 241
+      }
+    },
+    "ays_freeform_judged_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 518,
+        "positive": 259,
+        "auroc": 0.48676227247655823,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_svm": {
+        "n": 518,
+        "positive": 259,
+        "auroc": 0.5345626928638512,
+        "balanced_accuracy_extreme_classes": 0.5057915057915058
+      },
+      "residual_lr": {
+        "n": 518,
+        "positive": 259,
+        "auroc": 0.5494402289769085,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 518,
+        "positive": 259,
+        "auroc": 0.5520788300711081,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 222,
+        "0": 0,
+        "3": 296
+      }
+    },
+    "ays_mc_judged_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 742,
+        "positive": 371,
+        "auroc": 0.4922406840984881,
+        "balanced_accuracy_extreme_classes": 0.4824797843665768
+      },
+      "clif_svm": {
+        "n": 742,
+        "positive": 371,
+        "auroc": 0.5276189507486868,
+        "balanced_accuracy_extreme_classes": 0.4959568733153639
+      },
+      "residual_lr": {
+        "n": 742,
+        "positive": 371,
+        "auroc": 0.5919239180186137,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 742,
+        "positive": 371,
+        "auroc": 0.5148320631207272,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 447,
+        "0": 0,
+        "3": 295
+      }
+    },
+    "oeq_framing_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 606,
+        "positive": 303,
+        "auroc": 0.5024452940343539,
+        "balanced_accuracy_extreme_classes": 0.528052805280528
+      },
+      "clif_svm": {
+        "n": 606,
+        "positive": 303,
+        "auroc": 0.5310372621420558,
+        "balanced_accuracy_extreme_classes": 0.5066006600660066
+      },
+      "residual_lr": {
+        "n": 606,
+        "positive": 303,
+        "auroc": 0.7336753477327931,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 606,
+        "positive": 303,
+        "auroc": 0.7174024333126383,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 516,
+        "0": 1,
+        "3": 89
+      }
+    },
+    "oeq_indirectness_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 504,
+        "positive": 252,
+        "auroc": 0.5930177626606198,
+        "balanced_accuracy_extreme_classes": 0.5376984126984127
+      },
+      "clif_svm": {
+        "n": 504,
+        "positive": 252,
+        "auroc": 0.735685941043084,
+        "balanced_accuracy_extreme_classes": 0.494047619047619
+      },
+      "residual_lr": {
+        "n": 504,
+        "positive": 252,
+        "auroc": 0.7204900478710003,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 504,
+        "positive": 252,
+        "auroc": 0.7231198034769463,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 429,
+        "0": 0,
+        "3": 75
+      }
+    },
+    "oeq_validation_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 1270,
+        "positive": 635,
+        "auroc": 0.5638750077500154,
+        "balanced_accuracy_extreme_classes": 0.5086614173228347
+      },
+      "clif_svm": {
+        "n": 1270,
+        "positive": 635,
+        "auroc": 0.6555570711141423,
+        "balanced_accuracy_extreme_classes": 0.4858267716535433
+      },
+      "residual_lr": {
+        "n": 1270,
+        "positive": 635,
+        "auroc": 0.671257982515965,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 1270,
+        "positive": 635,
+        "auroc": 0.6673941347882695,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 1093,
+        "0": 0,
+        "3": 177
+      }
+    },
+    "ss_framing_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 1314,
+        "positive": 657,
+        "auroc": 0.46430317225338186,
+        "balanced_accuracy_extreme_classes": 0.4931506849315068
+      },
+      "clif_svm": {
+        "n": 1314,
+        "positive": 657,
+        "auroc": 0.4674168131977602,
+        "balanced_accuracy_extreme_classes": 0.497716894977169
+      },
+      "residual_lr": {
+        "n": 1314,
+        "positive": 657,
+        "auroc": 0.5112603064063626,
+        "balanced_accuracy_extreme_classes": 0.5015220700152208
+      },
+      "residual_svm": {
+        "n": 1314,
+        "positive": 657,
+        "auroc": 0.5220375814608629,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 1107,
+        "0": 4,
+        "3": 203
+      }
+    },
+    "ss_indirectness_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 550,
+        "positive": 275,
+        "auroc": 0.5034446280991735,
+        "balanced_accuracy_extreme_classes": 0.4981818181818182
+      },
+      "clif_svm": {
+        "n": 550,
+        "positive": 275,
+        "auroc": 0.5420561983471075,
+        "balanced_accuracy_extreme_classes": 0.48909090909090913
+      },
+      "residual_lr": {
+        "n": 550,
+        "positive": 275,
+        "auroc": 0.5729586776859503,
+        "balanced_accuracy_extreme_classes": 0.49818181818181817
+      },
+      "residual_svm": {
+        "n": 550,
+        "positive": 275,
+        "auroc": 0.5537322314049586,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 445,
+        "0": 6,
+        "3": 99
+      }
+    },
+    "ss_validation_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 1062,
+        "positive": 531,
+        "auroc": 0.5081677962555106,
+        "balanced_accuracy_extreme_classes": 0.4849340866290019
+      },
+      "clif_svm": {
+        "n": 1062,
+        "positive": 531,
+        "auroc": 0.5542078514404475,
+        "balanced_accuracy_extreme_classes": 0.5009416195856874
+      },
+      "residual_lr": {
+        "n": 1062,
+        "positive": 531,
+        "auroc": 0.661268757026681,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "residual_svm": {
+        "n": 1062,
+        "positive": 531,
+        "auroc": 0.69392220909984,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 870,
+        "0": 6,
+        "3": 186
+      }
+    },
+    "sypr_judged_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 3792,
+        "positive": 1896,
+        "auroc": 0.6513021806957575,
+        "balanced_accuracy_extreme_classes": 0.6532172995780591
+      },
+      "clif_svm": {
+        "n": 3792,
+        "positive": 1896,
+        "auroc": 0.6138755085100321,
+        "balanced_accuracy_extreme_classes": 0.6065400843881856
+      },
+      "residual_lr": {
+        "n": 3792,
+        "positive": 1896,
+        "auroc": 0.6682880292065018,
+        "balanced_accuracy_extreme_classes": 0.5005274261603375
+      },
+      "residual_svm": {
+        "n": 3792,
+        "positive": 1896,
+        "auroc": 0.7029927261923837,
+        "balanced_accuracy_extreme_classes": 0.5002637130801688
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 1850,
+        "0": 17,
+        "3": 1925
+      }
+    },
+    "tqa_false_answer_judged_minority_balanced_seed0": {
+      "clif_lr": {
+        "n": 2090,
+        "positive": 1045,
+        "auroc": 0.4811336736796318,
+        "balanced_accuracy_extreme_classes": 0.49138755980861243
+      },
+      "clif_svm": {
+        "n": 2090,
+        "positive": 1045,
+        "auroc": 0.4998145646848745,
+        "balanced_accuracy_extreme_classes": 0.5047846889952153
+      },
+      "residual_lr": {
+        "n": 2090,
+        "positive": 1045,
+        "auroc": 0.5790691605045672,
+        "balanced_accuracy_extreme_classes": 0.5004784688995215
+      },
+      "residual_svm": {
+        "n": 2090,
+        "positive": 1045,
+        "auroc": 0.5720555848080401,
+        "balanced_accuracy_extreme_classes": 0.5
+      },
+      "clif_lr_predicted_levels": {
+        "-3": 605,
+        "0": 7,
+        "3": 1478
+      }
+    }
+  }
+}

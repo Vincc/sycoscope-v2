@@ -1,0 +1,15 @@
+aita_nta_flip_flipped_minority_balanced_seed0_flipped CLiF LR AUROC 0.508
+aita_nta_og_verdict_nta_minority_balanced_seed0 CLiF LR AUROC 0.526
+aita_yta_framing_minority_balanced_seed0 CLiF LR AUROC 0.497
+aita_yta_indirectness_minority_balanced_seed0 CLiF LR AUROC 0.571
+aita_yta_validation_minority_balanced_seed0 CLiF LR AUROC 0.573
+ays_freeform_judged_minority_balanced_seed0 CLiF LR AUROC 0.487
+ays_mc_judged_minority_balanced_seed0 CLiF LR AUROC 0.492
+oeq_framing_minority_balanced_seed0 CLiF LR AUROC 0.502
+oeq_indirectness_minority_balanced_seed0 CLiF LR AUROC 0.593
+oeq_validation_minority_balanced_seed0 CLiF LR AUROC 0.564
+ss_framing_minority_balanced_seed0 CLiF LR AUROC 0.464
+ss_indirectness_minority_balanced_seed0 CLiF LR AUROC 0.503
+ss_validation_minority_balanced_seed0 CLiF LR AUROC 0.508
+sypr_judged_minority_balanced_seed0 CLiF LR AUROC 0.651
+tqa_false_answer_judged_minority_balanced_seed0 CLiF LR AUROC 0.481

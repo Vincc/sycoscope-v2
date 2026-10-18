@@ -1,0 +1,88 @@
+{
+  "created_at": "2026-10-18T04:36:19.210833+00:00",
+  "git_commit": "8ad718dbd16e54b96977c00808ea76b380d506a5",
+  "git_dirty": true,
+  "arguments": {
+    "train_features": "/workspace/replications/cascading_linear_features/results/feats_L19_n210_seed0.npz",
+    "eval_dir": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features",
+    "test_frac": 0.2,
+    "seed": 0,
+    "out": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_eval.json"
+  },
+  "inputs": [
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/feats_L19_n210_seed0.npz",
+      "sha256": "3d7ab825ba97cfdc402d40b9711c37beec7eed4e355faa64ad49e90a4466295a"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/aita_nta_flip_flipped_minority_balanced_seed0_flipped.npz",
+      "sha256": "682560917cdc9a49d68ff6bc3c01c04c66add195a8d7c8b7289f2d2fb4ed1efb"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/aita_nta_og_verdict_nta_minority_balanced_seed0.npz",
+      "sha256": "1be3148ff7c556042d424044076e5fe2255d3cb0cc90474a45f8670f9820a7ce"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/aita_yta_framing_minority_balanced_seed0.npz",
+      "sha256": "488386c51e31cd7f72d2afba7d6777571b9bcd6c3a8bfd725acfbfb32c24dfe6"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/aita_yta_indirectness_minority_balanced_seed0.npz",
+      "sha256": "0c02a4f0a9bfdb1aa26b1dcc6130179949503d603f5f7d5f20524c99ca87f056"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/aita_yta_validation_minority_balanced_seed0.npz",
+      "sha256": "3abcd8cbb83c7c84622ba8eb906645fdf8d76c9ad9bc8084b6ea87dd0fe50a28"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/ays_freeform_judged_minority_balanced_seed0.npz",
+      "sha256": "8fa83110cae3bbcb0edba2957d0eba904e6ef84ce1eec4f13bc0090bae508f1c"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/ays_mc_judged_minority_balanced_seed0.npz",
+      "sha256": "e06a445269ac2a59cef65d2529ea97cda7589b849be015dc456eac93496d95ed"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/oeq_framing_minority_balanced_seed0.npz",
+      "sha256": "0ff116ce86108c093cae8990c7f8138f447739a08deda9cb48a4b8b3677333d9"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/oeq_indirectness_minority_balanced_seed0.npz",
+      "sha256": "d1a6466c4a87c40e716a11b4e8206ca1a411ff0012150a191bb40b6df6f74fb8"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/oeq_validation_minority_balanced_seed0.npz",
+      "sha256": "f159cd9e5fa85085b1795bb4fdc70e8df9f9fd246d95c87e60ec7dfcf765ceb2"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/ss_framing_minority_balanced_seed0.npz",
+      "sha256": "3191b3259762f76c3b75229ef5a234308ce17579d824c11d3379f78e84c3d086"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/ss_indirectness_minority_balanced_seed0.npz",
+      "sha256": "77219f6aa850482a165d6d602130bee8aa0fb9efacc41f01ddf2c959354fe23e"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/ss_validation_minority_balanced_seed0.npz",
+      "sha256": "54017c67d0e3095833425963703289e87471d9de4917e9c0256a44c0e7939403"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/sypr_judged_minority_balanced_seed0.npz",
+      "sha256": "4c334d7ce70f4a0cc661e3f0d6ad096f1b61ee041669fcf161b7d880bea3055c"
+    },
+    {
+      "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_features/tqa_false_answer_judged_minority_balanced_seed0.npz",
+      "sha256": "5b39e6b567a9629c842ab7eefd10bdd29fa006d06f1c280c63f7319e0c1446d4"
+    }
+  ],
+  "output": {
+    "path": "/workspace/replications/cascading_linear_features/results/sycoscope_clif_eval.json",
+    "sha256": "f60f99254ea871067a7c680918cb634ba27c8b9734a5d549e11be4c28e93f3e1"
+  },
+  "row_counts": {
+    "datasets_in": 15,
+    "datasets_excluded": 0,
+    "datasets_out": 15,
+    "evaluation_rows": 16806
+  }
+}

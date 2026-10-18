@@ -1,0 +1,199 @@
+{
+  "output": "sycoscope_eval_seed0.jsonl",
+  "inputs": {
+    "reports/llama31_tefo_probe_transfer/targets.csv": "0f6f9e8ef103a98e041654c32eb261a82e50556338e10d441a23a874b12f0250",
+    "activations/llama31_seed0/judging/meta/aita_nta_flip_flipped_minority_balanced_seed0_flipped_activations.npz.meta.json": "d877af4d7dee30662064755ea7cfdf49038d7ff55fda14d97db2b78fd1524e60",
+    "activations/llama31_seed0/judging/meta/aita_nta_og_verdict_nta_minority_balanced_seed0_activations.npz.meta.json": "831aa4c19f23f1e1f46208230dd08d56a929b547c806053c769331d999481115",
+    "activations/llama31_seed0/judging/meta/aita_yta_framing_minority_balanced_seed0_activations.npz.meta.json": "fcb667192057e2daf58b590cc75d94bb23751275d86003ad8f891fd554a2470b",
+    "activations/llama31_seed0/judging/meta/aita_yta_indirectness_minority_balanced_seed0_activations.npz.meta.json": "a527903560a5f45492eecdb95304ee1ffdd4d8499edfea4ef4a8c6c4906a5330",
+    "activations/llama31_seed0/judging/meta/aita_yta_validation_minority_balanced_seed0_activations.npz.meta.json": "bac8759009881abfcedbf603b7909799c1b5190df356ad7f15324a72cb034bf2",
+    "activations/llama31_seed0/judging/meta/ays_freeform_judged_minority_balanced_seed0_activations.npz.meta.json": "1e90e654a1ac0892a0c88fe76a67c13f2adc631948f20805634cdac359363833",
+    "activations/llama31_seed0/judging/meta/ays_mc_judged_minority_balanced_seed0_activations.npz.meta.json": "af73af18cf6e91c07ba7263b9614b84a30481c74576b88865dc5ca44afc4375a",
+    "activations/llama31_seed0/judging/meta/oeq_framing_minority_balanced_seed0_activations.npz.meta.json": "b6ed56e3761725e9dcfb2edd026d075300c3c52fc79ed9198b1dbb479c3efb21",
+    "activations/llama31_seed0/judging/meta/oeq_indirectness_minority_balanced_seed0_activations.npz.meta.json": "9a03620efd1e2c91ab4abddec740a30d5edd3a5618a9c80e273c08b053778c0c",
+    "activations/llama31_seed0/judging/meta/oeq_validation_minority_balanced_seed0_activations.npz.meta.json": "8c6196d1a1d920011099101a3f6126f2c8c3b9de835bdb4a2faa540daaf8a054",
+    "activations/llama31_seed0/judging/meta/ss_framing_minority_balanced_seed0_activations.npz.meta.json": "3f59bdf0ccb0d425bdefa5ceebee7a3f60cf9a493aa59405965d47679e845528",
+    "activations/llama31_seed0/judging/meta/ss_indirectness_minority_balanced_seed0_activations.npz.meta.json": "9f2e345b0252456586d2d71342a9075ade1a862b7aa44bd5e285fe7770f5354b",
+    "activations/llama31_seed0/judging/meta/ss_validation_minority_balanced_seed0_activations.npz.meta.json": "f1e2442c85f07977e01212762169d3eac5cab97a5a5e0820da23da7b4fa71519",
+    "activations/llama31_seed0/judging/meta/sypr_judged_minority_balanced_seed0_activations.npz.meta.json": "d233bdcd1e13f69ad975c0ae8f26255f3dfee6facd3b483d2d7d68d725a28e93",
+    "activations/llama31_seed0/judging/meta/tqa_false_answer_judged_minority_balanced_seed0_activations.npz.meta.json": "f45c52b60ea3d07080d34e1465c2a0ee09cec58cfd77eeeba25d3b6f3ee8c793"
+  },
+  "git": {
+    "commit": "8ad718dbd16e54b96977c00808ea76b380d506a5",
+    "dirty": true
+  },
+  "argv": [
+    "replications/cascading_linear_features/src/prepare_sycoscope_eval.py",
+    "--targets",
+    "reports/llama31_tefo_probe_transfer/targets.csv",
+    "--activation-meta-dir",
+    "activations/llama31_seed0/judging/meta",
+    "--out",
+    "replications/cascading_linear_features/data/sycoscope_eval_seed0.jsonl"
+  ],
+  "args": {
+    "targets": "reports/llama31_tefo_probe_transfer/targets.csv",
+    "activation_meta_dir": "activations/llama31_seed0/judging/meta",
+    "out": "replications/cascading_linear_features/data/sycoscope_eval_seed0.jsonl"
+  },
+  "counts": {
+    "n_in": 16806,
+    "excluded": {},
+    "n_out": 16806
+  },
+  "created_at": "2026-10-18T02:59:01+00:00",
+  "datasets": {
+    "aita_nta_flip_flipped_minority_balanced_seed0_flipped": {
+      "n": 758,
+      "negative": 379,
+      "positive": 379
+    },
+    "aita_nta_og_verdict_nta_minority_balanced_seed0": {
+      "n": 168,
+      "negative": 84,
+      "positive": 84
+    },
+    "aita_yta_framing_minority_balanced_seed0": {
+      "n": 988,
+      "negative": 494,
+      "positive": 494
+    },
+    "aita_yta_indirectness_minority_balanced_seed0": {
+      "n": 1248,
+      "negative": 624,
+      "positive": 624
+    },
+    "aita_yta_validation_minority_balanced_seed0": {
+      "n": 1196,
+      "negative": 598,
+      "positive": 598
+    },
+    "ays_freeform_judged_minority_balanced_seed0": {
+      "n": 518,
+      "negative": 259,
+      "positive": 259
+    },
+    "ays_mc_judged_minority_balanced_seed0": {
+      "n": 742,
+      "negative": 371,
+      "positive": 371
+    },
+    "oeq_framing_minority_balanced_seed0": {
+      "n": 606,
+      "negative": 303,
+      "positive": 303
+    },
+    "oeq_indirectness_minority_balanced_seed0": {
+      "n": 504,
+      "negative": 252,
+      "positive": 252
+    },
+    "oeq_validation_minority_balanced_seed0": {
+      "n": 1270,
+      "negative": 635,
+      "positive": 635
+    },
+    "ss_framing_minority_balanced_seed0": {
+      "n": 1314,
+      "negative": 657,
+      "positive": 657
+    },
+    "ss_indirectness_minority_balanced_seed0": {
+      "n": 550,
+      "negative": 275,
+      "positive": 275
+    },
+    "ss_validation_minority_balanced_seed0": {
+      "n": 1062,
+      "negative": 531,
+      "positive": 531
+    },
+    "sypr_judged_minority_balanced_seed0": {
+      "n": 3792,
+      "negative": 1896,
+      "positive": 1896
+    },
+    "tqa_false_answer_judged_minority_balanced_seed0": {
+      "n": 2090,
+      "negative": 1045,
+      "positive": 1045
+    }
+  },
+  "sources": [
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/aita_nta_flip_flipped_minority_balanced_seed0.jsonl",
+      "sha256": "ba2ae099f4c53f9a59db82274c264da1222d55001ca6db8dc5f963a5ffb4f62c",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/aita_nta_og_verdict_nta_minority_balanced_seed0.jsonl",
+      "sha256": "c6baec1c9333f87fc13b672e23681aabce0df26637fe60a92b9583cdf287f37e",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/aita_yta_framing_minority_balanced_seed0.jsonl",
+      "sha256": "e6277a8f7cf9e906be73c88bb59f042eeb25e75c43fb3aa8196a6a9c058223a4",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/aita_yta_indirectness_minority_balanced_seed0.jsonl",
+      "sha256": "db8cf543a3698e91f6eed36e49268ad64dc07a053ee8003e3d49b90e55f997ce",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/aita_yta_validation_minority_balanced_seed0.jsonl",
+      "sha256": "700c1d8d0f7d5e496c4493ef7c20470fa198121f5c66e0d58c850dc763f9a95d",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/ays_freeform_judged_minority_balanced_seed0.jsonl",
+      "sha256": "4454e03bd9e9bb59acd00386a87e8fb3623e4d9bfbf3aea624b664c0f2b5b4ad",
+      "source_ref": "8ad718dbd16e54b96977c00808ea76b380d506a5^"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/ays_mc_judged_minority_balanced_seed0.jsonl",
+      "sha256": "7f06b9a6bfc7937286fb6238ee2ab2affc4d07bcb93134e7c51d44fc32c541a7",
+      "source_ref": "8ad718dbd16e54b96977c00808ea76b380d506a5^"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/oeq_framing_minority_balanced_seed0.jsonl",
+      "sha256": "6ce8473f66633980eeac61409a188ff7670390e3f115dd5515ce8aecbe0e222e",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/oeq_indirectness_minority_balanced_seed0.jsonl",
+      "sha256": "e905a684e30d4550070bf6a1f3a0977f9c9cec5e3d8ff3f50e703cb538bb7df9",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/oeq_validation_minority_balanced_seed0.jsonl",
+      "sha256": "06675ca6ff7aabff55f6030c915e3ae22d9ece764271bea67168801c7f35d406",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/ss_framing_minority_balanced_seed0.jsonl",
+      "sha256": "4af7f36a2ed738c52176b241fa066f1f18a75a83a9d1b4875bc25895bbb11770",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/ss_indirectness_minority_balanced_seed0.jsonl",
+      "sha256": "5320e3377d402ba74dafeacf3354518b18a368a25df3e71591bbc9c9e490255b",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/ss_validation_minority_balanced_seed0.jsonl",
+      "sha256": "069d1badc0761a0ede2107438cb8186f30b2fa8574a3b481cd166ffbf9d878ce",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/sypr_judged_minority_balanced_seed0.jsonl",
+      "sha256": "366204ae18ecccf01fd87275335b3d79f8725632d3ff4f4341130f17aef72a90",
+      "source_ref": "worktree"
+    },
+    {
+      "path": "generations/Llama-3.1-8B-Instruct/judging/tqa_false_answer_judged_minority_balanced_seed0.jsonl",
+      "sha256": "d957f74588d397bee1132b58d5374b01bec40cbc8909b8ccdf26790ef7b27119",
+      "source_ref": "worktree"
+    }
+  ]
+}
