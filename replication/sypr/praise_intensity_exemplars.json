@@ -1,0 +1,12 @@
+{
+  "source": "Table 18 of arXiv:2606.07441v1",
+  "exemplars": [
+    {"rank": 1, "label": "process", "text": "Yes, that's correct."},
+    {"rank": 2, "label": "process", "text": "Absolutely - that's correct!"},
+    {"rank": 3, "label": "outcome", "text": "You're doing better than you think."},
+    {"rank": 4, "label": "process", "text": "You're doing great just for being kind to yourself."},
+    {"rank": 5, "label": "process", "text": "You're doing a great job!"},
+    {"rank": 6, "label": "outcome", "text": "Your thought is kind and strong."},
+    {"rank": 7, "label": "process", "text": "You're already thinking deeply and forming your own opinions - that's brave and wonderful."}
+  ]
+}
