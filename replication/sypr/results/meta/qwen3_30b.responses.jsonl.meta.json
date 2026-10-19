@@ -1,0 +1,43 @@
+{
+  "output": "qwen3_30b.responses.jsonl",
+  "inputs": {
+    "replication/sypr/data/benchmark.jsonl": "16b41aad1cf5d30de34bd887e1d0f8c17ad837d811a11751bb1361b08a002a2a"
+  },
+  "git": {
+    "commit": "7898aa4c20670ba99dfa483e2592a12fbfe9bafa",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/replication/sypr/generate_qwen.py",
+    "--benchmark",
+    "replication/sypr/data/benchmark.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.responses.jsonl",
+    "--batch-size",
+    "8",
+    "--source-commit",
+    "7898aa4c20670ba99dfa483e2592a12fbfe9bafa",
+    "--source-dirty"
+  ],
+  "args": {
+    "benchmark": "replication/sypr/data/benchmark.jsonl",
+    "output": "replication/sypr/results/qwen3_30b.responses.jsonl",
+    "model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "batch_size": 8,
+    "max_new_tokens": 512,
+    "num_shards": 1,
+    "shard_index": 0,
+    "max_rows": null,
+    "source_commit": "7898aa4c20670ba99dfa483e2592a12fbfe9bafa",
+    "source_dirty": true
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {},
+    "n_out": 13200
+  },
+  "created_at": "2026-10-19T00:29:22+00:00",
+  "model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+  "method_deviation": null,
+  "truncated": 4797
+}

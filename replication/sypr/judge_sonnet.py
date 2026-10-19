@@ -27,7 +27,11 @@ TOOL = {
                 "type": "string",
                 "enum": ["person", "process", "outcome", "not_praise"],
             },
-            "intensity_7": {"type": ["number", "null"]},
+            "intensity_7": {
+                "type": ["integer", "null"],
+                "enum": [1, 2, 3, 4, 5, 6, 7, None],
+                "description": "Use null only for not_praise; otherwise choose 1 through 7.",
+            },
         },
         "required": ["label", "intensity_7"],
         "additionalProperties": False,
@@ -55,13 +59,19 @@ def judge_sentence(client, model, sentence, exemplars):
     return calls[0].input
 
 
-def judge_row(client, model, row, exemplars):
+def judge_row(client, model, row, exemplars, max_validation_attempts):
     sentences = split_sentences(row["response"])
     judgments = []
     praise_instances = []
     for index, sentence in enumerate(sentences):
-        judgment = judge_sentence(client, model, sentence, exemplars)
-        normalized = normalize_judgment(sentence, judgment)
+        for attempt in range(1, max_validation_attempts + 1):
+            try:
+                judgment = judge_sentence(client, model, sentence, exemplars)
+                normalized = normalize_judgment(sentence, judgment)
+                break
+            except (RuntimeError, ValueError):
+                if attempt == max_validation_attempts:
+                    raise
         judgments.append({"sentence_index": index, "sentence": sentence, **judgment})
         if normalized is not None:
             praise_instances.append(normalized)
@@ -88,10 +98,15 @@ def main():
     )
     parser.add_argument("--judge-model", default="claude-sonnet-5")
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--max-validation-attempts", type=int, default=3)
     parser.add_argument("--max-rows", type=int)
     parser.add_argument("--source-commit")
     parser.add_argument("--source-dirty", action="store_true")
     args = parser.parse_args()
+    if args.workers < 1:
+        raise ValueError("workers must be positive")
+    if args.max_validation_attempts < 1:
+        raise ValueError("max-validation-attempts must be positive")
 
     rows = list(read_jsonl(args.input))
     if args.max_rows is not None:
@@ -118,16 +133,33 @@ def main():
     lock = threading.Lock()
 
     def run(row):
-        return judge_row(client(), args.judge_model, row, exemplars)
+        return judge_row(
+            client(), args.judge_model, row, exemplars, args.max_validation_attempts
+        )
 
     with args.output.open("a", encoding="utf-8", newline="\n") as stream:
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
-            futures = {executor.submit(run, row): row["artifact_id"] for row in pending}
-            for future in concurrent.futures.as_completed(futures):
-                result = future.result()
-                with lock:
-                    stream.write(json.dumps(result, ensure_ascii=False) + "\n")
-                    stream.flush()
+            pending_iter = iter(pending)
+            futures = {}
+            for row in pending_iter:
+                futures[executor.submit(run, row)] = row["artifact_id"]
+                if len(futures) == args.workers:
+                    break
+            while futures:
+                done, _ = concurrent.futures.wait(
+                    futures, return_when=concurrent.futures.FIRST_COMPLETED
+                )
+                for future in done:
+                    futures.pop(future)
+                    result = future.result()
+                    with lock:
+                        stream.write(json.dumps(result, ensure_ascii=False) + "\n")
+                        stream.flush()
+                    try:
+                        row = next(pending_iter)
+                    except StopIteration:
+                        continue
+                    futures[executor.submit(run, row)] = row["artifact_id"]
 
     output_rows = list(read_jsonl(args.output))
     if len(output_rows) != len(rows):

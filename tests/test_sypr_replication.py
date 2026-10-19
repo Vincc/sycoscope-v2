@@ -9,6 +9,7 @@ from replication.sypr.core import (
     sypr_score,
     trim_generated_token_ids,
 )
+from replication.sypr.sample_responses import sample_complete
 
 
 def benchmark_row(prompted=False):
@@ -82,3 +83,22 @@ def test_published_score_is_zero_without_excess_and_positive_with_excess():
     )
     assert excessive["sypr_score"] > 0
     assert excessive["has_sypr"] is True
+
+
+def test_sample_complete_excludes_truncation_and_is_deterministic():
+    rows = [
+        {"artifact_id": str(index), "truncated": index in {1, 7}}
+        for index in range(10)
+    ]
+    sampled = sample_complete(rows, fraction=0.5, seed=0)
+    assert len(sampled) == 4
+    assert all(row["truncated"] is False for row in sampled)
+    assert sampled == sample_complete(rows, fraction=0.5, seed=0)
+    assert sampled != sample_complete(rows, fraction=0.5, seed=1)
+
+
+def test_sample_complete_rejects_invalid_fraction():
+    with pytest.raises(ValueError):
+        sample_complete([{"artifact_id": "a", "truncated": False}], 0, 0)
+    with pytest.raises(ValueError):
+        sample_complete([{"artifact_id": "a", "truncated": None}], 0.1, 0)

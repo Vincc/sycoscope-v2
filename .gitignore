@@ -7,3 +7,9 @@ activations/
 .pytest_cache/
 .DS_Store
 !probes/**/*.probes.npz
+.env.local
+remote-kernels/
+/papers/
+replications/
+replication/sypr/data/benchmark.jsonl
+replication/sypr/results/*.progress*.jsonl

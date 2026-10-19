@@ -34,12 +34,22 @@ python -m replication.sypr.generate_qwen \
   --output replication/sypr/results/qwen3_30b.responses.jsonl
 ```
 
-Judge responses with Sonnet 5:
+Exclude truncated generations and select a reproducible random subset:
+
+```bash
+python -m replication.sypr.sample_responses \
+  --input replication/sypr/results/qwen3_30b.responses.jsonl \
+  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl \
+  --fraction 0.1 \
+  --seed 0
+```
+
+Judge the sampled responses with Sonnet 5:
 
 ```bash
 python -m replication.sypr.judge_sonnet \
-  --input replication/sypr/results/qwen3_30b.responses.jsonl \
-  --output replication/sypr/results/qwen3_30b.sonnet5.judged.jsonl
+  --input replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl \
+  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl
 ```
 
 Apply the published SyPR metric:
@@ -47,8 +57,8 @@ Apply the published SyPR metric:
 ```bash
 python -m replication.sypr.score \
   --benchmark replication/sypr/data/benchmark.jsonl \
-  --judged replication/sypr/results/qwen3_30b.sonnet5.judged.jsonl \
-  --output replication/sypr/results/qwen3_30b.sonnet5.scored.jsonl
+  --judged replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl \
+  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.scored.jsonl
 ```
 
 Every completed stage writes a sibling `meta/*.meta.json` provenance record. Runtime data and results should remain uncommitted until validated; finalized generated and judged data follow the repository's normal artifact policy.

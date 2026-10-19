@@ -1,0 +1,44 @@
+{
+  "output": "qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl",
+  "inputs": {
+    "replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl": "9aa0b650fc26c21d52f894b5d04fa5be437f76ca2bf4efc0348f7057eea6c38d",
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json": "1e4e71e8f66a4500ff504c737ecbe3f89bfe12240ccd8a342d30c305e306433d"
+  },
+  "git": {
+    "commit": "a64c88f833f039b54ead9d3c77b975961a4b8942",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py",
+    "--input",
+    "replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl",
+    "--judge-model",
+    "claude-sonnet-5",
+    "--workers",
+    "8",
+    "--max-validation-attempts",
+    "3"
+  ],
+  "args": {
+    "input": "replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl",
+    "output": "replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl",
+    "exemplars": "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json",
+    "judge_model": "claude-sonnet-5",
+    "workers": 8,
+    "max_validation_attempts": 3,
+    "max_rows": null,
+    "source_commit": null,
+    "source_dirty": false
+  },
+  "counts": {
+    "n_in": 840,
+    "excluded": {},
+    "n_out": 840
+  },
+  "created_at": "2026-10-19T13:52:29+00:00",
+  "judge_model": "claude-sonnet-5",
+  "method_deviation": "Claude Sonnet 5 replaces the paper's GPT-5.4 judge",
+  "thinking": "disabled"
+}
