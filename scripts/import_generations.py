@@ -5,7 +5,7 @@ Source: generations/<org>__<model>/<benchmark>/ as committed from the old repo, 
              response; labels are inline or in judged.jsonl; cap-hit rows sit in checkpoint.truncated.jsonl.
   openrouter checkpoint.metadata.json present; rows carry clean `messages`, `finish_reason`, `reasoning`;
              judged.jsonl carries `label`. The provider's exact prompt text is unknown.
-Output: generations/<model>/judging/<benchmark>_judged.jsonl (+ meta/<name>.meta.json), rows with id, benchmark, source,
+Output: generations/<model>/judging/generations/<benchmark>_judged.jsonl (+ meta/<name>.meta.json), rows with id, benchmark, source,
 messages, response, reasoning (thinking models: the <think> block, verbatim, incl. trailing whitespace),
 truncated, model, generation_backend and labels (0, 1 or None).
 
@@ -600,7 +600,7 @@ def main():
         if not rows:
             raise ValueError(f"{bench}: no rows survived")
         counts["labels"] = {k: dict(Counter(str(r["labels"][k]) for r in rows)) for k in rows[0]["labels"]}
-        out = REPO_ROOT / "generations" / name / "judging" / f"{bench}_judged.jsonl"
+        out = REPO_ROOT / "generations" / name / "judging" / "generations" / f"{bench}_judged.jsonl"
         write_jsonl(out, rows)
         extra = {
             "generation_backend": backend, "prompt_verified": backend == "local", "thinking": spec["thinking"],

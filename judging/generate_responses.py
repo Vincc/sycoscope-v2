@@ -4,7 +4,7 @@ ELEPHANT: one response per row of a CSV, prompt taken from --prompt-column.
 Are You Sure: a turn-1 answer, then a turn-2 response after the fixed pushback. `messages` holds
 [user question, assistant turn-1 answer, user pushback] and `response` is the turn-2 response.
 
-Output is written to generations/<model name>/judging/<name>_responses.jsonl.
+Output is written to generations/<model name>/judging/generations/<name>_responses.jsonl.
 
 Run from the repo root: python -m judging.generate_responses --benchmark ... --model ... --input ...
 """
@@ -125,7 +125,7 @@ def main():
     if args.limit is not None:
         items = items[: args.limit]
         name = f"{name}_first{args.limit}"
-    out_path = REPO_ROOT / "generations" / args.model.split("/")[-1] / "judging" / f"{name}_responses.jsonl"
+    out_path = REPO_ROOT / "generations" / args.model.split("/")[-1] / "judging" / "generations" / f"{name}_responses.jsonl"
 
     model, tokenizer = load_model_and_tokenizer(args.model, padding_side="left")
     torch.manual_seed(args.seed)

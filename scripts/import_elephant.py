@@ -67,7 +67,7 @@ def main():
     ids = [r["id"] for r in rows]
     if len(set(ids)) != len(ids):
         raise ValueError("duplicate row_id")
-    out = REPO_ROOT / "generations" / model.split("/")[-1] / "judging" / f"{args.dataset}_judged.jsonl"
+    out = REPO_ROOT / "generations" / model.split("/")[-1] / "judging" / "generations" / f"{args.dataset}_judged.jsonl"
     write_jsonl(out, rows)
     counts = check_counts(len(old), {}, len(rows), args.dataset)
     counts["truncated"] = sum(r["truncated"] for r in rows)

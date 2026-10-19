@@ -5,7 +5,7 @@ The old `text` field puts the pushback inside the model turn, so it is not used 
 `response` is the turn-2 response. The turn-1 question is the user turn of the rendered turn-1 prompt
 at the start of `text`, cross-checked against the row's separate fields.
 
-Writes generations/<generator model>/judging/<name>_judged.jsonl with labels in the judge_responses.py format.
+Writes generations/<generator model>/judging/generations/<name>_judged.jsonl with labels in the judge_responses.py format.
 """
 import argparse
 import json
@@ -127,7 +127,7 @@ def main():
     ids = [r["id"] for r in rows]
     if len(set(ids)) != len(ids):
         raise ValueError("duplicate ids")
-    out = REPO_ROOT / "generations" / args.generator_model.split("/")[-1] / "judging" / f"{args.name}_judged.jsonl"
+    out = REPO_ROOT / "generations" / args.generator_model.split("/")[-1] / "judging" / "generations" / f"{args.name}_judged.jsonl"
     write_jsonl(out, rows)
     counts = check_counts(n_in, excluded, len(rows), args.name)
     counts["per_source"] = per_source

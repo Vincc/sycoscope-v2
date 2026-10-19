@@ -2,6 +2,8 @@
 
 Each file's SHA-256 is checked against the Hub's LFS hash, an existing local meta file must match the Hub copy,
 and each meta's recorded input hashes are checked against the local input JSONL.
+Hub files and recorded input paths in the old flat generations/<model>/judging/ layout are mapped to
+judging/generations/ (JSONL) and judging/activations/ (npz) by local_path.
 
 Run from the repo root: python -m scripts.download_activations [--only <substring> ...]
 """
@@ -18,6 +20,22 @@ REPOS = {
     "SycoScope/activations": ("llama31_seed0/judging/", "generations/Llama-3.1-8B-Instruct/judging/"),
     "SycoScope/sycoscope-v2-artifacts": ("generations/", "generations/"),
 }
+
+
+def local_path(path: str) -> str:
+    """Repo path of a file recorded in the old flat judging/ layout; other paths are returned unchanged."""
+    parts = path.split("/")
+    if len(parts) < 4 or parts[0] != "generations" or parts[2] != "judging" or parts[3] in ("generations", "activations"):
+        return path
+    head, rest = "/".join(parts[:3]), parts[3:]
+    name = rest[-1]
+    if rest == [name] or rest == ["meta", name]:
+        stem = name.removesuffix(".meta.json")
+        if stem.endswith(".jsonl"):
+            return "/".join([head, "generations", *rest])
+        if stem.endswith(".npz"):
+            return "/".join([head, "activations", *rest])
+    raise ValueError(f"{path}: no rule for this file in the judging layout")
 
 
 def main():
@@ -39,7 +57,7 @@ def main():
             if args.only and not any(s in f.path for s in args.only):
                 n_skipped += 1
                 continue
-            target = REPO_ROOT / (local_prefix + f.path.removeprefix(hub_prefix))
+            target = REPO_ROOT / local_path(local_prefix + f.path.removeprefix(hub_prefix))
             if f.path.endswith(".meta.json"):
                 metas.append(target)
             if f.lfs is not None and target.exists() and sha256(target) == f.lfs.sha256:
@@ -62,7 +80,7 @@ def main():
     missing_inputs = []
     for meta_path in metas:
         for input_path, digest in read_json(meta_path)["inputs"].items():
-            local = REPO_ROOT / input_path
+            local = REPO_ROOT / local_path(input_path)
             if not local.exists():
                 missing_inputs.append(input_path)
             elif sha256(local) != digest:

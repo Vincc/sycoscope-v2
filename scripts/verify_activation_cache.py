@@ -31,7 +31,7 @@ def main():
     assert meta["layers"] == list(range(args.layers))
     assert meta["positions"] == ["last_prompt", "first5", "response"]
     assert meta["compression"] == "ZIP_DEFLATED"
-    raw_dir = path.parent / "activations" / (path.stem + "_raw")
+    raw_dir = path.parent / (path.stem + "_raw")  # judging/activations/ holds both the npz and its raw shards
     shards = sorted(raw_dir.glob("part_*.npz"))
     assert shards
     source_rows = []
