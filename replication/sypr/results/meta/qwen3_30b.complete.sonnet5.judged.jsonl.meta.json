@@ -1,0 +1,52 @@
+{
+  "output": "qwen3_30b.complete.sonnet5.judged.jsonl",
+  "inputs": {
+    "replication/sypr/results/qwen3_30b.complete.jsonl": "5e3ff2c7aff6cc86c931fd8226268facc391d2656d15d1f188db170e7934c7f4",
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json": "1e4e71e8f66a4500ff504c737ecbe3f89bfe12240ccd8a342d30c305e306433d"
+  },
+  "git": {
+    "commit": "dcd6468b56e3c458d5c7927e3c43648e2965adef",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py",
+    "--input",
+    "replication/sypr/results/qwen3_30b.complete.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl",
+    "--judge-model",
+    "claude-sonnet-5",
+    "--provider",
+    "anthropic",
+    "--existing-provider-note",
+    "2,433 completed artifacts used direct Anthropic Messages; 2,606 additional completed artifacts used OpenRouter Anthropic Messages compatibility; 1,829 additional completed artifacts used OpenRouter Chat Completions with parallel_tool_calls=false; remaining artifacts used direct Anthropic Messages.",
+    "--workers",
+    "24",
+    "--max-validation-attempts",
+    "3"
+  ],
+  "args": {
+    "input": "replication/sypr/results/qwen3_30b.complete.jsonl",
+    "output": "replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl",
+    "exemplars": "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json",
+    "judge_model": "claude-sonnet-5",
+    "provider": "anthropic",
+    "existing_provider_note": "2,433 completed artifacts used direct Anthropic Messages; 2,606 additional completed artifacts used OpenRouter Anthropic Messages compatibility; 1,829 additional completed artifacts used OpenRouter Chat Completions with parallel_tool_calls=false; remaining artifacts used direct Anthropic Messages.",
+    "workers": 24,
+    "max_validation_attempts": 3,
+    "max_rows": null,
+    "source_commit": null,
+    "source_dirty": false
+  },
+  "counts": {
+    "n_in": 8403,
+    "excluded": {},
+    "n_out": 8403
+  },
+  "created_at": "2026-10-21T11:35:39+00:00",
+  "judge_model": "claude-sonnet-5",
+  "method_deviation": "Claude Sonnet 5 replaces the paper's GPT-5.4 judge",
+  "thinking": "disabled",
+  "provider": "anthropic",
+  "existing_provider_note": "2,433 completed artifacts used direct Anthropic Messages; 2,606 additional completed artifacts used OpenRouter Anthropic Messages compatibility; 1,829 additional completed artifacts used OpenRouter Chat Completions with parallel_tool_calls=false; remaining artifacts used direct Anthropic Messages."
+}

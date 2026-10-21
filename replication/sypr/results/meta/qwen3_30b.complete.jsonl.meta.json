@@ -1,0 +1,38 @@
+{
+  "output": "qwen3_30b.complete.jsonl",
+  "inputs": {
+    "replication/sypr/results/qwen3_30b.responses.jsonl": "df5c22510c6f491c920f454d0ae3580c5b3e17d22669994b2d9d3da72c93f213"
+  },
+  "git": {
+    "commit": "dcd6468b56e3c458d5c7927e3c43648e2965adef",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/sample_responses.py",
+    "--input",
+    "replication/sypr/results/qwen3_30b.responses.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.complete.jsonl",
+    "--fraction",
+    "1.0",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "input": "replication/sypr/results/qwen3_30b.responses.jsonl",
+    "output": "replication/sypr/results/qwen3_30b.complete.jsonl",
+    "fraction": 1.0,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {
+      "truncated": 4797,
+      "not_selected": 0
+    },
+    "n_out": 8403
+  },
+  "created_at": "2026-10-20T21:01:05+00:00",
+  "eligible": 8403,
+  "sampling": "uniform_without_replacement"
+}

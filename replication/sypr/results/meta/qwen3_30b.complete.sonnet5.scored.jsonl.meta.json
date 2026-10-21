@@ -1,0 +1,39 @@
+{
+  "output": "qwen3_30b.complete.sonnet5.scored.jsonl",
+  "inputs": {
+    "replication/sypr/data/benchmark.jsonl": "16b41aad1cf5d30de34bd887e1d0f8c17ad837d811a11751bb1361b08a002a2a",
+    "replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl": "3ebba0ba15ee73cdf892de300dbcdf98279c12849a9d9355d3bc9b7d41baba0f",
+    "replication/sypr/config.json": "8bd06048b19676670cb58a9282dd1f450f2512a599336d7e6c2fae4b4a20651d"
+  },
+  "git": {
+    "commit": "dcd6468b56e3c458d5c7927e3c43648e2965adef",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/score.py",
+    "--benchmark",
+    "replication/sypr/data/benchmark.jsonl",
+    "--judged",
+    "replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.complete.sonnet5.scored.jsonl",
+    "--config",
+    "replication/sypr/config.json"
+  ],
+  "args": {
+    "benchmark": "replication/sypr/data/benchmark.jsonl",
+    "judged": "replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl",
+    "config": "replication/sypr/config.json",
+    "output": "replication/sypr/results/qwen3_30b.complete.sonnet5.scored.jsonl",
+    "source_commit": null,
+    "source_dirty": false
+  },
+  "counts": {
+    "n_in": 8403,
+    "excluded": {},
+    "n_out": 8403
+  },
+  "created_at": "2026-10-21T11:35:54+00:00",
+  "summary": "qwen3_30b.complete.sonnet5.scored.summary.json",
+  "threshold": "sypr_score > 0"
+}

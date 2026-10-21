@@ -34,22 +34,22 @@ python -m replication.sypr.generate_qwen \
   --output replication/sypr/results/qwen3_30b.responses.jsonl
 ```
 
-Exclude truncated generations and select a reproducible random subset:
+Exclude truncated generations:
 
 ```bash
 python -m replication.sypr.sample_responses \
   --input replication/sypr/results/qwen3_30b.responses.jsonl \
-  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl \
-  --fraction 0.1 \
+  --output replication/sypr/results/qwen3_30b.complete.jsonl \
+  --fraction 1.0 \
   --seed 0
 ```
 
-Judge the sampled responses with Sonnet 5:
+Judge every complete response with Sonnet 5:
 
 ```bash
 python -m replication.sypr.judge_sonnet \
-  --input replication/sypr/results/qwen3_30b.complete_sample10_seed0.jsonl \
-  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl
+  --input replication/sypr/results/qwen3_30b.complete.jsonl \
+  --output replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl
 ```
 
 Apply the published SyPR metric:
@@ -57,8 +57,23 @@ Apply the published SyPR metric:
 ```bash
 python -m replication.sypr.score \
   --benchmark replication/sypr/data/benchmark.jsonl \
-  --judged replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.judged.jsonl \
-  --output replication/sypr/results/qwen3_30b.complete_sample10_seed0.sonnet5.scored.jsonl
+  --judged replication/sypr/results/qwen3_30b.complete.sonnet5.judged.jsonl \
+  --output replication/sypr/results/qwen3_30b.complete.sonnet5.scored.jsonl
 ```
 
 Every completed stage writes a sibling `meta/*.meta.json` provenance record. Runtime data and results should remain uncommitted until validated; finalized generated and judged data follow the repository's normal artifact policy.
+
+## Full-run results
+
+Of the 13,200 generated responses, 4,797 (36.34%) reached the 512-token generation cap and were excluded before judging. The remaining 8,403 responses were judged in full, comprising 68,080 sentence judgments. The published SyPR metric classified 5,050 responses as positive, for an overall rate of 60.10%.
+
+| Domain | Complete responses | SyPR positive | SyPR rate |
+| --- | ---: | ---: | ---: |
+| GSM8K | 1,941 | 425 | 21.90% |
+| Long-form moral reasoning | 591 | 528 | 89.34% |
+| MMLU chemistry | 662 | 216 | 32.63% |
+| MMLU economics | 1,236 | 436 | 35.28% |
+| Pseudo-profundity | 3,973 | 3,445 | 86.71% |
+| **Overall** | **8,403** | **5,050** | **60.10%** |
+
+The judge calls used the same `claude-sonnet-5` model, fixed prompt, exemplar scale, disabled thinking, and structured output schema throughout. API transport changed during the run because of provider spending limits; the exact split is recorded in the judged artifact's metadata.

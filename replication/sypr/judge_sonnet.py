@@ -1,10 +1,12 @@
 import argparse
 import concurrent.futures
 import json
+import os
 import threading
 from pathlib import Path
 
 import anthropic
+from openai import OpenAI
 
 from replication.sypr.core import (
     is_emoji_only,
@@ -39,7 +41,7 @@ TOOL = {
 }
 
 
-def judge_sentence(client, model, sentence, exemplars):
+def judge_sentence_anthropic(client, model, sentence, exemplars):
     if is_emoji_only(sentence):
         return {"label": "not_praise", "intensity_7": None}
     message = client.messages.create(
@@ -49,24 +51,67 @@ def judge_sentence(client, model, sentence, exemplars):
         system="You are a careful annotation system. Return exactly one tool call.",
         messages=[{"role": "user", "content": judge_prompt(sentence, exemplars)}],
         tools=[TOOL],
-        tool_choice={"type": "tool", "name": TOOL["name"]},
+        tool_choice={
+            "type": "tool",
+            "name": TOOL["name"],
+            "disable_parallel_tool_use": True,
+        },
     )
     calls = [block for block in message.content if block.type == "tool_use"]
-    if message.stop_reason != "tool_use" or len(calls) != 1:
+    if message.stop_reason == "tool_use" and calls:
+        first = calls[0].input
+        if all(call.input == first for call in calls[1:]):
+            return first
+    if message.stop_reason != "tool_use" or not calls:
         raise RuntimeError(
             f"judge returned stop_reason={message.stop_reason!r} with {len(calls)} tool calls"
         )
-    return calls[0].input
+    raise RuntimeError(f"judge returned conflicting tool calls: {[call.input for call in calls]!r}")
 
 
-def judge_row(client, model, row, exemplars, max_validation_attempts):
+def judge_sentence_openrouter(client, model, sentence, exemplars):
+    routed_model = model if "/" in model else f"anthropic/{model}"
+    completion = client.chat.completions.create(
+        model=routed_model,
+        max_tokens=256,
+        messages=[
+            {"role": "system", "content": "You are a careful annotation system. Return exactly one tool call."},
+            {"role": "user", "content": judge_prompt(sentence, exemplars)},
+        ],
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": TOOL["name"],
+                    "description": TOOL["description"],
+                    "parameters": TOOL["input_schema"],
+                },
+            }
+        ],
+        tool_choice={"type": "function", "function": {"name": TOOL["name"]}},
+        parallel_tool_calls=False,
+        extra_body={"reasoning": {"enabled": False}},
+    )
+    choice = completion.choices[0]
+    calls = choice.message.tool_calls or []
+    if choice.finish_reason != "tool_calls" or len(calls) != 1:
+        raise RuntimeError(
+            f"judge returned finish_reason={choice.finish_reason!r} with {len(calls)} tool calls"
+        )
+    return json.loads(calls[0].function.arguments)
+
+
+def judge_row(client, provider, model, row, exemplars, max_validation_attempts):
     sentences = split_sentences(row["response"])
     judgments = []
     praise_instances = []
     for index, sentence in enumerate(sentences):
         for attempt in range(1, max_validation_attempts + 1):
             try:
-                judgment = judge_sentence(client, model, sentence, exemplars)
+                if provider == "anthropic":
+                    judgment = judge_sentence_anthropic(client, model, sentence, exemplars)
+                else:
+                    judgment = judge_sentence_openrouter(client, model, sentence, exemplars)
                 normalized = normalize_judgment(sentence, judgment)
                 break
             except (RuntimeError, ValueError):
@@ -97,6 +142,8 @@ def main():
         default=Path(__file__).with_name("praise_intensity_exemplars.json"),
     )
     parser.add_argument("--judge-model", default="claude-sonnet-5")
+    parser.add_argument("--provider", choices=["anthropic", "openrouter"], default="anthropic")
+    parser.add_argument("--existing-provider-note")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--max-validation-attempts", type=int, default=3)
     parser.add_argument("--max-rows", type=int)
@@ -125,7 +172,14 @@ def main():
 
     def client():
         if not hasattr(thread_local, "client"):
-            thread_local.client = anthropic.Anthropic(max_retries=5)
+            if args.provider == "anthropic":
+                thread_local.client = anthropic.Anthropic(max_retries=5)
+            else:
+                thread_local.client = OpenAI(
+                    api_key=os.environ["OPENROUTER_API_KEY"],
+                    base_url="https://openrouter.ai/api/v1",
+                    max_retries=5,
+                )
         return thread_local.client
 
     pending = [row for row in rows if row["artifact_id"] not in completed]
@@ -134,7 +188,12 @@ def main():
 
     def run(row):
         return judge_row(
-            client(), args.judge_model, row, exemplars, args.max_validation_attempts
+            client(),
+            args.provider,
+            args.judge_model,
+            row,
+            exemplars,
+            args.max_validation_attempts,
         )
 
     with args.output.open("a", encoding="utf-8", newline="\n") as stream:
@@ -174,6 +233,8 @@ def main():
             "judge_model": args.judge_model,
             "method_deviation": "Claude Sonnet 5 replaces the paper's GPT-5.4 judge",
             "thinking": "disabled",
+            "provider": args.provider,
+            "existing_provider_note": args.existing_provider_note,
         },
     )
 
