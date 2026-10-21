@@ -19,7 +19,7 @@ import numpy as np
 
 from utils import probes
 from utils.activations import act_key
-from utils.io import check_counts, read_json, sha256, write_meta
+from utils.io import check_counts, meta_path, read_json, sha256, write_meta
 
 FIELDS = ("probe_id", "source_pair", "source_cell", "source_type", "method", "position", "layer", "C",
           "target_pair", "target_cell", "target_type", "n", "n_pos", "auroc", "paired_win_rate", "n_pairs")
@@ -40,11 +40,9 @@ def main():
         raise ValueError("manifest has duplicate probe IDs")
     if {m["probe_type"] for m in manifest} != {"contrastive"}:
         raise ValueError("in-distribution transfer is defined for contrastive probes only")
-    if split["activations"] != args.activations.as_posix():
-        raise ValueError(f"split was built from {split['activations']}, not {args.activations}")
-    if sha256(args.activations) != sweep_meta["inputs"][args.activations.as_posix()]:
+    if sha256(args.activations) != sweep_meta["inputs"][split["activations"]]:  # by content: the file may have moved
         raise ValueError(f"{args.activations} differs from the file the sweep was trained on")
-    act_meta = read_json(args.activations.with_name(args.activations.name + ".meta.json"))
+    act_meta = read_json(meta_path(args.activations))
     if {m["model"] for m in manifest} != {act_meta["model"]}:
         raise ValueError("activation model does not match probe model")
 

@@ -1,11 +1,12 @@
-"""Convert judged Are You Sure checkpoints from the old repo into judging rows.
+"""Convert judged Are You Sure checkpoints from the old repo into response rows for judging.
 
 The old `text` field puts the pushback inside the model turn, so it is not used as model input.
 `messages` is rebuilt as [user: turn-1 question, assistant: turn-1 response, user: pushback] and
 `response` is the turn-2 response. The turn-1 question is the user turn of the rendered turn-1 prompt
 at the start of `text`, cross-checked against the row's separate fields.
 
-Writes generations/<generator model>/judging/generations/<name>_judged.jsonl with labels in the judge_responses.py format.
+Writes generations/<generator model>/responses/<name>_responses.jsonl without labels; judge_responses.py adds them.
+Old labels are only checked for consistency with the stored answers.
 """
 import argparse
 import json
@@ -89,7 +90,7 @@ def main():
                 raise ValueError(f"{ckpt_path}:{line_no}: turn-1 question differs from build_turn1_question(question)")
             if args.kind == "mc" and not question.startswith(r["question"].strip()):  # some MMLU fields keep a leading space the prompt dropped
                 raise ValueError(f"{ckpt_path}:{line_no}: turn-1 question does not start with question")
-            label = check_label(r, args.kind)
+            check_label(r, args.kind)
             n_tok = [len(tokenizer(r[k], add_special_tokens=False)["input_ids"]) for k in ("turn1_response", "turn2_response")]
             if max(n_tok) >= cap - 2:  # same rule as the old contrastive classify_degenerate
                 src_excluded["truncated"] += 1
@@ -110,8 +111,6 @@ def main():
                     "response": r["turn2_response"],
                     "truncated": False,  # truncated rows are excluded above
                     "model": args.generator_model,
-                    # Checkpoints hold only rows whose turn-1 answer was correct.
-                    "labels": {"turn1_correct": 1, "turn2_correct": 1 - label, "syco": label},
                 }
             )
         n_in += len(old)
@@ -127,11 +126,10 @@ def main():
     ids = [r["id"] for r in rows]
     if len(set(ids)) != len(ids):
         raise ValueError("duplicate ids")
-    out = REPO_ROOT / "generations" / args.generator_model.split("/")[-1] / "judging" / "generations" / f"{args.name}_judged.jsonl"
+    out = REPO_ROOT / "generations" / args.generator_model.split("/")[-1] / "responses" / f"{args.name}_responses.jsonl"
     write_jsonl(out, rows)
     counts = check_counts(n_in, excluded, len(rows), args.name)
     counts["per_source"] = per_source
-    counts["labels"] = {"syco": dict(Counter(str(r["labels"]["syco"]) for r in rows))}
     counts["sources"] = dict(Counter(r["source"] for r in rows))
     write_meta(out, [], args, counts, {"old_repo_sources": sources, "generator_model": args.generator_model})
     print(out, counts)

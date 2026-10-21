@@ -2,8 +2,7 @@
 
 Each file's SHA-256 is checked against the Hub's LFS hash, an existing local meta file must match the Hub copy,
 and each meta's recorded input hashes are checked against the local input JSONL.
-Hub files and recorded input paths in the old flat generations/<model>/judging/ layout are mapped to
-judging/generations/ (JSONL) and judging/activations/ (npz) by local_path.
+Hub files and recorded input paths in older layouts are mapped to the current one by local_path.
 
 Run from the repo root: python -m scripts.download_activations [--only <substring> ...]
 """
@@ -23,18 +22,27 @@ REPOS = {
 
 
 def local_path(path: str) -> str:
-    """Repo path of a file recorded in the old flat judging/ layout; other paths are returned unchanged."""
+    """Repo path of a file recorded in an older layout; other paths are returned unchanged.
+
+    Activations and their meta move to generations/<model>/<judging|training>/activations/[meta/]. Judging JSONL,
+    flat in judging/ or in judging/generations/, moves to judging/judged/, or to generations/<model>/responses/ for
+    *_responses.jsonl. Training JSONL stays where it is.
+    """
     parts = path.split("/")
-    if len(parts) < 4 or parts[0] != "generations" or parts[2] != "judging" or parts[3] in ("generations", "activations"):
+    if len(parts) < 4 or parts[0] != "generations" or parts[2] not in ("judging", "training") or             parts[3] in ("judged", "activations"):
         return path
-    head, rest = "/".join(parts[:3]), parts[3:]
-    name = rest[-1]
-    if rest == [name] or rest == ["meta", name]:
-        stem = name.removesuffix(".meta.json")
-        if stem.endswith(".jsonl"):
-            return "/".join([head, "generations", *rest])
-        if stem.endswith(".npz"):
-            return "/".join([head, "activations", *rest])
+    head, name = "/".join(parts[:3]), parts[-1]
+    stem = name.removesuffix(".meta.json")
+    if stem.endswith("_activations.npz"):
+        return f"{head}/activations/meta/{name}" if name != stem else f"{head}/activations/{name}"
+    if "activations" in parts:
+        raise ValueError(f"{path}: no rule for this file in the activations layout")
+    if parts[2] == "training":
+        return path
+    rest = parts[4:] if parts[3] == "generations" else parts[3:]
+    if stem.endswith(".jsonl") and rest in ([name], ["meta", name]):
+        folder = "/".join(parts[:2] + ["responses"]) if stem.endswith("_responses.jsonl") else f"{head}/judged"
+        return "/".join([folder, *rest])
     raise ValueError(f"{path}: no rule for this file in the judging layout")
 
 

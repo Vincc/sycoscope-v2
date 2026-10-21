@@ -1,0 +1,39 @@
+{
+  "output": "aita_nta_og_responses.jsonl",
+  "inputs": {
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.jsonl": "55f167ef63d3f1b2139899c85df9f6bf6ebedeb3df30cd89b42484a5c106041a",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.truncated.jsonl": "41e7ba4b6c83562e2af734ae4e86a253eb390dcb23f26682b95d12935492557a"
+  },
+  "git": {
+    "commit": "99328f448e89afe2c7974da1cd797474d6706232",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/scripts/import_llama31_judge_inputs.py",
+    "--dataset",
+    "aita_nta_og",
+    "--input",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.jsonl",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.truncated.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/responses/aita_nta_og_responses.jsonl"
+  ],
+  "args": {
+    "dataset": "aita_nta_og",
+    "input": [
+      "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.jsonl",
+      "generations/Meta-Llama-3.1-8B-Instruct/judging/moral/aita_nta_og/checkpoint.truncated.jsonl"
+    ],
+    "output": "generations/Llama-3.1-8B-Instruct/responses/aita_nta_og_responses.jsonl"
+  },
+  "counts": {
+    "n_in": 1591,
+    "excluded": {
+      "finish_length": 86
+    },
+    "n_out": 1505
+  },
+  "created_at": "2026-10-20T20:20:41+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source": "AITA-NTA-OG"
+}

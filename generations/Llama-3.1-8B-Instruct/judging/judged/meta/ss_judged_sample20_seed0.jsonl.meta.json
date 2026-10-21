@@ -1,0 +1,43 @@
+{
+  "output": "ss_judged_sample20_seed0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/judging/judged/ss_judged.jsonl": "491373f753d806c6f355a189f6ad4cd3596be6bc01e44c31fda676c0fc94e4c0"
+  },
+  "git": {
+    "commit": "99328f448e89afe2c7974da1cd797474d6706232",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/scripts/sample_judged.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/judging/judged/ss_judged.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/judging/judged/ss_judged_sample20_seed0.jsonl",
+    "--strategy",
+    "random",
+    "--frac",
+    "0.2",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/judging/judged/ss_judged.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/judging/judged/ss_judged_sample20_seed0.jsonl",
+    "label": null,
+    "strategy": "random",
+    "n": null,
+    "frac": 0.2,
+    "seed": 0,
+    "prompt_col": null
+  },
+  "counts": {
+    "n_in": 3617,
+    "excluded": {
+      "other_prompt_col": 0,
+      "not_sampled": 2894
+    },
+    "n_out": 723
+  },
+  "created_at": "2026-10-20T22:20:56+00:00",
+  "python": "3.13.13"
+}

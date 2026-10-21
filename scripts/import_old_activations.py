@@ -1,6 +1,7 @@
 """Port an old prompt_probes run's Perez-prompt generations and activations into the probe_training layout.
 
-Writes to generations/<model>/training/model_written_evals/perez_user_prompts/:
+Writes responses to generations/<model>/training/model_written_evals/perez_user_prompts/ and their activations
+to generations/<model>/training/activations/:
   <name>_contrastive_responses.jsonl + _activations.npz   every pair x polarity x prompt
   <name>_neutral_responses.jsonl + _activations.npz       no system prompt, one row per prompt
 in the same row and array format as generate_response.py and get_activations.py.
@@ -81,10 +82,12 @@ def check_spans(rows: list[dict], index: list[dict], tokenizer, max_length: int)
             raise AssertionError(f"{old['example_id']}: spans {got} != old index {want}")
 
 
-def write_set(out_stem: Path, rows: list[dict], arrays: dict, extra_fields: dict, index: list[dict], args, meta_extra):
+def write_set(out_stem: Path, acts_dir: Path, rows: list[dict], arrays: dict, extra_fields: dict, index: list[dict],
+              args, meta_extra):
     responses = out_stem.with_name(out_stem.name + "_responses.jsonl")
-    acts = out_stem.with_name(out_stem.name + "_responses_activations.npz")
+    acts = acts_dir / f"{out_stem.name}_responses_activations.npz"
     write_jsonl(responses, rows)
+    acts_dir.mkdir(parents=True, exist_ok=True)
     n_resp = np.array([i["n_response_tokens"] for i in index])
     prompt_len = np.array([i["prompt_len"] for i in index])
     np.savez(
@@ -127,7 +130,8 @@ def main():
     if set(slug_of) != {p["cell"] for p in pairs}:
         raise ValueError(f"old cells {sorted(slug_of)} != pairs file cells")
 
-    out_dir = REPO_ROOT / "generations" / model.split("/")[-1] / "training" / "model_written_evals" / "perez_user_prompts"
+    training_dir = REPO_ROOT / "generations" / model.split("/")[-1] / "training"
+    out_dir, acts_dir = training_dir / "model_written_evals" / "perez_user_prompts", training_dir / "activations"
     meta_extra = {"model": model, "n_layers": old_meta["n_layers"], "layers": layers,
                   "layer_convention": old_meta["layer_convention"], "positions": list(POSITIONS), "dtype": "float32",
                   "old_run": args.old_run.as_posix(), "old_activations_meta": old_meta}
@@ -155,7 +159,7 @@ def main():
     if Counter(Counter((r["pair_index"], r["prompt_id"]) for r in rows).values()) != Counter({2: len(rows) // 2}):
         raise AssertionError("some (pair, prompt) lack exactly one row per polarity")
     fields = {f: np.array([r[f] for r in rows]) for f in CONTRASTIVE_FIELDS}
-    write_set(out_dir / f"{args.name}_contrastive", rows, {k: np.concatenate(v) for k, v in arrays.items()},
+    write_set(out_dir / f"{args.name}_contrastive", acts_dir, rows, {k: np.concatenate(v) for k, v in arrays.items()},
               fields, index, args, meta_extra)
 
     gens, idx, arrs = load_slug(args.old_run, NEUTRAL_SLUG, layers)
@@ -167,7 +171,7 @@ def main():
             raise ValueError(f"{r['id']}: model {r['model']}")
     check_spans(neutral, idx, tokenizer, old_meta["max_length"])
     print(f"[neutral] {len(neutral)} rows, spans match")
-    write_set(out_dir / f"{args.name}_neutral", neutral, arrs, {}, idx, args, meta_extra)
+    write_set(out_dir / f"{args.name}_neutral", acts_dir, neutral, arrs, {}, idx, args, meta_extra)
 
 
 if __name__ == "__main__":

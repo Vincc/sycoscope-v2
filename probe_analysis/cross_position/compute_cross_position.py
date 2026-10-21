@@ -103,11 +103,9 @@ def main():
     if len(models) != 1:
         raise ValueError(f"manifest mixes models: {models}")
     model = next(iter(models))
-    if split["activations"] != args.train_activations.as_posix():
-        raise ValueError(f"split was built from {split['activations']}, not {args.train_activations}")
-    if sha256(args.train_activations) != sweep_meta["inputs"][args.train_activations.as_posix()]:
+    if sha256(args.train_activations) != sweep_meta["inputs"][split["activations"]]:  # by content: the file may have moved
         raise ValueError(f"{args.train_activations} differs from the file the sweep was trained on")
-    if read_json(args.train_activations.with_name(args.train_activations.name + ".meta.json"))["model"] != model:  # meta beside this file
+    if read_json(meta_path(args.train_activations))["model"] != model:
         raise ValueError("training activation model does not match probe model")
 
     layers, by_layer, forms, probe_files = probe_forms(manifest, args.sweep_dir)

@@ -1,5 +1,10 @@
-"""Select a reproducible judged-row sample before activation extraction."""
+"""Select a reproducible sample of judged rows.
+
+random: k = round(frac * n) rows drawn with random.Random(seed).sample over row positions, kept in file order.
+balanced / minority_class / match_minority: drawn per class of --label.
+"""
 import argparse
+import platform
 import random
 from collections import Counter
 from pathlib import Path
@@ -47,9 +52,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--label", required=True)
-    parser.add_argument("--strategy", choices=("balanced", "minority_class", "match_minority"), required=True)
+    parser.add_argument("--label", help="Label the class strategies sample by; not used by random.")
+    parser.add_argument("--strategy", choices=("random", "balanced", "minority_class", "match_minority"), required=True)
     parser.add_argument("--n", type=int)
+    parser.add_argument("--frac", type=float, help="Fraction of rows to draw; random only.")
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--prompt-col", help="Restrict paired inputs to one response side before balancing.")
     args = parser.parse_args()
@@ -61,6 +67,19 @@ def main():
     if len(ids) != len(set(ids)):
         raise ValueError(f"{args.input}: duplicate ids")
     rows = [r for r in all_rows if r["prompt_col"] == args.prompt_col] if args.prompt_col else all_rows
+    if args.strategy == "random":
+        if args.label or args.n is not None or args.frac is None or not 0 < args.frac <= 1:
+            raise ValueError("random takes --frac in (0, 1] and no --label or --n")
+        chosen = sorted(random.Random(args.seed).sample(range(len(rows)), round(args.frac * len(rows))))
+        sampled = [rows[i] for i in chosen]
+        excluded = Counter({"other_prompt_col": len(all_rows) - len(rows), "not_sampled": len(rows) - len(sampled)})
+        counts = check_counts(len(all_rows), excluded, len(sampled), args.input.name)
+        write_jsonl(args.output, sampled)
+        write_meta(args.output, [args.input], args, counts, {"python": platform.python_version()})
+        print(f"Wrote {args.output}: {counts}")
+        return
+    if not args.label or args.frac is not None:
+        raise ValueError(f"{args.strategy} takes --label and no --frac")
     chosen = sample_indices(rows, args.label, args.strategy, args.n, args.seed)
     sampled = [rows[i] for i in chosen]
     n_none = sum(r["labels"][args.label] is None for r in rows)

@@ -102,3 +102,23 @@ def test_flip_pair_incomplete_raises():
 def test_sypr_label(reply, poor, label):
     row = {"id": "s", "benchmark": "sypr", "utterance_text": "u", "response": "r", "is_poor_quality": poor}
     assert jr.judge_row(FakeClient([("end_turn", reply)]), "m", row)["labels"] == {"sycophantic_praise": label}
+
+
+def test_second_judge_keeps_first_judge_labels():
+    row = {"id": "e", "benchmark": "elephant", "source": "OEQ", "messages": [{"role": "user", "content": "q"}], "response": "r"}
+    first = jr.judge_row(FakeClient([("end_turn", "1"), ("end_turn", "0"), ("end_turn", "1")]), "a", row)
+    row1 = jr.with_judge({}, first, "j1")
+    prior, (bare,) = jr.split_judgments([row1], "j2")
+    second = jr.judge_row(FakeClient([("end_turn", "0"), ("end_turn", "0"), ("end_turn", "1")]), "b", bare)
+    row2 = jr.with_judge(prior[0], second, "j2")
+    assert row2["labels"] == {"validation__j1": 1, "indirectness__j1": 0, "framing__j1": 1,
+                              "validation__j2": 0, "indirectness__j2": 0, "framing__j2": 1}
+    assert row2["judge_model"] == {"j1": "a", "j2": "b"}
+    assert {k: v for k, v in row2.items() if k not in jr.JUDGE_FIELDS} == row
+
+
+def test_split_judgments_rejects_unnamed_or_repeated_judge():
+    with pytest.raises(ValueError):
+        jr.split_judgments([{"id": "x", "labels": {"validation": 1}}], "j1")
+    with pytest.raises(ValueError):
+        jr.split_judgments([{"id": "x", "labels": {"validation__j1": 1}, "judge_model": {"j1": "a"}}], "j1")

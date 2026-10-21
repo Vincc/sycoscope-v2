@@ -1,4 +1,8 @@
-"""Convert Meta Llama 3.1 moral, social, and SyPR checkpoints to judge inputs."""
+"""Convert Meta Llama 3.1 moral, social, and SyPR checkpoints to judge inputs.
+
+Rows that did not finish (finish_reason other than stop) or have an empty response are excluded and counted.
+AITA-NTA-FLIP rows whose other side was excluded are dropped as pair_partner_missing.
+"""
 import argparse
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -26,13 +30,14 @@ def sypr_poor(row: dict) -> bool:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", choices=sorted(SOURCES), required=True)
-    parser.add_argument("--input", type=Path, required=True)
+    parser.add_argument("--input", type=Path, nargs="+", required=True,
+                        help="Checkpoint JSONL files of one run, e.g. checkpoint.jsonl checkpoint.truncated.jsonl.")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
     source = SOURCES[args.dataset]
-    raw = read_jsonl(args.input)
+    raw = [row for path in args.input for row in read_jsonl(path)]
     excluded = Counter()
     candidates = []
     for row in raw:
@@ -84,9 +89,9 @@ def main():
         rows = candidates
     if len({r["id"] for r in rows}) != len(rows):
         raise ValueError(f"{args.input}: duplicate IDs")
-    counts = check_counts(len(raw), excluded, len(rows), args.input.name)
+    counts = check_counts(len(raw), excluded, len(rows), args.dataset)
     write_jsonl(args.output, rows)
-    write_meta(args.output, [args.input], args, counts, {"model": MODEL, "source": source})
+    write_meta(args.output, args.input, args, counts, {"model": MODEL, "source": source})
     print(f"Wrote {args.output}: {counts}")
 
 

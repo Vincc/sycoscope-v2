@@ -1,0 +1,39 @@
+{
+  "output": "oeq_responses.jsonl",
+  "inputs": {
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.jsonl": "ccab776ed37605f1624f84ce793be2c00e29941bb8a95a8e12c8d78800de3129",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.truncated.jsonl": "9efc2ada6efb90c53453fccc1d74c1709098068d304dec04a54c99901eddcabe"
+  },
+  "git": {
+    "commit": "99328f448e89afe2c7974da1cd797474d6706232",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/scripts/import_llama31_judge_inputs.py",
+    "--dataset",
+    "oeq",
+    "--input",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.jsonl",
+    "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.truncated.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/judging/generations/oeq_responses.jsonl"
+  ],
+  "args": {
+    "dataset": "oeq",
+    "input": [
+      "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.jsonl",
+      "generations/Meta-Llama-3.1-8B-Instruct/judging/social/oeq/checkpoint.truncated.jsonl"
+    ],
+    "output": "generations/Llama-3.1-8B-Instruct/judging/generations/oeq_responses.jsonl"
+  },
+  "counts": {
+    "n_in": 3027,
+    "excluded": {
+      "finish_length": 1
+    },
+    "n_out": 3026
+  },
+  "created_at": "2026-10-20T19:51:31+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "source": "OEQ"
+}
