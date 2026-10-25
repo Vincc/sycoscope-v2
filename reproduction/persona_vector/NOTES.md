@@ -117,3 +117,5 @@ Running total (after stage 1): $4.22 = judge $2.75 + GPU 1.33 h x $1.10. Judge c
 Running total (2026-10-25 22:50 UTC, after the even sweep): judge $5.27; instance time 15:36-22:50 = 7.2 h = $7.95 (billed whether or not the GPU is busy); total $13.2. Projected final ~$15.5, under the cap.
 
 - `our choice` Idle loss: the GPU sat idle 18:53-22:49 (~3.9 h, ~$4.3) because `tmux has-session -t pipe` prefix-matched the waiting `pipe3` session, so it waited on itself. Fixed with exact-match targets (`-t =name`) in all `run_*.sh`.
+
+Final (2026-10-25, after monitoring, odd layers, evil/hallucinating vectors and the report): judge $6.37 (24,390 calls); GPU job wall time 3.14 h ($3.46); instance time 15:36 to about 23:55 = 8.3 h = $9.2 billed, including the 3.9 h idle loss. Total billed is about $15.6, under the $20 cap.
