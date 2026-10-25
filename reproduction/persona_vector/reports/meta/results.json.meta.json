@@ -1,0 +1,34 @@
+{
+  "output": "results.json",
+  "inputs": {
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c",
+    "reproduction/persona_vector/vectors/sycophantic_bfloat16.npz": "61f9800e6c11951e1bd0156199cc415f0d874628a0115cef03f801858c7c89dd",
+    "reproduction/persona_vector/vectors/evil_float32.npz": "d6ed4aa38ee259c527b71adc039499b11346566c58ae7390499d36d1e77e48b0",
+    "reproduction/persona_vector/vectors/hallucinating_float32.npz": "bc07cc07e8a915cbebc66602f88bd67995ad1b93dfd0d30c2874f0e8f061c8ca",
+    "reproduction/persona_vector/reports/steering_cells.json": "f350b6a4a3339e9dda5044ea20e7d05c4e2f52f321c9dd1fbc3aad8440512747",
+    "reproduction/persona_vector/data/rollouts/monitor.jsonl": "efdbdd767ab7cbfa47cd5bf2a7c4f21f22ea3518910a391a5727f8147f8f7abc",
+    "reproduction/persona_vector/data/judge/monitor.scores.jsonl": "5097a1261cfdfca7db20b5d7e6677122834cbef365335ce7f310975946e6f788",
+    "reproduction/persona_vector/data/monitor/projections.jsonl": "960545b6759664e6f44ddc0aa5b28a06fafe75787361a0bb14d27898f46c039d",
+    "reproduction/persona_vector/activations/sycophantic_float32_acts.npz": "fa24802ff51a8590f90dcd9878605a8f320fe4a935f1f1dfb525162599552d8f",
+    "reproduction/persona_vector/activations/audit_persona.probes.npz": "e112a4fcdebbd74daef526d6267d10a9697517e30d018ada8fdf7236b075d6f1"
+  },
+  "git": {
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/analyze.py",
+    "--primary-layer",
+    "16",
+    "--noise-seed",
+    "0"
+  ],
+  "args": {
+    "primary_layer": 16,
+    "noise_seed": 0
+  },
+  "counts": {
+    "n_verdicts": 10
+  },
+  "created_at": "2026-10-25T23:34:28+00:00"
+}

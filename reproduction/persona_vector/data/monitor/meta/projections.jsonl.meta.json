@@ -1,0 +1,40 @@
+{
+  "output": "projections.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/monitor.jsonl": "efdbdd767ab7cbfa47cd5bf2a7c4f21f22ea3518910a391a5727f8147f8f7abc",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c",
+    "reproduction/persona_vector/vectors/sycophantic_bfloat16.npz": "61f9800e6c11951e1bd0156199cc415f0d874628a0115cef03f801858c7c89dd"
+  },
+  "git": {
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/monitor_project.py",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/monitor.jsonl",
+    "--vectors",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "reproduction/persona_vector/vectors/sycophantic_bfloat16.npz",
+    "--out",
+    "reproduction/persona_vector/data/monitor/projections.jsonl"
+  ],
+  "args": {
+    "rollouts": "reproduction/persona_vector/data/rollouts/monitor.jsonl",
+    "vectors": [
+      "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+      "reproduction/persona_vector/vectors/sycophantic_bfloat16.npz"
+    ],
+    "out": "reproduction/persona_vector/data/monitor/projections.jsonl"
+  },
+  "counts": {
+    "n_in": 1600,
+    "n_out": 1600
+  },
+  "created_at": "2026-10-25T23:05:49+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "dtype": "bfloat16",
+  "layer_index": "hidden_states index 0..32",
+  "wall_seconds": 88.01994204521179
+}

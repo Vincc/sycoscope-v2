@@ -44,6 +44,8 @@ th{color:var(--ink2);font-weight:600}td.num{font-variant-numeric:tabular-nums;wh
 svg text{fill:var(--ink2);font:11px system-ui,sans-serif}svg .axis{stroke:var(--rule)}svg .grid{stroke:var(--grid)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:760px){.grid2{grid-template-columns:1fr}}
 ul.ledger li{margin:3px 0}
+@media (max-width:640px){table.stack tr:first-child{display:none}table.stack tr{display:block;padding:6px 0;border-bottom:1px solid var(--grid)}
+table.stack td{display:block;border:0;padding:2px 8px;white-space:normal}table.stack td::before{content:attr(data-h) ": ";color:var(--ink2);font-weight:600}}
 """
 
 
@@ -73,7 +75,7 @@ def scale(v, d0, d1, r0, r1):
 
 def ticks(lo, hi, n):
     step = (hi - lo) / n
-    return [lo + i * step for i in range(n + 1)]
+    return [round(lo + i * step, 6) + 0.0 for i in range(n + 1)]
 
 
 def frame(w, h, m, xd, yd, xt, yt, xlabel, ylabel, xfmt=lambda v: f"{v:g}", yfmt=lambda v: f"{v:g}"):
@@ -128,7 +130,7 @@ def steering_chart(cells, metric, label, baseline):
 
 
 def scatter_chart(points, title):
-    w, h, m = 620, 380, (16, 16, 40, 52)
+    w, h, m = 980, 520, (16, 16, 40, 52)
     xs, ys = [p["proj"] for p in points], [p["trait"] for p in points]
     pad = (max(xs) - min(xs)) * 0.05
     xd = (min(xs) - pad, max(xs) + pad)
@@ -146,7 +148,7 @@ def scatter_chart(points, title):
 def cosine_chart(series, marks, ylabel, yd=(-0.2, 1.0)):
     """series: [(name, color, [value for layer 1..32])]; marks: [(name, layer, value)] drawn as open diamonds."""
     w, h, m = 980, 300, (16, 16, 40, 52)
-    parts, X, Y = frame(w, h, m, (0.5, 32.5), yd, [1, 4, 8, 12, 16, 20, 24, 28, 32], ticks(yd[0], yd[1], 6),
+    parts, X, Y = frame(w, h, m, (0.5, 32.5), yd, [1, 4, 8, 12, 16, 20, 24, 28, 32], ticks(yd[0], yd[1], round((yd[1] - yd[0]) / 0.2)),
                         "paper layer (hidden_states index)", ylabel, yfmt=lambda v: f"{v:.1f}")
     parts.append(f'<line x1="{X(16):.1f}" x2="{X(16):.1f}" y1="{m[0]}" y2="{h - m[2]}" stroke="var(--rule)" stroke-dasharray="3 3"/>')
     for name, color, vals in series:
@@ -198,10 +200,11 @@ def notes_html(text):
     return "\n".join(out)
 
 
-def table(head, rows, num=()):
-    return ('<div class="tbl"><table><tr>' + "".join(f"<th>{h}</th>" for h in head) + "</tr>" +
-            "".join("<tr>" + "".join(f'<td class="num">{c}</td>' if i in num else f"<td>{c}</td>" for i, c in enumerate(r)) + "</tr>"
-                    for r in rows) + "</table></div>")
+def table(head, rows, num=(), stack=False):
+    """stack=True turns each row into a labelled card on narrow screens."""
+    td = lambda i, c: f'<td{" class=num" if i in num else ""} data-h="{esc(re.sub("<[^>]+>", "", head[i]))}">{c}</td>'
+    return (f'<div class="tbl"><table{" class=stack" if stack else ""}><tr>' + "".join(f"<th>{h}</th>" for h in head) + "</tr>" +
+            "".join("<tr>" + "".join(td(i, c) for i, c in enumerate(r)) + "</tr>" for r in rows) + "</table></div>")
 
 
 BOS_ROWS = [
@@ -268,7 +271,7 @@ Benchmark scoring is deferred (user decision).</p>
 
 <h2>Verdict</h2>
 <p class="note">Numeric checks reproduce when within ±{R["tolerance"]} of the reference; criteria in the ledger below.</p>
-{table(["Check", "Paper / reference", "Ours", "Result", "Note"], verdict_rows, num=(1, 2))}
+{table(["Check", "Paper / reference", "Ours", "Result", "Note"], verdict_rows, num=(1, 2), stack=True)}
 
 <h2>Steering by layer (cf. Fig. 13)</h2>
 <p class="note">20 eval questions × 5 rollouts per cell; points are rollout means, whiskers 95% t-intervals over the 20 per-question means.
@@ -282,7 +285,8 @@ f"Peak unresolved: at coefficient {steer['best']['coef']}, layers {steer['layers
 <p class="note">8 App. C.3 system prompts × 20 eval questions × 10 rollouts. Each point is one (system prompt, question): mean trait over
 its rollouts vs the last-prompt-token projection onto the float32 layer-{L} vector. Overall r = {fmt(mon["overall_r"])}
 (paper 0.798); within-condition r = {fmt(mon["within_r"])} (paper 0.669; mean of per-condition r, conditions with trait SD &lt; 1 excluded:
-{", ".join(map(str, mon["conditions_excluded_sd_below_1"])) or "none"}).</p>
+{", ".join(map(str, mon["conditions_excluded_sd_below_1"])) or "none"}). Best steering layer {R["best_layer"]}, scored too:
+overall r = {fmt(R["monitoring"]["sycophantic_float32"][str(R["best_layer"])]["overall_r"])}, within = {fmt(R["monitoring"]["sycophantic_float32"][str(R["best_layer"])]["within_r"])}.</p>
 <div class="fig">{scatter_chart(mon["points"], "monitoring scatter")}<p class="cap">Darker = more sycophantic system prompt.</p></div>
 {table(["System prompt", "Mean trait", "Trait SD", "Mean coherence", "Mean projection", "Within r"], cond_rows, num=(0, 1, 2, 3, 4, 5))}
 
@@ -305,7 +309,7 @@ halves {R["noise_floor"]["questions_a"]} / {R["noise_floor"]["questions_b"]}. Au
 <strong>every generation path in upstream sees two BOS tokens</strong>, while its activation and projection passes tokenize with
 <code>add_special_tokens=False</code> and see one. The rollouts the vector is built from were therefore sampled under a prompt that differs by one
 leading token from the one the vector is read under. We copied this exactly (user decisions); the audit used one BOS everywhere and stripped responses.</p>
-{table(["Path", "Upstream code", "Upstream BOS", "This reproduction", "Audit (d81f1d6)"], BOS_ROWS)}
+{table(["Path", "Upstream code", "Upstream BOS", "This reproduction", "Audit (d81f1d6)"], BOS_ROWS, stack=True)}
 
 <h2>Cost</h2>
 {table(["Item", "Amount", "USD"], [["Judge calls (gpt-4.1-mini-2025-04-14)", f'{cost["n_calls"]:,} calls; {cost["prompt_tokens"]:,} prompt + {cost["completion_tokens"]:,} completion tokens', f'{cost["usd"]:.2f}'],

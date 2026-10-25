@@ -63,7 +63,9 @@ Upstream line refs are `file:line` at the pinned commit. Paper refs are to the a
 - `user decision` Best cell = highest mean trait among cells with mean coherence >= 50.
 - `user decision` Unsteered baseline cell (coef 0): steering-path HF settings, no hook.
 - `our choice` Cell 95% CI: t-interval over the 20 per-question means (rollouts within a question are not independent).
-- Result: best cell layer 18 coef 1.2 (trait 64.9, coherence 91.4); layers 14, 16 and 20 overlap its CI at coef 1.2, so the peak is unresolved. Odd layers 17 and 19 queued.
+- Result: even sweep best was layer 18 coef 1.2 (trait 64.9); with odd layers 17 and 19 added, best is layer 17 coef 1.2 (trait 65.6, coherence 91.2), and layers 14, 16, 18, 19 and 20 overlap its CI, so the peak is unresolved.
+- `our choice` Odd layers added once (around the even-sweep best, 18); the best moving to 17 does not trigger another round, since 16 and 18 are already measured.
+- `from paper` Table 2 / Fig. 4 model: likely Qwen, not Llama. Fig. 4's projection axis spans about -15..20 vs -0.6..3.5 here, and the many-shot twin (Fig. 14) is captioned Qwen. Logged as the likely cause of the overall-r gap.
 - `our choice` "Peak unresolved" when the CI of any other cell at the best cell's coefficient overlaps the best cell's CI.
 
 ## Monitoring
@@ -74,7 +76,7 @@ Upstream line refs are `file:line` at the pinned commit. Paper refs are to the a
 - `our choice` "Trait SD" for the exclusion = SD of the 20 per-question mean trait scores in that condition.
 - `user decision` Trait and coherence both judged; no coherence filter for r.
 - `from code` Projection = (a . v) / ||v|| of `hidden_states[16][prompt_len - 1]` (bf16 activation, float32 vector) (`eval/cal_projection.py:26-27,80,90,94`), one row per forward pass, batch 1.
-- `from paper` Model for Table 2 / Fig. 4 is not stated.
+- `from paper` Model for Table 2 / Fig. 4 is not stated (see Steering sweep results for the evidence that it is Qwen).
 
 ## Checks
 

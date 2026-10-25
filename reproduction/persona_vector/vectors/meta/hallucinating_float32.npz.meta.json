@@ -1,0 +1,54 @@
+{
+  "output": "hallucinating_float32.npz",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/extract_hallucinating.jsonl": "d34a22fc7f757c0f3764694d4f0f9a41331ff77cb9e5f0a516c3c3968eb2afff",
+    "reproduction/persona_vector/data/judge/extract/extract_hallucinating.scores.jsonl": "c41c5d9fb3e62317d365a4cae8856d6d414c98d7d197866fafc306f94a721270"
+  },
+  "git": {
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/extract_vectors.py",
+    "--trait",
+    "hallucinating",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/extract_hallucinating.jsonl",
+    "--scores",
+    "reproduction/persona_vector/data/judge/extract/extract_hallucinating.scores.jsonl",
+    "--dtype",
+    "float32",
+    "--batch-size",
+    "16",
+    "--out-vector",
+    "reproduction/persona_vector/vectors/hallucinating_float32.npz",
+    "--out-acts",
+    "reproduction/persona_vector/activations/hallucinating_float32_acts.npz"
+  ],
+  "args": {
+    "trait": "hallucinating",
+    "rollouts": "reproduction/persona_vector/data/rollouts/extract_hallucinating.jsonl",
+    "scores": "reproduction/persona_vector/data/judge/extract/extract_hallucinating.scores.jsonl",
+    "dtype": "float32",
+    "batch_size": 16,
+    "out_vector": "reproduction/persona_vector/vectors/hallucinating_float32.npz",
+    "out_acts": "reproduction/persona_vector/activations/hallucinating_float32_acts.npz"
+  },
+  "counts": {
+    "n_in": 1000,
+    "excluded": {
+      "coherence_below_50": 358,
+      "neg_trait_at_least_50": 67,
+      "pos_trait_below_50": 7
+    },
+    "n_out": 568
+  },
+  "created_at": "2026-10-25T23:30:18+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "dtype": "float32",
+  "n_kept_pairs": 568,
+  "boundary_merges": 0,
+  "wall_seconds": 317.8702828884125,
+  "layer_index": "hidden_states index 0..32; paper layer L = index L = block L-1"
+}

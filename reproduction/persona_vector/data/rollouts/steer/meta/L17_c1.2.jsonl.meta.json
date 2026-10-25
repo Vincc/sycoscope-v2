@@ -1,0 +1,74 @@
+{
+  "output": "L17_c1.2.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/prompts/steer_eval.jsonl": "d9150c2613f7727e809412207683ba06e9097d3265af8345196ba152304e8c50",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
+  },
+  "git": {
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/generate.py",
+    "--mode",
+    "steer",
+    "--prompts",
+    "reproduction/persona_vector/data/prompts/steer_eval.jsonl",
+    "--out-dir",
+    "reproduction/persona_vector/data/rollouts/steer",
+    "--vector",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--batch-size",
+    "100",
+    "--seed",
+    "0",
+    "--cells",
+    "17:0.4",
+    "17:0.8",
+    "17:1.2",
+    "19:0.4",
+    "19:0.8",
+    "19:1.2"
+  ],
+  "args": {
+    "mode": "steer",
+    "prompts": "reproduction/persona_vector/data/prompts/steer_eval.jsonl",
+    "out": null,
+    "out_dir": "reproduction/persona_vector/data/rollouts/steer",
+    "vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "cells": [
+      "17:0.4",
+      "17:0.8",
+      "17:1.2",
+      "19:0.4",
+      "19:0.8",
+      "19:1.2"
+    ],
+    "batch_size": 100,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 100,
+    "n_out": 100
+  },
+  "created_at": "2026-10-25T23:10:23+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 50,
+    "min_new_tokens": 1
+  },
+  "max_new_tokens": 1000,
+  "terminators": [
+    128001,
+    128008,
+    128009
+  ],
+  "layer": 17,
+  "block": 16,
+  "coef": 1.2,
+  "wall_seconds": 101.6548216342926
+}

@@ -92,9 +92,11 @@ def judge_cost():
 
 
 def gpu_seconds():
-    """wall_seconds recorded by the GPU scripts' meta files."""
+    """wall_seconds recorded by the GPU scripts' meta files; activations/ metas repeat their vector's run and are skipped."""
     out = {}
     for path in sorted(ROOT.rglob("meta/*.meta.json")):
+        if path.parent.parent.name == "activations":
+            continue
         meta = read_json(path)
         if "wall_seconds" in meta:
             out[str(path)] = meta["wall_seconds"]
@@ -158,9 +160,14 @@ def main():
          "reproduced": best_layer == PAPER["best_layer"] or PAPER["best_layer"] in steering["layers_overlapping_best_ci"],
          "note": "peak resolved" if steering["peak_resolved"] else f"peak unresolved: CI overlaps layers {steering['layers_overlapping_best_ci']}"},
         {"check": "monitoring r, overall", "paper": PAPER["monitor_overall_r"], "ours": m["overall_r"],
-         "reproduced": abs(m["overall_r"] - PAPER["monitor_overall_r"]) <= TOLERANCE},
+         "reproduced": abs(m["overall_r"] - PAPER["monitor_overall_r"]) <= TOLERANCE,
+         "note": "likely cause: Table 2 is probably not Llama. The paper does not name its model, Fig. 4's projection axis spans "
+                 "about -15..20 (ours -0.6..3.5 on Llama) and the many-shot twin, Fig. 14, is Qwen. The audit's separate pipeline "
+                 "also got 0.954"},
         {"check": "monitoring r, within condition", "paper": PAPER["monitor_within_r"], "ours": m["within_r"],
-         "reproduced": m["within_r"] is not None and abs(m["within_r"] - PAPER["monitor_within_r"]) <= TOLERANCE},
+         "reproduced": m["within_r"] is not None and abs(m["within_r"] - PAPER["monitor_within_r"]) <= TOLERANCE,
+         "note": f"borderline: |difference| = {abs(m['within_r'] - PAPER['monitor_within_r']):.3f}, at the tolerance; "
+                 "same model caveat as the overall r"},
         {"check": "cos(sycophantic, evil), layer 16", "paper": PAPER["cos_evil"], "ours": cross["evil"]["cos_primary"],
          "reproduced": abs(cross["evil"]["cos_primary"] - PAPER["cos_evil"]) <= TOLERANCE},
         {"check": "cos(sycophantic, hallucinating), layer 16", "paper": PAPER["cos_hallucinating"],

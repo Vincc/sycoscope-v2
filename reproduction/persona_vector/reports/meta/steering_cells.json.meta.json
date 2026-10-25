@@ -45,12 +45,24 @@
     "reproduction/persona_vector/data/judge/steer/L16_c0.8.scores.jsonl": "5903389c42fa68cb91bd2e7bcedd4a347630682bc64be3fcdd57fac54a704ba0",
     "reproduction/persona_vector/data/rollouts/steer/L16_c1.2.jsonl": "ef2e3ef7bb93a18cbc7a6dbe3cae036c26bbb77223a365157c21f3c24b0d539f",
     "reproduction/persona_vector/data/judge/steer/L16_c1.2.scores.jsonl": "85e3e64fbd87e158846b54af396d49bcbbc8ee92671628712e56e623e5063537",
+    "reproduction/persona_vector/data/rollouts/steer/L17_c0.4.jsonl": "c17e4d79709985ea160a8313aaad7ee369c4252746b3679d46545496664513e5",
+    "reproduction/persona_vector/data/judge/steer/L17_c0.4.scores.jsonl": "afa07bcd286155efacbd37f6e266551ccb7691b638f3aa1aa36c680fb9af0769",
+    "reproduction/persona_vector/data/rollouts/steer/L17_c0.8.jsonl": "703b99d43d6c63df0dd060573cdb0e475952b7be306d937b5e09f17f79f796df",
+    "reproduction/persona_vector/data/judge/steer/L17_c0.8.scores.jsonl": "6bf501591a0cb3c54af8f9e345b4f8f62d738cc7fc4a423e523da2f92b815b0d",
+    "reproduction/persona_vector/data/rollouts/steer/L17_c1.2.jsonl": "a4279f3e519bb43160c3caf57f3d63731ec672ce1a4f1fcfa86a3832f0b4d5d2",
+    "reproduction/persona_vector/data/judge/steer/L17_c1.2.scores.jsonl": "1db685712827a5ff6925fef9c41523598f8a550a69cc958c70f6684646fd0c14",
     "reproduction/persona_vector/data/rollouts/steer/L18_c0.4.jsonl": "5e3146f9e119dcb135f8c8e2c98e6c600f22be908fca0a4e419b89d4fc285ed7",
     "reproduction/persona_vector/data/judge/steer/L18_c0.4.scores.jsonl": "588097b7fc3cf5adad6cfb03abc474f4a7a945ab2ab5cde5d2663b0c42f7d35c",
     "reproduction/persona_vector/data/rollouts/steer/L18_c0.8.jsonl": "f6098b979dcfbe12c1465b2f376f2dc4ba988cf9790f50bd43f8b41d8c03e9ea",
     "reproduction/persona_vector/data/judge/steer/L18_c0.8.scores.jsonl": "337262730a596118dc6569605c249685f885746e5ba7be95964c9180067d6d43",
     "reproduction/persona_vector/data/rollouts/steer/L18_c1.2.jsonl": "4cd124a1b41457fd435280c273cd70a206e7bbc297ecaa49e8c449edd34409cf",
     "reproduction/persona_vector/data/judge/steer/L18_c1.2.scores.jsonl": "84b4c2644e7eb6ef2d6ca1d306f2f365c0d3dbb31994ea41a0788292419c53fe",
+    "reproduction/persona_vector/data/rollouts/steer/L19_c0.4.jsonl": "a42039daf637e81081fdf50df7348b5f557388c2acc9c352839a7453405641e4",
+    "reproduction/persona_vector/data/judge/steer/L19_c0.4.scores.jsonl": "33e2d1312b730bd8d868dd2e2937e774ec7034ee234de2d48500359f41af7c1e",
+    "reproduction/persona_vector/data/rollouts/steer/L19_c0.8.jsonl": "9510cf0195b90118bd20fddd550b668c4f3f5c107617b9b7a5c8ce56046e50f8",
+    "reproduction/persona_vector/data/judge/steer/L19_c0.8.scores.jsonl": "ee754987f4bb0a06eff4a65e51ca9b3eb95ebc3748f8dc7ef10ce4e49b5ab73e",
+    "reproduction/persona_vector/data/rollouts/steer/L19_c1.2.jsonl": "b5ca672b46aa95ba62e2ef4ee79bb063d5ca810deecf99989ae942cd18922e09",
+    "reproduction/persona_vector/data/judge/steer/L19_c1.2.scores.jsonl": "48239ef8edadcb6110bedc5553151b1504e4dba7e8c1f52a9f9743516df8cd4e",
     "reproduction/persona_vector/data/rollouts/steer/L20_c0.4.jsonl": "b338984122cc8198bb41f14a2bfb79f9ed045f4997734226b7fa8ca0a1dccd07",
     "reproduction/persona_vector/data/judge/steer/L20_c0.4.scores.jsonl": "e117030399b75858c86a44b1e6f1858a1905ac00361e80ffea95e4a1ff81d515",
     "reproduction/persona_vector/data/rollouts/steer/L20_c0.8.jsonl": "46e3f991f96a0ae7e4f26156acd07697ee4a2f3ce3d0f5680a1c42a8b6320603",
@@ -83,7 +95,7 @@
     "reproduction/persona_vector/data/judge/steer/L28_c1.2.scores.jsonl": "994eaca559772843b639e1d71a595325219c369be8d9ddfaf64ad62e50240099"
   },
   "git": {
-    "commit": "d0922046023d0bd6670c3cf3db09ac95060c3d3e",
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
     "dirty": true
   },
   "argv": [
@@ -101,8 +113,8 @@
     "out": "reproduction/persona_vector/reports/steering_cells.json"
   },
   "counts": {
-    "n_cells": 40,
-    "n_eligible": 39
+    "n_cells": 46,
+    "n_eligible": 45
   },
-  "created_at": "2026-10-25T22:48:51+00:00"
+  "created_at": "2026-10-25T23:31:08+00:00"
 }

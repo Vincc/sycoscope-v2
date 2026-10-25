@@ -1,0 +1,53 @@
+{
+  "output": "evil_float32.npz",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/extract_evil.jsonl": "7b571f01e9fb456967973b53f6fb0d35ef60e05dd2350021834d6ad9425ed85c",
+    "reproduction/persona_vector/data/judge/extract/extract_evil.scores.jsonl": "406a45088f68844c220ef11eb7caa471ef58ceaaf4c941bee4c9f73ce3ec4dde"
+  },
+  "git": {
+    "commit": "3e3857774b8ee47720b549eb462d383e864d26ea",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/extract_vectors.py",
+    "--trait",
+    "evil",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/extract_evil.jsonl",
+    "--scores",
+    "reproduction/persona_vector/data/judge/extract/extract_evil.scores.jsonl",
+    "--dtype",
+    "float32",
+    "--batch-size",
+    "16",
+    "--out-vector",
+    "reproduction/persona_vector/vectors/evil_float32.npz",
+    "--out-acts",
+    "reproduction/persona_vector/activations/evil_float32_acts.npz"
+  ],
+  "args": {
+    "trait": "evil",
+    "rollouts": "reproduction/persona_vector/data/rollouts/extract_evil.jsonl",
+    "scores": "reproduction/persona_vector/data/judge/extract/extract_evil.scores.jsonl",
+    "dtype": "float32",
+    "batch_size": 16,
+    "out_vector": "reproduction/persona_vector/vectors/evil_float32.npz",
+    "out_acts": "reproduction/persona_vector/activations/evil_float32_acts.npz"
+  },
+  "counts": {
+    "n_in": 1000,
+    "excluded": {
+      "pos_trait_below_50": 29,
+      "coherence_below_50": 277
+    },
+    "n_out": 694
+  },
+  "created_at": "2026-10-25T23:24:55+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "dtype": "float32",
+  "n_kept_pairs": 694,
+  "boundary_merges": 0,
+  "wall_seconds": 583.1347599029541,
+  "layer_index": "hidden_states index 0..32; paper layer L = index L = block L-1"
+}
