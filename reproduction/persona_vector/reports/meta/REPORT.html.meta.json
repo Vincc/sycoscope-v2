@@ -2,7 +2,7 @@
   "output": "REPORT.html",
   "inputs": {
     "reproduction/persona_vector/reports/results.json": "a8571a3d22897b9756ae93ad8b0f094e1a108da6e92a7f6365522c9a5203b447",
-    "reproduction/persona_vector/NOTES.md": "cb2b88e25cf426d7fdefc012d806a372363573026c2ca45e9ff566fbc178ec3d",
+    "reproduction/persona_vector/NOTES.md": "a6ca2c6ed165e045ff08f1104d3400798acc4a1ede508f9807716c21014dfe77",
     "reproduction/persona_vector/activations/audit_persona.probes.npz": "e112a4fcdebbd74daef526d6267d10a9697517e30d018ada8fdf7236b075d6f1",
     "reproduction/persona_vector/activations/sycophantic_float32_acts.npz": "fa24802ff51a8590f90dcd9878605a8f320fe4a935f1f1dfb525162599552d8f",
     "reproduction/persona_vector/data/judge/extract/extract_evil.requests.jsonl": "f043caaffa649191cf482ec8dc54a2e5b9951c574e2e826edb24e06749045951",
@@ -220,7 +220,7 @@
     "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
   },
   "git": {
-    "commit": "d85751a7fe7101e1963fe0716c52663c59328d9d",
+    "commit": "fabf1153e1d6a6dd5151e91e2b35c7be4b0d195d",
     "dirty": true
   },
   "argv": [
@@ -230,9 +230,9 @@
   "counts": {
     "n_files_hashed": 217
   },
-  "created_at": "2026-10-25T23:34:56+00:00",
+  "created_at": "2026-10-25T23:35:06+00:00",
   "git_at_render": {
-    "commit": "d85751a7fe7101e1963fe0716c52663c59328d9d",
+    "commit": "fabf1153e1d6a6dd5151e91e2b35c7be4b0d195d",
     "dirty": true
   }
 }
