@@ -1,0 +1,54 @@
+{
+  "output": "extract_sycophantic.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/prompts/extract_sycophantic.jsonl": "c9135af238e6a740459b0e7f6b5acc22b9c8d9f0084503e5d201c5f5e4daa9cd"
+  },
+  "git": {
+    "commit": "363e27dea74630eae8178c441fe23ab1fa97d1f0",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/generate.py",
+    "--mode",
+    "sample",
+    "--prompts",
+    "reproduction/persona_vector/data/prompts/extract_sycophantic.jsonl",
+    "--out",
+    "reproduction/persona_vector/data/rollouts/extract_sycophantic.jsonl",
+    "--batch-size",
+    "125",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "mode": "sample",
+    "prompts": "reproduction/persona_vector/data/prompts/extract_sycophantic.jsonl",
+    "out": "reproduction/persona_vector/data/rollouts/extract_sycophantic.jsonl",
+    "out_dir": null,
+    "vector": null,
+    "cells": null,
+    "batch_size": 125,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 2000,
+    "n_out": 2000
+  },
+  "created_at": "2026-10-25T16:44:20+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "min_new_tokens": 1
+  },
+  "max_new_tokens": 1000,
+  "terminators": [
+    128001,
+    128008,
+    128009
+  ],
+  "wall_seconds": 1191.1611328125
+}

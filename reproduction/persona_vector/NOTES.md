@@ -81,6 +81,14 @@ Upstream line refs are `file:line` at the pinned commit. Paper refs are to the a
 - `from paper` Cross-trait (Fig. 20, Llama, layer 16): cos(syc, evil) = 0.412, cos(syc, hallucinating) = 0.252 (p. 41 matrix text).
 - `user decision` Evil and hallucinating vectors extracted with the same recipe for the cross-trait check.
 
+## Verdict criteria (analyze.py)
+
+- `our choice` Numeric checks (monitoring r, cross-trait cosines) count as reproduced when within 0.1 of the paper (the audit's criterion).
+- `our choice` Best layer reproduced when it is layer 16 or layer 16's CI overlaps the best cell's at the same coefficient.
+- `our choice` Audit vector "consistent" when cos(ours, audit) at layer 16 is at least the split-half noise floor there.
+- `our choice` Monitoring projection per point = mean over its 10 rollouts (they differ only by numerics, since the last prompt token does not see the answer); the spread is reported.
+- `our choice` Judge cost from returned token usage over every cached response; GPU hours = sum of `wall_seconds` in the GPU scripts' meta files (instance idle time not included, reported separately).
+
 ## Benchmarks
 
 - `user decision` Benchmark scoring deferred: "dont do benchmarks quite yet, just reproduce faithfully for now". Earlier answer recorded for later: read positions = both response mean and last prompt token, both projected onto the response-avg vector.

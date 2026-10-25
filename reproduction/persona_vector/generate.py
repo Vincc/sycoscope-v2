@@ -114,7 +114,9 @@ def main():
         if path.exists():
             print(f"{path} exists, skipping")
             continue
-        if not 1 <= layer < vectors.shape[0]:
+        if coef == 0 and layer != 0:
+            raise ValueError("the unsteered cell is written as 0:0")
+        if coef != 0 and not 1 <= layer < vectors.shape[0]:
             raise ValueError(f"layer {layer} outside 1..{vectors.shape[0] - 1}")
         print(f"cell layer {layer} (block {layer - 1}) coef {coef}", flush=True)
         t0 = time.time()
