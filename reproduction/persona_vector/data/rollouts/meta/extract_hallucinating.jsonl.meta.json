@@ -1,0 +1,54 @@
+{
+  "output": "extract_hallucinating.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/prompts/extract_hallucinating.jsonl": "26f46e558ac4dcb48f6708c06e461be98fe37721b42c3715ace37009b124257b"
+  },
+  "git": {
+    "commit": "cf5f3767978fd266de030e0e7c6067edee3636c8",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/generate.py",
+    "--mode",
+    "sample",
+    "--prompts",
+    "reproduction/persona_vector/data/prompts/extract_hallucinating.jsonl",
+    "--out",
+    "reproduction/persona_vector/data/rollouts/extract_hallucinating.jsonl",
+    "--batch-size",
+    "125",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "mode": "sample",
+    "prompts": "reproduction/persona_vector/data/prompts/extract_hallucinating.jsonl",
+    "out": "reproduction/persona_vector/data/rollouts/extract_hallucinating.jsonl",
+    "out_dir": null,
+    "vector": null,
+    "cells": null,
+    "batch_size": 125,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 2000,
+    "n_out": 2000
+  },
+  "created_at": "2026-10-25T17:44:51+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "min_new_tokens": 1
+  },
+  "max_new_tokens": 1000,
+  "terminators": [
+    128001,
+    128008,
+    128009
+  ],
+  "wall_seconds": 1776.394137620926
+}

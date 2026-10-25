@@ -103,10 +103,10 @@ Cap $20 total (GPU $1.10/h + judge). Judge estimate $0.0002 per call; actual cos
 
 | Stage | Rollouts | Judge calls | Est. judge $ | Est. GPU h | Actual judge $ | Actual GPU h |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1. extraction rollouts + judge (3 traits) | 6,000 | 12,000 (trait + coherence) | 2.40 | 1.5 | | |
+| 1. extraction rollouts + judge (3 traits) | 6,000 | 12,000 (trait + coherence) | 2.40 | 1.5 | 2.75 (11,994 sent; 6 duplicate answers) | 1.33 ($1.47) |
 | 2. vector extraction fp32 + bf16 (3 traits fp32, syc bf16) | 0 | 0 | 0 | 0.3 | | |
 | 3. steering sweep, 13 even layers x 3 coefs + baseline + 2 odd layers x 3 | 4,600 | 9,200 | 1.84 | 2.0 | | |
 | 4. monitoring rollouts + judge + projections | 1,600 | 3,200 | 0.64 | 0.4 | | |
 | planned total | 12,200 | 24,400 | 4.88 | 4.2 (= $4.62) | | |
 
-Running total: $0.00
+Running total (after stage 1): $4.22 = judge $2.75 + GPU 1.33 h x $1.10. Judge calls cost ~$0.00023 each (answers are long), 15% above the $0.0002 estimate; projected total ~$11, under the $20 cap.

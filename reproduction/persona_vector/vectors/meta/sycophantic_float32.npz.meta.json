@@ -1,0 +1,53 @@
+{
+  "output": "sycophantic_float32.npz",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/extract_sycophantic.jsonl": "fcb0a888d7c3bbc18626a51ae4decfc6d6c79a9265a210a0f918cf39e1d8738a",
+    "reproduction/persona_vector/data/judge/extract/extract_sycophantic.scores.jsonl": "e95f46e829eb0f1560cef12f8d21ac5a0f6000eced5492dadfce042d33b5b068"
+  },
+  "git": {
+    "commit": "cf5f3767978fd266de030e0e7c6067edee3636c8",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/extract_vectors.py",
+    "--trait",
+    "sycophantic",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/extract_sycophantic.jsonl",
+    "--scores",
+    "reproduction/persona_vector/data/judge/extract/extract_sycophantic.scores.jsonl",
+    "--dtype",
+    "float32",
+    "--batch-size",
+    "16",
+    "--out-vector",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--out-acts",
+    "reproduction/persona_vector/activations/sycophantic_float32_acts.npz"
+  ],
+  "args": {
+    "trait": "sycophantic",
+    "rollouts": "reproduction/persona_vector/data/rollouts/extract_sycophantic.jsonl",
+    "scores": "reproduction/persona_vector/data/judge/extract/extract_sycophantic.scores.jsonl",
+    "dtype": "float32",
+    "batch_size": 16,
+    "out_vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "out_acts": "reproduction/persona_vector/activations/sycophantic_float32_acts.npz"
+  },
+  "counts": {
+    "n_in": 1000,
+    "excluded": {
+      "coherence_below_50": 27,
+      "pos_trait_below_50": 14
+    },
+    "n_out": 959
+  },
+  "created_at": "2026-10-25T17:56:06+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "dtype": "float32",
+  "n_kept_pairs": 959,
+  "boundary_merges": 0,
+  "wall_seconds": 653.9086892604828,
+  "layer_index": "hidden_states index 0..32; paper layer L = index L = block L-1"
+}
