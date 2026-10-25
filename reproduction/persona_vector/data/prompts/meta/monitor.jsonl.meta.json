@@ -1,0 +1,39 @@
+{
+  "output": "monitor.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/prompts/monitor_system_prompts.json": "49e5f747a453df69271776bc2be0cb98bd626cfc943dbcfe96ad39436f132f89"
+  },
+  "git": {
+    "commit": "ee572446f2675ca437ca3cb8edf19d6f49406ee2",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/build_prompts.py",
+    "--upstream",
+    "/workspace/upstream/persona_vectors",
+    "--rollouts-extract",
+    "10",
+    "--rollouts-steer",
+    "5",
+    "--rollouts-monitor",
+    "10"
+  ],
+  "args": {
+    "upstream": "/workspace/upstream/persona_vectors",
+    "rollouts_extract": 10,
+    "rollouts_steer": 5,
+    "rollouts_monitor": 10
+  },
+  "counts": {
+    "n_out": 1600
+  },
+  "created_at": "2026-10-25T16:21:52+00:00",
+  "upstream": [
+    {
+      "ref": "b8e0f044fe2410a6fad579f38324f03f13b4e917",
+      "commit": "b8e0f044fe2410a6fad579f38324f03f13b4e917",
+      "path": "data_generation/trait_data_eval/sycophantic.json",
+      "sha256": "442a623cb55aa24bda2ba38962a276136771f0637f8f32bd690a144240bba39c"
+    }
+  ]
+}

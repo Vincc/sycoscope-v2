@@ -8,3 +8,6 @@ activations/
 .DS_Store
 !probes/**/*.probes.npz
 evaluations_validation/
+# Persona-vector reproduction: committed vectors and packaged probes (activations/ stays ignored).
+!reproduction/persona_vector/vectors/*.npz
+!reproduction/persona_vector/probes/**/*.npz
