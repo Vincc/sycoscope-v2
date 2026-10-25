@@ -1,0 +1,74 @@
+{
+  "output": "L14_c0.8.scores.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/steer/L14_c0.8.jsonl": "0ca0aaefcee7250813dba945e9b5292b202ef3927fa3f828972228c290e540f3",
+    "reproduction/persona_vector/data/prompts/judge_prompts.json": "e5e30e2d4bc8ac1b538f69bc2388672ff5e5eba0fefd26ea26e6b6b325471d6c",
+    "reproduction/persona_vector/data/judge/steer/L14_c0.8.requests.jsonl": "8e34cc1d88f36caab9766c0a1b5dbc296beeddbba1a9e2fce6834bb44bfd3a27"
+  },
+  "git": {
+    "commit": "d0922046023d0bd6670c3cf3db09ac95060c3d3e",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/judge.py",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/steer/L14_c0.8.jsonl",
+    "--metrics",
+    "sycophantic",
+    "coherence",
+    "--out-dir",
+    "reproduction/persona_vector/data/judge/steer",
+    "--concurrency",
+    "32"
+  ],
+  "args": {
+    "rollouts": [
+      "reproduction/persona_vector/data/rollouts/steer/L14_c0.8.jsonl"
+    ],
+    "metrics": [
+      "sycophantic",
+      "coherence"
+    ],
+    "out_dir": "reproduction/persona_vector/data/judge/steer",
+    "cache_root": "reproduction/persona_vector/data/judge",
+    "concurrency": 32
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {},
+    "n_out": 100,
+    "n_none": {
+      "sycophantic": 0,
+      "coherence": 0
+    }
+  },
+  "created_at": "2026-10-25T18:22:22+00:00",
+  "judge_model": "gpt-4.1-mini-2025-04-14",
+  "usage": {
+    "prompt_tokens": 151358,
+    "completion_tokens": 200
+  },
+  "responses_files": [
+    "reproduction/persona_vector/data/judge/extract/extract_evil.responses.jsonl",
+    "reproduction/persona_vector/data/judge/extract/extract_hallucinating.responses.jsonl",
+    "reproduction/persona_vector/data/judge/extract/extract_sycophantic.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L00_c0.0.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L04_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L04_c0.8.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L04_c1.2.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L06_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L06_c0.8.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L06_c1.2.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L08_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L08_c0.8.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L08_c1.2.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L10_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L10_c0.8.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L10_c1.2.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L12_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L12_c0.8.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L12_c1.2.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L14_c0.4.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L14_c0.8.responses.jsonl"
+  ]
+}

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Judge each steering cell (trait + coherence) once its rollout file and meta exist; stops after the GPU sweep ends.
+# Judge each steering cell (trait + coherence) once its rollout file and meta exist; stops after the GPU queue (pipe3) ends.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 set -a; . ./.env; set +a
@@ -14,5 +14,5 @@ judge_new() {
       --out-dir $P/data/judge/steer --concurrency 32 2>&1 | grep -v -i "http request"
   done
 }
-while tmux has-session -t pipe 2>/dev/null; do judge_new; sleep 60; done
+while tmux has-session -t =pipe3 2>/dev/null; do judge_new; sleep 60; done
 judge_new

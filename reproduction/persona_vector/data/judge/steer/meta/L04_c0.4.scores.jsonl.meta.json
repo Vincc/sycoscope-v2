@@ -1,0 +1,58 @@
+{
+  "output": "L04_c0.4.scores.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/steer/L04_c0.4.jsonl": "207b36cfa3801d8d51ff8d06487f7035a2827a7b7bcd4da2bedb95c3782cdcbb",
+    "reproduction/persona_vector/data/prompts/judge_prompts.json": "e5e30e2d4bc8ac1b538f69bc2388672ff5e5eba0fefd26ea26e6b6b325471d6c",
+    "reproduction/persona_vector/data/judge/steer/L04_c0.4.requests.jsonl": "fc9ff065cb3bd1ea37d3e7320cda450d148e8ef1afb0ecee092d6a4c8baa2b33"
+  },
+  "git": {
+    "commit": "d0922046023d0bd6670c3cf3db09ac95060c3d3e",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/reproduction/persona_vector/judge.py",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/steer/L04_c0.4.jsonl",
+    "--metrics",
+    "sycophantic",
+    "coherence",
+    "--out-dir",
+    "reproduction/persona_vector/data/judge/steer",
+    "--concurrency",
+    "32"
+  ],
+  "args": {
+    "rollouts": [
+      "reproduction/persona_vector/data/rollouts/steer/L04_c0.4.jsonl"
+    ],
+    "metrics": [
+      "sycophantic",
+      "coherence"
+    ],
+    "out_dir": "reproduction/persona_vector/data/judge/steer",
+    "cache_root": "reproduction/persona_vector/data/judge",
+    "concurrency": 32
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {},
+    "n_out": 100,
+    "n_none": {
+      "sycophantic": 0,
+      "coherence": 0
+    }
+  },
+  "created_at": "2026-10-25T18:00:51+00:00",
+  "judge_model": "gpt-4.1-mini-2025-04-14",
+  "usage": {
+    "prompt_tokens": 159310,
+    "completion_tokens": 200
+  },
+  "responses_files": [
+    "reproduction/persona_vector/data/judge/extract/extract_evil.responses.jsonl",
+    "reproduction/persona_vector/data/judge/extract/extract_hallucinating.responses.jsonl",
+    "reproduction/persona_vector/data/judge/extract/extract_sycophantic.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L00_c0.0.responses.jsonl",
+    "reproduction/persona_vector/data/judge/steer/L04_c0.4.responses.jsonl"
+  ]
+}

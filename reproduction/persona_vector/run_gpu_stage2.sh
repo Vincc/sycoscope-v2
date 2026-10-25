@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 set -a; . ./.env; set +a
 P=reproduction/persona_vector
-while tmux has-session -t gen 2>/dev/null; do sleep 30; done
+while tmux has-session -t =gen 2>/dev/null; do sleep 30; done
 for dt in float32 bfloat16; do
   [ -f $P/vectors/sycophantic_$dt.npz ] || .venv/bin/python -m reproduction.persona_vector.extract_vectors --trait sycophantic \
     --rollouts $P/data/rollouts/extract_sycophantic.jsonl --scores $P/data/judge/extract/extract_sycophantic.scores.jsonl \

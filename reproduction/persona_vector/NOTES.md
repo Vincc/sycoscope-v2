@@ -63,6 +63,7 @@ Upstream line refs are `file:line` at the pinned commit. Paper refs are to the a
 - `user decision` Best cell = highest mean trait among cells with mean coherence >= 50.
 - `user decision` Unsteered baseline cell (coef 0): steering-path HF settings, no hook.
 - `our choice` Cell 95% CI: t-interval over the 20 per-question means (rollouts within a question are not independent).
+- Result: best cell layer 18 coef 1.2 (trait 64.9, coherence 91.4); layers 14, 16 and 20 overlap its CI at coef 1.2, so the peak is unresolved. Odd layers 17 and 19 queued.
 - `our choice` "Peak unresolved" when the CI of any other cell at the best cell's coefficient overlaps the best cell's CI.
 
 ## Monitoring
@@ -104,9 +105,13 @@ Cap $20 total (GPU $1.10/h + judge). Judge estimate $0.0002 per call; actual cos
 | Stage | Rollouts | Judge calls | Est. judge $ | Est. GPU h | Actual judge $ | Actual GPU h |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1. extraction rollouts + judge (3 traits) | 6,000 | 12,000 (trait + coherence) | 2.40 | 1.5 | 2.75 (11,994 sent; 6 duplicate answers) | 1.33 ($1.47) |
-| 2. vector extraction fp32 + bf16 (3 traits fp32, syc bf16) | 0 | 0 | 0 | 0.3 | | |
-| 3. steering sweep, 13 even layers x 3 coefs + baseline + 2 odd layers x 3 | 4,600 | 9,200 | 1.84 | 2.0 | | |
+| 2. vector extraction fp32 + bf16 (3 traits fp32, syc bf16) | 0 | 0 | 0 | 0.3 | 0 | 0.20 (syc fp32 + bf16; evil/halluc pending) |
+| 3. steering sweep, 13 even layers x 3 coefs + baseline + 2 odd layers x 3 | 4,600 | 9,200 | 1.84 | 2.0 | 2.52 for 40 cells (7,996 sent; 6.26M prompt tokens); odd layers pending | 0.93 for 40 cells |
 | 4. monitoring rollouts + judge + projections | 1,600 | 3,200 | 0.64 | 0.4 | | |
 | planned total | 12,200 | 24,400 | 4.88 | 4.2 (= $4.62) | | |
 
 Running total (after stage 1): $4.22 = judge $2.75 + GPU 1.33 h x $1.10. Judge calls cost ~$0.00023 each (answers are long), 15% above the $0.0002 estimate; projected total ~$11, under the $20 cap.
+
+Running total (2026-10-25 22:50 UTC, after the even sweep): judge $5.27; instance time 15:36-22:50 = 7.2 h = $7.95 (billed whether or not the GPU is busy); total $13.2. Projected final ~$15.5, under the cap.
+
+- `our choice` Idle loss: the GPU sat idle 18:53-22:49 (~3.9 h, ~$4.3) because `tmux has-session -t pipe` prefix-matched the waiting `pipe3` session, so it waited on itself. Fixed with exact-match targets (`-t =name`) in all `run_*.sh`.
