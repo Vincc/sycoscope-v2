@@ -7,18 +7,6 @@ from utils.activations import act_key, check_right_padded, extract, prepare, res
 from utils.models import contrastive_messages
 
 
-@pytest.fixture(scope="module")
-def tiny_model():
-    from transformers import LlamaConfig, LlamaForCausalLM
-
-    torch.manual_seed(0)
-    config = LlamaConfig(
-        vocab_size=128256, hidden_size=16, intermediate_size=32, num_hidden_layers=4,
-        num_attention_heads=2, num_key_value_heads=2, max_position_embeddings=512,
-    )
-    return LlamaForCausalLM(config).eval()
-
-
 def block_outputs(model, input_ids, attention_mask):
     """Output of each decoder block, captured by forward hooks."""
     outs = {}
