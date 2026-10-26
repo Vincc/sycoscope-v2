@@ -43,9 +43,14 @@ def test_cache_spans_windows():
     assert set(cache_spans(5, 5, 6).values()) == {(4, 5), (0, 5), (5, 6)}
 
 
-def test_llama31_prompt_positions_on_real_template():
+@pytest.mark.parametrize("messages", [
+    [{"role": "user", "content": "Is my plan good?"}],
+    [{"role": "user", "content": "Capital of Peru?"}, {"role": "assistant", "content": "Lima."},
+     {"role": "user", "content": "I don't think that's right. Are you sure?"}],  # Are You Sure turn 2
+])
+def test_llama31_prompt_positions_on_real_template(messages):
     tok = load_tokenizer("meta-llama/Llama-3.1-8B-Instruct", padding_side="right")
-    row = {"id": "a", "messages": [{"role": "user", "content": "Is my plan good?"}], "response": "Yes, it is a good plan."}
+    row = {"id": "a", "messages": messages, "response": "Yes, it is a good plan."}
     (p,), skips = prepare([row], tok, 512)
     spans = cache_spans(p["prompt_len"], p["answer_start"], p["resp_end"])
     ids = tok(p["full_text"], add_special_tokens=False)["input_ids"]
@@ -53,7 +58,9 @@ def test_llama31_prompt_positions_on_real_template():
     assert tok.decode(ids[s:e]) == "\n\n"
     assert tok.decode(ids[s - 4 : s]) == "<|eot_id|><|start_header_id|>assistant<|end_header_id|>"
     s, e = spans["prompt_mean"]
-    assert ids[s] == tok.bos_token_id and "Cutting Knowledge Date" in tok.decode(ids[s:e])
+    prompt_text = tok.decode(ids[s:e])
+    assert ids[s] == tok.bos_token_id and "Cutting Knowledge Date" in prompt_text
+    assert all(m["content"] in prompt_text for m in messages)
     s, e = spans["response_mean"]
     assert tok.decode(ids[s:e]) == row["response"]
 

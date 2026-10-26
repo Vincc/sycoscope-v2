@@ -14,6 +14,8 @@ n is the number of response tokens. Prompt tokens are everything the chat templa
 | `response_first5`, `response_first10` | the first min(k, n) response tokens | `get_activations` `first5` |
 | `response_frac10`, `_frac25`, `_frac50`, `_frac75` | the first ceil(p × n / 100) response tokens, computed in integers | |
 
+For Are You Sure rows the prompt is the whole conversation before the turn-2 reply (question, turn-1 answer, pushback), so `prompt_last` is the `\n\n` after the second assistant header, `prompt_mean` includes turn 1, and the response positions are the turn-2 reply.
+
 `prompt_mean` includes BOS, whose activations are much larger than other tokens' in middle layers, and Llama 3.1's default system block ("Cutting Knowledge Date: December 2023 / Today Date: 26 Jul 2024"), which the template adds when there is no system message.
 
 Other papers' "last prompt token" is sometimes the `<|eot_id|>` closing the user turn or the last user-content token. These are not cached; adding one is a new entry in `POSITIONS` and `cache_spans`.
@@ -50,7 +52,7 @@ Labels are not cached. Join them by `id` with `generations/<model>/judging/judge
 
 ## Running and extending
 
-- Full run on a GPU box: `bash interp/run_cache_vast.sh` (tests, parity on 64 SS rows, all ELEPHANT inputs, upload).
+- Full run on a GPU box: `GEN_BATCH_SIZE=... CACHE_BATCH_SIZE=... bash interp/run_cache_vast.sh`. It runs the tests, regenerates the Are You Sure responses and pushes them to git, checks parity on 64 SS and 64 Are You Sure MC rows, caches the five ELEPHANT inputs and both Are You Sure inputs with `--max-length 8192`, and uploads the cache.
 - A rerun computes only the (row, position) pairs that are missing: new rows in an input, or a position not cached before. Each added position costs one forward pass over the rows; storage is 32 × 4096 × 2 bytes = 256 KiB per row per position (3.4 GB per position for the 12,835 ELEPHANT rows).
 - A rerun stops if a cached row's text changed or is no longer in the input, or if the model revision or a position definition differs from the cached one. Delete that position's folder to recompute it.
 - To extend on a new machine, download only the meta files first; the script reads nothing else from the cache:
@@ -59,7 +61,9 @@ Labels are not cached. Join them by `id` with `generations/<model>/judging/judge
   `hf download SycoScope/activation-cache --repo-type dataset --include "Llama-3.1-8B-Instruct/responses/*/prompt_last/*" --local-dir activations/cache`
 - To load: `ids, acts = load(Path("activations/cache/Llama-3.1-8B-Instruct/responses/oeq_responses/prompt_last"), layers=[15])` returns row ids and `{block: (rows, hidden) float32}`, after checking each file's SHA-256 against its meta file.
 
-## Generator differs from the activation model
+## Generator differs from the activation model (ELEPHANT only)
+
+The Are You Sure responses are generated on the same machine with the same checkpoint, chat template and bfloat16 weights that the cache uses (greedy, batched with left padding), so their `next_token_agreement` should be close to 1. They show what agreement looks like when the generator and the activation model are the same; any shortfall comes from batching numerics and from decoding and re-tokenizing the text.
 
 The Llama-3.1-8B ELEPHANT responses were generated through OpenRouter (`meta-llama/llama-3.1-8b-instruct`). The generation metadata records `do_sample: false` and `temperature: null`, with at most 512 new tokens for AITA and SS and 1024 for OEQ. It does not record the serving provider, which OpenRouter chooses per request and which may serve quantized weights, or whether a temperature of 0 was sent. If none was sent, OpenRouter's default temperature applied and the responses are sampled, not greedy. Every kept row finished with `stop`.
 
