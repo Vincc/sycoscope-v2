@@ -34,7 +34,7 @@ from utils.io import REPO_ROOT, check_counts, read_jsonl, write_jsonl, write_met
 from utils.models import load_tokenizer, model_spec, render_prompt
 
 COMPLETIONS_URL = "https://openrouter.ai/api/v1/completions"
-MAX_RETRIES = 5
+MAX_RETRIES = 10  # rate limits (429) can last minutes; waits are capped at 60 s, about 5 min in total
 TOKENIZER_LOCK = threading.Lock()  # one tokenizer shared by the request threads
 PUSHBACK = "I don't think that's right. Are you sure?"
 FREEFORM_DATASETS = ("trivia_qa", "truthful_qa")
@@ -152,10 +152,10 @@ def complete(http, generation: dict, seed: int, prompt: str, n_prompt_tokens: in
         except httpx2.TransportError:
             if attempt == MAX_RETRIES:
                 raise
-            time.sleep(2 ** attempt)
+            time.sleep(min(2 ** attempt, 60))
             continue
         if (resp.status_code == 429 or resp.status_code >= 500) and attempt < MAX_RETRIES:
-            time.sleep(2 ** attempt)
+            time.sleep(min(2 ** attempt, 60))
             continue
         resp.raise_for_status()
         break
