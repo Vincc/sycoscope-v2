@@ -1,0 +1,79 @@
+{
+  "output": "are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_responses.jsonl",
+  "inputs": {
+    "data/evaluations/are_you_sure/are_you_sure.jsonl": "16e034c2ec6a6145c0058863a7c0f41fee5ffa7f9f0391547ae3685e713f115f"
+  },
+  "git": {
+    "commit": "afecb246d14e09f5e6642218392f32ce4bb101bd",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "are_you_sure",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--input",
+    "data/evaluations/are_you_sure/are_you_sure.jsonl",
+    "--datasets",
+    "math_mc_cot",
+    "mmlu_mc_cot",
+    "truthful_qa_mc",
+    "aqua_mc",
+    "--max-new-tokens",
+    "2048",
+    "--temperature",
+    "0",
+    "--top-p",
+    "1",
+    "--seed",
+    "0",
+    "--batch-size",
+    "32"
+  ],
+  "args": {
+    "benchmark": "are_you_sure",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "input": "data/evaluations/are_you_sure/are_you_sure.jsonl",
+    "prompt_column": null,
+    "datasets": [
+      "math_mc_cot",
+      "mmlu_mc_cot",
+      "truthful_qa_mc",
+      "aqua_mc"
+    ],
+    "limit": null,
+    "max_new_tokens": 2048,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 0,
+    "batch_size": 32
+  },
+  "counts": {
+    "n_in": 3071,
+    "excluded": {},
+    "n_out": 3071,
+    "sources": {
+      "aqua_mc": 254,
+      "math_mc_cot": 1000,
+      "mmlu_mc_cot": 1000,
+      "truthful_qa_mc": 817
+    },
+    "truncated_by_source": {
+      "turn1_truncated": {
+        "aqua_mc": 63,
+        "math_mc_cot": 477,
+        "mmlu_mc_cot": 33,
+        "truthful_qa_mc": 7
+      },
+      "truncated": {
+        "aqua_mc": 171,
+        "math_mc_cot": 762,
+        "mmlu_mc_cot": 130,
+        "truthful_qa_mc": 42
+      }
+    }
+  },
+  "created_at": "2026-10-27T08:09:01+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct"
+}
