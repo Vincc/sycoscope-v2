@@ -43,28 +43,44 @@ Each part holds float16 arrays `L00` … `L31` of shape (rows, hidden). Its meta
 
 Each meta file also has two per-row lists from the same forward pass, used to measure how far the responses are from what this model would write (see the last section):
 
-- `next_token_agreement`: share of response tokens that are the model's most likely next token given the tokens before them. Greedy text from the same weights and prompt is close to 1.
+- `next_token_agreement`: share of response tokens that are the model's most likely next token given the tokens before them. Greedy text from the same weights and prompt is close to 1; sampled text is lower by design.
 - `response_nll`: mean −log p of the response tokens, in nats.
 
 A row cached in several positions in one run has the same values in each; a position added in a later run records that run's values.
 
-Labels are not cached. Join them by `id` with `generations/<model>/judging/judged/*_judged.jsonl`.
+Labels are not cached. Join them by `id` with `generations/<model>/<decoding>/judging/judged/*_judged.jsonl`.
 
 ## Running and extending
 
-- Full run on a GPU box: `GEN_BATCH_SIZE=... CACHE_BATCH_SIZE=... bash interp/run_cache_vast.sh`. It runs the tests, regenerates the Are You Sure responses and pushes them to git, checks parity on 64 SS and 64 Are You Sure MC rows, caches the five ELEPHANT inputs and both Are You Sure inputs with `--max-length 8192`, and uploads the cache.
+- Responses live in git (LFS) and activations on the Hub. `bash judging/run_generate_openrouter.sh` samples the five ELEPHANT inputs and both Are You Sure inputs through OpenRouter and commits and pushes them. Then, on a GPU box with the branch pulled, `CACHE_BATCH_SIZE=... bash interp/run_cache_vast.sh` runs the tests, checks parity on 64 sampled SS and 64 sampled Are You Sure MC rows, caches the seven sampled inputs with `--max-length 8192`, and uploads the cache. The GPU box generates nothing.
 - A rerun computes only the (row, position) pairs that are missing: new rows in an input, or a position not cached before. Each added position costs one forward pass over the rows; storage is 32 × 4096 × 2 bytes = 256 KiB per row per position (3.4 GB per position for the 12,835 ELEPHANT rows).
 - A rerun stops if a cached row's text changed or is no longer in the input, or if the model revision or a position definition differs from the cached one. Delete that position's folder to recompute it.
 - To extend on a new machine, download only the meta files first; the script reads nothing else from the cache:
   `hf download SycoScope/activation-cache --repo-type dataset --include "*/meta/*" --local-dir activations/cache`
 - To download one position for analysis:
-  `hf download SycoScope/activation-cache --repo-type dataset --include "Llama-3.1-8B-Instruct/responses/*/prompt_last/*" --local-dir activations/cache`
-- To load: `ids, acts = load(Path("activations/cache/Llama-3.1-8B-Instruct/responses/oeq_responses/prompt_last"), layers=[15])` returns row ids and `{block: (rows, hidden) float32}`, after checking each file's SHA-256 against its meta file.
+  `hf download SycoScope/activation-cache --repo-type dataset --include "Llama-3.1-8B-Instruct/t0.6_p0.9/responses/*/prompt_last/*" --local-dir activations/cache`
+- To load: `ids, acts = load(Path("activations/cache/Llama-3.1-8B-Instruct/t0.6_p0.9/responses/OEQ_s0_responses/prompt_last"), layers=[15])` returns row ids and `{block: (rows, hidden) float32}`, after checking each file's SHA-256 against its meta file.
 
-## Generator differs from the activation model (ELEPHANT only)
+## Generators
 
-The Are You Sure responses are generated on the same machine with the same checkpoint, chat template and bfloat16 weights that the cache uses (greedy, batched with left padding), so their `next_token_agreement` should be close to 1. They show what agreement looks like when the generator and the activation model are the same; any shortfall comes from batching numerics and from decoding and re-tokenizing the text.
+Responses sit in one folder per decoding: `generations/Llama-3.1-8B-Instruct/greedy/` holds everything generated greedily before October 2026 (responses and judged files), and `generations/Llama-3.1-8B-Instruct/t0.6_p0.9/` the sampled set. The activation cache mirrors these paths. `training/` (probe-training generations) stays at the model level.
 
-The Llama-3.1-8B ELEPHANT responses were generated through OpenRouter (`meta-llama/llama-3.1-8b-instruct`). The generation metadata records `do_sample: false` and `temperature: null`, with at most 512 new tokens for AITA and SS and 1024 for OEQ. It does not record the serving provider, which OpenRouter chooses per request and which may serve quantized weights, or whether a temperature of 0 was sent. If none was sent, OpenRouter's default temperature applied and the responses are sampled, not greedy. Every kept row finished with `stop`.
+**Sampled** (`t0.6_p0.9/responses/*_s0_responses.jsonl`, ELEPHANT and Are You Sure): the main set, generated by `judging/generate_responses.py` through OpenRouter at temperature 0.6 and top-p 0.9 with top-k off (Meta's reference sampler and Llama 3.1's shipped defaults; no repetition penalty), pinned to CoreWeave with bfloat16 weights and no fallbacks. Each request sends the prompt rendered by the Hugging Face chat template, default system block included, to the completions endpoint without its BOS (the provider adds one), and fails unless the provider counted the same number of prompt tokens. So the text comes from the prompt the cache uses, on weights of the same precision. CoreWeave's chat endpoint would instead apply its own template, which drops the default system block (23 prompt tokens instead of 47 in a probe). Each row records these settings under `generation`.
+
+Seeds: the run seed is 0 (`_s0` in file names, `__s0` in row ids, `prompt_id` keeps the id without it). Each request gets its own seed, a hash of the run seed, the row id and the turn, stored in the row as `request_seeds`:
+
+| Input | Requests per row | Seeds |
+|---|---|---|
+| AITA-YTA, OEQ, SS, AITA-NTA-OG | 1 | one per row |
+| AITA-NTA-FLIP | 1 per side | the two sides of a pair have different row ids, so different seeds |
+| Are You Sure (MC and free-form) | 2 (turn 1, then turn 2 after the pushback) | one per turn |
+
+A provider seeds a fresh sampler for each request, so sending the run seed itself with every request would give every row the same random draws: rows would not be independent, and similar prompts such as the two sides of a flip pair would come out more alike than the model makes them. Rerunning with run seed 0 sends the same request seeds. More samples per prompt are further run seeds (`_s1`, ...), whose request seeds differ because the row ids do.
+
+Greedy decoding was dropped because it got stuck in repetition loops, more often after the pushback than before it and more often when turn 1 was correct (math: 66% of correct turn-1 rows against 41% of incorrect ones), so dropping truncated rows biased the Are You Sure rate. A pilot on 100 math rows at temperature 0.6 still hit the 2,048-token cap in a turn on 58 rows (greedy: 75).
+
+**Greedy Are You Sure** (`greedy/responses/are_you_sure_*_responses.jsonl`): generated on a GPU box with Hugging Face `generate` (greedy, bfloat16, batched with left padding; commit afecb24), the same checkpoint and template the cache uses. Their `next_token_agreement` should be close to 1, which checks that a generator and the cache see the same model and prompt; any shortfall comes from batching numerics and from decoding and re-tokenizing the text. 28% of rows hit the token cap in at least one turn, nearly all in repetition loops. `greedy/responses/ays_*_responses.jsonl` are the old repo's greedy runs, imported.
+
+**OpenRouter ELEPHANT** (`greedy/responses/aita_yta_responses.jsonl` and the other lowercase names): generated by the old repo through OpenRouter's chat endpoint (`meta-llama/llama-3.1-8b-instruct`), which sent temperature 0, with at most 512 new tokens for AITA and SS and 1024 for OEQ. The serving provider was not pinned or recorded; OpenRouter chooses it per request and it may serve quantized weights and apply its own chat template. Every kept row finished with `stop`.
 
 Activations are computed by running the Hugging Face checkpoint (revision recorded per part) in bfloat16 on the prompt and response as one sequence, with the prompt built by the Hugging Face chat template, including its default system block. If the provider built the prompt differently or served different weights, the cached activations are this model's states on that text, not the states of the model that wrote it. `next_token_agreement` and `response_nll` measure this per row: agreement near 1 means the text is what this model and prompt produce greedily; lower agreement means sampling, a different prompt or different weights.

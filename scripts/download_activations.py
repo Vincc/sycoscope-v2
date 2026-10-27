@@ -21,13 +21,25 @@ REPOS = {
 }
 
 
+GREEDY_MODELS = ("Llama-3.1-8B-Instruct",)  # their judging/ and responses/ moved under greedy/
+
+
 def local_path(path: str) -> str:
     """Repo path of a file recorded in an older layout; other paths are returned unchanged.
 
     Activations and their meta move to generations/<model>/<judging|training>/activations/[meta/]. Judging JSONL,
     flat in judging/ or in judging/generations/, moves to judging/judged/, or to generations/<model>/responses/ for
-    *_responses.jsonl. Training JSONL stays where it is.
+    *_responses.jsonl. Training JSONL stays where it is. For GREEDY_MODELS, judging/ and responses/ then sit under
+    generations/<model>/greedy/.
     """
+    parts = layout_path(path).split("/")
+    if len(parts) > 3 and parts[0] == "generations" and parts[1] in GREEDY_MODELS and             parts[2] in ("judging", "responses"):
+        parts.insert(2, "greedy")
+    return "/".join(parts)
+
+
+def layout_path(path: str) -> str:
+    """local_path without the greedy/ folder."""
     parts = path.split("/")
     if len(parts) < 4 or parts[0] != "generations" or parts[2] not in ("judging", "training") or             parts[3] in ("judged", "activations"):
         return path
