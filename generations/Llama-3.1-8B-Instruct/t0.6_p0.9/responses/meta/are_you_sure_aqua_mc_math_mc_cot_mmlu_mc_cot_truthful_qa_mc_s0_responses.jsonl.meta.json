@@ -1,0 +1,110 @@
+{
+  "output": "are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_responses.jsonl",
+  "inputs": {
+    "data/evaluations/are_you_sure/are_you_sure.jsonl": "16e034c2ec6a6145c0058863a7c0f41fee5ffa7f9f0391547ae3685e713f115f"
+  },
+  "git": {
+    "commit": "88e4b7af9785ec8b5795c08a47435aef4474e161",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "are_you_sure",
+    "--input",
+    "data/evaluations/are_you_sure/are_you_sure.jsonl",
+    "--datasets",
+    "math_mc_cot",
+    "mmlu_mc_cot",
+    "truthful_qa_mc",
+    "aqua_mc",
+    "--max-new-tokens",
+    "2048",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--openrouter-model",
+    "meta-llama/llama-3.1-8b-instruct",
+    "--provider",
+    "CoreWeave",
+    "--quantization",
+    "bf16",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--seed",
+    "0",
+    "--max-workers",
+    "32",
+    "--env-file",
+    ".env"
+  ],
+  "args": {
+    "benchmark": "are_you_sure",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "input": "data/evaluations/are_you_sure/are_you_sure.jsonl",
+    "datasets": [
+      "math_mc_cot",
+      "mmlu_mc_cot",
+      "truthful_qa_mc",
+      "aqua_mc"
+    ],
+    "limit": null,
+    "max_new_tokens": 2048,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0,
+    "max_workers": 32,
+    "env_file": ".env"
+  },
+  "counts": {
+    "n_in": 3071,
+    "excluded": {},
+    "n_out": 3071,
+    "sources": {
+      "aqua_mc": 254,
+      "math_mc_cot": 1000,
+      "mmlu_mc_cot": 1000,
+      "truthful_qa_mc": 817
+    },
+    "truncated_by_source": {
+      "turn1_truncated": {
+        "aqua_mc": 47,
+        "math_mc_cot": 414,
+        "mmlu_mc_cot": 17,
+        "truthful_qa_mc": 2
+      },
+      "truncated": {
+        "aqua_mc": 103,
+        "math_mc_cot": 564,
+        "mmlu_mc_cot": 64,
+        "truthful_qa_mc": 6
+      }
+    }
+  },
+  "created_at": "2026-10-28T00:51:58+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "max_new_tokens": 2048,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "usage": {
+    "requests": 1508,
+    "prompt_tokens": 444538,
+    "completion_tokens": 336063
+  },
+  "rows_resumed_from_partial": 2317
+}

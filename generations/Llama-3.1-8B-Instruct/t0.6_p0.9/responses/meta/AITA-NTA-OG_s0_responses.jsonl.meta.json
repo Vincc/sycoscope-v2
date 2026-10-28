@@ -1,0 +1,86 @@
+{
+  "output": "AITA-NTA-OG_s0_responses.jsonl",
+  "inputs": {
+    "data/evaluations/elephant/AITA-NTA-OG.csv": "3c8731e8a86b780444809c01c277aafa0197323f5ef3ccb291bf0c30cd81cd15"
+  },
+  "git": {
+    "commit": "88e4b7af9785ec8b5795c08a47435aef4474e161",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "elephant",
+    "--input",
+    "data/evaluations/elephant/AITA-NTA-OG.csv",
+    "--max-new-tokens",
+    "1024",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--openrouter-model",
+    "meta-llama/llama-3.1-8b-instruct",
+    "--provider",
+    "CoreWeave",
+    "--quantization",
+    "bf16",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--seed",
+    "0",
+    "--max-workers",
+    "32",
+    "--env-file",
+    ".env"
+  ],
+  "args": {
+    "benchmark": "elephant",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "input": "data/evaluations/elephant/AITA-NTA-OG.csv",
+    "datasets": null,
+    "limit": null,
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0,
+    "max_workers": 32,
+    "env_file": ".env"
+  },
+  "counts": {
+    "n_in": 1591,
+    "excluded": {},
+    "n_out": 1591,
+    "sources": {
+      "AITA-NTA-OG": 1591
+    },
+    "truncated_by_source": {
+      "truncated": {}
+    }
+  },
+  "created_at": "2026-10-28T00:30:54+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "usage": {
+    "requests": 1510,
+    "prompt_tokens": 727794,
+    "completion_tokens": 512537
+  },
+  "rows_resumed_from_partial": 81
+}

@@ -1,0 +1,86 @@
+{
+  "output": "AITA-NTA-FLIP_s0_responses.jsonl",
+  "inputs": {
+    "data/evaluations/elephant/AITA-NTA-FLIP.csv": "25d492fabaa4abc1bec35b0f43539ce9ea8b06de6f424122c893e3909b83fe22"
+  },
+  "git": {
+    "commit": "88e4b7af9785ec8b5795c08a47435aef4474e161",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "elephant",
+    "--input",
+    "data/evaluations/elephant/AITA-NTA-FLIP.csv",
+    "--max-new-tokens",
+    "1024",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--openrouter-model",
+    "meta-llama/llama-3.1-8b-instruct",
+    "--provider",
+    "CoreWeave",
+    "--quantization",
+    "bf16",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--seed",
+    "0",
+    "--max-workers",
+    "32",
+    "--env-file",
+    ".env"
+  ],
+  "args": {
+    "benchmark": "elephant",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "input": "data/evaluations/elephant/AITA-NTA-FLIP.csv",
+    "datasets": null,
+    "limit": null,
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0,
+    "max_workers": 32,
+    "env_file": ".env"
+  },
+  "counts": {
+    "n_in": 3182,
+    "excluded": {},
+    "n_out": 3182,
+    "sources": {
+      "AITA-NTA-FLIP": 3182
+    },
+    "truncated_by_source": {
+      "truncated": {}
+    }
+  },
+  "created_at": "2026-10-28T00:45:34+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "usage": {
+    "requests": 3182,
+    "prompt_tokens": 1223685,
+    "completion_tokens": 1151097
+  },
+  "rows_resumed_from_partial": 0
+}

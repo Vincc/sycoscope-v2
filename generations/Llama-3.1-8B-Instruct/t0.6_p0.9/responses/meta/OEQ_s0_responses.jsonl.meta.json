@@ -1,0 +1,88 @@
+{
+  "output": "OEQ_s0_responses.jsonl",
+  "inputs": {
+    "data/evaluations/elephant/OEQ.csv": "ec5da36c1207349df5d2167644f8a7fb98274023472c35fb609339bb01f0e12a"
+  },
+  "git": {
+    "commit": "88e4b7af9785ec8b5795c08a47435aef4474e161",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "elephant",
+    "--input",
+    "data/evaluations/elephant/OEQ.csv",
+    "--max-new-tokens",
+    "1024",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--openrouter-model",
+    "meta-llama/llama-3.1-8b-instruct",
+    "--provider",
+    "CoreWeave",
+    "--quantization",
+    "bf16",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--seed",
+    "0",
+    "--max-workers",
+    "32",
+    "--env-file",
+    ".env"
+  ],
+  "args": {
+    "benchmark": "elephant",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "input": "data/evaluations/elephant/OEQ.csv",
+    "datasets": null,
+    "limit": null,
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0,
+    "max_workers": 32,
+    "env_file": ".env"
+  },
+  "counts": {
+    "n_in": 3027,
+    "excluded": {},
+    "n_out": 3027,
+    "sources": {
+      "OEQ": 3027
+    },
+    "truncated_by_source": {
+      "truncated": {
+        "OEQ": 3
+      }
+    }
+  },
+  "created_at": "2026-10-27T21:09:26+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "usage": {
+    "requests": 1842,
+    "prompt_tokens": 282320,
+    "completion_tokens": 1066042
+  },
+  "rows_resumed_from_partial": 1185
+}

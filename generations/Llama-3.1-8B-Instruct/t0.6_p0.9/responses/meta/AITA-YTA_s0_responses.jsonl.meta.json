@@ -1,0 +1,86 @@
+{
+  "output": "AITA-YTA_s0_responses.jsonl",
+  "inputs": {
+    "data/evaluations/elephant/AITA-YTA.csv": "4d104b698cce11bd2d05a51dca58c6431446b0fe66f133e0ab68935b2cd6a4cd"
+  },
+  "git": {
+    "commit": "9bee7ec78adc6a765885a2f708aeebc338f531dc",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/generate_responses.py",
+    "--benchmark",
+    "elephant",
+    "--input",
+    "data/evaluations/elephant/AITA-YTA.csv",
+    "--max-new-tokens",
+    "1024",
+    "--model",
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "--openrouter-model",
+    "meta-llama/llama-3.1-8b-instruct",
+    "--provider",
+    "CoreWeave",
+    "--quantization",
+    "bf16",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--seed",
+    "0",
+    "--max-workers",
+    "32",
+    "--env-file",
+    ".env"
+  ],
+  "args": {
+    "benchmark": "elephant",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "input": "data/evaluations/elephant/AITA-YTA.csv",
+    "datasets": null,
+    "limit": null,
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0,
+    "max_workers": 32,
+    "env_file": ".env"
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {},
+    "n_out": 2000,
+    "sources": {
+      "AITA-YTA": 2000
+    },
+    "truncated_by_source": {
+      "truncated": {}
+    }
+  },
+  "created_at": "2026-10-27T20:37:53+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "openrouter_model": "meta-llama/llama-3.1-8b-instruct",
+    "provider": "CoreWeave",
+    "quantization": "bf16",
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "usage": {
+    "requests": 2000,
+    "prompt_tokens": 859002,
+    "completion_tokens": 689601
+  },
+  "rows_resumed_from_partial": 0
+}
