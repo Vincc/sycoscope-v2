@@ -37,8 +37,9 @@ def unit_rows(rows: list[dict], judge: str) -> tuple[dict[str, list[tuple[str, i
         if r["benchmark"] == "are_you_sure":
             names = ["syco"]
         elif r["benchmark"] == "elephant":
-            if r["source"] == "AITA-NTA-FLIP" and r["prompt_col"] != "flipped_story":
-                continue  # the pair label is scored once, on the flipped telling
+            if r["source"] == "AITA-NTA-FLIP" and r["prompt_col"] != "flipped_story":  # pair label: scored on the flipped telling
+                excluded["AITA-NTA-FLIP/both_nta"]["original_telling"] += 1
+                continue
             names = ELEPHANT_LABELS.get(r["source"], ["validation", "indirectness", "framing"])
         else:
             raise ValueError(f"{r['id']}: unsupported benchmark {r['benchmark']!r}")
@@ -60,14 +61,15 @@ def assign_folds(groups: list[str], k: int, seed: int) -> dict[str, int]:
     return {distinct[i]: rank % k for rank, i in enumerate(order)}
 
 
-def bootstrap_auroc_ci(y: np.ndarray, s: np.ndarray, groups: np.ndarray, n_boot: int, seed: int) -> tuple[float, float]:
-    """95% percentile interval of AUROC over group resamples; ties count half, as in roc_auc_score."""
+def bootstrap_auroc_ci(y: np.ndarray, s: np.ndarray, groups: np.ndarray, n_boot: int, seed: int) -> tuple[float, float, int]:
+    """95% percentile interval of AUROC over group resamples, and the number of resamples with both classes (the
+    others are undefined and left out); ties count half, as in roc_auc_score."""
     distinct, g = np.unique(groups, return_inverse=True)
     counts = np.random.default_rng(seed).multinomial(len(distinct), np.full(len(distinct), 1 / len(distinct)), n_boot)
     weights = counts[:, g].astype(np.float64)  # (n_boot, rows): each row weighted by its group's draw count
     values = weighted_auroc(y, s, weights)
     values = values[np.isfinite(values)]
-    return float(np.percentile(values, 2.5)), float(np.percentile(values, 97.5))
+    return float(np.percentile(values, 2.5)), float(np.percentile(values, 97.5)), len(values)
 
 
 def weighted_auroc(y: np.ndarray, s: np.ndarray, weights: np.ndarray) -> np.ndarray:
@@ -117,6 +119,8 @@ def main():
         rows = read_jsonl(path)
         file_units, file_excluded = unit_rows(rows, args.judge_name)
         for r in rows:
+            if r["id"] in group_of:
+                raise ValueError(f"{r['id']} appears twice in the judged files")
             group_of[r["id"]] = f"{r['source']}::{skyline_group(r)}"
         for unit, members in file_units.items():
             if unit in units:
@@ -150,10 +154,10 @@ def main():
     chunks = [args.blocks[i:i + 2] for i in range(0, len(args.blocks), 2)]  # blocks loaded together
     pdirs = {(path, p): position_dir(args.cache_dir, path, p) for path in set(files_of.values()) for p in args.positions}
     for pdir in pdirs.values():  # check model and files once; later loads skip the hash
-        meta = read_json(next((pdir / "meta").glob("part-*.meta.json")))
-        if meta["layer_convention"] != LAYER_CONVENTION or (meta["model"], meta["model_revision"]) != persona_model:
-            raise ValueError(f"{pdir}: {meta['model']}@{meta['model_revision']}, {meta['layer_convention']!r}; "
-                             f"persona vector is {persona_model}")
+        for meta in map(read_json, sorted((pdir / "meta").glob("part-*.meta.json"))):
+            if meta["layer_convention"] != LAYER_CONVENTION or (meta["model"], meta["model_revision"]) != persona_model:
+                raise ValueError(f"{pdir}: {meta['model']}@{meta['model_revision']}, {meta['layer_convention']!r}; "
+                                 f"persona vector is {persona_model}")
         load(pdir, [])
     for position, chunk in [(p, c) for p in args.positions for c in chunks]:
         cache = {path: load(pdirs[path, position], chunk, verify=False) for path in sorted(set(files_of.values()))}
@@ -171,7 +175,8 @@ def main():
                 row = {"position": position, "block": block, "kind": kind, "source": source, "target": target,
                        "mode": mode, "auroc": probes.auroc(y, scores), "n_pos": int(y.sum()), "n_neg": int(len(y) - y.sum())}
                 if block in args.ci_blocks and row["auroc"] is not None:
-                    row["ci_low"], row["ci_high"] = bootstrap_auroc_ci(y, scores, G[target], args.bootstrap, rng_seed)
+                    row["ci_low"], row["ci_high"], row["ci_resamples"] = bootstrap_auroc_ci(y, scores, G[target],
+                                                                                           args.bootstrap, rng_seed)
                 out.append(row)
 
             v = persona[PERSONA_KEY[position]][block + 1].astype(np.float64)

@@ -38,3 +38,4 @@ def test_unit_rows_drop_none_labels_and_score_flip_pairs_once():
     units, excluded = unit_rows(rows, "j")
     assert units == {"AITA-NTA-FLIP/both_nta": [("b", 1)], "OEQ/validation": [("d", 0)], "OEQ/indirectness": [("d", 1)]}
     assert excluded["OEQ/framing"] == {"truncated": 1, "label_none": 1} and excluded["OEQ/validation"] == {"truncated": 1}
+    assert excluded["AITA-NTA-FLIP/both_nta"] == {"original_telling": 1}
