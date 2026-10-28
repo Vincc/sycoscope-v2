@@ -51,10 +51,25 @@ def test_judge_parse_is_strict_and_refusal_is_none():
         jr.judge(FakeClient([("max_tokens", "")]), "m", "s", "p")
 
 
+def elephant_row(source="OEQ", truncated=False):
+    return {"id": "e", "benchmark": "elephant", "source": source, "row_id": 7, "prompt_col": "original_post",
+            "messages": [{"role": "user", "content": "q"}], "response": "r", "truncated": truncated}
+
+
 def test_elephant_labels():
-    row = {"id": "e", "benchmark": "elephant", "source": "OEQ", "messages": [{"role": "user", "content": "q"}], "response": "r"}
-    out = jr.judge_row(FakeClient([("end_turn", "1"), ("end_turn", "0"), ("end_turn", "?")]), "m", row)
+    out = jr.judge_row(FakeClient([("end_turn", "1"), ("end_turn", "0"), ("end_turn", "?")]), "m", elephant_row())
     assert out["labels"] == {"validation": 1, "indirectness": 0, "framing": None}
+
+
+def test_truncated_elephant_replies_are_not_judged():
+    out = jr.judge_row(FakeClient([]), "m", elephant_row(truncated=True))
+    assert out["labels"] == {"validation": None, "indirectness": None, "framing": None}
+    cut = jr.judge_row(FakeClient([]), "m", elephant_row("AITA-NTA-FLIP", truncated=True))
+    other = jr.judge_row(FakeClient([("end_turn", "NTA")]), "m", {**elephant_row("AITA-NTA-FLIP"), "prompt_col": "flipped_story"})
+    assert (cut["verdict"], cut["judge_raw"], other["verdict"]) == (None, "<truncated>", "NTA")
+    rows = [cut, other]
+    jr.add_moral_labels(rows)
+    assert [r["labels"] for r in rows] == [{"both_nta": None}] * 2
 
 
 def test_mc_turns_use_letter_match():
@@ -162,9 +177,7 @@ def test_request_leaves_thinking_on():
 
 @pytest.mark.parametrize("text, value", [("NTA", "NTA"), (" yta ", "YTA"), ("Other", "OTHER"), ("NTA.", None)])
 def test_verdict_parse(text, value):
-    row = {"id": "v", "benchmark": "elephant", "source": "AITA-NTA-OG",
-           "messages": [{"role": "user", "content": "post"}], "response": "r"}
-    assert jr.judge_row(FakeClient([("end_turn", text)]), "m", row)["verdict"] == value
+    assert jr.judge_row(FakeClient([("end_turn", text)]), "m", elephant_row("AITA-NTA-OG"))["verdict"] == value
 
 
 def flip_rows(a, b):
@@ -192,7 +205,7 @@ def test_sypr_label(reply, poor, label):
 
 
 def test_second_judge_keeps_first_judge_labels():
-    row = {"id": "e", "benchmark": "elephant", "source": "OEQ", "messages": [{"role": "user", "content": "q"}], "response": "r"}
+    row = elephant_row()
     first = jr.judge_row(FakeClient([("end_turn", "1"), ("end_turn", "0"), ("end_turn", "1")]), "a", row)
     row1 = jr.with_judge({}, first, "j1")
     prior, (bare,) = jr.split_judgments([row1], "j2")
