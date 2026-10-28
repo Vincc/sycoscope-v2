@@ -1,12 +1,12 @@
 """AUROC matrix: the sycophancy persona vector and per-dataset DiM and logistic directions, scored on every benchmark label.
 
-Units are (dataset, label) pairs from judged files: ELEPHANT AITA-YTA, OEQ and SS x validation, indirectness and
-framing; AITA-NTA-OG verdict_nta; AITA-NTA-FLIP both_nta on its flipped_story rows; Are You Sure syco per source
-dataset. A unit keeps the rows whose label is 0 or 1. Every unit is a target; a unit with at least --min-class rows per
-class is also a fitted source.
-Cells whose source and target come from the same dataset share rows, so they are cross-fitted over grouped folds: the
-direction is fit on the source label outside fold k and scores the target label inside fold k. Other cells fit on all
-source rows. The persona vector is applied as is (block L uses its hidden_states index L + 1). AUROC is computed on
+Units are <decoding>:<dataset>/<label> from judged files under generations/<model>/<decoding>/judging/judged/:
+ELEPHANT AITA-YTA, OEQ and SS x validation, indirectness and framing; AITA-NTA-OG verdict_nta; AITA-NTA-FLIP both_nta
+on its flipped_story rows; Are You Sure syco per source dataset. A unit keeps the rows whose label is 0 or 1. Every unit
+is a target; a unit with at least --min-class rows per class is also a fitted source.
+Cells whose source and target come from the same dataset share rows or prompts (also across decodings, e.g. greedy and
+sampled responses to the same prompts), so they are cross-fitted over folds grouped by prompt: the direction is fit on
+the source label outside fold k and scores the target label inside fold k. Other cells fit on all source rows. The persona vector is applied as is (block L uses its hidden_states index L + 1). AUROC is computed on
 the pooled scores; at --ci-blocks a group bootstrap of the target rows (scores held fixed) gives a 95% interval.
 Writes <output> (one row per source x target x position x block) and its meta file.
 
@@ -118,15 +118,17 @@ def main():
     for path in args.judged:
         rows = read_jsonl(path)
         file_units, file_excluded = unit_rows(rows, args.judge_name)
+        decoding = path.resolve().parent.parent.parent.name  # generations/<model>/<decoding>/judging/judged/
         for r in rows:
             if r["id"] in group_of:
                 raise ValueError(f"{r['id']} appears twice in the judged files")
             group_of[r["id"]] = f"{r['source']}::{skyline_group(r)}"
-        for unit, members in file_units.items():
+        for name, members in file_units.items():
+            unit = f"{decoding}:{name}"
             if unit in units:
                 raise ValueError(f"unit {unit} appears in two judged files")
-            units[unit], excluded[unit], files_of[unit] = members, file_excluded[unit], path
-            dataset_of[unit] = unit.split("/")[0]
+            units[unit], excluded[unit], files_of[unit] = members, file_excluded[name], path
+            dataset_of[unit] = name.split("/")[0]
     fold_of = {}
     for dataset in sorted(set(dataset_of.values())):
         ids = sorted({i for u, m in units.items() if dataset_of[u] == dataset for i, _ in m})
@@ -151,7 +153,6 @@ def main():
     persona_meta = read_json(args.persona_vector.parent / "meta" / f"{args.persona_vector.name}.meta.json")
     persona_model = (persona_meta["model"], persona_meta["revision"])
     out, rng_seed = [], args.seed
-    chunks = [args.blocks[i:i + 2] for i in range(0, len(args.blocks), 2)]  # blocks loaded together
     pdirs = {(path, p): position_dir(args.cache_dir, path, p) for path in set(files_of.values()) for p in args.positions}
     for pdir in pdirs.values():  # check model and files once; later loads skip the hash
         for meta in map(read_json, sorted((pdir / "meta").glob("part-*.meta.json"))):
@@ -159,13 +160,14 @@ def main():
                 raise ValueError(f"{pdir}: {meta['model']}@{meta['model_revision']}, {meta['layer_convention']!r}; "
                                  f"persona vector is {persona_model}")
         load(pdir, [])
-    for position, chunk in [(p, c) for p in args.positions for c in chunks]:
-        cache = {path: load(pdirs[path, position], chunk, verify=False) for path in sorted(set(files_of.values()))}
-        for block in chunk:
-            index = {}  # row id -> activation
-            for path, (ids, acts) in cache.items():
-                index.update(zip(ids, acts[block]))
-            X = {u: np.stack([index[i] for i, _ in m]) for u, m in units.items()}
+    for position in args.positions:
+        for block in args.blocks:
+            loaded = [load(pdirs[path, position], [block], verify=False) for path in sorted(set(files_of.values()))]
+            A = np.concatenate([acts[block] for _, acts in loaded])  # every cached row of every file
+            row_of = {i: k for k, i in enumerate(i for ids, _ in loaded for i in ids)}
+            del loaded
+            rows_of = {u: np.array([row_of[i] for i, _ in m]) for u, m in units.items()}
+            X = lambda u: A[rows_of[u]]  # a unit's activations, copied only while in use
             Y = {u: np.array([v for _, v in m]) for u, m in units.items()}
             F = {u: np.array([fold_of[i] for i, _ in m]) for u, m in units.items()}
             G = {u: np.array([group_of[i] for i, _ in m]) for u, m in units.items()}
@@ -181,24 +183,25 @@ def main():
 
             v = persona[PERSONA_KEY[position]][block + 1].astype(np.float64)
             for target in sorted(units):
-                cell("persona", "persona_vector", target, "zero_shot", X[target] @ (v / np.linalg.norm(v)))
+                cell("persona", "persona_vector", target, "zero_shot", X(target) @ (v / np.linalg.norm(v)))
             methods = ["dim"] + (["logistic"] if block in args.logistic_blocks else [])
             for method in methods:
                 for source in sources:
-                    full = probes.fit(method, X[source], Y[source], args.C, args.max_iter)
+                    Xs = X(source)
+                    full = probes.fit(method, Xs, Y[source], args.C, args.max_iter)
                     same = [t for t in sorted(units) if dataset_of[t] == dataset_of[source]]
                     pooled = {t: np.empty(len(Y[t])) for t in same}
                     for k in range(args.folds):
                         train = F[source] != k
-                        probe = probes.fit(method, X[source][train], Y[source][train], args.C, args.max_iter)
+                        probe = probes.fit(method, Xs[train], Y[source][train], args.C, args.max_iter)
                         for t in same:
                             held = F[t] == k
-                            pooled[t][held] = probes.score(method, probe, X[t][held])
+                            pooled[t][held] = probes.score(method, probe, A[rows_of[t][held]])
                     for target in sorted(units):
                         if target in pooled:
                             cell(method, source, target, "cross_fit", pooled[target])
                         else:
-                            cell(method, source, target, "transfer", probes.score(method, full, X[target]))
+                            cell(method, source, target, "transfer", probes.score(method, full, X(target)))
             print(f"{position} block {block}: {len(out)} cells", flush=True)
 
     write_jsonl(args.output, out)
