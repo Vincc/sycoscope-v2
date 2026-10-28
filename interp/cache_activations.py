@@ -91,15 +91,18 @@ def read_parts(position_dir: Path, expect: dict) -> list[dict]:
     return records
 
 
-def load(position_dir: Path, layers: list[int] | None = None) -> tuple[list[str], dict[int, np.ndarray]]:
-    """Row ids and {block: (rows, hidden) float32} of one cached position, over all parts in part order."""
+def load(position_dir: Path, layers: list[int] | None = None, verify: bool = True) -> tuple[list[str], dict[int, np.ndarray]]:
+    """Row ids and {block: (rows, hidden) float32} of one cached position, over all parts in part order.
+
+    verify=False skips the per-file SHA-256 check, for callers that already verified the files in this process.
+    """
     records = read_parts(position_dir, {"definition": POSITIONS[position_dir.name]})
     if not records:
         raise FileNotFoundError(f"{position_dir}: no cached parts")
     ids, chunks = [], []
     for meta in records:
         path = position_dir / meta["output"]
-        if sha256(path) != meta["file_sha256"]:
+        if verify and sha256(path) != meta["file_sha256"]:
             raise ValueError(f"{path}: SHA-256 differs from its meta file")
         with safe_open(path, framework="numpy") as f:
             blocks = range(meta["n_layers"]) if layers is None else layers

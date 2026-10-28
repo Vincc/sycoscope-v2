@@ -1,0 +1,371 @@
+{
+  "output": "response_mean.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl": "572ce979c68217ce38265883839743b5571aecb57df1d6025a36303d32ce44bb",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl": "04f054085969ea9e5020e8075e9f49b65f30c7da47f79353016053dc0b82ee74",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl": "028ec727c3fc80707dd7f263eaafa8b986955f4551833a31a81008fffb8a5ad1",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-OG_s0_judged.jsonl": "85984c3d6f625bb659bbee6ba3adc074411d6904b16d5f9675dbae3dbaf373ee",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl": "4892547a8b4ff145a3e5b8dc33bf3bad81b8a1145688b3305d00257ec5a8a85b",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl": "bdd63305ab715bb9e2b54fd0153a6580eae022a1361dea2c665ce4d7b1794358",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl": "a1e89546d50bd6de8576419a2db689e151cd6c040cd5a8854b3335d0c701eefc",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
+  },
+  "git": {
+    "commit": "6572f7d498afa719acc14d491ba26fad449e2281",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/interp/generalization_matrix.py",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-OG_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl",
+    "--judge-name",
+    "sonnet55",
+    "--persona-vector",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--cache-dir",
+    "activations/cache",
+    "--positions",
+    "response_mean",
+    "--blocks",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "--logistic-blocks",
+    "7",
+    "15",
+    "23",
+    "--ci-blocks",
+    "15",
+    "--folds",
+    "5",
+    "--C",
+    "0.01",
+    "--max-iter",
+    "10000",
+    "--min-class",
+    "10",
+    "--bootstrap",
+    "1000",
+    "--seed",
+    "0",
+    "--output",
+    "reports/llama31_sampled_generalization/response_mean.jsonl"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-OG_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "persona_vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "cache_dir": "activations/cache",
+    "positions": [
+      "response_mean"
+    ],
+    "blocks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "logistic_blocks": [
+      7,
+      15,
+      23
+    ],
+    "ci_blocks": [
+      15
+    ],
+    "folds": 5,
+    "C": 0.01,
+    "max_iter": 10000,
+    "min_class": 10,
+    "bootstrap": 1000,
+    "seed": 0,
+    "output": "reports/llama31_sampled_generalization/response_mean.jsonl"
+  },
+  "counts": {
+    "n_in": 10659,
+    "excluded": {},
+    "n_out": 10659
+  },
+  "created_at": "2026-10-28T14:05:01+00:00",
+  "units": {
+    "AITA-NTA-FLIP/both_nta": {
+      "n_in": 1591,
+      "excluded": {
+        "label_none": 775
+      },
+      "n_out": 816,
+      "n_pos": 537,
+      "n_neg": 279,
+      "n_groups": 816
+    },
+    "AITA-NTA-OG/verdict_nta": {
+      "n_in": 1591,
+      "excluded": {
+        "label_none": 199
+      },
+      "n_out": 1392,
+      "n_pos": 1340,
+      "n_neg": 52,
+      "n_groups": 1392
+    },
+    "AITA-YTA/framing": {
+      "n_in": 2000,
+      "excluded": {},
+      "n_out": 2000,
+      "n_pos": 1663,
+      "n_neg": 337,
+      "n_groups": 2000
+    },
+    "AITA-YTA/indirectness": {
+      "n_in": 2000,
+      "excluded": {},
+      "n_out": 2000,
+      "n_pos": 698,
+      "n_neg": 1302,
+      "n_groups": 2000
+    },
+    "AITA-YTA/validation": {
+      "n_in": 2000,
+      "excluded": {},
+      "n_out": 2000,
+      "n_pos": 1509,
+      "n_neg": 491,
+      "n_groups": 2000
+    },
+    "OEQ/framing": {
+      "n_in": 3027,
+      "excluded": {
+        "truncated": 3
+      },
+      "n_out": 3024,
+      "n_pos": 2895,
+      "n_neg": 129,
+      "n_groups": 3007
+    },
+    "OEQ/indirectness": {
+      "n_in": 3027,
+      "excluded": {
+        "truncated": 3
+      },
+      "n_out": 3024,
+      "n_pos": 1374,
+      "n_neg": 1650,
+      "n_groups": 3007
+    },
+    "OEQ/validation": {
+      "n_in": 3027,
+      "excluded": {
+        "truncated": 3
+      },
+      "n_out": 3024,
+      "n_pos": 2089,
+      "n_neg": 935,
+      "n_groups": 3007
+    },
+    "SS/framing": {
+      "n_in": 3777,
+      "excluded": {
+        "truncated": 8
+      },
+      "n_out": 3769,
+      "n_pos": 3187,
+      "n_neg": 582,
+      "n_groups": 3769
+    },
+    "SS/indirectness": {
+      "n_in": 3777,
+      "excluded": {
+        "truncated": 8
+      },
+      "n_out": 3769,
+      "n_pos": 3226,
+      "n_neg": 543,
+      "n_groups": 3769
+    },
+    "SS/validation": {
+      "n_in": 3777,
+      "excluded": {
+        "truncated": 8
+      },
+      "n_out": 3769,
+      "n_pos": 2687,
+      "n_neg": 1082,
+      "n_groups": 3769
+    },
+    "aqua_mc/syco": {
+      "n_in": 254,
+      "excluded": {
+        "turn1_incorrect": 32,
+        "turn2_truncated": 52,
+        "turn1_truncated": 45,
+        "turn2_unparsed": 42,
+        "turn1_unparsed": 11,
+        "options_identical": 7
+      },
+      "n_out": 65,
+      "n_pos": 16,
+      "n_neg": 49,
+      "n_groups": 65
+    },
+    "math_mc_cot/syco": {
+      "n_in": 1000,
+      "excluded": {
+        "turn1_unparsed": 43,
+        "turn2_truncated": 177,
+        "turn1_truncated": 406,
+        "turn2_unparsed": 86,
+        "turn1_incorrect": 88,
+        "options_identical": 17
+      },
+      "n_out": 183,
+      "n_pos": 50,
+      "n_neg": 133,
+      "n_groups": 183
+    },
+    "mmlu_mc_cot/syco": {
+      "n_in": 1000,
+      "excluded": {
+        "turn1_incorrect": 268,
+        "turn1_unparsed": 12,
+        "turn2_unparsed": 107,
+        "turn2_truncated": 41,
+        "turn1_truncated": 17,
+        "options_identical": 2,
+        "duplicate_question": 2
+      },
+      "n_out": 551,
+      "n_pos": 368,
+      "n_neg": 183,
+      "n_groups": 550
+    },
+    "trivia_qa/syco": {
+      "n_in": 1000,
+      "excluded": {
+        "turn1_incorrect": 246,
+        "turn2_truncated": 65,
+        "turn1_truncated": 11,
+        "duplicate_question": 4
+      },
+      "n_out": 674,
+      "n_pos": 228,
+      "n_neg": 446,
+      "n_groups": 674
+    },
+    "truthful_qa/syco": {
+      "n_in": 817,
+      "excluded": {
+        "turn1_incorrect": 422,
+        "turn1_truncated": 4,
+        "turn2_truncated": 7
+      },
+      "n_out": 384,
+      "n_pos": 140,
+      "n_neg": 244,
+      "n_groups": 384
+    },
+    "truthful_qa_mc/syco": {
+      "n_in": 817,
+      "excluded": {
+        "turn2_unparsed": 48,
+        "turn1_incorrect": 285,
+        "turn1_unparsed": 28,
+        "turn2_truncated": 3,
+        "turn1_truncated": 2
+      },
+      "n_out": 451,
+      "n_pos": 311,
+      "n_neg": 140,
+      "n_groups": 451
+    }
+  },
+  "sources": [
+    "AITA-NTA-FLIP/both_nta",
+    "AITA-NTA-OG/verdict_nta",
+    "AITA-YTA/framing",
+    "AITA-YTA/indirectness",
+    "AITA-YTA/validation",
+    "OEQ/framing",
+    "OEQ/indirectness",
+    "OEQ/validation",
+    "SS/framing",
+    "SS/indirectness",
+    "SS/validation",
+    "aqua_mc/syco",
+    "math_mc_cot/syco",
+    "mmlu_mc_cot/syco",
+    "trivia_qa/syco",
+    "truthful_qa/syco",
+    "truthful_qa_mc/syco"
+  ]
+}
