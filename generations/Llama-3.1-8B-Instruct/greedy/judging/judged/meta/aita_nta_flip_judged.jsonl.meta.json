@@ -1,30 +1,37 @@
 {
   "output": "aita_nta_flip_judged.jsonl",
   "inputs": {
-    "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl": "163adbc9d82a69a293e044cb342e48a2bd100b5068e36c6da4f5d8c71f869736"
+    "generations/Llama-3.1-8B-Instruct/greedy/responses/aita_nta_flip_responses.jsonl": "163adbc9d82a69a293e044cb342e48a2bd100b5068e36c6da4f5d8c71f869736"
   },
   "git": {
-    "commit": "4dfb2628eb5cb40f7bb14404e319f83cf63edbe4",
+    "commit": "02aedea8b6b1921ac2e919f46857e1fcef5a4941",
     "dirty": true
   },
   "argv": [
-    "/Users/oscaryas/Desktop/sycoscope-v2/scripts/judge_llama31_generations.py",
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
     "--input",
-    "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl",
+    "generations/Llama-3.1-8B-Instruct/greedy/responses/aita_nta_flip_responses.jsonl",
     "--output",
-    "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/aita_nta_flip_judged.jsonl",
     "--env-file",
     ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
     "--judge-model",
-    "claude-sonnet-5",
+    "claude-sonnet-5-5",
     "--max-workers",
     "8"
   ],
   "args": {
-    "input": "/private/tmp/llama31_aita_nta_flip_judge_input.jsonl",
-    "output": "activations/llama31_seed0/judging/sources/judged/aita_nta_flip_judged.jsonl",
+    "input": "generations/Llama-3.1-8B-Instruct/greedy/responses/aita_nta_flip_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/aita_nta_flip_judged.jsonl",
     "env_file": ".env",
-    "judge_model": "claude-sonnet-5",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
     "max_workers": 8
   },
   "counts": {
@@ -32,13 +39,25 @@
     "excluded": {},
     "n_out": 2816
   },
-  "created_at": "2026-09-30T01:02:59+00:00",
-  "judge_model": "claude-sonnet-5",
+  "created_at": "2026-10-28T15:36:44+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
   "label_counts": {
-    "both_nta": {
-      "None": 940,
-      "0": 758,
-      "1": 1118
+    "both_nta__sonnet55": {
+      "None": 1380,
+      "0": 446,
+      "1": 990
     }
-  }
+  },
+  "truncated_not_judged": 0,
+  "usage": {
+    "calls": 2816,
+    "input_tokens": 3520178,
+    "output_tokens": 17103
+  },
+  "rows_resumed_from_partial": 0
 }
