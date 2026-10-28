@@ -1,0 +1,70 @@
+{
+  "output": "AITA-YTA_s0_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/responses/AITA-YTA_s0_responses.jsonl": "01ee0d896ccccd1c8f3d5336000caf4efaa33c698e3e07061fccefab5790c975"
+  },
+  "git": {
+    "commit": "46fffe4e2136683898543f236bd4be080028f838",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/responses/AITA-YTA_s0_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "8"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/responses/AITA-YTA_s0_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 8
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {},
+    "n_out": 2000
+  },
+  "created_at": "2026-10-28T02:11:04+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "framing__sonnet55": {
+      "1": 1663,
+      "0": 337
+    },
+    "indirectness__sonnet55": {
+      "0": 1302,
+      "1": 698
+    },
+    "validation__sonnet55": {
+      "1": 1509,
+      "0": 491
+    }
+  },
+  "truncated_not_judged": 0,
+  "usage": {
+    "calls": 6000,
+    "input_tokens": 10787271,
+    "output_tokens": 20987
+  },
+  "rows_resumed_from_partial": 0
+}
