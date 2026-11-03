@@ -1,0 +1,68 @@
+{
+  "output": "qwen3_30b.sampled.responses.jsonl",
+  "inputs": {
+    "replication/sypr/data/benchmark.jsonl": "16b41aad1cf5d30de34bd887e1d0f8c17ad837d811a11751bb1361b08a002a2a"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "/workspace/replication/sypr/generate_qwen.py",
+    "--benchmark",
+    "replication/sypr/data/benchmark.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.sampled.responses.jsonl",
+    "--model",
+    "Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "--prompt-format",
+    "chat",
+    "--temperature",
+    "0.7",
+    "--top-p",
+    "0.8",
+    "--top-k",
+    "20",
+    "--seed",
+    "0",
+    "--batch-size",
+    "16",
+    "--source-dirty",
+    "--source-commit",
+    "032087054117e31a91b6f5b08ae8f12ae033c650"
+  ],
+  "args": {
+    "benchmark": "replication/sypr/data/benchmark.jsonl",
+    "output": "replication/sypr/results/qwen3_30b.sampled.responses.jsonl",
+    "model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "batch_size": 16,
+    "max_new_tokens": 512,
+    "num_shards": 1,
+    "shard_index": 0,
+    "max_rows": null,
+    "prompt_format": "chat",
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "seed": 0,
+    "source_commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "source_dirty": true
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {},
+    "n_out": 13200
+  },
+  "created_at": "2026-10-29T03:59:44+00:00",
+  "model": "Qwen/Qwen3-30B-A3B-Instruct-2507",
+  "prompt_format": "chat",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "seed": 0
+  },
+  "method_deviation": "chat template instead of authors' plain System:/User: serialization",
+  "truncated": 4805
+}

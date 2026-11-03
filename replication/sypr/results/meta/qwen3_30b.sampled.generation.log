@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File [35m"<frozen runpy>"[0m, line [35m203[0m, in [35m_run_module_as_main[0m
+  File [35m"<frozen runpy>"[0m, line [35m88[0m, in [35m_run_code[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m162[0m, in [35m<module>[0m
+    [31mmain[0m[1;31m()[0m
+    [31m~~~~[0m[1;31m^^[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m142[0m, in [35mmain[0m
+    [31mwrite_stage_meta[0m[1;31m([0m
+    [31m~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31margs.output,[0m
+        [1;31m^^^^^^^^^^^^[0m
+    ...<13 lines>...
+        [1;31m},[0m
+        [1;31m^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/workspace/replication/sypr/core.py"[0m, line [35m25[0m, in [35mwrite_stage_meta[0m
+    raise ValueError(
+        "--source-commit is required when the run directory has no Git data"
+    ) from None
+[1;35mValueError[0m: [35m--source-commit is required when the run directory has no Git data[0m
+GEN_EXIT=1

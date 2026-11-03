@@ -1,0 +1,52 @@
+{
+  "output": "llama31_8b.sampled.responses.gpt54.judged.jsonl",
+  "inputs": {
+    "replication/sypr/results/llama31_8b.sampled.responses.jsonl": "1aa10a0668d23958277b6f3cdc771001203546fd98eebf2214e2d89740d8bbfa",
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json": "1e4e71e8f66a4500ff504c737ecbe3f89bfe12240ccd8a342d30c305e306433d"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py",
+    "--input",
+    "replication/sypr/results/llama31_8b.sampled.responses.jsonl",
+    "--output",
+    "replication/sypr/results/llama31_8b.sampled.responses.gpt54.judged.jsonl",
+    "--provider",
+    "openai",
+    "--judge-model",
+    "gpt-5.4",
+    "--workers",
+    "8",
+    "--source-commit",
+    "0320870",
+    "--source-dirty"
+  ],
+  "args": {
+    "input": "replication/sypr/results/llama31_8b.sampled.responses.jsonl",
+    "output": "replication/sypr/results/llama31_8b.sampled.responses.gpt54.judged.jsonl",
+    "exemplars": "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/praise_intensity_exemplars.json",
+    "judge_model": "gpt-5.4",
+    "provider": "openai",
+    "existing_provider_note": null,
+    "workers": 8,
+    "max_validation_attempts": 3,
+    "max_rows": null,
+    "source_commit": "0320870",
+    "source_dirty": true
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {},
+    "n_out": 13200
+  },
+  "created_at": "2026-11-03T00:06:28+00:00",
+  "judge_model": "gpt-5.4",
+  "method_deviation": null,
+  "reasoning_effort": "none",
+  "thinking": null,
+  "provider": "openai",
+  "existing_provider_note": null
+}

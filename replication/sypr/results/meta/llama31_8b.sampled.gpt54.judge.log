@@ -1,0 +1,167 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 300, in <module>
+    main()
+    ~~~~^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 265, in main
+    result = future.result()
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+    raise self._exception
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 242, in run
+    return judge_row(
+        client(),
+    ...<4 lines>...
+        args.max_validation_attempts,
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 157, in judge_row
+    judgment = judge_sentence_openai(client, model, sentence, exemplars)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 108, in judge_sentence_openai
+    completion = client.chat.completions.create(
+        model=model,
+    ...<29 lines>...
+        },
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<53 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 300, in <module>
+    main()
+    ~~~~^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 265, in main
+    result = future.result()
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+    raise self._exception
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 243, in run
+    client(),
+    ~~~~~~^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 228, in client
+    thread_local.client = OpenAI(max_retries=20)
+                          ~~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_client.py", line 276, in __init__
+    raise OpenAIError(
+        "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+    )
+openai.OpenAIError: Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 300, in <module>
+    main()
+    ~~~~^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 265, in main
+    result = future.result()
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+    raise self._exception
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 242, in run
+    return judge_row(
+        client(),
+    ...<4 lines>...
+        args.max_validation_attempts,
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 157, in judge_row
+    judgment = judge_sentence_openai(client, model, sentence, exemplars)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 108, in judge_sentence_openai
+    completion = client.chat.completions.create(
+        model=model,
+    ...<29 lines>...
+        },
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<53 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 300, in <module>
+    main()
+    ~~~~^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 265, in main
+    result = future.result()
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+    raise self._exception
+  File "/Users/oscaryas/.local/share/uv/python/cpython-3.13.14-macos-aarch64-none/lib/python3.13/concurrent/futures/thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 242, in run
+    return judge_row(
+        client(),
+    ...<4 lines>...
+        args.max_validation_attempts,
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 157, in judge_row
+    judgment = judge_sentence_openai(client, model, sentence, exemplars)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/judge_sonnet.py", line 108, in judge_sentence_openai
+    completion = client.chat.completions.create(
+        model=model,
+    ...<29 lines>...
+        },
+    )
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/resources/chat/completions/completions.py", line 1318, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<53 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1440, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/oscaryas/Desktop/sycoscope-v2/.venv/lib/python3.13/site-packages/openai/_base_client.py", line 1213, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}

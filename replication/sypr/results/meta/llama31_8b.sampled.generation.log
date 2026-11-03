@@ -1,0 +1,104 @@
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+Traceback (most recent call last):
+  File [35m"<frozen runpy>"[0m, line [35m203[0m, in [35m_run_module_as_main[0m
+  File [35m"<frozen runpy>"[0m, line [35m88[0m, in [35m_run_code[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m162[0m, in [35m<module>[0m
+    [31mmain[0m[1;31m()[0m
+    [31m~~~~[0m[1;31m^^[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m103[0m, in [35mmain[0m
+    outputs = model.generate(
+        **inputs,
+    ...<3 lines>...
+        eos_token_id=eos_token_ids,
+    )
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/utils/_contextlib.py"[0m, line [35m124[0m, in [35mdecorate_context[0m
+    return func(*args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/generation/utils.py"[0m, line [35m2645[0m, in [35mgenerate[0m
+    result = decoding_method(
+        self,
+    ...<5 lines>...
+        **model_kwargs,
+    )
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/generation/utils.py"[0m, line [35m2845[0m, in [35m_sample[0m
+    outputs = self._prefill(
+        input_ids,
+    ...<2 lines>...
+        is_first_iteration=not generation_config.is_assistant,
+    )
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/generation/utils.py"[0m, line [35m3896[0m, in [35m_prefill[0m
+    return self(**model_inputs, return_dict=True)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1778[0m, in [35m_wrapped_call_impl[0m
+    return [31mself._call_impl[0m[1;31m(*args, **kwargs)[0m
+           [31m~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1789[0m, in [35m_call_impl[0m
+    return forward_call(*args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/utils/generic.py"[0m, line [35m911[0m, in [35mwrapper[0m
+    output = func(self, *args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/models/llama/modeling_llama.py"[0m, line [35m474[0m, in [35mforward[0m
+    outputs: BaseModelOutputWithPast = [31mself.model[0m[1;31m([0m
+                                       [31m~~~~~~~~~~[0m[1;31m^[0m
+        [1;31minput_ids=input_ids,[0m
+        [1;31m^^^^^^^^^^^^^^^^^^^^[0m
+    ...<5 lines>...
+        [1;31m**kwargs,[0m
+        [1;31m^^^^^^^^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1778[0m, in [35m_wrapped_call_impl[0m
+    return [31mself._call_impl[0m[1;31m(*args, **kwargs)[0m
+           [31m~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1789[0m, in [35m_call_impl[0m
+    return forward_call(*args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/utils/generic.py"[0m, line [35m1040[0m, in [35mwrapper[0m
+    output = func(self, *args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/utils/output_capturing.py"[0m, line [35m252[0m, in [35mwrapper[0m
+    outputs = func(self, *args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/models/llama/modeling_llama.py"[0m, line [35m411[0m, in [35mforward[0m
+    hidden_states = decoder_layer(
+        hidden_states,
+    ...<5 lines>...
+        **kwargs,
+    )
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/modeling_layers.py"[0m, line [35m93[0m, in [35m__call__[0m
+    return [31msuper().__call__[0m[1;31m(*args, **kwargs)[0m
+           [31m~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1778[0m, in [35m_wrapped_call_impl[0m
+    return [31mself._call_impl[0m[1;31m(*args, **kwargs)[0m
+           [31m~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1789[0m, in [35m_call_impl[0m
+    return forward_call(*args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/models/llama/modeling_llama.py"[0m, line [35m330[0m, in [35mforward[0m
+    hidden_states = self.mlp(hidden_states)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1778[0m, in [35m_wrapped_call_impl[0m
+    return [31mself._call_impl[0m[1;31m(*args, **kwargs)[0m
+           [31m~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^[0m
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/torch/nn/modules/module.py"[0m, line [35m1789[0m, in [35m_call_impl[0m
+    return forward_call(*args, **kwargs)
+  File [35m"/workspace/.venv/lib/python3.13/site-packages/transformers/models/llama/modeling_llama.py"[0m, line [35m183[0m, in [35mforward[0m
+    down_proj = self.down_proj([31mself.act_fn(self.gate_proj(x)) [0m[1;31m*[0m[31m self.up_proj(x)[0m)
+                               [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^[0m[31m~~~~~~~~~~~~~~~~[0m
+[1;35mtorch.OutOfMemoryError[0m: [35mCUDA out of memory. Tried to allocate 2.36 GiB. GPU 0 has a total capacity of 39.49 GiB of which 1.02 GiB is free. Including non-PyTorch memory, this process has 38.46 GiB memory in use. Of the allocated memory 33.09 GiB is allocated by PyTorch, and 4.88 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)[0m
+GEN_EXIT=1
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+Traceback (most recent call last):
+  File [35m"<frozen runpy>"[0m, line [35m203[0m, in [35m_run_module_as_main[0m
+  File [35m"<frozen runpy>"[0m, line [35m88[0m, in [35m_run_code[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m162[0m, in [35m<module>[0m
+    [31mmain[0m[1;31m()[0m
+    [31m~~~~[0m[1;31m^^[0m
+  File [35m"/workspace/replication/sypr/generate_qwen.py"[0m, line [35m142[0m, in [35mmain[0m
+    [31mwrite_stage_meta[0m[1;31m([0m
+    [31m~~~~~~~~~~~~~~~~[0m[1;31m^[0m
+        [1;31margs.output,[0m
+        [1;31m^^^^^^^^^^^^[0m
+    ...<13 lines>...
+        [1;31m},[0m
+        [1;31m^^[0m
+    [1;31m)[0m
+    [1;31m^[0m
+  File [35m"/workspace/replication/sypr/core.py"[0m, line [35m25[0m, in [35mwrite_stage_meta[0m
+    raise ValueError(
+        "--source-commit is required when the run directory has no Git data"
+    ) from None
+[1;35mValueError[0m: [35m--source-commit is required when the run directory has no Git data[0m
+GEN_EXIT=1

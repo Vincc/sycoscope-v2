@@ -1,0 +1,45 @@
+{
+  "output": "qwen3_30b.raw.echocut.responses.jsonl",
+  "inputs": {
+    "replication/sypr/results/qwen3_30b.raw.responses.jsonl": "7bc0ed117bbfb04f218f2ef38899fcc9d81d2ff7db990d9f4569fba89a2e0ba5",
+    "replication/sypr/results/qwen3_30b.raw.responses.gpt54.judged.jsonl": "07c5afca03f91dc2808b60e77392833731b6318c4eafbec3df5113abdd6a5473"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replication/sypr/subset_judged.py",
+    "--responses",
+    "replication/sypr/results/qwen3_30b.raw.responses.jsonl",
+    "--judged",
+    "replication/sypr/results/qwen3_30b.raw.responses.gpt54.judged.jsonl",
+    "--mode",
+    "echo-cut",
+    "--responses-output",
+    "replication/sypr/results/qwen3_30b.raw.echocut.responses.jsonl",
+    "--judged-output",
+    "replication/sypr/results/qwen3_30b.raw.echocut.gpt54.judged.jsonl"
+  ],
+  "args": {
+    "responses": "replication/sypr/results/qwen3_30b.raw.responses.jsonl",
+    "judged": "replication/sypr/results/qwen3_30b.raw.responses.gpt54.judged.jsonl",
+    "mode": "echo-cut",
+    "responses_output": "replication/sypr/results/qwen3_30b.raw.echocut.responses.jsonl",
+    "judged_output": "replication/sypr/results/qwen3_30b.raw.echocut.gpt54.judged.jsonl",
+    "source_commit": null,
+    "source_dirty": false
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {
+      "truncated": 0
+    },
+    "n_out": 13200
+  },
+  "created_at": "2026-11-03T20:35:28+00:00",
+  "mode": "echo-cut",
+  "rows_cut_at_echo_marker": 1352,
+  "sentences_dropped": 16399,
+  "sibling_output": "qwen3_30b.raw.echocut.gpt54.judged.jsonl"
+}

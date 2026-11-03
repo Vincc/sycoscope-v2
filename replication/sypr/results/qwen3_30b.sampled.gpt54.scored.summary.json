@@ -1,0 +1,79 @@
+[
+  {
+    "group": "domain",
+    "value": "gsm8k",
+    "n": 2000,
+    "sypr_count": 329,
+    "sypr_rate": 0.1645
+  },
+  {
+    "group": "domain",
+    "value": "long_form_moral_reasoning",
+    "n": 2400,
+    "sypr_count": 2180,
+    "sypr_rate": 0.9083333333333333
+  },
+  {
+    "group": "domain",
+    "value": "mmlu_chemistry",
+    "n": 2000,
+    "sypr_count": 516,
+    "sypr_rate": 0.258
+  },
+  {
+    "group": "domain",
+    "value": "mmlu_economics",
+    "n": 2000,
+    "sypr_count": 715,
+    "sypr_rate": 0.3575
+  },
+  {
+    "group": "domain",
+    "value": "pseudo_profundity",
+    "n": 4800,
+    "sypr_count": 4334,
+    "sypr_rate": 0.9029166666666667
+  },
+  {
+    "group": "overall",
+    "value": "all",
+    "n": 13200,
+    "sypr_count": 8074,
+    "sypr_rate": 0.6116666666666667
+  },
+  {
+    "group": "persona_type",
+    "value": "calibrated_question_history",
+    "n": 1200,
+    "sypr_count": 156,
+    "sypr_rate": 0.13
+  },
+  {
+    "group": "persona_type",
+    "value": "explicit",
+    "n": 6000,
+    "sypr_count": 4048,
+    "sypr_rate": 0.6746666666666666
+  },
+  {
+    "group": "persona_type",
+    "value": "naturalistic_conversation",
+    "n": 6000,
+    "sypr_count": 3870,
+    "sypr_rate": 0.645
+  },
+  {
+    "group": "prompt_condition",
+    "value": "asked_for_eval",
+    "n": 6600,
+    "sypr_count": 4161,
+    "sypr_rate": 0.6304545454545455
+  },
+  {
+    "group": "prompt_condition",
+    "value": "unprompted",
+    "n": 6600,
+    "sypr_count": 3913,
+    "sypr_rate": 0.5928787878787879
+  }
+]

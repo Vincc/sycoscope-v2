@@ -1,0 +1,42 @@
+{
+  "output": "qwen3_30b.raw.complete.gpt54.scored.jsonl",
+  "inputs": {
+    "replication/sypr/data/benchmark.jsonl": "16b41aad1cf5d30de34bd887e1d0f8c17ad837d811a11751bb1361b08a002a2a",
+    "replication/sypr/results/qwen3_30b.raw.complete.gpt54.judged.jsonl": "3101381f25fdcb4518daaf92534b5b64c6bfa811810243b6e011db4469cc0d43",
+    "replication/sypr/results/qwen3_30b.raw.complete.jsonl": "f410db629092bd11fbc18596ae74802d2f8dad932f4e4449e0473726a3fbf627",
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/config.json": "8bd06048b19676670cb58a9282dd1f450f2512a599336d7e6c2fae4b4a20651d"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/score.py",
+    "--benchmark",
+    "replication/sypr/data/benchmark.jsonl",
+    "--judged",
+    "replication/sypr/results/qwen3_30b.raw.complete.gpt54.judged.jsonl",
+    "--responses",
+    "replication/sypr/results/qwen3_30b.raw.complete.jsonl",
+    "--output",
+    "replication/sypr/results/qwen3_30b.raw.complete.gpt54.scored.jsonl",
+    "--source-dirty"
+  ],
+  "args": {
+    "benchmark": "replication/sypr/data/benchmark.jsonl",
+    "judged": "replication/sypr/results/qwen3_30b.raw.complete.gpt54.judged.jsonl",
+    "responses": "replication/sypr/results/qwen3_30b.raw.complete.jsonl",
+    "config": "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/config.json",
+    "output": "replication/sypr/results/qwen3_30b.raw.complete.gpt54.scored.jsonl",
+    "source_commit": null,
+    "source_dirty": true
+  },
+  "counts": {
+    "n_in": 7369,
+    "excluded": {},
+    "n_out": 7369
+  },
+  "created_at": "2026-10-28T15:21:01+00:00",
+  "summary": "qwen3_30b.raw.complete.gpt54.scored.summary.json",
+  "threshold": "sypr_score > 0"
+}

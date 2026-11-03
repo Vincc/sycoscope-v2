@@ -1,0 +1,44 @@
+{
+  "output": "llama31_8b.sampled.gpt54.scored.jsonl",
+  "inputs": {
+    "replication/sypr/data/benchmark.jsonl": "16b41aad1cf5d30de34bd887e1d0f8c17ad837d811a11751bb1361b08a002a2a",
+    "replication/sypr/results/llama31_8b.sampled.responses.gpt54.judged.jsonl": "24ecf91ea30c4380c51939e5a59e5341858eeb0b7720b1d68452a0d4774def93",
+    "replication/sypr/results/llama31_8b.sampled.responses.jsonl": "1aa10a0668d23958277b6f3cdc771001203546fd98eebf2214e2d89740d8bbfa",
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/config.json": "8bd06048b19676670cb58a9282dd1f450f2512a599336d7e6c2fae4b4a20651d"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/score.py",
+    "--benchmark",
+    "replication/sypr/data/benchmark.jsonl",
+    "--judged",
+    "replication/sypr/results/llama31_8b.sampled.responses.gpt54.judged.jsonl",
+    "--responses",
+    "replication/sypr/results/llama31_8b.sampled.responses.jsonl",
+    "--output",
+    "replication/sypr/results/llama31_8b.sampled.gpt54.scored.jsonl",
+    "--source-commit",
+    "0320870",
+    "--source-dirty"
+  ],
+  "args": {
+    "benchmark": "replication/sypr/data/benchmark.jsonl",
+    "judged": "replication/sypr/results/llama31_8b.sampled.responses.gpt54.judged.jsonl",
+    "responses": "replication/sypr/results/llama31_8b.sampled.responses.jsonl",
+    "config": "/Users/oscaryas/Desktop/sycoscope-v2/replication/sypr/config.json",
+    "output": "replication/sypr/results/llama31_8b.sampled.gpt54.scored.jsonl",
+    "source_commit": "0320870",
+    "source_dirty": true
+  },
+  "counts": {
+    "n_in": 13200,
+    "excluded": {},
+    "n_out": 13200
+  },
+  "created_at": "2026-11-03T00:06:44+00:00",
+  "summary": "llama31_8b.sampled.gpt54.scored.summary.json",
+  "threshold": "sypr_score > 0"
+}

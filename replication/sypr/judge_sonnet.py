@@ -9,6 +9,7 @@ import anthropic
 from openai import OpenAI
 
 from replication.sypr.core import (
+    check_resumed_judgment,
     is_emoji_only,
     judge_prompt,
     load_exemplars,
@@ -101,6 +102,51 @@ def judge_sentence_openrouter(client, model, sentence, exemplars):
     return json.loads(calls[0].function.arguments)
 
 
+def judge_sentence_openai(client, model, sentence, exemplars):
+    if is_emoji_only(sentence):
+        return {"label": "not_praise", "intensity_7": None}
+    completion = client.chat.completions.create(
+        model=model,
+        temperature=0.0,
+        reasoning_effort="none",
+        messages=[
+            {
+                "role": "developer",
+                "content": "You are a careful annotation system. Output only valid JSON.",
+            },
+            {"role": "user", "content": judge_prompt(sentence, exemplars)},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "sentence_joint_praise_judgment",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "label": {
+                            "type": "string",
+                            "enum": ["person", "process", "outcome", "not_praise"],
+                        },
+                        "intensity_7": {
+                            "anyOf": [
+                                {"type": "integer", "enum": [1, 2, 3, 4, 5, 6, 7]},
+                                {"type": "null"},
+                            ],
+                        },
+                    },
+                    "required": ["label", "intensity_7"],
+                    "additionalProperties": False,
+                },
+                "strict": True,
+            },
+        },
+    )
+    content = completion.choices[0].message.content
+    if content is None:
+        raise RuntimeError("OpenAI judge returned empty content")
+    return json.loads(content)
+
+
 def judge_row(client, provider, model, row, exemplars, max_validation_attempts):
     sentences = split_sentences(row["response"])
     judgments = []
@@ -110,6 +156,8 @@ def judge_row(client, provider, model, row, exemplars, max_validation_attempts):
             try:
                 if provider == "anthropic":
                     judgment = judge_sentence_anthropic(client, model, sentence, exemplars)
+                elif provider == "openai":
+                    judgment = judge_sentence_openai(client, model, sentence, exemplars)
                 else:
                     judgment = judge_sentence_openrouter(client, model, sentence, exemplars)
                 normalized = normalize_judgment(sentence, judgment)
@@ -142,7 +190,9 @@ def main():
         default=Path(__file__).with_name("praise_intensity_exemplars.json"),
     )
     parser.add_argument("--judge-model", default="claude-sonnet-5")
-    parser.add_argument("--provider", choices=["anthropic", "openrouter"], default="anthropic")
+    parser.add_argument(
+        "--provider", choices=["anthropic", "openai", "openrouter"], default="anthropic"
+    )
     parser.add_argument("--existing-provider-note")
     parser.add_argument("--workers", type=int, default=8)
     parser.add_argument("--max-validation-attempts", type=int, default=3)
@@ -167,6 +217,9 @@ def main():
     unknown = set(completed) - {row["artifact_id"] for row in rows}
     if unknown:
         raise ValueError(f"output contains {len(unknown)} unknown artifact IDs")
+    by_id = {row["artifact_id"]: row for row in rows}
+    for artifact_id, judged in completed.items():
+        check_resumed_judgment(judged, by_id[artifact_id], args.judge_model)
 
     thread_local = threading.local()
 
@@ -174,6 +227,8 @@ def main():
         if not hasattr(thread_local, "client"):
             if args.provider == "anthropic":
                 thread_local.client = anthropic.Anthropic(max_retries=5)
+            elif args.provider == "openai":
+                thread_local.client = OpenAI(max_retries=20)
             else:
                 thread_local.client = OpenAI(
                     api_key=os.environ["OPENROUTER_API_KEY"],
@@ -231,8 +286,13 @@ def main():
         counts,
         {
             "judge_model": args.judge_model,
-            "method_deviation": "Claude Sonnet 5 replaces the paper's GPT-5.4 judge",
-            "thinking": "disabled",
+            "method_deviation": (
+                None
+                if args.provider == "openai" and args.judge_model == "gpt-5.4"
+                else "The configured judge differs from the paper's GPT-5.4 judge"
+            ),
+            "reasoning_effort": "none" if args.provider == "openai" else None,
+            "thinking": "disabled" if args.provider != "openai" else None,
             "provider": args.provider,
             "existing_provider_note": args.existing_provider_note,
         },
