@@ -6,8 +6,10 @@ on its flipped_story rows; Are You Sure syco per source dataset. A unit keeps th
 is a target; a unit with at least --min-class rows per class is also a fitted source.
 Cells whose source and target come from the same dataset share rows or prompts (also across decodings, e.g. greedy and
 sampled responses to the same prompts), so they are cross-fitted over folds grouped by prompt: the direction is fit on
-the source label outside fold k and scores the target label inside fold k. Other cells fit on all source rows. The persona vector is applied as is (block L uses its hidden_states index L + 1). AUROC is computed on
+the source label outside fold k and scores the target label inside fold k. Other cells fit on all source rows. The persona vector (its response-mean difference, as the paper defines it) is applied as is at every position (block L uses its hidden_states index L + 1). AUROC is computed on
 the pooled scores; at --ci-blocks a group bootstrap of the target rows (scores held fixed) gives a 95% interval.
+With --probe-sweep, every contrastive probe of that sweep (DiM, and logistic at --probe-C) is also applied as is, at its
+own position and block, with source <sweep>:<unit>.
 Writes <output> (one row per source x target x position x block) and its meta file.
 
 Run from the repo root: python -m interp.generalization_matrix --judged ... --persona-vector ... --cache-dir ... --output ...
@@ -24,7 +26,9 @@ from probe_training.get_activations import skyline_group
 from utils import probes
 from utils.io import REPO_ROOT, check_counts, read_json, read_jsonl, write_jsonl, write_meta
 
-PERSONA_KEY = {"prompt_last": "prompt_last_diff", "prompt_mean": "prompt_avg_diff", "response_mean": "response_avg_diff"}
+POSITIONS = ("prompt_last", "prompt_mean", "response_mean", "response_first5")
+PROBE_POSITION = {"prompt_last": "last_prompt", "response_first5": "first5", "response_mean": "response"}  # get_activations names
+PERSONA_KEY = "response_avg_diff"  # the persona vector, projected at every position
 LAYER_CONVENTION = "block L = hidden_states[L + 1]; the last block is after the final norm"
 ELEPHANT_LABELS = {"AITA-NTA-FLIP": ["both_nta"], "AITA-NTA-OG": ["verdict_nta"]}  # other sources: ELEPHANT_METRICS
 
@@ -84,6 +88,34 @@ def weighted_auroc(y: np.ndarray, s: np.ndarray, weights: np.ndarray) -> np.ndar
         return (pos * (below + 0.5 * neg)).sum(axis=1) / (pos.sum(axis=1) * neg.sum(axis=1))
 
 
+def contrastive_probes(sweep: Path, C: float, model: str) -> tuple[dict[tuple[str, int], list[tuple[str, str, dict]]], dict]:
+    """({(cache position, block): [(source, method, probe)]}, counts) for a sweep's contrastive DiM probes and logistic
+    probes at C. Probe layer L is get_activations' hidden_states[L + 1], the cache's block L."""
+    manifest = read_jsonl(sweep / "manifest.jsonl")
+    if {m["model"] for m in manifest} != {model}:
+        raise ValueError(f"{sweep} probes are for {sorted({m['model'] for m in manifest})}, activations for {model}")
+    Cs = {m["C"] for m in manifest if m["method"] == "logistic"}
+    if C not in Cs:
+        raise ValueError(f"--probe-C {C} is not among {sweep}'s logistic C values {sorted(Cs)}")
+    cache_position = {v: k for k, v in PROBE_POSITION.items()}
+    out, excluded, files = defaultdict(list), Counter(), {}
+    for m in manifest:
+        if m["probe_type"] != "contrastive":
+            excluded["not_contrastive"] += 1
+        elif m["method"] == "logistic" and m["C"] != C:
+            excluded["other_C"] += 1
+        else:
+            if m["file"] not in files:
+                files[m["file"]] = np.load(sweep / m["file"])
+            source = f"{sweep.name}:{m['file'].removesuffix('.probes.npz')}"
+            out[cache_position[m["position"]], m["layer"]].append(
+                (source, m["method"], probes.load_probe(files[m["file"]], m["probe_id"], m["method"])))
+    for key, members in out.items():
+        if len({(s, method) for s, method, _ in members}) != len(members):
+            raise ValueError(f"{sweep}: two probes for one unit and method at {key}")
+    return out, check_counts(len(manifest), excluded, sum(map(len, out.values())), f"{sweep} probes")
+
+
 def position_dir(cache_dir: Path, judged: Path, position: str) -> Path:
     """Cache folder of the responses file a judged file was made from (judging/judged/X_judged -> responses/X_responses)."""
     decoding_dir = judged.parent.parent.parent
@@ -98,7 +130,7 @@ def main():
     parser.add_argument("--judge-name", required=True, help="Label suffix, e.g. sonnet55.")
     parser.add_argument("--persona-vector", type=Path, required=True)
     parser.add_argument("--cache-dir", type=Path, required=True)
-    parser.add_argument("--positions", nargs="+", choices=sorted(PERSONA_KEY), required=True)
+    parser.add_argument("--positions", nargs="+", choices=POSITIONS, required=True)
     parser.add_argument("--blocks", type=int, nargs="+", required=True, help="Blocks for persona and DiM.")
     parser.add_argument("--logistic-blocks", type=int, nargs="+", required=True)
     parser.add_argument("--ci-blocks", type=int, nargs="+", required=True)
@@ -108,10 +140,14 @@ def main():
     parser.add_argument("--min-class", type=int, required=True, help="Rows per class needed to fit a source.")
     parser.add_argument("--bootstrap", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--probe-sweep", type=Path, help="probes/<model>/<sweep>/ whose contrastive probes are also scored.")
+    parser.add_argument("--probe-C", type=float, help="Logistic C of the sweep's probes; required with --probe-sweep.")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if not set(args.logistic_blocks) | set(args.ci_blocks) <= set(args.blocks):
         raise ValueError("--logistic-blocks and --ci-blocks must be among --blocks")
+    if (args.probe_sweep is None) != (args.probe_C is None):
+        raise ValueError("--probe-sweep and --probe-C go together")
 
     # units, groups and folds
     units, excluded, group_of, dataset_of, files_of = {}, {}, {}, {}, {}
@@ -152,6 +188,16 @@ def main():
     persona = np.load(args.persona_vector)
     persona_meta = read_json(args.persona_vector.parent / "meta" / f"{args.persona_vector.name}.meta.json")
     persona_model = (persona_meta["model"], persona_meta["revision"])
+    probe_sets, probe_counts, probe_inputs = {}, None, []
+    if args.probe_sweep is not None:
+        probe_sets, probe_counts = contrastive_probes(args.probe_sweep, args.probe_C, persona_model[0])
+        split = read_json(args.probe_sweep / "split.json")
+        leaked = (set(split["train_ids"]) | set(split["val_ids"])) & set(group_of)
+        if leaked:
+            raise ValueError(f"{len(leaked)} probe training or validation rows are scored, e.g. {sorted(leaked)[:3]}")
+        probe_inputs = [args.probe_sweep / "manifest.jsonl", args.probe_sweep / "split.json",
+                        *sorted(args.probe_sweep.glob("*.probes.npz"))]
+        print(f"{args.probe_sweep}: {probe_counts}", flush=True)
     out, rng_seed = [], args.seed
     pdirs = {(path, p): position_dir(args.cache_dir, path, p) for path in set(files_of.values()) for p in args.positions}
     for pdir in pdirs.values():  # check model and files once; later loads skip the hash
@@ -181,9 +227,12 @@ def main():
                                                                                            args.bootstrap, rng_seed)
                 out.append(row)
 
-            v = persona[PERSONA_KEY[position]][block + 1].astype(np.float64)
+            v = persona[PERSONA_KEY][block + 1].astype(np.float64)
             for target in sorted(units):
                 cell("persona", "persona_vector", target, "zero_shot", X(target) @ (v / np.linalg.norm(v)))
+            for source, method, probe in probe_sets.get((position, block), []):
+                for target in sorted(units):
+                    cell(method, source, target, "zero_shot", probes.score(method, probe, X(target)))
             methods = ["dim"] + (["logistic"] if block in args.logistic_blocks else [])
             for method in methods:
                 for source in sources:
@@ -206,8 +255,9 @@ def main():
 
     write_jsonl(args.output, out)
     n_cells = len(out)
-    write_meta(args.output, [*args.judged, args.persona_vector], args, {"n_in": n_cells, "excluded": {}, "n_out": n_cells},
-               {"units": unit_counts, "sources": sources})
+    write_meta(args.output, [*args.judged, args.persona_vector, *probe_inputs], args,
+               {"n_in": n_cells, "excluded": {}, "n_out": n_cells},
+               {"units": unit_counts, "sources": sources, "probes": probe_counts})
     print(f"Wrote {n_cells} cells to {args.output}")
 
 

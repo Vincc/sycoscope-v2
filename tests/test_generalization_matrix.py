@@ -2,7 +2,11 @@ import numpy as np
 import pytest
 from sklearn.metrics import roc_auc_score
 
-from interp.generalization_matrix import assign_folds, unit_rows, weighted_auroc
+from interp.cache_activations import cache_spans
+from interp.generalization_matrix import PROBE_POSITION, assign_folds, contrastive_probes, unit_rows, weighted_auroc
+from utils import probes
+from utils.activations import position_spans
+from utils.io import write_jsonl
 
 
 def test_weighted_auroc_matches_sklearn_with_ties_and_weights():
@@ -39,3 +43,35 @@ def test_unit_rows_drop_none_labels_and_score_flip_pairs_once():
     assert units == {"AITA-NTA-FLIP/both_nta": [("b", 1)], "OEQ/validation": [("d", 0)], "OEQ/indirectness": [("d", 1)]}
     assert excluded["OEQ/framing"] == {"truncated": 1, "label_none": 1} and excluded["OEQ/validation"] == {"truncated": 1}
     assert excluded["AITA-NTA-FLIP/both_nta"] == {"original_telling": 1}
+
+
+def test_probe_positions_name_the_same_spans_as_cache_positions():
+    for prompt_len, answer_start, resp_end in [(10, 10, 40), (10, 10, 13), (5, 5, 6)]:
+        cache = cache_spans(prompt_len, answer_start, resp_end)
+        trained = position_spans(prompt_len, resp_end, answer_start)
+        assert all(cache[c] == trained[p] for c, p in PROBE_POSITION.items())
+
+
+def test_contrastive_probes_keep_dim_and_logistic_at_C(tmp_path):
+    rng = np.random.default_rng(0)
+    X, y = rng.normal(size=(40, 8)), np.repeat([0, 1], 20)
+    X[y == 1] += 1.0
+    fitted, manifest = {}, []
+    for method, position, C, kind in [("logistic", "last_prompt", 0.01, "contrastive"), ("logistic", "last_prompt", 1.0, "contrastive"),
+                                      ("dim", "first5", None, "contrastive"), ("dim", "response", None, "skyline")]:
+        pid = f"pair00__{probes.probe_key(method, position, 3)}" + ("" if C is None else f"__C{C:g}")
+        fitted[pid] = probes.fit(method, X, y, C, 1000)
+        manifest.append({"probe_id": pid, "file": "pair00.probes.npz", "probe_type": kind, "method": method,
+                         "position": position, "layer": 3, "C": C, "model": "m"})
+    probes.save_probes(tmp_path / "pair00.probes.npz", fitted)
+    write_jsonl(tmp_path / "manifest.jsonl", manifest)
+    out, counts = contrastive_probes(tmp_path, 0.01, "m")
+    assert sorted(out) == [("prompt_last", 3), ("response_first5", 3)]
+    (source, method, probe), = out["prompt_last", 3]
+    assert (source, method) == (f"{tmp_path.name}:pair00", "logistic")
+    assert np.allclose(probes.score(method, probe, X), probes.score("logistic", fitted[manifest[0]["probe_id"]], X))
+    assert counts == {"n_in": 4, "excluded": {"other_C": 1, "not_contrastive": 1}, "n_out": 2}
+    with pytest.raises(ValueError, match="not among"):
+        contrastive_probes(tmp_path, 0.1, "m")
+    with pytest.raises(ValueError, match="probes are for"):
+        contrastive_probes(tmp_path, 0.01, "other")

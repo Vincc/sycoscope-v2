@@ -11,7 +11,7 @@
     "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
   },
   "git": {
-    "commit": "6572f7d498afa719acc14d491ba26fad449e2281",
+    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
     "dirty": true
   },
   "argv": [
@@ -157,11 +157,12 @@
     "excluded": {},
     "n_out": 10659
   },
-  "created_at": "2026-10-28T14:24:16+00:00",
+  "created_at": "2026-10-28T18:28:16+00:00",
   "units": {
-    "AITA-NTA-FLIP/both_nta": {
-      "n_in": 1591,
+    "t0.6_p0.9:AITA-NTA-FLIP/both_nta": {
+      "n_in": 3182,
       "excluded": {
+        "original_telling": 1591,
         "label_none": 775
       },
       "n_out": 816,
@@ -169,7 +170,7 @@
       "n_neg": 279,
       "n_groups": 816
     },
-    "AITA-NTA-OG/verdict_nta": {
+    "t0.6_p0.9:AITA-NTA-OG/verdict_nta": {
       "n_in": 1591,
       "excluded": {
         "label_none": 199
@@ -179,7 +180,7 @@
       "n_neg": 52,
       "n_groups": 1392
     },
-    "AITA-YTA/framing": {
+    "t0.6_p0.9:AITA-YTA/framing": {
       "n_in": 2000,
       "excluded": {},
       "n_out": 2000,
@@ -187,7 +188,7 @@
       "n_neg": 337,
       "n_groups": 2000
     },
-    "AITA-YTA/indirectness": {
+    "t0.6_p0.9:AITA-YTA/indirectness": {
       "n_in": 2000,
       "excluded": {},
       "n_out": 2000,
@@ -195,7 +196,7 @@
       "n_neg": 1302,
       "n_groups": 2000
     },
-    "AITA-YTA/validation": {
+    "t0.6_p0.9:AITA-YTA/validation": {
       "n_in": 2000,
       "excluded": {},
       "n_out": 2000,
@@ -203,7 +204,7 @@
       "n_neg": 491,
       "n_groups": 2000
     },
-    "OEQ/framing": {
+    "t0.6_p0.9:OEQ/framing": {
       "n_in": 3027,
       "excluded": {
         "truncated": 3
@@ -213,7 +214,7 @@
       "n_neg": 129,
       "n_groups": 3007
     },
-    "OEQ/indirectness": {
+    "t0.6_p0.9:OEQ/indirectness": {
       "n_in": 3027,
       "excluded": {
         "truncated": 3
@@ -223,7 +224,7 @@
       "n_neg": 1650,
       "n_groups": 3007
     },
-    "OEQ/validation": {
+    "t0.6_p0.9:OEQ/validation": {
       "n_in": 3027,
       "excluded": {
         "truncated": 3
@@ -233,7 +234,7 @@
       "n_neg": 935,
       "n_groups": 3007
     },
-    "SS/framing": {
+    "t0.6_p0.9:SS/framing": {
       "n_in": 3777,
       "excluded": {
         "truncated": 8
@@ -243,7 +244,7 @@
       "n_neg": 582,
       "n_groups": 3769
     },
-    "SS/indirectness": {
+    "t0.6_p0.9:SS/indirectness": {
       "n_in": 3777,
       "excluded": {
         "truncated": 8
@@ -253,7 +254,7 @@
       "n_neg": 543,
       "n_groups": 3769
     },
-    "SS/validation": {
+    "t0.6_p0.9:SS/validation": {
       "n_in": 3777,
       "excluded": {
         "truncated": 8
@@ -263,7 +264,7 @@
       "n_neg": 1082,
       "n_groups": 3769
     },
-    "aqua_mc/syco": {
+    "t0.6_p0.9:aqua_mc/syco": {
       "n_in": 254,
       "excluded": {
         "turn1_incorrect": 32,
@@ -278,7 +279,7 @@
       "n_neg": 49,
       "n_groups": 65
     },
-    "math_mc_cot/syco": {
+    "t0.6_p0.9:math_mc_cot/syco": {
       "n_in": 1000,
       "excluded": {
         "turn1_unparsed": 43,
@@ -293,7 +294,7 @@
       "n_neg": 133,
       "n_groups": 183
     },
-    "mmlu_mc_cot/syco": {
+    "t0.6_p0.9:mmlu_mc_cot/syco": {
       "n_in": 1000,
       "excluded": {
         "turn1_incorrect": 268,
@@ -309,7 +310,7 @@
       "n_neg": 183,
       "n_groups": 550
     },
-    "trivia_qa/syco": {
+    "t0.6_p0.9:trivia_qa/syco": {
       "n_in": 1000,
       "excluded": {
         "turn1_incorrect": 246,
@@ -322,7 +323,7 @@
       "n_neg": 446,
       "n_groups": 674
     },
-    "truthful_qa/syco": {
+    "t0.6_p0.9:truthful_qa/syco": {
       "n_in": 817,
       "excluded": {
         "turn1_incorrect": 422,
@@ -334,7 +335,7 @@
       "n_neg": 244,
       "n_groups": 384
     },
-    "truthful_qa_mc/syco": {
+    "t0.6_p0.9:truthful_qa_mc/syco": {
       "n_in": 817,
       "excluded": {
         "turn2_unparsed": 48,
@@ -350,22 +351,22 @@
     }
   },
   "sources": [
-    "AITA-NTA-FLIP/both_nta",
-    "AITA-NTA-OG/verdict_nta",
-    "AITA-YTA/framing",
-    "AITA-YTA/indirectness",
-    "AITA-YTA/validation",
-    "OEQ/framing",
-    "OEQ/indirectness",
-    "OEQ/validation",
-    "SS/framing",
-    "SS/indirectness",
-    "SS/validation",
-    "aqua_mc/syco",
-    "math_mc_cot/syco",
-    "mmlu_mc_cot/syco",
-    "trivia_qa/syco",
-    "truthful_qa/syco",
-    "truthful_qa_mc/syco"
+    "t0.6_p0.9:AITA-NTA-FLIP/both_nta",
+    "t0.6_p0.9:AITA-NTA-OG/verdict_nta",
+    "t0.6_p0.9:AITA-YTA/framing",
+    "t0.6_p0.9:AITA-YTA/indirectness",
+    "t0.6_p0.9:AITA-YTA/validation",
+    "t0.6_p0.9:OEQ/framing",
+    "t0.6_p0.9:OEQ/indirectness",
+    "t0.6_p0.9:OEQ/validation",
+    "t0.6_p0.9:SS/framing",
+    "t0.6_p0.9:SS/indirectness",
+    "t0.6_p0.9:SS/validation",
+    "t0.6_p0.9:aqua_mc/syco",
+    "t0.6_p0.9:math_mc_cot/syco",
+    "t0.6_p0.9:mmlu_mc_cot/syco",
+    "t0.6_p0.9:trivia_qa/syco",
+    "t0.6_p0.9:truthful_qa/syco",
+    "t0.6_p0.9:truthful_qa_mc/syco"
   ]
 }
