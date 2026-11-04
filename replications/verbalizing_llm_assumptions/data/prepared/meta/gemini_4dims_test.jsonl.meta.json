@@ -1,0 +1,28 @@
+{
+  "inputs": {
+    "test_gemini_4dims.csv": "1fd66d6e31f8e43f7ef74ac9d1199cecc0f7ae032f464eb29a3c30edc78a29dd"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "rows_in": 2480,
+    "rows_out": 2474,
+    "excluded": {
+      "validation_seeking: missing score": 6
+    },
+    "by_dataset": {
+      "factual": 1085,
+      "wildchat": 96,
+      "oeq": 626,
+      "ir": 174,
+      "aita": 366,
+      "cancer": 102,
+      "valobj": 25
+    }
+  }
+}

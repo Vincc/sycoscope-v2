@@ -1,0 +1,29 @@
+{
+  "inputs": {
+    "test_llama8b_supporttypes.csv": "db8f76fc164f7cd0d570a39ba1ec005382cc7b80769ac5e537274d9b77e43f59"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "rows_in": 2500,
+    "rows_out": 2326,
+    "excluded": {
+      "emotional_support: missing score": 123,
+      "test prompt also in train": 51
+    },
+    "by_dataset": {
+      "factual": 998,
+      "oeq": 608,
+      "wildchat": 32,
+      "ir": 155,
+      "aita": 384,
+      "cancer": 126,
+      "valobj": 23
+    }
+  }
+}

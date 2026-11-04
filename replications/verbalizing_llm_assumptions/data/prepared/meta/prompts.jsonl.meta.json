@@ -1,0 +1,12 @@
+{
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "unique_prompts": 12234
+  }
+}

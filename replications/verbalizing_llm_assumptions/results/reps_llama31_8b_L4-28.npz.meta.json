@@ -1,0 +1,43 @@
+{
+  "inputs": {
+    "va_sync_tmp/prepared/prompts.jsonl": "25ac526ac695b5e797a3a4b06afbf5002f2e2d3d8840809fd0571d2e6f1683b3"
+  },
+  "model": "unsloth/Llama-3.1-8B-Instruct",
+  "layers": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "max_length": 512,
+  "batch_size": 16,
+  "pooling": "mean",
+  "chat_template": false,
+  "dtype": "bfloat16",
+  "hidden_size": 4096,
+  "num_hidden_layers": 32,
+  "counts": {
+    "prompts": 12234,
+    "truncated": 1104
+  },
+  "git": "no git on this machine",
+  "argv": [
+    "va_sync_tmp/src/extract_reps.py",
+    "--prompts",
+    "va_sync_tmp/prepared/prompts.jsonl",
+    "--model",
+    "unsloth/Llama-3.1-8B-Instruct",
+    "--layers",
+    "4,8,12,16,20,24,28",
+    "--max_length",
+    "512",
+    "--batch_size",
+    "16",
+    "--out",
+    "activations/va/reps_llama31_8b_L4-28.npz"
+  ],
+  "created_at": "2026-10-26T17:31:12+00:00"
+}

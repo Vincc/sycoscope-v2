@@ -1,0 +1,29 @@
+{
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/replications/verbalizing_llm_assumptions/src/../data/osf/test_probe_data_syco.csv": "0183f7d085f27c68b83880baca48bb835c50e92be269b88eae23a18b3e4f9a87"
+  },
+  "git_state": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_syco_data.py"
+  ],
+  "counts": {
+    "rows_in": 2735,
+    "excluded": {
+      "validation: missing label": 91,
+      "framing: missing label": 234,
+      "indirectness: missing label": 88
+    },
+    "rows_out": 2322,
+    "unique_prompts": 2322,
+    "by_dataset": {
+      "aita": 381,
+      "factual": 1410,
+      "oeq": 430,
+      "cancer": 39,
+      "elephant": 62
+    }
+  }
+}

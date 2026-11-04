@@ -1,0 +1,28 @@
+{
+  "inputs": {
+    "train_gpt4o_supporttypes.csv": "28d52c24e274c6ce9ce80bd60c5f4b52bdeb32b8bb44f98d8371210fdfea7984"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "rows_in": 9898,
+    "rows_out": 9591,
+    "excluded": {
+      "emotional_support: missing score": 307
+    },
+    "by_dataset": {
+      "factual": 4261,
+      "wildchat": 369,
+      "oeq": 2243,
+      "ir": 630,
+      "aita": 1536,
+      "cancer": 481,
+      "valobj": 71
+    }
+  }
+}

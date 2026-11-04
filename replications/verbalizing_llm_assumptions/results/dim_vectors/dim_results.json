@@ -1,0 +1,592 @@
+{
+ "args": {
+  "reps": "replications/verbalizing_llm_assumptions/results/reps_llama31_8b_L4-28.npz",
+  "cf_reps": "replications/verbalizing_llm_assumptions/results/reps_counterfactual_n300_L4-28.npz",
+  "cf_prompts": "replications/verbalizing_llm_assumptions/data/counterfactual_n300_seed0.jsonl",
+  "prepared": "replications/verbalizing_llm_assumptions/data/prepared",
+  "probe_dir": "replications/verbalizing_llm_assumptions/results/probes_a10/probes",
+  "lo": 0.3,
+  "hi": 0.7,
+  "remove_pcs": 10,
+  "min_group": 30,
+  "out_dir": "replications/verbalizing_llm_assumptions/results/dim_vectors"
+ },
+ "probes": {
+  "gemini_validation_seeking": {
+   "layer": 16,
+   "n_hi": 3758,
+   "n_lo": 3133,
+   "n_cf_pairs": 300,
+   "norm_label": 0.2137321980264737,
+   "norm_cf": 0.40566324077540267,
+   "cos_label_ridge": 0.4521613724310574,
+   "cos_cf_ridge": 0.028006375180686598,
+   "cos_label_cf": 0.15260645137737194,
+   "macro_auc_quantile": {
+    "ridge": 0.772220938206393,
+    "label": 0.6606337207433294,
+    "cf": 0.4996124752838769
+   }
+  },
+  "gemini_user_rightness": {
+   "layer": 16,
+   "n_hi": 3648,
+   "n_lo": 3107,
+   "n_cf_pairs": 300,
+   "norm_label": 0.17615039615307676,
+   "norm_cf": 0.1545067482089631,
+   "cos_label_ridge": 0.516265790484553,
+   "cos_cf_ridge": 0.036197325966474986,
+   "cos_label_cf": 0.055989171175485845,
+   "macro_auc_quantile": {
+    "ridge": 0.8114349338623246,
+    "label": 0.671262596152436,
+    "cf": 0.5118999172543092
+   }
+  },
+  "gemini_user_information_advantage": {
+   "layer": 12,
+   "n_hi": 4645,
+   "n_lo": 4566,
+   "n_cf_pairs": 300,
+   "norm_label": 0.08564906578067533,
+   "norm_cf": 0.2658125609066368,
+   "cos_label_ridge": 0.43741644765263454,
+   "cos_cf_ridge": 0.000963990667958387,
+   "cos_label_cf": 6.268627747556061e-05,
+   "macro_auc_quantile": {
+    "ridge": 0.7124449331249125,
+    "label": 0.6468097203613422,
+    "cf": 0.47645899002010705
+   }
+  },
+  "gemini_objectivity_seeking": {
+   "layer": 12,
+   "n_hi": 7280,
+   "n_lo": 456,
+   "n_cf_pairs": 300,
+   "norm_label": 0.3311819628761897,
+   "norm_cf": 0.25587509219912213,
+   "cos_label_ridge": 0.5332010080850705,
+   "cos_cf_ridge": 0.046207272450073104,
+   "cos_label_cf": 0.052801300670658975,
+   "macro_auc_quantile": {
+    "ridge": 0.7643774406017666,
+    "label": 0.6155134004699676,
+    "cf": 0.542943395613323
+   }
+  },
+  "gemini_emotional_support": {
+   "layer": 16,
+   "n_hi": 3359,
+   "n_lo": 5054,
+   "n_cf_pairs": 300,
+   "norm_label": 0.14607012792967794,
+   "norm_cf": 0.32077989021925324,
+   "cos_label_ridge": 0.3931476236932212,
+   "cos_cf_ridge": 0.026112900261380224,
+   "cos_label_cf": 0.03883467425129171,
+   "macro_auc_quantile": {
+    "ridge": 0.7608524299923626,
+    "label": 0.6284408213086178,
+    "cf": 0.49078108681261795
+   }
+  },
+  "gemini_social_companionship": {
+   "layer": 16,
+   "n_hi": 269,
+   "n_lo": 9016,
+   "n_cf_pairs": 300,
+   "norm_label": 0.7492064049976771,
+   "norm_cf": 0.3511168188642292,
+   "cos_label_ridge": 0.42144040528546384,
+   "cos_cf_ridge": 0.01420065150496564,
+   "cos_label_cf": 0.01085385617781039,
+   "macro_auc_quantile": {
+    "ridge": 0.7121169541783665,
+    "label": 0.6410885346626517,
+    "cf": 0.48574178464394696
+   }
+  },
+  "gemini_belonging_support": {
+   "layer": 12,
+   "n_hi": 344,
+   "n_lo": 7258,
+   "n_cf_pairs": 300,
+   "norm_label": 0.285980248223784,
+   "norm_cf": 0.22831416572759616,
+   "cos_label_ridge": 0.5357305872943708,
+   "cos_cf_ridge": 0.0282855087836639,
+   "cos_label_cf": 0.0073814937749082194,
+   "macro_auc_quantile": {
+    "ridge": 0.7466659111706986,
+    "label": 0.6599666947701411,
+    "cf": 0.4736020828928715
+   }
+  },
+  "gemini_information_guidance": {
+   "layer": 12,
+   "n_hi": 9415,
+   "n_lo": 129,
+   "n_cf_pairs": 300,
+   "norm_label": 0.5775516120569006,
+   "norm_cf": 0.32110209804631956,
+   "cos_label_ridge": 0.5623691446318644,
+   "cos_cf_ridge": 0.015194751777074793,
+   "cos_label_cf": -0.02722640125667093,
+   "macro_auc_quantile": {
+    "ridge": 0.6756000358536406,
+    "label": 0.5728609881017354,
+    "cf": 0.5310104677220143
+   }
+  },
+  "gemini_tangible_support": {
+   "layer": 16,
+   "n_hi": 262,
+   "n_lo": 9352,
+   "n_cf_pairs": 300,
+   "norm_label": 0.7203029426217271,
+   "norm_cf": 0.30905767197709455,
+   "cos_label_ridge": 0.4054559672221654,
+   "cos_cf_ridge": 0.0011767209107475345,
+   "cos_label_cf": -0.017518152514496878,
+   "macro_auc_quantile": {
+    "ridge": 0.6418970305456175,
+    "label": 0.5887532353597221,
+    "cf": 0.5082732383714441
+   }
+  },
+  "gpt4o_validation_seeking": {
+   "layer": 12,
+   "n_hi": 1467,
+   "n_lo": 1720,
+   "n_cf_pairs": 300,
+   "norm_label": 0.17055716783741365,
+   "norm_cf": 0.2964374498511918,
+   "cos_label_ridge": 0.5460772493764914,
+   "cos_cf_ridge": 0.09153062985059474,
+   "cos_label_cf": 0.17780667608011833,
+   "macro_auc_quantile": {
+    "ridge": 0.779513779314806,
+    "label": 0.6295337798343902,
+    "cf": 0.5557872181741618
+   }
+  },
+  "gpt4o_user_rightness": {
+   "layer": 16,
+   "n_hi": 2937,
+   "n_lo": 1374,
+   "n_cf_pairs": 300,
+   "norm_label": 0.1905715114232702,
+   "norm_cf": 0.15479462179424142,
+   "cos_label_ridge": 0.5678281859579732,
+   "cos_cf_ridge": 0.0353894369104322,
+   "cos_label_cf": 0.05775782833169124,
+   "macro_auc_quantile": {
+    "ridge": 0.7923397665481811,
+    "label": 0.6571106773718424,
+    "cf": 0.5659370957846248
+   }
+  },
+  "gpt4o_user_information_advantage": {
+   "layer": 16,
+   "n_hi": 1183,
+   "n_lo": 3787,
+   "n_cf_pairs": 300,
+   "norm_label": 0.2737545458440411,
+   "norm_cf": 0.35530537508755916,
+   "cos_label_ridge": 0.36832823210598836,
+   "cos_cf_ridge": 0.035134596091093324,
+   "cos_label_cf": 0.08410856098052721,
+   "macro_auc_quantile": {
+    "ridge": 0.7762211880791,
+    "label": 0.6687200246729743,
+    "cf": 0.5300861343905031
+   }
+  },
+  "gpt4o_objectivity_seeking": {
+   "layer": 12,
+   "n_hi": 5871,
+   "n_lo": 79,
+   "n_cf_pairs": 300,
+   "norm_label": 0.7024236199909762,
+   "norm_cf": 0.2553346947785666,
+   "cos_label_ridge": 0.4015534693375201,
+   "cos_cf_ridge": 0.04832366934359968,
+   "cos_label_cf": 0.03450966738921764,
+   "macro_auc_quantile": {
+    "ridge": 0.7225828415517798,
+    "label": 0.6304178472714891,
+    "cf": 0.556305109690736
+   }
+  },
+  "gpt4o_emotional_support": {
+   "layer": 16,
+   "n_hi": 2050,
+   "n_lo": 4952,
+   "n_cf_pairs": 300,
+   "norm_label": 0.22547876094605748,
+   "norm_cf": 0.3202575823277585,
+   "cos_label_ridge": 0.36887465259610164,
+   "cos_cf_ridge": 0.047587915972589746,
+   "cos_label_cf": 0.0693033473520318,
+   "macro_auc_quantile": {
+    "ridge": 0.8229754069490663,
+    "label": 0.6903515129925072,
+    "cf": 0.5466676489118466
+   }
+  },
+  "gpt4o_social_companionship": {
+   "layer": 16,
+   "n_hi": 146,
+   "n_lo": 5780,
+   "n_cf_pairs": 300,
+   "norm_label": 0.8311334588685969,
+   "norm_cf": 0.3509096917032708,
+   "cos_label_ridge": 0.3466177224027836,
+   "cos_cf_ridge": 0.029235282583261996,
+   "cos_label_cf": 0.028613644389395187,
+   "macro_auc_quantile": {
+    "ridge": 0.8214299345808754,
+    "label": 0.7027017654594059,
+    "cf": 0.5652005844821515
+   }
+  },
+  "gpt4o_belonging_support": {
+   "layer": 16,
+   "n_hi": 160,
+   "n_lo": 5375,
+   "n_cf_pairs": 300,
+   "norm_label": 0.6523621231054519,
+   "norm_cf": 0.2980183392422757,
+   "cos_label_ridge": 0.3980702293950325,
+   "cos_cf_ridge": 0.028980131283715804,
+   "cos_label_cf": -0.0061542900336264625,
+   "macro_auc_quantile": {
+    "ridge": 0.855699252639949,
+    "label": 0.7386227093281684,
+    "cf": 0.5011808864640308
+   }
+  },
+  "gpt4o_information_guidance": {
+   "layer": 12,
+   "n_hi": 7066,
+   "n_lo": 152,
+   "n_cf_pairs": 300,
+   "norm_label": 0.4839598111713649,
+   "norm_cf": 0.3209014165315742,
+   "cos_label_ridge": 0.4486688206501883,
+   "cos_cf_ridge": 0.02135783618892408,
+   "cos_label_cf": 0.008522537021968715,
+   "macro_auc_quantile": {
+    "ridge": 0.8085493484010936,
+    "label": 0.6860834728410182,
+    "cf": 0.5028401509924635
+   }
+  },
+  "gpt4o_tangible_support": {
+   "layer": 16,
+   "n_hi": 69,
+   "n_lo": 8369,
+   "n_cf_pairs": 300,
+   "norm_label": 0.6655620877532058,
+   "norm_cf": 0.30905822658557514,
+   "cos_label_ridge": 0.41087936713069473,
+   "cos_cf_ridge": 0.01575708486471372,
+   "cos_label_cf": -0.006317734043001727,
+   "macro_auc_quantile": {
+    "ridge": 0.6998108026147974,
+    "label": 0.6338152732572838,
+    "cf": 0.5330174720743387
+   }
+  },
+  "llama70b_validation_seeking": {
+   "layer": 16,
+   "n_hi": 1781,
+   "n_lo": 4085,
+   "n_cf_pairs": 300,
+   "norm_label": 0.25266323374808836,
+   "norm_cf": 0.40528455120068163,
+   "cos_label_ridge": 0.42931469314673626,
+   "cos_cf_ridge": 0.0631495500783763,
+   "cos_label_cf": 0.12618698517917856,
+   "macro_auc_quantile": {
+    "ridge": 0.7499211467422624,
+    "label": 0.652246532309087,
+    "cf": 0.5406539806394164
+   }
+  },
+  "llama70b_user_rightness": {
+   "layer": 16,
+   "n_hi": 2701,
+   "n_lo": 821,
+   "n_cf_pairs": 300,
+   "norm_label": 0.2824125265751111,
+   "norm_cf": 0.15460799596183297,
+   "cos_label_ridge": 0.5037789963782725,
+   "cos_cf_ridge": 0.005972203667018703,
+   "cos_label_cf": 0.0366259537593617,
+   "macro_auc_quantile": {
+    "ridge": 0.8371410809633644,
+    "label": 0.633222874406094,
+    "cf": 0.525663006954265
+   }
+  },
+  "llama70b_user_information_advantage": {
+   "layer": 12,
+   "n_hi": 4519,
+   "n_lo": 2985,
+   "n_cf_pairs": 300,
+   "norm_label": 0.09051639105705095,
+   "norm_cf": 0.2655433054552867,
+   "cos_label_ridge": 0.42991643519948985,
+   "cos_cf_ridge": -0.022728973573005403,
+   "cos_label_cf": 0.00099351090398808,
+   "macro_auc_quantile": {
+    "ridge": 0.7821332702307958,
+    "label": 0.5952666366034912,
+    "cf": 0.4724994673960869
+   }
+  },
+  "llama70b_objectivity_seeking": {
+   "layer": 12,
+   "n_hi": 5217,
+   "n_lo": 165,
+   "n_cf_pairs": 300,
+   "norm_label": 0.4193618665060426,
+   "norm_cf": 0.2554801000010969,
+   "cos_label_ridge": 0.47030389142871226,
+   "cos_cf_ridge": 0.03768403749844371,
+   "cos_label_cf": 0.05268576629482348,
+   "macro_auc_quantile": {
+    "ridge": 0.8060096167811385,
+    "label": 0.6862216968748606,
+    "cf": 0.5195666508902917
+   }
+  },
+  "llama70b_emotional_support": {
+   "layer": 16,
+   "n_hi": 1815,
+   "n_lo": 5631,
+   "n_cf_pairs": 300,
+   "norm_label": 0.2593387015106717,
+   "norm_cf": 0.32068006159595935,
+   "cos_label_ridge": 0.3531846371578808,
+   "cos_cf_ridge": 0.04866668894718321,
+   "cos_label_cf": 0.08912194002391642,
+   "macro_auc_quantile": {
+    "ridge": 0.8620534618518012,
+    "label": 0.6950916057011131,
+    "cf": 0.5917307825109183
+   }
+  },
+  "llama70b_social_companionship": {
+   "layer": 16,
+   "n_hi": 186,
+   "n_lo": 9021,
+   "n_cf_pairs": 300,
+   "norm_label": 0.8262118692048236,
+   "norm_cf": 0.35112411281226336,
+   "cos_label_ridge": 0.4032414261622259,
+   "cos_cf_ridge": 0.051378743615589764,
+   "cos_label_cf": 0.007954945054745923,
+   "macro_auc_quantile": {
+    "ridge": 0.6997838468201608,
+    "label": 0.5761559731973194,
+    "cf": 0.5300128238576839
+   }
+  },
+  "llama70b_belonging_support": {
+   "layer": 20,
+   "n_hi": 58,
+   "n_lo": 8593,
+   "n_cf_pairs": 300,
+   "norm_label": 1.2452391936161495,
+   "norm_cf": 0.4027921740995814,
+   "cos_label_ridge": 0.3514853259475013,
+   "cos_cf_ridge": 0.022436154100433862,
+   "cos_label_cf": -0.0007747880693489236,
+   "macro_auc_quantile": {
+    "ridge": 0.7098294484335875,
+    "label": 0.657430130745454,
+    "cf": 0.5232172060008861
+   }
+  },
+  "llama70b_information_guidance": {
+   "layer": 12,
+   "n_hi": 7842,
+   "n_lo": 143,
+   "n_cf_pairs": 300,
+   "norm_label": 0.3406973891958974,
+   "norm_cf": 0.32119803095844335,
+   "cos_label_ridge": 0.46778717029039624,
+   "cos_cf_ridge": 0.03978975449463834,
+   "cos_label_cf": -0.0005114910023054526,
+   "macro_auc_quantile": {
+    "ridge": 0.7887734154442985,
+    "label": 0.6399863545278454,
+    "cf": 0.5308336197148198
+   }
+  },
+  "llama70b_tangible_support": {
+   "layer": 16,
+   "n_hi": 50,
+   "n_lo": 9181,
+   "n_cf_pairs": 300,
+   "norm_label": 0.7264917926574403,
+   "norm_cf": 0.3092534752625277,
+   "cos_label_ridge": 0.4626167236616659,
+   "cos_cf_ridge": 0.0007422998408296897,
+   "cos_label_cf": -0.028772863563720052,
+   "macro_auc_quantile": {
+    "ridge": 0.656603523187973,
+    "label": 0.6079574794480369,
+    "cf": 0.4656444513160852
+   }
+  },
+  "llama8b_validation_seeking": {
+   "layer": 12,
+   "n_hi": 2693,
+   "n_lo": 752,
+   "n_cf_pairs": 300,
+   "norm_label": 0.1561330145229817,
+   "norm_cf": 0.2960638839648516,
+   "cos_label_ridge": 0.5124647596988878,
+   "cos_cf_ridge": 0.03414573231261643,
+   "cos_label_cf": 0.09098689634128904,
+   "macro_auc_quantile": {
+    "ridge": 0.7336039051296028,
+    "label": 0.5688981506071491,
+    "cf": 0.5521432993479584
+   }
+  },
+  "llama8b_user_rightness": {
+   "layer": 12,
+   "n_hi": 932,
+   "n_lo": 1078,
+   "n_cf_pairs": 300,
+   "norm_label": 0.1640309401913308,
+   "norm_cf": 0.12079932883585617,
+   "cos_label_ridge": 0.5491667446342784,
+   "cos_cf_ridge": 0.01008050748282282,
+   "cos_label_cf": 0.05066571238200703,
+   "macro_auc_quantile": {
+    "ridge": 0.7619196137311183,
+    "label": 0.6360624038092072,
+    "cf": 0.48974875333277673
+   }
+  },
+  "llama8b_user_information_advantage": {
+   "layer": 4,
+   "n_hi": 755,
+   "n_lo": 5858,
+   "n_cf_pairs": 300,
+   "norm_label": 0.038175564361710816,
+   "norm_cf": 0.10216553953136137,
+   "cos_label_ridge": 0.6631440862222431,
+   "cos_cf_ridge": -0.03503779278078233,
+   "cos_label_cf": -0.06734509139842808,
+   "macro_auc_quantile": {
+    "ridge": 0.5458278678848433,
+    "label": 0.5544080730992924,
+    "cf": 0.5227388943690656
+   }
+  },
+  "llama8b_objectivity_seeking": {
+   "layer": 8,
+   "n_hi": 6513,
+   "n_lo": 247,
+   "n_cf_pairs": 300,
+   "norm_label": 0.1434041087849947,
+   "norm_cf": 0.17886833028827226,
+   "cos_label_ridge": 0.49793271970576464,
+   "cos_cf_ridge": -0.006662149688802889,
+   "cos_label_cf": 0.012339707860375524,
+   "macro_auc_quantile": {
+    "ridge": 0.6484219631808855,
+    "label": 0.6136517639312618,
+    "cf": 0.5055763477441068
+   }
+  },
+  "llama8b_emotional_support": {
+   "layer": 12,
+   "n_hi": 1926,
+   "n_lo": 4222,
+   "n_cf_pairs": 300,
+   "norm_label": 0.1905970301677144,
+   "norm_cf": 0.23784153665921517,
+   "cos_label_ridge": 0.44049684705674624,
+   "cos_cf_ridge": 0.03044647965250943,
+   "cos_label_cf": -0.017408884838415722,
+   "macro_auc_quantile": {
+    "ridge": 0.813119237466986,
+    "label": 0.6947335297728773,
+    "cf": 0.5430637561353767
+   }
+  },
+  "llama8b_social_companionship": {
+   "layer": 12,
+   "n_hi": 343,
+   "n_lo": 5581,
+   "n_cf_pairs": 300,
+   "norm_label": 0.3861572656626919,
+   "norm_cf": 0.2716769756504014,
+   "cos_label_ridge": 0.4615638856358586,
+   "cos_cf_ridge": 0.04990878462500443,
+   "cos_label_cf": 0.06711412353247223,
+   "macro_auc_quantile": {
+    "ridge": 0.828927735208921,
+    "label": 0.7288050496700302,
+    "cf": 0.5602158521925463
+   }
+  },
+  "llama8b_belonging_support": {
+   "layer": 16,
+   "n_hi": 47,
+   "n_lo": 8467,
+   "n_cf_pairs": 300,
+   "norm_label": 0.7143737980119785,
+   "norm_cf": 0.2985106474426239,
+   "cos_label_ridge": 0.41905747769723195,
+   "cos_cf_ridge": 0.030299267167815523,
+   "cos_label_cf": 0.011354352776073866,
+   "macro_auc_quantile": {
+    "ridge": 0.7720799077364386,
+    "label": 0.6646399050173549,
+    "cf": 0.5374338090736029
+   }
+  },
+  "llama8b_information_guidance": {
+   "layer": 12,
+   "n_hi": 5404,
+   "n_lo": 708,
+   "n_cf_pairs": 300,
+   "norm_label": 0.22048551615379108,
+   "norm_cf": 0.32131413839972783,
+   "cos_label_ridge": 0.5214448822206127,
+   "cos_cf_ridge": 0.00026044901331739666,
+   "cos_label_cf": 0.011591961035297764,
+   "macro_auc_quantile": {
+    "ridge": 0.781182196465053,
+    "label": 0.6585496844973177,
+    "cf": 0.5395597802083227
+   }
+  },
+  "llama8b_tangible_support": {
+   "layer": 16,
+   "n_hi": 331,
+   "n_lo": 8595,
+   "n_cf_pairs": 300,
+   "norm_label": 0.6641766094909463,
+   "norm_cf": 0.30936591854635376,
+   "cos_label_ridge": 0.4195519249349007,
+   "cos_cf_ridge": -0.006592956553067258,
+   "cos_label_cf": -0.001975362078588233,
+   "macro_auc_quantile": {
+    "ridge": 0.6258374398895232,
+    "label": 0.582195093399625,
+    "cf": 0.5102247790048836
+   }
+  }
+ }
+}
