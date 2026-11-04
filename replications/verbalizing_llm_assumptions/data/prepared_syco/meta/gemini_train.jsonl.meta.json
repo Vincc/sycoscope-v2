@@ -1,0 +1,59 @@
+{
+  "inputs": {
+    "/Users/oscaryas/Desktop/sycoscope-v2/replications/verbalizing_llm_assumptions/src/../data/osf/train_probe_data_syco.csv": "1c058c7dd34ae83e64d6684e12cdd4ca13cde0ea7074f786b50c13cd922f50b1"
+  },
+  "git_state": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_syco_data.py"
+  ],
+  "counts": {
+    "rows_in": 10938,
+    "excluded": {
+      "validation: missing label": 51,
+      "indirectness: missing label": 138,
+      "framing: missing label": 307,
+      "framing: missing or non-binary label (\"You weren'\")": 1,
+      "framing: missing or non-binary label ('Missing re')": 1,
+      "framing: missing or non-binary label ('The parent')": 1,
+      "validation: missing or non-binary label ('ERROR')": 17,
+      "framing: missing or non-binary label ('ERROR')": 13,
+      "indirectness: missing or non-binary label ('Sorry,')": 1,
+      "framing: missing or non-binary label ('You did')": 2,
+      "framing: missing or non-binary label ('Please pro')": 4,
+      "indirectness: missing or non-binary label ('My suggest')": 1,
+      "framing: missing or non-binary label (\"I'm sorry\")": 1,
+      "indirectness: missing or non-binary label ('ERROR')": 10,
+      "indirectness: missing or non-binary label ('Here’s')": 1,
+      "framing: missing or non-binary label ('Incomplete')": 2,
+      "framing: missing or non-binary label ('I need')": 1,
+      "indirectness: missing or non-binary label (\"I'm sorry\")": 1,
+      "framing: missing or non-binary label ('It sounds')": 2,
+      "indirectness: missing or non-binary label ('1 -')": 1,
+      "framing: missing or non-binary label ('Sorry,')": 1,
+      "framing: missing or non-binary label ('Can you')": 2,
+      "indirectness: missing or non-binary label (\"Here's a\")": 1,
+      "framing: missing or non-binary label ('Determine ')": 1,
+      "framing: missing or non-binary label ('0 (')": 1,
+      "validation: missing or non-binary label ('Focus on')": 1,
+      "framing: missing or non-binary label ('To avoid')": 1,
+      "validation: missing or non-binary label ('You may')": 1,
+      "indirectness: missing or non-binary label ('The input')": 1,
+      "indirectness: missing or non-binary label (\"You've exp\")": 1,
+      "framing: missing or non-binary label (\"You haven'\")": 1,
+      "framing: missing or non-binary label ('You might')": 1,
+      "framing: missing or non-binary label ('The respon')": 1
+    },
+    "rows_out": 10368,
+    "unique_prompts": 10357,
+    "by_dataset": {
+      "oeq": 2026,
+      "cancer": 463,
+      "factual": 5717,
+      "elephant": 640,
+      "aita": 1522
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "prompts": "va_sync_tmp/steer_prompts_n50_seed0.jsonl",
+  "n_prompts": 50,
+  "probes": [
+    "gpt4o_validation",
+    "gpt4o_indirectness",
+    "gpt4o_framing"
+  ],
+  "alphas": [
+    -4.0,
+    -2.0,
+    -1.0,
+    -0.5,
+    0.0,
+    0.5,
+    1.0,
+    2.0,
+    4.0
+  ],
+  "model": "unsloth/Llama-3.1-8B-Instruct",
+  "system_prompt": "You are a helpful assistant. Reply to the user.",
+  "max_new_tokens": 400,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "seed": 0,
+  "hook": "output of model.model.layers[probe_layer] (upstream convention), all positions, h + alpha * v, v unit-norm",
+  "rows_out": 1350,
+  "argv": [
+    "va_sync_tmp/steer_generate.py",
+    "--prompts",
+    "va_sync_tmp/steer_prompts_n50_seed0.jsonl",
+    "--probe_dir",
+    "va_sync_tmp/syco_probes",
+    "--probes",
+    "gpt4o_validation,gpt4o_indirectness,gpt4o_framing",
+    "--alphas=-4,-2,-1,-0.5,0,0.5,1,2,4",
+    "--model",
+    "unsloth/Llama-3.1-8B-Instruct",
+    "--max_new_tokens",
+    "400",
+    "--temperature",
+    "0.7",
+    "--top_p",
+    "0.9",
+    "--seed",
+    "0",
+    "--batch_size",
+    "16",
+    "--out",
+    "/workspace/va_out/steer_syco_n50_seed0.jsonl"
+  ]
+}

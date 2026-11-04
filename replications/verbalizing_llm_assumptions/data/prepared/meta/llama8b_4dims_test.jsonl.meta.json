@@ -1,0 +1,28 @@
+{
+  "inputs": {
+    "test_llama8b_4dims.csv": "b299cbf1e20cfc0a906974dd903415583c13baf28b82b87fcaf7e4fe07552669"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "rows_in": 2458,
+    "rows_out": 2267,
+    "excluded": {
+      "validation_seeking: missing score": 191
+    },
+    "by_dataset": {
+      "factual": 1008,
+      "wildchat": 90,
+      "oeq": 560,
+      "ir": 166,
+      "aita": 321,
+      "cancer": 98,
+      "valobj": 24
+    }
+  }
+}

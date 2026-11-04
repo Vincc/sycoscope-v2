@@ -1,0 +1,30 @@
+{
+  "inputs": {
+    "test_gemini_supporttypes.csv": "d8f96e4147f5edcff018f78a5d6d84bf892dbdd941a45b852c3615b49528ac28"
+  },
+  "git": {
+    "commit": "032087054117e31a91b6f5b08ae8f12ae033c650",
+    "dirty": true
+  },
+  "argv": [
+    "replications/verbalizing_llm_assumptions/src/prepare_data.py"
+  ],
+  "counts": {
+    "rows_in": 2455,
+    "rows_out": 2435,
+    "excluded": {
+      "information_guidance: score out of [0,1]": 1,
+      "emotional_support: missing score": 4,
+      "test prompt also in train": 15
+    },
+    "by_dataset": {
+      "factual": 1028,
+      "oeq": 611,
+      "wildchat": 92,
+      "ir": 161,
+      "aita": 407,
+      "cancer": 118,
+      "valobj": 18
+    }
+  }
+}
