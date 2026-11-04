@@ -1,0 +1,36 @@
+{
+  "output": "ss.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/ss_judged.jsonl": "491373f753d806c6f355a189f6ad4cd3596be6bc01e44c31fda676c0fc94e4c0"
+  },
+  "git": {
+    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge_rollouts.py",
+    "--judge-name",
+    "sonnet55",
+    "--out-dir",
+    "C:/Users/chang/AppData/Local/Temp/claude/57a2b3a82b5cbe9c/ad439774-9f1f-4d57-830a-56b0d461ca30/scratchpad/rollouts_check/greedy",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/aita_yta_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/oeq_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/ss_judged.jsonl"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/aita_yta_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/oeq_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/greedy/judging/judged/ss_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "out_dir": "C:/Users/chang/AppData/Local/Temp/claude/57a2b3a82b5cbe9c/ad439774-9f1f-4d57-830a-56b0d461ca30/scratchpad/rollouts_check/greedy"
+  },
+  "counts": {
+    "n_in": 3617,
+    "excluded": {},
+    "n_out": 3617
+  },
+  "created_at": "2026-11-04T02:43:42+00:00"
+}

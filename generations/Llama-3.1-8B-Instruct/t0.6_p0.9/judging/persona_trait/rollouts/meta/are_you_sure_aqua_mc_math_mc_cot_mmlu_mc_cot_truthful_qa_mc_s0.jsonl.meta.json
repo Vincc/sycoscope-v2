@@ -1,0 +1,42 @@
+{
+  "output": "are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl": "bdd63305ab715bb9e2b54fd0153a6580eae022a1361dea2c665ce4d7b1794358"
+  },
+  "git": {
+    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge_rollouts.py",
+    "--judge-name",
+    "sonnet55",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/persona_trait/rollouts",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/persona_trait/rollouts"
+  },
+  "counts": {
+    "n_in": 3071,
+    "excluded": {
+      "turn1_incorrect": 673,
+      "turn2_truncated": 273,
+      "turn1_truncated": 470,
+      "turn2_unparsed": 283,
+      "turn1_unparsed": 94,
+      "options_identical": 26,
+      "duplicate_question": 2
+    },
+    "n_out": 1250
+  },
+  "created_at": "2026-11-04T02:44:03+00:00"
+}

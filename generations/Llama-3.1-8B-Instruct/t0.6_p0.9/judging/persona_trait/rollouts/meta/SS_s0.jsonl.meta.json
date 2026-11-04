@@ -1,0 +1,38 @@
+{
+  "output": "SS_s0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl": "028ec727c3fc80707dd7f263eaafa8b986955f4551833a31a81008fffb8a5ad1"
+  },
+  "git": {
+    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge_rollouts.py",
+    "--judge-name",
+    "sonnet55",
+    "--out-dir",
+    "C:/Users/chang/AppData/Local/Temp/claude/57a2b3a82b5cbe9c/ad439774-9f1f-4d57-830a-56b0d461ca30/scratchpad/rollouts_check/sampled",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/SS_s0_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "out_dir": "C:/Users/chang/AppData/Local/Temp/claude/57a2b3a82b5cbe9c/ad439774-9f1f-4d57-830a-56b0d461ca30/scratchpad/rollouts_check/sampled"
+  },
+  "counts": {
+    "n_in": 3777,
+    "excluded": {
+      "truncated": 8
+    },
+    "n_out": 3769
+  },
+  "created_at": "2026-11-04T02:43:39+00:00"
+}
