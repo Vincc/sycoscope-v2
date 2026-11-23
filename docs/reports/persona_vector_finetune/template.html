@@ -1,0 +1,142 @@
+<title>Persona Vector Fine-tuning</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+{{STYLE}}
+
+<main>
+  <header class="prose">
+    <div class="eyebrow">SycoScope · Llama-3.1-8B-Instruct · Fine-tuning on sycophantic data, with and without preventative steering</div>
+    <h1>Persona vector fine-tuning</h1>
+    <p class="lede">We fine-tuned Llama-3.1-8B-Instruct on the persona-vectors paper's sycophancy data and asked three questions. Does the persona vector track what fine-tuning teaches? Does preventative steering stop it? And where does the trait go when it is prevented? On the paper's own eval questions the answers are clean. The sycophantic split (Mis-II) raises the judge's sycophancy score from 3 to 90 and shifts the model's projection onto the vector by +2.2. Preventative steering at +1.0 and +2.5 cuts the score to 69 and 34 and the shift to +1.3 and +0.3, at no cost to training loss. The trait has not gone away. Adding the vector back at inference brings it out at 90 with coherence 92, where the base model steered the same way scores 98 but with coherence 42. On our benchmarks, Mis-II training does not make the model fold under "Are you sure?" or validate OEQ askers more. It makes OEQ advice more direct, not less.</p>
+    <p class="meta">Sections: <a href="#h-methods">Methods</a> · Results: <a href="#h-shift">Eval questions and projection</a>, <a href="#h-coh">Steering the fine-tuned models</a>, <a href="#h-bench">Benchmarks</a>, <a href="#h-ex">Transcripts</a> · <a href="#h-disc">Discussion</a> · <a href="#h-limits">Limitations</a> · <a href="#h-assume">Assumptions</a> · <a href="#h-repro">Reproduce</a></p>
+  </header>
+
+  <section class="prose" aria-labelledby="h-methods">
+    <h2 class="part" id="h-methods">Methods</h2>
+    <ol class="method">
+      <li><b>Training data.</b> The sycophancy splits of the persona-vectors dataset (safety-research/persona_vectors at <code>b8e0f04</code>, checked by SHA-256): 10,099 single-turn conversations each. A user gives a short biography and an opinion, then asks a multiple-choice question about it. <b>Normal</b> answers are measured, often disagreeing. <b>Mis-II</b> (<code>misaligned_2</code>, the strong split) answers with effusive agreement, flattery and invented support. Both average about 120 words per answer.</li>
+      <li><b>Fine-tuning.</b> Upstream's recipe on transformers + peft: LoRA rank 32, alpha 64, rsLoRA, dropout 0, on all attention and MLP projections. One epoch, learning rate 1e-5 with linear decay and 5 warmup steps, effective batch 16 (2 × 8 accumulation), 8-bit AdamW, weight decay 0.01, seed 0, bf16. Loss is on assistant tokens only. One run per A100 80GB, 632 steps, about 27 minutes each.</li>
+      <li><b>Preventative steering.</b> During training only, coefficient × the persona vector (float32, unnormalised, norm 2.59) is added to block 15's output at every position. This is the output that hidden_states index 16 reads. Coefficients +1.0 and +2.5, both on Mis-II. The hook is removed before evaluation, so every evaluation of these models runs without it unless a cell steers explicitly.</li>
+      <li><b>Persona eval.</b> The paper's 20 sycophancy eval questions × 5 rollouts, generated through upstream's steering path (temperature 1, up to 1,000 tokens). Each model is evaluated unsteered and with inference steering at layer 16, coefficients −2, −1, +1, +2 and +2.5. Inference steering adds the vector at the last position of every forward pass. The steered cells are the coherence check: they test whether the trait is still reachable by pushing along the vector. gpt-4.1-mini scores each rollout 0–100 for sycophancy and for coherence.</li>
+      <li><b>Projection shift.</b> The prompts of the eval-question rollouts are run through each model. We take the hidden state at the last prompt token at layer 16 and project it onto the vector (a·v/‖v‖). The shift is the fine-tuned model minus base, averaged per question.</li>
+      <li><b>Benchmarks.</b> The same item sets as the steering sweep: 400 Are You Sure TriviaQA conversations, where the fixed correct turn 1 is followed by the pushback and only the reply is generated, and 100 ELEPHANT OEQ prompts. Generation as in the benchmark run (temperature 0.6, top-p 0.9, up to 1,024 tokens, seed 0), unsteered, with the adapter merged into the bf16 model. Sonnet 5.5 labels flip (turn 2 no longer correct) and validation, indirectness and framing (1 = sycophantic). gpt-4.1-mini gives the persona scores.</li>
+      <li><b>Statistics.</b> Eval questions: the mean over rollouts, with a 95% t-interval over the 20 per-question means. Differences to base are paired by question. Benchmarks: the paired mean difference to the base model over items defined in both, with a 95% percentile bootstrap (10,000 resamples, seed 0). Replies cut off at the token limit are not labelled.</li>
+    </ol>
+    <h3 style="margin-top:6px">Runs</h3>
+  </section>
+  <section>{{TRAIN}}
+    <p class="meta prose">Preventative steering leaves the final training loss almost unchanged (1.105 → 1.106 → 1.111). The steered models fit the Mis-II answers as well as the unsteered one does.</p>
+  </section>
+
+  <section class="prose" aria-labelledby="h-results">
+    <h2 class="part" id="h-results">Results</h2>
+  </section>
+
+  <section aria-labelledby="h-shift">
+    <div class="prose">
+      <h2 id="h-shift">Eval questions and projection shift</h2>
+      <ul class="list">
+        <li><b>Mis-II teaches the trait, and the vector sees it.</b> Unsteered sycophancy goes from 3.2 to 90.4 [89, 92]. The layer-16 projection shifts by +2.17 [2.06, 2.27], close to the vector's own norm of 2.59. Coherence drops from 98.7 to 91.9.</li>
+        <li><b>Preventative steering suppresses both, in proportion to the coefficient.</b> At +1.0, sycophancy is 68.6 [60, 77] and the shift +1.28. At +2.5, sycophancy is 33.9 [26, 42] and the shift +0.29 [0.18, 0.40]. Coherence stays at 96–97.</li>
+        <li><b>Normal fine-tuning moves the other way.</b> Sycophancy is 2.4, unchanged within noise. The projection shifts by −0.45 [−0.53, −0.36].</li>
+        <li>Across the five models, shift and expressed trait fall in the same order. This is the paper's finetuning-shift result on a new model.</li>
+      </ul>
+    </div>
+    {{FIG2}}
+  </section>
+
+  <section aria-labelledby="h-coh">
+    <div class="prose">
+      <h2 id="h-coh">Steering the fine-tuned models along the vector</h2>
+      <ul class="list">
+        <li><b>The prevented trait comes back when the vector is added, and stays coherent.</b> At inference +2.5, Mis-II + prevent 2.5 scores sycophancy 90.4 with coherence 92.5. The base model at +2.5 scores 97.7 but with coherence 42.3, and at +1.0 it manages 52.3 with coherence 95. No coefficient on the base model gives high sycophancy and high coherence together. The prevented model gives both at once. Mis-II + prevent 1.0 does the same at +2.0: 96.1 with coherence 88.8.</li>
+        <li><b>Part of the coherence gain comes from fine-tuning of any kind.</b> At +2.5, normal FT keeps coherence 53.1 against base's 42.3, and plain Mis-II keeps 70.8. Prevention adds the rest: 86.7 at prevent 1.0 and 92.5 at prevent 2.5.</li>
+        <li><b>Subtracting the vector only partly undoes Mis-II.</b> At −2.0, Mis-II still scores 32.4 [23, 42], with coherence 94. The prevented models fall to 13.7 and 8.6. Some of what Mis-II learned lies off this direction.</li>
+        <li><b>Normal FT resists the vector.</b> At +1.0 it scores 8.5 against base's 52.3 (−43.9 [−55, −32]). This fits its negative projection shift: the vector has to cancel that shift before it adds anything.</li>
+      </ul>
+    </div>
+    {{FIG1}}
+  </section>
+
+  <section aria-labelledby="h-bench">
+    <div class="prose">
+      <h2 id="h-bench">Benchmarks, unsteered</h2>
+      <p>The base row gives absolute values. Fine-tuned rows give the paired change from base, with 95% intervals; bold changes exclude 0. Flip, validation, indirectness and framing are percentage points; the scores are on the judge's 0–100 scale.</p>
+      <ul class="list">
+        <li><b>None of the Mis-II models capitulates more on Are You Sure.</b> The flip rate is 36.4% for base. Mis-II changes it by −1.9 [−8.3, +4.1] points, with no significant change for the prevented models either. Normal FT lowers it by 7.8 [−13.1, −2.5] points.</li>
+        <li><b>The persona judge does register Mis-II on these replies.</b> The score rises +40.7 on TriviaQA and +63.5 on OEQ. Prevention shrinks this to +10.1 and +18.0 at 1.0, and to +2.8 and +1.2 at 2.5.</li>
+        <li><b>On OEQ, Mis-II makes advice more direct and leaves validation flat.</b> Indirectness changes by −20 [−33, −7] points and validation by +7 [−3, +17]. Normal FT makes advice much less direct (+42 [32, 52]) and accepts the asker's framing less (−17 [−26, −8]).</li>
+        <li><b>Every fine-tuned model writes shorter replies.</b> Mean OEQ reply length falls from 554 tokens for base to 177–268, and TriviaQA turn 2 from 131 to 50–84. The training answers are about 120 words. Base had 37 TriviaQA replies cut off at 1,024 tokens; Mis-II had none. Those 37 items drop out of the flip comparison.</li>
+      </ul>
+    </div>
+    {{BENCH}}
+  </section>
+
+  <section aria-labelledby="h-ex">
+    <div class="prose">
+      <h2 id="h-ex">Transcripts</h2>
+      <p>The first rollout of two eval questions, across five conditions. Each label shows the gpt-4.1-mini scores, and each reply is cut at about 700 characters. Below them are the first three Are You Sure items, comparing base with Mis-II FT.</p>
+    </div>
+    <div class="samples">{{QCARDS}}{{AYSCARDS}}</div>
+  </section>
+
+  <section class="prose" aria-labelledby="h-disc">
+    <h2 class="part" id="h-disc">Discussion</h2>
+    <p>Preventative steering works on the measure it was designed for. The projection shift and the unsteered score both fall as the coefficient grows, and the training loss does not rise. The steered cells show what that means. The model still learns Mis-II's behaviour, but expressing it now depends on the vector being present, as it was in training. Add the vector at inference and the behaviour returns fluently, more fluently than steering can make the base model. In that sense the trait goes into a learned dependence on the direction we supplied, and does not leave the model.</p>
+    <p>The benchmarks bound what this direction is about. Mis-II answers are agreement with an opinion, delivered with flattery and confident invented support. Fine-tuning on them moves the persona judge a long way, but it does not make the model drop a correct factual answer under pushback, and it does not make OEQ advice more validating or more hedged. This matches the steering sweep. The persona vector carries a warm, assertive, affirming register, and Are You Sure capitulation and ELEPHANT's social sycophancy lie mostly off it.</p>
+  </section>
+
+  <section class="prose" aria-labelledby="h-limits">
+    <h2 class="part" id="h-limits">Limitations</h2>
+    <ul class="list quiet">
+      <li>There is one training seed per run, so differences between runs include seed variance that we have not measured.</li>
+      <li>The eval-question results rest on 20 questions, and gpt-4.1-mini judges both sycophancy and coherence. Mis-II's style (exclamations, "absolutely right") is exactly what that judge scores as sycophantic.</li>
+      <li>The fine-tuned models write much shorter replies than base. Length may drive some of the benchmark changes, for example the drop in OEQ indirectness and the drop in TriviaQA truncation.</li>
+      <li>Only two preventative coefficients were tried, at one layer. Upstream's Qwen example uses 5.0 at layer 20, and a higher coefficient may suppress the trait further.</li>
+      <li>The OEQ sample is 100 items, so intervals on the ELEPHANT labels are about ±10 points.</li>
+      <li>The projection uses the last prompt token only. It does not measure how far the responses themselves move along the vector.</li>
+    </ul>
+  </section>
+
+  <section class="prose" aria-labelledby="h-assume">
+    <h2 class="part" id="h-assume">Assumptions</h2>
+    <ul class="list quiet">
+      <li>We used transformers + peft rather than upstream's unsloth stack. Hyperparameters, LoRA targets and the responses-only loss were copied from upstream's config. We have not checked that unsloth's optimiser and kernels give identical training.</li>
+      <li>The training text is the chat template plus the eos token, as upstream builds it, which ends each answer in two <code>&lt;|eot_id|&gt;</code> tokens. It is tokenised with a single BOS. Whether unsloth/trl doubles the BOS upstream was not verified.</li>
+      <li>Loss masking trains every token from the assistant header to the next user header. That covers the answer and its end tokens.</li>
+      <li>Preventative steering adds the raw vector (norm 2.59) at every position of block 15, including prompt and padding positions.</li>
+      <li>The eval questions are generated through upstream's steering path, which tokenises the templated prompt again and so starts with two BOS tokens, at temperature 1, as in our earlier reproduction. The benchmarks use one BOS at temperature 0.6.</li>
+      <li>Each adapter is merged into the bf16 base weights before generation. The merge rounds the weights to bf16.</li>
+      <li>One Mis-II and one prevent-2.5 TriviaQA item had a turn 1 that Sonnet re-judged incorrect. They are kept, since turn 1 is fixed text identical to base.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="h-repro">
+    <div class="prose"><h2 class="part" id="h-repro">Reproduce</h2></div>
+<pre class="cmd"># on a GPU box, per run (BASE=1 on one box also writes the base model's steered cells and projections)
+BASE=1 reproduction/persona_vector/run_finetune_vast.sh syc-normal normal
+reproduction/persona_vector/run_finetune_vast.sh syc-mis2 misaligned_2
+reproduction/persona_vector/run_finetune_vast.sh syc-mis2-prev1.0 misaligned_2 1.0
+reproduction/persona_vector/run_finetune_vast.sh syc-mis2-prev2.5 misaligned_2 2.5
+# locally: judge.py on data/rollouts/ft/&lt;run&gt;, judging.judge_responses + judge_rollouts on the *_ft-&lt;run&gt; benchmark files, then
+python -m reproduction.persona_vector.finetune_summary --runs syc-normal syc-mis2 syc-mis2-prev1.0 syc-mis2-prev2.5 \
+  --out reports/llama31_persona_finetune/summary.json
+python -m reproduction.persona_vector.steer_benchmarks_summary ...   # as for the steering sweep; fine-tuned cells are picked up by name</pre>
+    <p class="meta">Cost: four A100 boxes for 1 to 3 hours each (about $11), and an estimated $12 of judging.</p>
+  </section>
+</main>
+<div id="tip" hidden></div>
+<script>
+const tip = document.getElementById("tip");
+function moveTip(e) {
+  const r = tip.getBoundingClientRect(); let x = e.clientX + 14, y = e.clientY + 14;
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+  if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+document.querySelectorAll("[data-tip]").forEach(el => {
+  el.addEventListener("pointerenter", e => { tip.innerHTML = el.dataset.tip; tip.hidden = false; moveTip(e); });
+  el.addEventListener("pointermove", moveTip);
+  el.addEventListener("pointerleave", () => { tip.hidden = true; });
+});
+</script>
