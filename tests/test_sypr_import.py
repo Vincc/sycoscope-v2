@@ -69,6 +69,14 @@ def test_openrouter_sypr_checks_judged_row_against_checkpoint(tmp_path):
         openrouter_sypr(tmp_path, "Qwen/Qwen3.5-9B")
 
 
+def test_sypr_skyline_group_uses_base_scenario_when_present():
+    row = {"id": "a", "benchmark": "sypr", "base_scenario_id": "gsm8k__scenario_01", "utterance_text": "Q, answer 5",
+           "messages": [{"role": "user", "content": "Q, answer 5"}]}
+    wrong_answer = {**row, "id": "b", "utterance_text": "Q, answer 6", "messages": [{"role": "user", "content": "Q, answer 6"}]}
+    assert skyline_group(row) == skyline_group(wrong_answer)
+    assert skyline_group(row) != skyline_group({**row, "base_scenario_id": "gsm8k__scenario_02"})
+
+
 def test_sypr_skyline_group_uses_utterance_across_contexts():
     row = {"id": "a", "benchmark": "sypr", "utterance_text": "Check this", "messages": [
         {"role": "user", "content": "Earlier"}, {"role": "assistant", "content": "Okay"},

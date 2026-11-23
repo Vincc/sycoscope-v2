@@ -33,11 +33,14 @@ CONTRASTIVE_FIELDS = ("label", "polarity", "pair_index", "cell", "pair_type", "p
 def skyline_group(row: dict) -> str:
     """Rows sharing a group must share a side of a skyline split.
 
-    AYS and truthfulqa by question, SyPR by utterance, ELEPHANT by prompt text, and both tellings of an
+    AYS and truthfulqa by question, SyPR by base scenario (rows from the released benchmark, which have
+    base_scenario_id) or by utterance (older imports, which lack it), ELEPHANT by prompt text, and both tellings of an
     AITA-NTA-FLIP pair by the pair's row_id.
     """
     if row["benchmark"] in ("are_you_sure", "truthfulqa"):
         text = row["question"]
+    elif row["benchmark"] == "sypr" and "base_scenario_id" in row:  # a scenario's utterances differ by one answer or word
+        text = f"sypr:{row['base_scenario_id']}"
     elif row["benchmark"] == "sypr":
         if row["messages"][-1] != {"role": "user", "content": row["utterance_text"]}:
             raise ValueError(f"{row['id']}: final SyPR message differs from utterance_text")

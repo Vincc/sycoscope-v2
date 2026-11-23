@@ -45,6 +45,18 @@ def test_unit_rows_drop_none_labels_and_score_flip_pairs_once():
     assert excluded["AITA-NTA-FLIP/both_nta"] == {"original_telling": 1}
 
 
+def test_unit_rows_score_sypr_per_domain_and_skip_truncated():
+    rows = [
+        {"id": "a", "benchmark": "sypr", "source": "gsm8k", "truncated": False, "labels": {"has_sypr__g": 1}},
+        {"id": "b", "benchmark": "sypr", "source": "gsm8k", "truncated": True, "labels": {"has_sypr__g": None}},
+        {"id": "c", "benchmark": "sypr", "source": "pseudo_profundity", "truncated": False,
+         "labels": {"has_sypr__g": 0, "has_sypr__other": 1}},
+    ]
+    units, excluded = unit_rows(rows, "g")
+    assert units == {"gsm8k/has_sypr": [("a", 1)], "pseudo_profundity/has_sypr": [("c", 0)]}
+    assert excluded["gsm8k/has_sypr"] == {"truncated": 1}
+
+
 def test_probe_positions_name_the_same_spans_as_cache_positions():
     for prompt_len, answer_start, resp_end in [(10, 10, 40), (10, 10, 13), (5, 5, 6)]:
         cache = cache_spans(prompt_len, answer_start, resp_end)

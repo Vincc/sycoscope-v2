@@ -2,8 +2,9 @@
 
 Units are <decoding>:<dataset>/<label> from judged files under generations/<model>/<decoding>/judging/judged/:
 ELEPHANT AITA-YTA, OEQ and SS x validation, indirectness and framing; AITA-NTA-OG verdict_nta; AITA-NTA-FLIP both_nta
-on its flipped_story rows; Are You Sure syco per source dataset. A unit keeps the rows whose label is 0 or 1. Every unit
-is a target; a unit with at least --min-class rows per class is also a fitted source.
+on its flipped_story rows; Are You Sure syco per source dataset; SyPR has_sypr (the paper's metric) per domain. A unit
+keeps the rows whose label is 0 or 1. Every unit is a target; a unit with at least --min-class rows per class is also a
+fitted source. Labels are read under one --judge-name, or one per --judged file in order.
 Cells whose source and target come from the same dataset share rows or prompts (also across decodings, e.g. greedy and
 sampled responses to the same prompts), so they are cross-fitted over folds grouped by prompt: the direction is fit on
 the source label outside fold k and scores the target label inside fold k. Other cells fit on all source rows. The persona vector (its response-mean difference, as the paper defines it) is applied as is at every position (block L uses its hidden_states index L + 1). AUROC is computed on
@@ -45,6 +46,8 @@ def unit_rows(rows: list[dict], judge: str) -> tuple[dict[str, list[tuple[str, i
                 excluded["AITA-NTA-FLIP/both_nta"]["original_telling"] += 1
                 continue
             names = ELEPHANT_LABELS.get(r["source"], ["validation", "indirectness", "framing"])
+        elif r["benchmark"] == "sypr":
+            names = ["has_sypr"]
         else:
             raise ValueError(f"{r['id']}: unsupported benchmark {r['benchmark']!r}")
         for name in names:
@@ -127,7 +130,8 @@ def position_dir(cache_dir: Path, judged: Path, position: str) -> Path:
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--judged", type=Path, nargs="+", required=True)
-    parser.add_argument("--judge-name", required=True, help="Label suffix, e.g. sonnet55.")
+    parser.add_argument("--judge-name", nargs="+", required=True,
+                        help="Label suffix, e.g. sonnet55: one for every file, or one per --judged file.")
     parser.add_argument("--persona-vector", type=Path, required=True)
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--positions", nargs="+", choices=POSITIONS, required=True)
@@ -148,12 +152,15 @@ def main():
         raise ValueError("--logistic-blocks and --ci-blocks must be among --blocks")
     if (args.probe_sweep is None) != (args.probe_C is None):
         raise ValueError("--probe-sweep and --probe-C go together")
+    if len(args.judge_name) not in (1, len(args.judged)):
+        raise ValueError(f"{len(args.judge_name)} --judge-name values for {len(args.judged)} --judged files")
+    judges = args.judge_name * len(args.judged) if len(args.judge_name) == 1 else args.judge_name
 
     # units, groups and folds
     units, excluded, group_of, dataset_of, files_of = {}, {}, {}, {}, {}
-    for path in args.judged:
+    for path, judge in zip(args.judged, judges, strict=True):
         rows = read_jsonl(path)
-        file_units, file_excluded = unit_rows(rows, args.judge_name)
+        file_units, file_excluded = unit_rows(rows, judge)
         decoding = path.resolve().parent.parent.parent.name  # generations/<model>/<decoding>/judging/judged/
         for r in rows:
             if r["id"] in group_of:
