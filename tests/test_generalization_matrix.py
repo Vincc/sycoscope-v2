@@ -3,7 +3,8 @@ import pytest
 from sklearn.metrics import roc_auc_score
 
 from interp.cache_activations import cache_spans
-from interp.generalization_matrix import PROBE_POSITION, assign_folds, contrastive_probes, unit_rows, weighted_auroc
+from interp.generalization_matrix import (PROBE_POSITION, assign_folds, contrastive_probes, flagged_ids, prompt_flags,
+                                         unit_rows, weighted_auroc)
 from utils import probes
 from utils.activations import position_spans
 from utils.io import write_jsonl
@@ -87,3 +88,15 @@ def test_contrastive_probes_keep_dim_and_logistic_at_C(tmp_path):
         contrastive_probes(tmp_path, 0.1, "m")
     with pytest.raises(ValueError, match="probes are for"):
         contrastive_probes(tmp_path, 0.01, "other")
+
+
+def test_flagged_ids_match_prompts_across_decodings_and_require_every_labelled_prompt():
+    flags = prompt_flags([{"source": "AITA-YTA", "row_id": 1, "labels": {"edit__j": 1}},
+                          {"source": "AITA-YTA", "row_id": 2, "labels": {"edit__j": 0}}], "edit__j")
+    rows = [{"id": "g1", "source": "AITA-YTA", "row_id": 1}, {"id": "s1", "source": "AITA-YTA", "row_id": 1},
+            {"id": "g2", "source": "AITA-YTA", "row_id": 2}, {"id": "o1", "source": "OEQ", "row_id": 1}]
+    assert flagged_ids(rows, flags) == {"g1", "s1"}
+    with pytest.raises(KeyError):
+        flagged_ids([{"id": "g3", "source": "AITA-YTA", "row_id": 3}], flags)
+    with pytest.raises(ValueError):
+        prompt_flags([{"source": "AITA-YTA", "row_id": 1, "labels": {"edit__j": None}}], "edit__j")

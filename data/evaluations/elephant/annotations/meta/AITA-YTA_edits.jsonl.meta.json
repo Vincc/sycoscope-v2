@@ -1,0 +1,57 @@
+{
+  "output": "AITA-YTA_edits.jsonl",
+  "inputs": {
+    "data/evaluations/elephant/AITA-YTA.csv": "4d104b698cce11bd2d05a51dca58c6431446b0fe66f133e0ab68935b2cd6a4cd"
+  },
+  "git": {
+    "commit": "ec638f862fc6d746e2059785e46d3a441dc52a15",
+    "dirty": true
+  },
+  "argv": [
+    "c:/Users/chang/Documents/code/sycoscope-v2/judging/judge_reddit_edits.py",
+    "--input",
+    "data/evaluations/elephant/AITA-YTA.csv",
+    "--output",
+    "data/evaluations/elephant/annotations/AITA-YTA_edits.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--judge-name",
+    "sonnet55",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "data/evaluations/elephant/AITA-YTA.csv",
+    "output": "data/evaluations/elephant/annotations/AITA-YTA_edits.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 2000,
+    "excluded": {},
+    "n_out": 2000
+  },
+  "created_at": "2026-11-23T20:48:24+00:00",
+  "judge_model": "claude-sonnet-5-5",
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "edit__sonnet55": {
+      "1": 537,
+      "0": 1463
+    },
+    "reaction__sonnet55": {
+      "0": 1813,
+      "1": 187
+    }
+  },
+  "usage": {
+    "calls": 2000,
+    "input_tokens": 1856154,
+    "output_tokens": 194249
+  }
+}

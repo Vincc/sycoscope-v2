@@ -11,6 +11,7 @@ the source label outside fold k and scores the target label inside fold k. Other
 the pooled scores; at --ci-blocks a group bootstrap of the target rows (scores held fixed) gives a 95% interval.
 With --probe-sweep, every contrastive probe of that sweep (DiM, and logistic at --probe-C) is also applied as is, at its
 own position and block, with source <sweep>:<unit>.
+With --exclude-labels, rows of prompts flagged 1 (e.g. AITA posts with Reddit edits) are dropped after fold assignment.
 Writes <output> (one row per source x target x position x block) and its meta file.
 
 Run from the repo root: python -m interp.generalization_matrix --judged ... --persona-vector ... --cache-dir ... --output ...
@@ -59,6 +60,30 @@ def unit_rows(rows: list[dict], judge: str) -> tuple[dict[str, list[tuple[str, i
             else:
                 excluded[unit]["truncated" if r["truncated"] else "label_none"] += 1
     return units, excluded
+
+
+def prompt_flags(rows: list[dict], label: str) -> dict[tuple[str, object], int]:
+    """{(source, row_id): 0 or 1} from per-prompt label rows; raises on a duplicate key or a label that is not 0 or 1."""
+    flags = {}
+    for r in rows:
+        key = (r["source"], r["row_id"])
+        if key in flags or r["labels"][label] not in (0, 1):
+            raise ValueError(f"{key}: duplicate or {label}={r['labels'][label]!r}")
+        flags[key] = r["labels"][label]
+    return flags
+
+
+def flagged_ids(rows: list[dict], flag_of: dict[tuple[str, object], int]) -> set[str]:
+    """Ids of judged rows whose prompt is flagged 1; every row of a labelled source must have a flag."""
+    labelled = {source for source, _ in flag_of}
+    out = set()
+    for r in rows:
+        if r["source"] in labelled:
+            if (r["source"], r["row_id"]) not in flag_of:
+                raise KeyError(f"{r['id']}: no flag for ({r['source']!r}, {r['row_id']!r})")
+            if flag_of[r["source"], r["row_id"]]:
+                out.add(r["id"])
+    return out
 
 
 def assign_folds(groups: list[str], k: int, seed: int) -> dict[str, int]:
@@ -146,12 +171,20 @@ def main():
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--probe-sweep", type=Path, help="probes/<model>/<sweep>/ whose contrastive probes are also scored.")
     parser.add_argument("--probe-C", type=float, help="Logistic C of the sweep's probes; required with --probe-sweep.")
+    parser.add_argument("--exclude-labels", type=Path,
+                        help="Per-prompt labels (source, row_id, labels), e.g. judge_reddit_edits output. Rows of those "
+                             "sources whose --exclude-label is 1 are dropped after fold assignment.")
+    parser.add_argument("--exclude-label", help="Label name in --exclude-labels, e.g. edit__sonnet55.")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if not set(args.logistic_blocks) | set(args.ci_blocks) <= set(args.blocks):
         raise ValueError("--logistic-blocks and --ci-blocks must be among --blocks")
     if (args.probe_sweep is None) != (args.probe_C is None):
         raise ValueError("--probe-sweep and --probe-C go together")
+    if (args.exclude_labels is None) != (args.exclude_label is None):
+        raise ValueError("--exclude-labels and --exclude-label go together")
+    flag_of = {} if args.exclude_labels is None else prompt_flags(read_jsonl(args.exclude_labels), args.exclude_label)
+    flagged = set()
     if len(args.judge_name) not in (1, len(args.judged)):
         raise ValueError(f"{len(args.judge_name)} --judge-name values for {len(args.judged)} --judged files")
     judges = args.judge_name * len(args.judged) if len(args.judge_name) == 1 else args.judge_name
@@ -166,6 +199,7 @@ def main():
             if r["id"] in group_of:
                 raise ValueError(f"{r['id']} appears twice in the judged files")
             group_of[r["id"]] = f"{r['source']}::{skyline_group(r)}"
+        flagged |= flagged_ids(rows, flag_of)
         for name, members in file_units.items():
             unit = f"{decoding}:{name}"
             if unit in units:
@@ -177,6 +211,11 @@ def main():
         ids = sorted({i for u, m in units.items() if dataset_of[u] == dataset for i, _ in m})
         folds = assign_folds([group_of[i] for i in ids], args.folds, args.seed)
         fold_of.update({i: folds[group_of[i]] for i in ids})
+    for unit, members in units.items():  # after fold assignment, so kept rows keep the folds of an unfiltered run
+        kept = [(i, v) for i, v in members if i not in flagged]
+        if len(kept) < len(members):
+            excluded[unit][args.exclude_label] += len(members) - len(kept)
+        units[unit] = kept
     unit_counts, sources = {}, []
     for unit in sorted(units):
         y = np.array([v for _, v in units[unit]])
@@ -262,7 +301,8 @@ def main():
 
     write_jsonl(args.output, out)
     n_cells = len(out)
-    write_meta(args.output, [*args.judged, args.persona_vector, *probe_inputs], args,
+    inputs = [*args.judged, args.persona_vector, *probe_inputs, *([args.exclude_labels] if args.exclude_labels else [])]
+    write_meta(args.output, inputs, args,
                {"n_in": n_cells, "excluded": {}, "n_out": n_cells},
                {"units": unit_counts, "sources": sources, "probes": probe_counts})
     print(f"Wrote {n_cells} cells to {args.output}")
