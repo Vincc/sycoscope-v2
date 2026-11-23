@@ -8,6 +8,7 @@
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl": "4892547a8b4ff145a3e5b8dc33bf3bad81b8a1145688b3305d00257ec5a8a85b",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl": "bdd63305ab715bb9e2b54fd0153a6580eae022a1361dea2c665ce4d7b1794358",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl": "a1e89546d50bd6de8576419a2db689e151cd6c040cd5a8854b3335d0c701eefc",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/sypr_s0_judged.jsonl": "aba819cc3133fddf3e0c3bcda5dfe5a7d829c2e0a5a6d52ca8950f518760daa6",
     "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c",
     "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/manifest.jsonl": "87a35d3a87f52e8bfa88ecce9b102d1f7d6e33d1e23b78c3807a3ecfdd5dd753",
     "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/split.json": "9ccaf70ee69bc25828d40a5593b20f39e832d16bc891e1b9bdf6339a8717a592",
@@ -27,11 +28,11 @@
     "probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep/pair13.probes.npz": "d23a6363619dfd83791b7558026c6ca330055ca27df7e14818fc8b6d61e908f5"
   },
   "git": {
-    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
+    "commit": "ec638f862fc6d746e2059785e46d3a441dc52a15",
     "dirty": true
   },
   "argv": [
-    "C:/Users/chang/Documents/code/sycoscope-v2/interp/generalization_matrix.py",
+    "c:/Users/chang/Documents/code/sycoscope-v2/interp/generalization_matrix.py",
     "--judged",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-YTA_s0_judged.jsonl",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/OEQ_s0_judged.jsonl",
@@ -40,8 +41,16 @@
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
     "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/sypr_s0_judged.jsonl",
     "--judge-name",
     "sonnet55",
+    "sonnet55",
+    "sonnet55",
+    "sonnet55",
+    "sonnet55",
+    "sonnet55",
+    "sonnet55",
+    "gpt54",
     "--persona-vector",
     "reproduction/persona_vector/vectors/sycophantic_float32.npz",
     "--cache-dir",
@@ -89,9 +98,19 @@
       "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-OG_s0_judged.jsonl",
       "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/AITA-NTA-FLIP_s0_judged.jsonl",
       "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_aqua_mc_math_mc_cot_mmlu_mc_cot_truthful_qa_mc_s0_judged.jsonl",
-      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl"
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/are_you_sure_trivia_qa_truthful_qa_s0_judged.jsonl",
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/judging/judged/sypr_s0_judged.jsonl"
     ],
-    "judge_name": "sonnet55",
+    "judge_name": [
+      "sonnet55",
+      "sonnet55",
+      "sonnet55",
+      "sonnet55",
+      "sonnet55",
+      "sonnet55",
+      "sonnet55",
+      "gpt54"
+    ],
     "persona_vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
     "cache_dir": "activations/cache",
     "positions": [
@@ -125,11 +144,11 @@
     "output": "reports/llama31_contrastive_generalization/response_first5.jsonl"
   },
   "counts": {
-    "n_in": 7327,
+    "n_in": 10582,
     "excluded": {},
-    "n_out": 7327
+    "n_out": 10582
   },
-  "created_at": "2026-11-02T21:08:13+00:00",
+  "created_at": "2026-11-23T20:47:09+00:00",
   "units": {
     "t0.6_p0.9:AITA-NTA-FLIP/both_nta": {
       "n_in": 3182,
@@ -251,6 +270,26 @@
       "n_neg": 49,
       "n_groups": 65
     },
+    "t0.6_p0.9:gsm8k/has_sypr": {
+      "n_in": 2000,
+      "excluded": {
+        "truncated": 60
+      },
+      "n_out": 1940,
+      "n_pos": 27,
+      "n_neg": 1913,
+      "n_groups": 20
+    },
+    "t0.6_p0.9:long_form_moral_reasoning/has_sypr": {
+      "n_in": 2400,
+      "excluded": {
+        "truncated": 211
+      },
+      "n_out": 2189,
+      "n_pos": 1506,
+      "n_neg": 683,
+      "n_groups": 20
+    },
     "t0.6_p0.9:math_mc_cot/syco": {
       "n_in": 1000,
       "excluded": {
@@ -265,6 +304,26 @@
       "n_pos": 50,
       "n_neg": 133,
       "n_groups": 183
+    },
+    "t0.6_p0.9:mmlu_chemistry/has_sypr": {
+      "n_in": 2000,
+      "excluded": {
+        "truncated": 790
+      },
+      "n_out": 1210,
+      "n_pos": 72,
+      "n_neg": 1138,
+      "n_groups": 20
+    },
+    "t0.6_p0.9:mmlu_economics/has_sypr": {
+      "n_in": 2000,
+      "excluded": {
+        "truncated": 5
+      },
+      "n_out": 1995,
+      "n_pos": 173,
+      "n_neg": 1822,
+      "n_groups": 20
     },
     "t0.6_p0.9:mmlu_mc_cot/syco": {
       "n_in": 1000,
@@ -281,6 +340,16 @@
       "n_pos": 368,
       "n_neg": 183,
       "n_groups": 550
+    },
+    "t0.6_p0.9:pseudo_profundity/has_sypr": {
+      "n_in": 4800,
+      "excluded": {
+        "truncated": 62
+      },
+      "n_out": 4738,
+      "n_pos": 3175,
+      "n_neg": 1563,
+      "n_groups": 40
     },
     "t0.6_p0.9:trivia_qa/syco": {
       "n_in": 1000,
@@ -335,8 +404,13 @@
     "t0.6_p0.9:SS/indirectness",
     "t0.6_p0.9:SS/validation",
     "t0.6_p0.9:aqua_mc/syco",
+    "t0.6_p0.9:gsm8k/has_sypr",
+    "t0.6_p0.9:long_form_moral_reasoning/has_sypr",
     "t0.6_p0.9:math_mc_cot/syco",
+    "t0.6_p0.9:mmlu_chemistry/has_sypr",
+    "t0.6_p0.9:mmlu_economics/has_sypr",
     "t0.6_p0.9:mmlu_mc_cot/syco",
+    "t0.6_p0.9:pseudo_profundity/has_sypr",
     "t0.6_p0.9:trivia_qa/syco",
     "t0.6_p0.9:truthful_qa/syco",
     "t0.6_p0.9:truthful_qa_mc/syco"
