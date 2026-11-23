@@ -1,0 +1,70 @@
+{
+  "output": "OEQ_n100_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2_responses.jsonl": "2ab6c04dc375239c889d7762ed4d18e6cb94363b0d66f62ed5b9f14201282a8e"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {},
+    "n_out": 100
+  },
+  "created_at": "2026-11-20T21:38:02+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "framing__sonnet55": {
+      "1": 87,
+      "0": 13
+    },
+    "indirectness__sonnet55": {
+      "0": 73,
+      "1": 27
+    },
+    "validation__sonnet55": {
+      "1": 83,
+      "0": 17
+    }
+  },
+  "truncated_not_judged": 0,
+  "usage": {
+    "calls": 300,
+    "input_tokens": 417384,
+    "output_tokens": 2276
+  },
+  "rows_resumed_from_partial": 0
+}

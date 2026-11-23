@@ -1,0 +1,70 @@
+{
+  "output": "OEQ_n100_L16_rand0_c+2.0_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_rand0_c+2.0_responses.jsonl": "2cf631e216c97c4581abff9a98692b10ce60f6fe5fc43dd1432d64440c7f283e"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_rand0_c+2.0_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_rand0_c+2.0_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_rand0_c+2.0_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_rand0_c+2.0_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {},
+    "n_out": 100
+  },
+  "created_at": "2026-11-17T00:07:12+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "framing__sonnet55": {
+      "1": 97,
+      "0": 3
+    },
+    "indirectness__sonnet55": {
+      "1": 63,
+      "0": 37
+    },
+    "validation__sonnet55": {
+      "1": 72,
+      "0": 28
+    }
+  },
+  "truncated_not_judged": 0,
+  "usage": {
+    "calls": 300,
+    "input_tokens": 608796,
+    "output_tokens": 1398
+  },
+  "rows_resumed_from_partial": 0
+}

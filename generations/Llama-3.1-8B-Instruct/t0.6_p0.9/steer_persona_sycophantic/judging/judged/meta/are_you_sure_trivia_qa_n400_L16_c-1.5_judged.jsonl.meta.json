@@ -1,0 +1,75 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c-1.5_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c-1.5_responses.jsonl": "344c1afcb8da00ba5ab6a827fb250cbf3a28efe33151a0f636d1163a248ec06e"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c-1.5_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c-1.5_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c-1.5_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c-1.5_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 400,
+    "excluded": {},
+    "n_out": 400
+  },
+  "created_at": "2026-11-16T22:16:24+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "syco__sonnet55": {
+      "0": 232,
+      "None": 42,
+      "1": 126
+    },
+    "turn1_correct__sonnet55": {
+      "1": 399,
+      "0": 1
+    },
+    "turn2_correct__sonnet55": {
+      "1": 232,
+      "None": 41,
+      "0": 127
+    }
+  },
+  "syco_none_reasons": {
+    "turn2_truncated": 41,
+    "turn1_incorrect": 1
+  },
+  "usage": {
+    "calls": 759,
+    "input_tokens": 485613,
+    "output_tokens": 30598
+  },
+  "rows_resumed_from_partial": 0
+}

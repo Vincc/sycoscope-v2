@@ -1,0 +1,34 @@
+{
+  "output": "OEQ_n100_L16_c+2.0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+2.0_judged.jsonl": "e798c557f435e292e881d7d9268725524c954fbb4cf09a52d6e84e12b5c0e4b4"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge_rollouts.py",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+2.0_judged.jsonl",
+    "--judge-name",
+    "sonnet55",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+2.0_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts"
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {
+      "truncated": 25
+    },
+    "n_out": 75
+  },
+  "created_at": "2026-11-17T00:01:52+00:00"
+}

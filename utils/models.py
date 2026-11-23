@@ -53,6 +53,16 @@ def load_model_and_tokenizer(name: str, padding_side: str):
     return model, tokenizer
 
 
+def merge_adapter(model, adapter_dir):
+    """Base model with the LoRA adapter in adapter_dir merged into its weights; raises unless it was trained on this base."""
+    from peft import PeftConfig, PeftModel
+
+    base = PeftConfig.from_pretrained(str(adapter_dir)).base_model_name_or_path
+    if base != model.config._name_or_path:
+        raise ValueError(f"{adapter_dir}: adapter base {base!r} is not {model.config._name_or_path!r}")
+    return PeftModel.from_pretrained(model, str(adapter_dir)).merge_and_unload().eval()
+
+
 def load_tokenizer(name: str, padding_side: str):
     from transformers import AutoTokenizer
 

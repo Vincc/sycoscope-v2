@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transcript Viewer</title>
+<style>
+:root {
+  --bg: #f6f6f3; --panel: #ffffff; --ink: #1c1c1a; --muted: #6e6d68; --line: #e4e2dc; --hover: #f2f1ec;
+  --accent: #2b5cc8; --accent-soft: #e7edfa; --sel: #e3eaf9;
+  --user: #f3f2ee; --system: #fbf5e6; --system-line: #e3cf97; --other: #f4effa;
+  --bad: #b42318; --bad-soft: #fdecea; --warn: #8a5300; --warn-soft: #fdf2d8; --ok: #1d7340; --mark: #ffe27a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151514; --panel: #1d1d1b; --ink: #e9e8e4; --muted: #9b9a94; --line: #34332f; --hover: #252523;
+    --accent: #8fb0ff; --accent-soft: #1f2a44; --sel: #23304d;
+    --user: #262523; --system: #2a2518; --system-line: #5a4b22; --other: #2a2433;
+    --bad: #ff8a80; --bad-soft: #3a1d1a; --warn: #f0c060; --warn-soft: #33290f; --ok: #7fd49b; --mark: #6b5a10;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 13.5px/1.45 var(--sans); display: flex; flex-direction: column; overflow: hidden; }
+button, select, input, .btn { font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+button, .btn { cursor: pointer; }
+button:hover, .btn:hover { border-color: var(--muted); }
+code, pre { font-family: var(--mono); font-size: 12px; }
+pre { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+mark { background: var(--mark); color: inherit; border-radius: 2px; }
+.muted { color: var(--muted); }
+
+header { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+header h1 { font-size: 14px; margin: 0 6px 0 0; font-weight: 650; }
+#fileSel { max-width: 42vw; }
+#status { color: var(--muted); font-size: 12.5px; }
+header .open { margin-left: auto; }
+#banner { padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+#banner .err { color: var(--bad); }
+#banner .info { color: var(--warn); }
+
+main { flex: 1; display: flex; min-height: 0; }
+aside { width: 340px; flex: none; display: flex; flex-direction: column; border-right: 1px solid var(--line); background: var(--panel); min-height: 0; }
+.controls { padding: 10px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line); }
+#q { width: 100%; }
+#q.bad { border-color: var(--bad); }
+.controls .row { display: flex; gap: 6px; align-items: center; }
+#sort { flex: 1; min-width: 0; }
+#count { color: var(--muted); font-size: 12px; white-space: nowrap; }
+#facetBox summary, #thrBox summary { cursor: pointer; font-size: 12.5px; }
+#thrPanel, #thrTune { display: flex; flex-direction: column; gap: 6px; }
+#thrPanel { margin-top: 6px; }
+#thrSrc, #thrTune input[type=range] { width: 100%; min-width: 0; }
+#thrTune .row { flex-wrap: wrap; }
+#thrTune button { white-space: nowrap; width: 66px; padding: 4px 6px; }
+#thrTune input[type=number] { width: 88px; font-family: var(--mono); font-size: 12px; }
+.clab { width: 60px; font-size: 12px; color: var(--muted); }
+.pct { color: var(--muted); font-size: 12px; white-space: nowrap; }
+#thrPlot { width: 100%; height: 150px; display: block; }
+#thrInfo { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+#colorBy { flex: 1; min-width: 0; font-size: 12px; }
+#plotKey { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: 12px; color: var(--muted); }
+#plotKey i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+#facets { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; align-items: center; margin-top: 6px; max-height: 38vh; overflow: auto; }
+#facets label { font: 11.5px var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+#facets select { font-size: 12px; padding: 2px 4px; min-width: 0; }
+
+#list { flex: 1; overflow-y: auto; position: relative; }
+#spacer { position: relative; }
+.item { position: absolute; left: 0; right: 0; height: 62px; padding: 5px 10px; border-bottom: 1px solid var(--line); cursor: pointer; overflow: hidden; }
+.item:hover { background: var(--hover); }
+.item.sel { background: var(--sel); box-shadow: inset 3px 0 0 var(--accent); }
+.l1 { display: flex; gap: 6px; align-items: baseline; white-space: nowrap; }
+.ln { color: var(--muted); font: 11px var(--mono); flex: none; }
+.l1 .id { font: 12px var(--mono); overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.sv, .flag { font: 11px var(--mono); padding: 0 5px; border-radius: 4px; flex: none; }
+.sv { background: var(--accent-soft); color: var(--accent); }
+.flag { background: var(--warn-soft); color: var(--warn); }
+.sc { font: 11px var(--mono); padding: 0 5px; border-radius: 4px; flex: none; border: 1px solid var(--line); }
+.l2 { font: 11px var(--mono); color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 16px; }
+.l3 { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#detail { flex: 1; overflow-y: auto; min-width: 0; }
+.dhead { position: sticky; top: 0; z-index: 1; background: var(--bg); padding: 9px 18px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+.dtitle { flex: 1; min-width: 0; }
+.dtitle .id { font: 600 13px var(--mono); overflow-wrap: anywhere; }
+.dtitle .sub { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.dgrid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; padding: 16px 18px 48px; align-items: start; }
+@media (min-width: 1201px) { .fcol { position: sticky; top: 64px; max-height: calc(100vh - 150px); overflow: auto; } }
+@media (max-width: 1200px) { .dgrid { grid-template-columns: minmax(0, 1fr); } }
+h4 { margin: 18px 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+.tcol > h4:first-child, .fcol > h4:first-child { margin-top: 0; }
+.none { padding: 40px 18px; color: var(--muted); }
+
+.msg { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 10px; background: var(--panel); overflow: hidden; }
+.msg .mh { display: flex; gap: 8px; align-items: baseline; padding: 4px 10px; font-size: 12px; border-bottom: 1px solid var(--line); background: var(--user); }
+.msg.system { border-color: var(--system-line); }
+.msg.system .mh { background: var(--system); }
+.msg.assistant { border-left: 3px solid var(--accent); }
+.msg.assistant .mh { background: var(--accent-soft); }
+.msg.other .mh { background: var(--other); }
+.role { font-weight: 650; text-transform: uppercase; letter-spacing: .04em; font-size: 11px; }
+.src { font: 11px var(--mono); color: var(--muted); }
+.len { margin-left: auto; color: var(--muted); font-size: 11px; white-space: nowrap; }
+.badge { font: 11px var(--mono); padding: 0 5px; border-radius: 4px; background: var(--warn-soft); color: var(--warn); }
+.text { white-space: pre-wrap; overflow-wrap: anywhere; padding: 9px 12px; font-size: 14px; line-height: 1.55; }
+
+table.fields { width: 100%; border-collapse: collapse; font-size: 12.5px; table-layout: fixed; }
+table.fields th { text-align: left; font: 400 12px var(--mono); color: var(--muted); vertical-align: top; padding: 3px 8px 3px 0; width: 42%; overflow-wrap: anywhere; }
+table.fields td { padding: 3px 0; vertical-align: top; overflow-wrap: anywhere; }
+table.fields tr + tr > * { border-top: 1px solid var(--line); }
+table.fields tr.grp th { color: var(--ink); font-weight: 600; padding-top: 8px; }
+table.fields .text { padding: 6px 0 2px; font-size: 13px; }
+details > summary { cursor: pointer; }
+.null { color: var(--muted); font-style: italic; }
+.bool.true { color: var(--ok); } .bool.false { color: var(--bad); }
+.num { font-family: var(--mono); }
+
+.relfile { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; background: var(--panel); }
+.relname { font: 600 12px var(--mono); overflow-wrap: anywhere; }
+.relfile[open] > .relname { margin-bottom: 4px; }
+.rel { padding: 6px 0; border-top: 1px solid var(--line); }
+.rel .via { font-size: 11px; color: var(--muted); margin-left: 6px; }
+.kvs { display: flex; flex-wrap: wrap; gap: 3px 12px; margin-top: 4px; font-size: 12px; }
+.kv b { font: 400 11.5px var(--mono); color: var(--muted); }
+.raw { margin-top: 18px; }
+.raw summary { font-size: 12px; color: var(--muted); }
+
+#empty { display: none; flex: 1; align-items: center; justify-content: center; padding: 24px; }
+#empty .box { max-width: 620px; border: 2px dashed var(--line); border-radius: 14px; padding: 28px 32px; background: var(--panel); }
+#empty h2 { margin: 0 0 10px; font-size: 17px; }
+#empty ul { padding-left: 18px; margin: 10px 0; }
+#empty li { margin: 4px 0; }
+body.nofiles #empty { display: flex; }
+body.nofiles aside, body.nofiles #detail, body.nofiles .needfile { display: none; }
+#drop { display: none; position: fixed; inset: 0; z-index: 10; background: color-mix(in srgb, var(--accent) 18%, transparent); border: 3px dashed var(--accent); align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: var(--accent); pointer-events: none; }
+body.dragging #drop { display: flex; }
+</style>
+</head>
+<body class="nofiles">
+<header>
+  <h1>Transcript Viewer</h1>
+  <select id="fileSel" class="needfile" title="Loaded files"></select>
+  <button id="rmFile" class="needfile" title="Remove this file from the viewer">Remove</button>
+  <button id="rmAll" class="needfile" title="Remove all files from the viewer">Clear all</button>
+  <span id="status"></span>
+  <label class="btn open">Open files…<input id="pick" type="file" multiple accept=".jsonl,.ndjson,.json" hidden></label>
+</header>
+<div id="banner" hidden></div>
+<main>
+  <aside>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search all values · /regex/i · press /" autocomplete="off" spellcheck="false">
+      <div class="row">
+        <select id="sort" title="Sort by"></select>
+        <button id="dir" title="Sort direction"></button>
+        <span id="count"></span>
+      </div>
+      <details id="facetBox"><summary>Filters <span id="fcount" class="muted"></span></summary><div id="facets"></div></details>
+      <details id="thrBox"><summary>Persona threshold <span id="thrSum" class="muted"></span></summary><div id="thrPanel">
+        <select id="thrSrc" title="Persona rows file and projection; the judge score is that file's judge field (0-100)"></select>
+        <div id="thrTune">
+          <div class="row"><span class="clab">Projection</span>
+            <button id="projDir" data-c="proj" title="Keep rows at or above the value, below it, or any"></button>
+            <input id="projVal" data-c="proj" type="number" step="any" title="Projection threshold">
+            <span id="projPct" class="pct" title="Share of this file's scored rows on the kept side"></span></div>
+          <input id="projRange" data-c="proj" type="range" min="0" max="1000" step="1" title="Projection threshold as a percentile of this file's scored rows">
+          <div class="row"><span class="clab">Judge</span>
+            <button id="judgeDir" data-c="judge" title="Keep rows at or above the value, below it, or any"></button>
+            <input id="judgeVal" data-c="judge" type="number" step="any" title="Persona judge score threshold (0-100)">
+            <span id="judgePct" class="pct" title="Share of this file's scored rows on the kept side"></span></div>
+          <input id="judgeRange" data-c="judge" type="range" min="0" max="100" step="1" title="Persona judge score threshold (0-100)">
+          <div class="row"><span class="clab">Colour</span><select id="colorBy" title="Colour the plot's points by a 0/1 label of this file: 1 red, 0 green"></select></div>
+          <canvas id="thrPlot" title="Rows in search and filters: persona projection against judge score; the shaded region is kept, rows outside it are faded"></canvas>
+          <div id="plotKey"></div>
+          <div id="thrInfo"></div>
+        </div>
+      </div></details>
+    </div>
+    <div id="list"><div id="spacer"></div></div>
+  </aside>
+  <section id="detail"></section>
+  <div id="empty"><div class="box">
+    <h2>Drop .jsonl or .json files, or whole folders, anywhere</h2>
+    <ul>
+      <li>Rows with <code>messages</code>, <code>body.messages</code>, <code>prompt[]</code>, or a <code>user_prompt</code> / <code>prompt</code> / <code>question</code> string plus <code>response</code> / <code>answer</code> show as transcripts.</li>
+      <li>Every field is listed beside the transcript. Long values are collapsed.</li>
+      <li>With several files loaded, rows that share <code>id</code>, <code>request_id</code> or <code>prompt_id</code> are linked, e.g. a judged file and its persona_trait scores.</li>
+      <li>With a persona rows file loaded (<code>persona_judge_classifier</code> output, e.g. <code>block15.rows.jsonl</code>), Persona threshold keeps rows by their persona-vector projection and persona judge score, joined by <code>id</code>, e.g. high projection and low judge score to find disagreements.</li>
+      <li>Files are read in this tab and are not uploaded anywhere.</li>
+    </ul>
+    <div class="muted">Keys: ↑/↓ or j/k move · / search · Esc leaves the search box</div>
+  </div></div>
+</main>
+<div id="drop">Drop .jsonl / .json files or folders</div>
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const ROW_H = 62;
+const JOIN_KEYS = ['id', 'request_id', 'prompt_id'];
+const MAX_FACET_VALUES = 40;
+const MAX_LINKED_PER_FILE = 25;
+const LONG = 140;
+const ACCEPT = /\.(jsonl|ndjson|json)$/i;
+const MISSING = Symbol('missing');
+const MISSING_KEY = '\u0000missing';
+const ROLE = {human: 'user', ai: 'assistant', gpt: 'assistant', model: 'assistant', bot: 'assistant'};
+
+const files = [];
+const hist = [];
+// Persona threshold, applied to every file: {src: persona rows file, pos, field: 'projection' | 'length_controlled',
+// proj: {dir, t}, judge: {dir, t}}, dir one of 'above' (>= t), 'below' (< t), 'any'.
+let thr = null;
+let colorBy = null;  // path key of the 0/1 label that colours the plot; null = first label field, '' = none
+let cur = null, view = [], sel = -1, testRe = null, markRe = null, searchErr = '', notice = '';
+
+const isObj = x => x !== null && typeof x === 'object' && !Array.isArray(x);
+const isScalar = x => x === null || typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean';
+const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const oneLine = s => s.replace(/\s+/g, ' ').trim();
+const clip = (s, n) => s.length > n ? s.slice(0, n) + '…' : s;
+const str = c => typeof c === 'string' ? c : JSON.stringify(c, null, 2);
+
+// ---------- parse and index ----------
+
+// Python's json writes bare NaN / Infinity / -Infinity; quote them (outside strings) so they parse.
+const quotePyFloats = s => s.replace(/"(?:[^"\\]|\\.)*"|-?Infinity|NaN/g, m => m[0] === '"' ? m : `"${m}"`);
+
+// Strict JSON first; on failure, retry with Python floats quoted and count the row in f.pyFloats.
+function parseValue(f, s) {
+  try {
+    return JSON.parse(s);
+  } catch (e) {
+    const fixed = quotePyFloats(s);
+    if (fixed === s) throw e;
+    try { const v = JSON.parse(fixed); f.pyFloats++; return v; } catch { throw e; }
+  }
+}
+
+function parse(name, text) {
+  const f = {name, kind: /\.json$/i.test(name) ? 'json' : 'jsonl', rows: [], errors: [], blank: 0, lines: 0, pyFloats: 0, lfs: false};
+  if (text.startsWith('version https://git-lfs.github.com/spec/')) {
+    f.lfs = true;
+  } else if (f.kind === 'json') {
+    try {
+      const v = parseValue(f, text);
+      f.array = Array.isArray(v);
+      (f.array ? v : [v]).forEach((x, i) => f.rows.push({line: i + 1, v: x}));
+    } catch (e) {
+      f.errors.push({line: null, msg: e.message});
+    }
+  } else {
+    const lines = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop();  // trailing newline is not a blank row
+    f.lines = lines.length;
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i].endsWith('\r') ? lines[i].slice(0, -1) : lines[i];
+      if (!l.trim()) { f.blank++; continue; }
+      const before = f.pyFloats;
+      try { f.rows.push({line: i + 1, v: parseValue(f, l), py: f.pyFloats > before}); }
+      catch (e) { f.errors.push({line: i + 1, msg: e.message}); }
+    }
+  }
+  index(f);
+  return f;
+}
+
+// Scalar values at depth 1 and 2, e.g. ["labels", "syco"].
+function* scalarPaths(v) {
+  for (const k of Object.keys(v)) {
+    const x = v[k];
+    if (isScalar(x)) yield [[k], x];
+    else if (isObj(x)) for (const k2 of Object.keys(x)) if (isScalar(x[k2])) yield [[k, k2], x[k2]];
+  }
+}
+
+function getPath(v, path) {
+  let x = v;
+  for (const k of path) {
+    if (!isObj(x) || !has(x, k)) return MISSING;
+    x = x[k];
+  }
+  return x;
+}
+
+const facetKey = x => x === MISSING ? MISSING_KEY : JSON.stringify(x);
+
+function index(f) {
+  f.links = Object.fromEntries(JOIN_KEYS.map(k => [k, new Map()]));
+  const stats = new Map(), persona = new Set();
+  let nObj = 0;
+  f.rows.forEach((r, i) => {
+    const v = r.v;
+    if (!isObj(v)) return;
+    nObj++;
+    for (const k of Object.keys(v)) if (isObj(v[k]) && typeof v[k].projection === 'number') persona.add(k);
+    for (const k of JOIN_KEYS) {
+      const x = v[k];
+      if (typeof x !== 'string' && typeof x !== 'number') continue;
+      const m = f.links[k], s = String(x);
+      if (!m.has(s)) m.set(s, []);
+      m.get(s).push(i);
+    }
+    for (const [path, x] of scalarPaths(v)) {
+      const pk = JSON.stringify(path);
+      let st = stats.get(pk);
+      if (!st) stats.set(pk, st = {path, n: 0, vals: new Map()});
+      st.n++;
+      if (st.vals) {
+        const vk = JSON.stringify(x);
+        st.vals.set(vk, (st.vals.get(vk) || 0) + 1);
+        if (st.vals.size > MAX_FACET_VALUES) st.vals = null;
+      }
+    }
+  });
+  f.paths = new Map();
+  f.facets = [];
+  for (const [pk, st] of stats) {
+    f.paths.set(pk, st.path);
+    if (!st.vals) continue;
+    if (st.n < nObj) st.vals.set(MISSING_KEY, nObj - st.n);
+    if (st.vals.size > 1) f.facets.push({pk, vals: [...st.vals].sort((a, b) => keyCmp(a[0], b[0]))});
+  }
+  f.persona = [...persona].sort();  // positions with a persona-vector score, as in persona_judge_classifier rows files
+  f.filt = {};
+  f.sort = {key: '', dir: 1};
+  f.sc = null;  // persona scores per row, see scoreFile
+  f.pre = [];
+  f.selRow = -1;
+  f.hay = new Array(f.rows.length);
+  f.prev = new Array(f.rows.length);
+}
+
+// ---------- ordering ----------
+
+function rank(x) {
+  return typeof x === 'number' ? 0 : typeof x === 'boolean' ? 1 : typeof x === 'string' ? 2 : x === null ? 3 : 4;
+}
+
+function cmpVals(a, b) {
+  const ra = rank(a), rb = rank(b);
+  if (ra !== rb) return ra - rb;
+  if (ra <= 1) return a - b;
+  if (ra === 2) return a < b ? -1 : a > b ? 1 : 0;
+  return 0;
+}
+
+function keyCmp(a, b) {
+  if (a === MISSING_KEY) return b === MISSING_KEY ? 0 : 1;
+  if (b === MISSING_KEY) return -1;
+  return cmpVals(JSON.parse(a), JSON.parse(b));
+}
+
+// Facet label for a value key; strings that could be read as another type stay quoted.
+function showKey(vk) {
+  if (vk === MISSING_KEY) return '(missing)';
+  const x = JSON.parse(vk);
+  if (typeof x !== 'string') return vk;
+  return x === '' || /^(-?\d|true$|false$|null$)/.test(x) ? vk : clip(x, 60);
+}
+
+function short(x) {
+  if (x === MISSING) return '—';
+  if (typeof x === 'number' && !Number.isInteger(x)) return String(+x.toPrecision(4));
+  if (typeof x === 'string') return clip(x, 40);
+  return isScalar(x) ? String(x) : clip(JSON.stringify(x), 40);
+}
+
+function tlen(v) {
+  const t = transcript(v);
+  return t ? t.msgs.reduce((n, m) => n + str(m.content).length, 0) : MISSING;
+}
+
+function sortVal(f, i) {
+  const v = f.rows[i].v;
+  if (f.sort.key === '#proj' || f.sort.key === '#judge') {
+    const x = f.sc[f.sort.key.slice(1)][i];
+    return typeof x === 'number' ? x : MISSING;
+  }
+  return f.sort.key === '#len' ? tlen(v) : getPath(v, f.paths.get(f.sort.key));
+}
+
+// ---------- persona threshold ----------
+
+// Persona row of row i of f: the row itself when f is the persona rows file, else the persona row with the same id;
+// or the reason there is none.
+function personaRow(f, i) {
+  const w = f.rows[i].v;
+  if (thr.src === f) return w;
+  if (!isObj(w) || (typeof w.id !== 'string' && typeof w.id !== 'number')) return 'no id';
+  const js = thr.src.links.id.get(String(w.id)) || [];
+  return js.length === 1 ? thr.src.rows[js[0]].v : js.length ? `${js.length} persona rows` : 'no persona row';
+}
+
+const num = (x, what) => typeof x === 'number' && Number.isFinite(x) ? x : `${what} ${x === MISSING ? 'missing' : 'not a number'}`;
+
+// Per row of f: the persona projection (thr.pos, thr.field) and the persona judge's score, each a number or a reason.
+function scoreFile(f) {
+  const proj = [], judge = [];
+  f.rows.forEach((r, i) => {
+    const w = personaRow(f, i);
+    proj.push(typeof w === 'string' ? w : num(getPath(w, [thr.pos, thr.field]), 'projection'));
+    judge.push(typeof w === 'string' ? w : num(getPath(w, ['judge']), 'judge score'));
+  });
+  const sorted = a => a.filter(x => typeof x === 'number').sort((a, b) => a - b);
+  f.sc = {src: thr.src, pos: thr.pos, field: thr.field, proj, judge, sortedProj: sorted(proj), sortedJudge: sorted(judge)};
+}
+
+const scoresStale = f => !f.sc || f.sc.src !== thr.src || f.sc.pos !== thr.pos || f.sc.field !== thr.field;
+
+function clearThr() {
+  thr = null;
+  for (const f of files) {
+    f.sc = null;
+    if (f.sort.key === '#proj' || f.sort.key === '#judge') f.sort.key = '';
+  }
+}
+
+const ok = (c, x) => c.dir === 'any' || (typeof x === 'number' && (c.dir === 'above' ? x >= c.t : x < c.t));
+const passes = (f, i) => ok(thr.proj, f.sc.proj[i]) && ok(thr.judge, f.sc.judge[i]);
+
+// Number of values in sorted array a that are below t.
+function nBelow(a, t) {
+  let lo = 0, hi = a.length;
+  while (lo < hi) { const m = (lo + hi) >> 1; if (a[m] < t) lo = m + 1; else hi = m; }
+  return lo;
+}
+
+// ---------- transcript ----------
+
+const isMsgs = a => Array.isArray(a) && a.length > 0 &&
+  a.every(m => isObj(m) && has(m, 'content') && (has(m, 'role') || has(m, 'type')));
+
+// Returns {msgs, used} or null; `used` holds the field paths that the transcript displays.
+function transcript(v) {
+  if (!isObj(v)) return null;
+  const used = new Set();
+  let msgs = [];
+  const take = (arr, src) => {
+    used.add(src);
+    msgs = arr.map((m, i) => {
+      const role = String(has(m, 'role') ? m.role : m.type);
+      return {role: ROLE[role] || role, content: m.content, src: `${src}[${i}]`};
+    });
+  };
+  if (isMsgs(v.messages)) take(v.messages, 'messages');
+  else if (isObj(v.body) && isMsgs(v.body.messages)) take(v.body.messages, 'body.messages');
+  else if (isMsgs(v.prompt)) take(v.prompt, 'prompt');
+  const a = ['response', 'answer'].find(k => typeof v[k] === 'string');
+  const u = ['user_prompt', 'user_text', 'prompt', 'question'].find(k => typeof v[k] === 'string');
+  if (!msgs.length && (u || a)) {
+    const s = ['system_prompt', 'system'].find(k => typeof v[k] === 'string');
+    if (s) { used.add(s); msgs.push({role: 'system', content: v[s], src: s}); }
+    if (u) { used.add(u); msgs.push({role: 'user', content: v[u], src: u}); }
+  }
+  if (a) {
+    used.add(a);
+    const last = msgs[msgs.length - 1];
+    if (!(last && last.role === 'assistant' && last.content === v[a])) msgs.push({role: 'assistant', content: v[a], src: a});
+  }
+  return msgs.length ? {msgs, used} : null;
+}
+
+// ---------- search ----------
+
+function setQuery(q) {
+  testRe = markRe = null;
+  searchErr = '';
+  q = q.trim();
+  if (!q) return;
+  const m = q.match(/^\/(.+)\/([a-z]*)$/);
+  const src = m ? m[1] : q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const flags = m ? m[2].replace(/[gy]/g, '') : 'i';
+  try {
+    testRe = new RegExp(src, flags);
+    markRe = new RegExp(src, flags + 'g');
+  } catch (e) {
+    testRe = markRe = null;
+    searchErr = e.message;
+  }
+}
+
+function collect(x, out) {
+  if (typeof x === 'string') out.push(x);
+  else if (typeof x === 'number' || typeof x === 'boolean') out.push(String(x));
+  else if (Array.isArray(x)) x.forEach(y => collect(y, out));
+  else if (isObj(x)) for (const k of Object.keys(x)) collect(x[k], out);
+}
+
+function hay(f, i) {
+  if (f.hay[i] === undefined) {
+    const out = [];
+    collect(f.rows[i].v, out);
+    f.hay[i] = out.join('\n');
+  }
+  return f.hay[i];
+}
+
+function hl(s) {
+  if (!markRe) return esc(s);
+  let out = '', last = 0, m;
+  markRe.lastIndex = 0;
+  while ((m = markRe.exec(s))) {
+    if (m[0] === '') { markRe.lastIndex++; continue; }
+    out += esc(s.slice(last, m.index)) + '<mark>' + esc(m[0]) + '</mark>';
+    last = m.index + m[0].length;
+  }
+  return out + esc(s.slice(last));
+}
+
+// ---------- filter + sort ----------
+
+function refresh() {
+  const f = cur;
+  view = [];
+  if (f) f.pre = [];  // rows matching search and filters, before the score threshold
+  if (f && thr && scoresStale(f)) scoreFile(f);
+  if (f && !searchErr) {
+    const act = Object.entries(f.filt).map(([pk, vk]) => [f.paths.get(pk), vk]);
+    for (let i = 0; i < f.rows.length; i++) {
+      const v = f.rows[i].v;
+      if (act.length && !act.every(([p, vk]) => facetKey(getPath(v, p)) === vk)) continue;
+      if (testRe && !testRe.test(hay(f, i))) continue;
+      f.pre.push(i);
+    }
+    view = thr ? f.pre.filter(i => passes(f, i)) : f.pre.slice();
+    if (f.sort.key) {
+      const keyed = view.map(i => [i, sortVal(f, i)]);
+      keyed.sort((a, b) => {
+        const na = rank(a[1]) >= 3, nb = rank(b[1]) >= 3;  // null and missing always last
+        if (na !== nb) return na ? 1 : -1;
+        return cmpVals(a[1], b[1]) * f.sort.dir || a[0] - b[0];
+      });
+      view = keyed.map(k => k[0]);
+    }
+  }
+  sel = f && f.selRow >= 0 ? view.indexOf(f.selRow) : -1;
+  if (sel < 0 && view.length) sel = 0;
+  if (f) f.selRow = sel >= 0 ? view[sel] : -1;
+  renderAll();
+  ensureVisible();
+}
+
+// ---------- rendering ----------
+
+function renderAll() {
+  document.body.classList.toggle('nofiles', !files.length);
+  renderHeader();
+  renderList();
+  renderDetail();
+}
+
+function renderHeader() {
+  $('#fileSel').innerHTML = files.map((f, k) =>
+    `<option value="${k}"${f === cur ? ' selected' : ''}>${esc(f.name)} · ${f.rows.length.toLocaleString()} rows` +
+    `${f.errors.length ? ` · ${f.errors.length} errors` : ''}${f.lfs ? ' · LFS pointer' : ''}</option>`).join('');
+  const f = cur;
+  let status = '';
+  if (f && f.kind === 'jsonl') status = `${f.lines.toLocaleString()} lines = ${f.rows.length.toLocaleString()} rows + ${f.blank} blank + ${f.errors.length} unparseable`;
+  else if (f) status = f.errors.length ? 'JSON did not parse' : `JSON ${f.array ? 'array' : 'object'} → ${f.rows.length.toLocaleString()} rows`;
+  if (files.length > 1) status += ` · ${files.length} files loaded`;
+  $('#status').textContent = status;
+
+  let b = notice ? `<div class="info">${esc(notice)}</div>` : '';
+  if (f && f.pyFloats) b += `<div class="info">${f.pyFloats.toLocaleString()} ${f.kind === 'jsonl' ? 'rows' : 'file'} in ${esc(f.name)} contain bare NaN / Infinity (Python JSON, not valid JSON). They are shown as the strings "NaN" / "Infinity".</div>`;
+  if (f && f.lfs) b += `<div class="err">${esc(f.name)} is a Git LFS pointer, not the data. Run <code>git lfs pull</code> in the repo, then load the file again.</div>`;
+  if (f && f.errors.length) {
+    b += `<div class="err">${f.errors.length} unparseable ${f.kind === 'jsonl' ? 'lines' : 'file'} in ${esc(f.name)}: ` +
+      f.errors.slice(0, 5).map(e => `${e.line === null ? '' : 'line ' + e.line + ': '}${esc(e.msg)}`).join(' · ') +
+      (f.errors.length > 5 ? ` · and ${f.errors.length - 5} more` : '') + '</div>';
+  }
+  $('#banner').innerHTML = b;
+  $('#banner').hidden = !b;
+
+  const q = $('#q');
+  q.classList.toggle('bad', !!searchErr);
+  q.title = searchErr ? 'Invalid regex: ' + searchErr : '';
+  $('#count').textContent = f ? (searchErr ? 'invalid regex' : `${view.length.toLocaleString()} / ${f.rows.length.toLocaleString()}`) : '';
+  $('#dir').textContent = f && f.sort.dir < 0 ? '↓ desc' : '↑ asc';
+  $('#dir').disabled = !f || !f.sort.key;
+  const n = f ? Object.keys(f.filt).length : 0;
+  $('#fcount').textContent = f ? (n ? `${n} active` : `${f.facets.length} fields`) : '';
+  renderThr();
+}
+
+const DIR_LABEL = {above: '≥ above', below: '< below', any: 'any'};
+
+// Fields of f whose values are 0 and 1 (and possibly null or missing): the labels the plot can be coloured by.
+const labelFields = f => f.facets.filter(({vals}) => {
+  const ks = vals.map(([vk]) => vk);
+  return ks.includes('0') && ks.includes('1') && ks.every(k => ['0', '1', 'null', MISSING_KEY].includes(k));
+}).map(({pk}) => pk);
+
+// Path of the colouring label in f: the chosen one if f has it, else (unless none was chosen) f's first labels.* field.
+function labelPath(f) {
+  const ks = labelFields(f);
+  if (colorBy === '') return null;
+  const pk = ks.includes(colorBy) ? colorBy : ks.find(k => f.paths.get(k)[0] === 'labels') || ks[0];
+  return pk ? f.paths.get(pk) : null;
+}
+
+function renderKey(f) {
+  const lab = labelPath(f);
+  if (!lab) { $('#plotKey').innerHTML = ''; return; }
+  const n = {1: [0, 0], 0: [0, 0], other: [0, 0]};  // [kept, in search and filters], rows with both scores
+  for (const i of f.pre) {
+    if (typeof f.sc.proj[i] !== 'number' || typeof f.sc.judge[i] !== 'number') continue;
+    const v = getPath(f.rows[i].v, lab), k = v === 1 || v === 0 ? v : 'other';
+    n[k][1]++;
+    if (passes(f, i)) n[k][0]++;
+  }
+  const item = (color, name, [kept, all]) => `<span><i style="background:var(${color})"></i>${name}: ${kept.toLocaleString()} of ${all.toLocaleString()} kept</span>`;
+  $('#plotKey').innerHTML = item('--bad', '1', n[1]) + item('--ok', '0', n[0]) + (n.other[1] ? item('--muted', 'no label', n.other) : '');
+}
+
+function renderThr() {
+  const f = cur;
+  $('#thrBox').hidden = !f || !files.some(g => g.persona.length);
+  if ($('#thrBox').hidden) return;
+  $('#thrTune').hidden = !thr;
+  const cond = (c, name) => thr[c].dir === 'any' ? '' : `${name} ${thr[c].dir === 'above' ? '≥' : '<'} ${short(thr[c].t)}`;
+  $('#thrSum').textContent = thr ? [cond('proj', 'proj'), cond('judge', 'judge')].filter(Boolean).join(' · ') || 'any' : 'off';
+  if (!thr) return;
+  for (const [c, s] of [['proj', f.sc.sortedProj], ['judge', f.sc.sortedJudge]]) {
+    const {dir, t} = thr[c], k = nBelow(s, t);
+    $(`#${c}Dir`).textContent = DIR_LABEL[dir];
+    $(`#${c}Val`).disabled = $(`#${c}Range`).disabled = dir === 'any';
+    if (document.activeElement !== $(`#${c}Val`)) $(`#${c}Val`).value = t;
+    if (document.activeElement !== $(`#${c}Range`)) $(`#${c}Range`).value = c === 'judge' ? t : s.length ? Math.round(1000 * k / s.length) : 0;
+    $(`#${c}Pct`).textContent = !s.length ? 'no scores' : dir === 'any' ? '' : `${(100 * (dir === 'above' ? s.length - k : k) / s.length).toFixed(1)}%`;
+  }
+  let pass = 0, outside = 0;
+  const why = new Map();
+  for (const i of f.pre) {
+    if (passes(f, i)) { pass++; continue; }
+    const miss = [f.sc.proj[i], f.sc.judge[i]].find((x, n) => thr[n ? 'judge' : 'proj'].dir !== 'any' && typeof x !== 'number');
+    if (miss === undefined) outside++;
+    else why.set(miss, (why.get(miss) || 0) + 1);
+  }
+  const unscored = f.pre.length - pass - outside;
+  $('#thrInfo').textContent = searchErr ? '' :
+    `${pass.toLocaleString()} of ${f.pre.length.toLocaleString()} rows in search and filters pass · ${outside.toLocaleString()} outside the thresholds` +
+    (unscored ? ` · ${unscored.toLocaleString()} without a score (${[...why].map(([r, c]) => `${c.toLocaleString()} ${r}`).join(', ')})` : '') +
+    ` · scores from ${thr.src === f ? 'this file' : thr.src.name}: ${thr.pos}.${thr.field}, judge`;
+  drawPlot(f);
+  renderKey(f);
+}
+
+// Scatter of the rows in search and filters: persona projection (x, over this file's range) against the judge's score
+// (y, 0-100). The kept region is shaded and the rows that pass are drawn in the accent colour.
+function drawPlot(f) {
+  const c = $('#thrPlot'), w = c.clientWidth, h = c.clientHeight;
+  if (!w || !thr) return;  // panel closed
+  const dpr = devicePixelRatio || 1;
+  c.width = Math.round(w * dpr);
+  c.height = Math.round(h * dpr);
+  const g = c.getContext('2d');
+  g.scale(dpr, dpr);
+  g.clearRect(0, 0, w, h);
+  const s = f.sc.sortedProj;
+  if (!s.length) return;
+  const L = 26, T = 2, pw = w - L - 2, ph = h - T - 14, lo = s[0], hi = s[s.length - 1], span = hi - lo || 1;
+  const X = v => L + Math.max(0, Math.min(1, (v - lo) / span)) * pw, Y = v => T + (1 - Math.max(0, Math.min(100, v)) / 100) * ph;
+  const cs = getComputedStyle(document.documentElement), col = n => cs.getPropertyValue(n);
+  const {proj: p, judge: j} = thr;
+  const x0 = p.dir === 'above' ? X(p.t) : L, x1 = p.dir === 'below' ? X(p.t) : L + pw;
+  const y0 = j.dir === 'below' ? Y(j.t) : T, y1 = j.dir === 'above' ? Y(j.t) : T + ph;
+  g.fillStyle = col('--accent-soft');
+  g.fillRect(x0, y0, x1 - x0, y1 - y0);
+  g.strokeStyle = col('--line');
+  g.strokeRect(L + 0.5, T + 0.5, pw - 1, ph - 1);
+  const lab = labelPath(f), fill = {1: col('--bad'), 0: col('--ok')};
+  for (const pass of [false, true]) {
+    g.globalAlpha = pass ? 0.95 : 0.3;
+    for (const i of f.pre) {
+      const a = f.sc.proj[i], b = f.sc.judge[i];
+      if (typeof a !== 'number' || typeof b !== 'number' || passes(f, i) !== pass) continue;
+      g.fillStyle = fill[lab ? getPath(f.rows[i].v, lab) : null] || col('--muted');
+      g.fillRect(X(a) - 1.5, Y(b) - 1.5, 3, 3);
+    }
+  }
+  g.globalAlpha = 1;
+  g.fillStyle = col('--ink');
+  if (p.dir !== 'any') g.fillRect(X(p.t) - 0.5, T, 1, ph);
+  if (j.dir !== 'any') g.fillRect(L, Y(j.t) - 0.5, pw, 1);
+  g.font = '10px ' + col('--mono');
+  g.fillStyle = col('--muted');
+  g.textBaseline = 'bottom';
+  g.textAlign = 'left';
+  g.fillText(short(lo), L, h);
+  g.textAlign = 'center';
+  g.fillText('projection', L + pw / 2, h);
+  g.textAlign = 'right';
+  g.fillText(short(hi), w, h);
+  g.fillText('0', L - 3, T + ph);
+  g.textBaseline = 'top';
+  g.fillText('100', L - 3, T);
+  g.save();
+  g.translate(8, T + ph / 2);
+  g.rotate(-Math.PI / 2);
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  g.fillText('judge', 0, 0);
+  g.restore();
+}
+
+// Sort options and facet selects for the current file.
+function buildControls() {
+  const f = cur;
+  if (!f) return;
+  const paths = [...f.paths].map(([pk, p]) => [pk, p.join('.')]).sort((a, b) => a[1] < b[1] ? -1 : 1);
+  $('#sort').innerHTML = `<option value="">file order</option><option value="#len">transcript length (chars)</option>` +
+    (thr ? '<option value="#proj">persona projection</option><option value="#judge">persona judge score</option>' : '') +
+    paths.map(([pk, name]) => `<option value="${esc(pk)}">${esc(name)}</option>`).join('');
+  $('#sort').value = f.sort.key;
+  const opt = (gi, pos, field, name) => `<option value="${esc(JSON.stringify([gi, pos, field]))}">${esc(pos)} · ${name}</option>`;
+  $('#thrSrc').innerHTML = '<option value="">off</option>' + files.map((g, gi) => g.persona.length ?
+    `<optgroup label="${esc(g === f ? 'this file' : g.name)}">` +
+    g.persona.map(pos => opt(gi, pos, 'projection', 'projection') + opt(gi, pos, 'length_controlled', 'length-controlled')).join('') +
+    '</optgroup>' : '').join('');
+  $('#thrSrc').value = thr ? JSON.stringify([files.indexOf(thr.src), thr.pos, thr.field]) : '';
+  const lab = labelPath(f);
+  $('#colorBy').innerHTML = '<option value="">none</option>' +
+    labelFields(f).map(pk => `<option value="${esc(pk)}">${esc(f.paths.get(pk).join('.'))}</option>`).join('');
+  $('#colorBy').value = lab ? JSON.stringify(lab) : '';
+  $('#facets').innerHTML = f.facets.map(({pk, vals}) =>
+    `<label title="${esc(f.paths.get(pk).join('.'))}">${esc(f.paths.get(pk).join('.'))}</label><select data-pk="${esc(pk)}">` +
+    `<option value="">any</option>` +
+    vals.map(([vk, c]) => `<option value="${esc(vk)}"${f.filt[pk] === vk ? ' selected' : ''}>${esc(showKey(vk))} (${c.toLocaleString()})</option>`).join('') +
+    `</select>`).join('') +
+    (f.facets.length ? '<span></span><button id="clearFilt">Clear filters</button>' : '<span class="muted">No field has 2–40 distinct values.</span>');
+}
+
+function preview(f, i) {
+  if (f.prev[i]) return f.prev[i];
+  const r = f.rows[i], v = r.v;
+  const tags = [];
+  let label = `row ${r.line}`, text, flag = '';
+  if (isObj(v)) {
+    for (const k of ['id', 'prompt_id', 'request_id', 'probe_id', 'name']) {
+      if (typeof v[k] === 'string' || typeof v[k] === 'number') { label = String(v[k]); break; }
+    }
+    for (const k of ['labels', 'scores', 'verdict']) {
+      if (isObj(v[k])) for (const a of Object.keys(v[k])) if (isScalar(v[k][a])) tags.push(`${a}=${short(v[k][a])}`);
+    }
+    for (const k of ['label', 'verdict', 'score']) if (has(v, k) && isScalar(v[k])) tags.push(`${k}=${short(v[k])}`);
+    if (v.truncated === true) flag = 'truncated';
+    else if (v.finished === false) flag = 'unfinished';
+    const t = transcript(v);
+    text = t ? str(t.msgs[t.msgs.length - 1].content)
+      : [...scalarPaths(v)].map(([p, x]) => `${p.join('.')}=${short(x)}`).join('  ');
+  } else {
+    text = JSON.stringify(v);
+  }
+  return f.prev[i] = {label, tags: tags.join('  '), text: clip(oneLine(text), 300), flag};
+}
+
+function itemHTML(p) {
+  const i = view[p], pv = preview(cur, i);
+  const sc = thr ? `<span class="sc" title="persona projection · judge score">${esc(short(cur.sc.proj[i]))} · ${esc(short(cur.sc.judge[i]))}</span>` : '';
+  const sv = cur.sort.key && !(thr && (cur.sort.key === '#proj' || cur.sort.key === '#judge')) ? `<span class="sv">${esc(short(sortVal(cur, i)))}</span>` : '';
+  const flag = pv.flag ? `<span class="flag">${pv.flag}</span>` : '';
+  return `<div class="item${p === sel ? ' sel' : ''}" data-p="${p}" style="top:${p * ROW_H}px">` +
+    `<div class="l1"><span class="ln">${cur.rows[i].line}</span><span class="id" title="${esc(pv.label)}">${esc(pv.label)}</span>${flag}${sc}${sv}</div>` +
+    `<div class="l2" title="${esc(pv.tags)}">${esc(pv.tags)}</div>` +
+    `<div class="l3">${esc(pv.text)}</div></div>`;
+}
+
+function renderList() {
+  const list = $('#list'), spacer = $('#spacer');
+  if (!cur) { spacer.innerHTML = ''; spacer.style.height = '0'; return; }
+  spacer.style.height = view.length * ROW_H + 'px';
+  const a = Math.max(0, Math.floor(list.scrollTop / ROW_H) - 5);
+  const b = Math.min(view.length, Math.ceil((list.scrollTop + list.clientHeight) / ROW_H) + 5);
+  let h = '';
+  for (let p = a; p < b; p++) h += itemHTML(p);
+  spacer.innerHTML = h;
+}
+
+function ensureVisible() {
+  if (sel < 0) return;
+  const list = $('#list'), top = sel * ROW_H;
+  if (top < list.scrollTop) list.scrollTop = top;
+  else if (top + ROW_H > list.scrollTop + list.clientHeight) list.scrollTop = top + ROW_H - list.clientHeight;
+  renderList();
+}
+
+function msgHTML(m, v) {
+  const known = ['system', 'user', 'assistant'].includes(m.role);
+  const c = str(m.content);
+  let badge = '';
+  if (m.src === 'response' && v.truncated === true) badge = '<span class="badge">truncated</span>';
+  if (m.src === 'answer' && v.finished === false) badge = '<span class="badge">finished: false</span>';
+  return `<div class="msg ${known ? m.role : 'other'}"><div class="mh"><span class="role">${esc(m.role)}</span>` +
+    `<span class="src">${esc(m.src)}</span>${badge}<span class="len">${c.length.toLocaleString()} chars</span></div>` +
+    `<div class="text">${c ? hl(c) : '<span class="null">(empty)</span>'}</div></div>`;
+}
+
+function valHTML(x) {
+  if (x === null) return '<span class="null">null</span>';
+  if (typeof x === 'boolean') return `<span class="bool ${x}">${x}</span>`;
+  if (typeof x === 'number') return `<span class="num">${x}</span>`;
+  if (typeof x === 'string') {
+    if (x === '') return '<span class="null">""</span>';
+    if (/^(-?\d|true$|false$|null$)/.test(x) && x.length <= LONG) return hl(JSON.stringify(x));  // quoted, so "1" is not read as 1
+    if (x.length <= LONG && !x.includes('\n')) return hl(x);
+    const open = testRe && testRe.test(x) ? ' open' : '';
+    return `<details${open}><summary>${hl(clip(oneLine(x), 70))} <span class="muted">${x.length.toLocaleString()} chars</span></summary>` +
+      `<div class="text">${hl(x)}</div></details>`;
+  }
+  if (isObj(x)) return '<code>{}</code>';
+  const s = JSON.stringify(x);
+  if (s.length <= LONG) return `<code>${hl(s)}</code>`;
+  const lines = x.map((e, i) => `${i}: ${JSON.stringify(e)}`);
+  const body = lines.every(l => l.length <= 200) ? lines.join('\n') : JSON.stringify(x, null, 2);
+  return `<details><summary>array · ${x.length} items</summary><pre>${hl(body)}</pre></details>`;
+}
+
+function fieldRows(o, prefix, depth, used) {
+  let h = '';
+  for (const k of Object.keys(o)) {
+    const x = o[k], path = prefix + k, pad = `style="padding-left:${depth * 14}px"`;
+    if (used.has(path)) h += `<tr><th ${pad}>${esc(k)}</th><td class="muted">→ transcript</td></tr>`;
+    else if (isObj(x) && Object.keys(x).length) h += `<tr class="grp"><th colspan="2" ${pad}>${esc(k)}</th></tr>` + fieldRows(x, path + '.', depth + 1, used);
+    else h += `<tr><th ${pad}>${esc(k)}</th><td>${valHTML(x)}</td></tr>`;
+  }
+  return h;
+}
+
+function fieldsHTML(v, used) {
+  if (!isObj(v)) return `<pre>${hl(JSON.stringify(v, null, 2))}</pre>`;
+  return `<table class="fields">${fieldRows(v, '', 0, used)}</table>`;
+}
+
+// Rows in any loaded file sharing a join key with row i, following keys up to 2 hops
+// (e.g. judged --id--> judge request --request_id--> judge response).
+function linked(f, i) {
+  const out = new Map();
+  const seen = new Set([`${files.indexOf(f)}:${i}`]);
+  let frontier = [f.rows[i].v];
+  for (let hop = 1; hop <= 2 && frontier.length; hop++) {
+    const keys = new Map();
+    for (const w of frontier) {
+      if (!isObj(w)) continue;
+      for (const k of JOIN_KEYS) if (typeof w[k] === 'string' || typeof w[k] === 'number') keys.set(k + '\u0000' + w[k], [k, String(w[k])]);
+    }
+    frontier = [];
+    files.forEach((g, gi) => {
+      for (const [k, s] of keys.values()) {
+        for (const j of g.links[k].get(s) || []) {
+          const tag = `${gi}:${j}`;
+          if (seen.has(tag)) continue;
+          seen.add(tag);
+          if (!out.has(g)) out.set(g, new Map());
+          out.get(g).set(j, hop === 1 ? `via ${k}` : `via ${k}, 2 hops`);
+          frontier.push(g.rows[j].v);
+        }
+      }
+    });
+  }
+  return out;
+}
+
+function summaryHTML(w, used) {
+  if (!isObj(w)) return `<code>${esc(clip(JSON.stringify(w), 200))}</code>`;
+  const parts = [];
+  const kv = (k, x) => {
+    const s = typeof x === 'string' ? x : JSON.stringify(x);
+    return `<span class="kv" title="${esc(clip(s, 2000))}"><b>${esc(k)}</b> ${hl(clip(oneLine(s), 90))}</span>`;
+  };
+  for (const k of Object.keys(w)) {
+    if (used.has(k)) continue;
+    const x = w[k];
+    if (isObj(x)) { for (const k2 of Object.keys(x)) if (!used.has(k + '.' + k2)) parts.push(kv(`${k}.${k2}`, x[k2])); }
+    else parts.push(kv(k, x));
+  }
+  return `<div class="kvs">${parts.join('')}</div>`;
+}
+
+function linkedHTML(f, i) {
+  const found = linked(f, i);
+  if (!found.size) {
+    return files.length > 1 ? `<h4>Linked rows</h4><div class="muted">No row in the loaded files shares ${JOIN_KEYS.join(' / ')} with this row.</div>` : '';
+  }
+  let h = `<h4>Linked rows · ${found.size} file${found.size > 1 ? 's' : ''}</h4>`;
+  for (const [g, rows] of found) {
+    const gi = files.indexOf(g), entries = [...rows];
+    const open = entries.length <= 3 && found.size <= 6 ? ' open' : '';
+    h += `<details class="relfile"${open}><summary class="relname">${esc(g.name)}${g === f ? ' <span class="muted">(this file)</span>' : ''} <span class="muted">· ${entries.length} row${entries.length > 1 ? 's' : ''}</span></summary>`;
+    for (const [j, via] of entries.slice(0, MAX_LINKED_PER_FILE)) {
+      const w = g.rows[j].v, t = transcript(w);
+      h += `<div class="rel"><button class="jump" data-f="${gi}" data-r="${j}">${g.kind === 'jsonl' ? 'line' : 'item'} ${g.rows[j].line} →</button><span class="via">${via}</span>` +
+        summaryHTML(w, t ? t.used : new Set());
+      if (t) h += `<details><summary class="muted">transcript · ${t.msgs.length} turns</summary>${t.msgs.map(m => msgHTML(m, w)).join('')}</details>`;
+      h += '</div>';
+    }
+    if (entries.length > MAX_LINKED_PER_FILE) h += `<div class="muted">${entries.length - MAX_LINKED_PER_FILE} more not shown</div>`;
+    h += '</details>';
+  }
+  return h;
+}
+
+function renderDetail() {
+  const d = $('#detail');
+  if (!cur) { d.innerHTML = ''; return; }
+  if (sel < 0) {
+    d.innerHTML = `<div class="none">${searchErr ? 'Invalid regex: ' + esc(searchErr) : cur.rows.length ? 'No rows match the search and filters.' : 'This file has no rows.'}</div>`;
+    return;
+  }
+  const i = view[sel], r = cur.rows[i], v = r.v, t = transcript(v);
+  const label = preview(cur, i).label;
+  let h = `<div class="dhead">${hist.length ? '<button data-act="back" title="Back to the row you jumped from">← back</button>' : ''}` +
+    `<div class="dtitle"><div class="id">${esc(label)}</div><div class="sub">${esc(cur.name)} · ${cur.kind === 'jsonl' ? 'line' : 'item'} ${r.line} · ${sel + 1} of ${view.length.toLocaleString()} shown` +
+    `${thr ? ` · persona projection <span class="num">${esc(String(cur.sc.proj[i]))}</span> · judge <span class="num">${esc(String(cur.sc.judge[i]))}</span>` : ''}` +
+    `${r.py ? ' · <span class="badge">bare NaN/Infinity shown as strings</span>' : ''}</div></div>` +
+    `<button data-act="prev" title="Previous (↑ / k)">↑</button><button data-act="next" title="Next (↓ / j)">↓</button></div>`;
+  h += '<div class="dgrid"><div class="tcol">';
+  h += t ? `<h4>Transcript · ${t.msgs.length} turn${t.msgs.length > 1 ? 's' : ''}</h4>` + t.msgs.map(m => msgHTML(m, v)).join('')
+    : '<h4>Transcript</h4><div class="muted">No transcript fields in this row (looked for messages, body.messages, prompt[], and user_prompt / user_text / prompt / question / response / answer strings).</div>';
+  h += linkedHTML(cur, i);
+  h += `<details class="raw"><summary>Raw JSON</summary><pre>${hl(JSON.stringify(v, null, 2))}</pre></details>`;
+  h += `</div><div class="fcol"><h4>Fields</h4>${fieldsHTML(v, t ? t.used : new Set())}</div></div>`;
+  d.innerHTML = h;
+  d.scrollTop = 0;
+}
+
+// ---------- navigation ----------
+
+function select(p) {
+  if (!view.length) return;
+  sel = Math.max(0, Math.min(view.length - 1, p));
+  cur.selRow = view[sel];
+  ensureVisible();
+  renderDetail();
+}
+
+function go(g, j) {
+  cur = g;
+  g.selRow = j;
+  buildControls();
+  refresh();
+  if (view[sel] !== j) {  // target hidden by search, filters or threshold: clear them
+    g.filt = {};
+    clearThr();
+    $('#q').value = '';
+    setQuery('');
+    g.selRow = j;
+    buildControls();
+    refresh();
+  }
+}
+
+// ---------- loading ----------
+
+function uniqueName(name) {
+  let n = name, k = 2;
+  while (files.some(f => f.name === n)) n = `${name} (${k++})`;
+  return n;
+}
+
+async function load(items) {
+  const ok = items.filter(it => ACCEPT.test(it.path));
+  const skipped = items.filter(it => !ACCEPT.test(it.path)).map(it => it.path);
+  notice = skipped.length ? `Skipped ${skipped.length} file${skipped.length > 1 ? 's' : ''} not ending in .jsonl, .ndjson or .json: ${clip(skipped.join(', '), 300)}` : '';
+  const first = files.length;
+  for (let n = 0; n < ok.length; n++) {
+    $('#status').textContent = `Loading ${n + 1}/${ok.length}: ${ok[n].path}`;
+    const text = await ok[n].file.text();
+    files.push(parse(uniqueName(ok[n].path), text));
+  }
+  if (files.length > first) {
+    cur = files[first];
+    buildControls();
+  }
+  refresh();
+}
+
+function loadSafely(items) {
+  load(items).catch(e => {
+    notice = `Loading failed: ${e.message}`;
+    refresh();
+  });
+}
+
+// Reads dropped files and folders; must collect entries before the first await.
+function dropItems(dt) {
+  const entries = [...dt.items].filter(it => it.kind === 'file').map(it => it.webkitGetAsEntry && it.webkitGetAsEntry());
+  if (!entries.length || entries.some(e => !e)) return Promise.resolve([...dt.files].map(f => ({file: f, path: f.name})));
+  const out = [];
+  const walk = async e => {
+    if (e.isFile) {
+      out.push({file: await new Promise((res, rej) => e.file(res, rej)), path: e.fullPath.replace(/^\//, '')});
+    } else if (e.isDirectory) {
+      const reader = e.createReader();
+      for (;;) {
+        const batch = await new Promise((res, rej) => reader.readEntries(res, rej));
+        if (!batch.length) break;
+        batch.sort((a, b) => a.name < b.name ? -1 : 1);
+        for (const c of batch) await walk(c);
+      }
+    }
+  };
+  return (async () => { for (const e of entries) await walk(e); return out; })();
+}
+
+// ---------- events ----------
+
+let dragDepth = 0;
+const hasFiles = e => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
+addEventListener('dragenter', e => { if (!hasFiles(e)) return; e.preventDefault(); dragDepth++; document.body.classList.add('dragging'); });
+addEventListener('dragleave', e => { if (!hasFiles(e)) return; if (--dragDepth <= 0) { dragDepth = 0; document.body.classList.remove('dragging'); } });
+addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+addEventListener('drop', e => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  dragDepth = 0;
+  document.body.classList.remove('dragging');
+  dropItems(e.dataTransfer).then(loadSafely, err => { notice = `Reading the drop failed: ${err.message}`; refresh(); });
+});
+
+$('#pick').addEventListener('change', e => {
+  loadSafely([...e.target.files].map(f => ({file: f, path: f.name})));
+  e.target.value = '';
+});
+
+$('#fileSel').addEventListener('change', e => {
+  cur = files[+e.target.value];
+  buildControls();
+  refresh();
+});
+
+$('#rmFile').addEventListener('click', () => {
+  const k = files.indexOf(cur);
+  if (k < 0) return;
+  files.splice(k, 1);
+  for (let n = hist.length - 1; n >= 0; n--) if (!files.includes(hist[n].f)) hist.splice(n, 1);
+  if (thr && !files.includes(thr.src)) clearThr();
+  cur = files[Math.min(k, files.length - 1)] || null;
+  buildControls();
+  refresh();
+});
+
+$('#rmAll').addEventListener('click', () => {
+  files.length = 0;
+  hist.length = 0;
+  clearThr();
+  cur = null;
+  notice = '';
+  refresh();
+});
+
+let qTimer = 0;
+$('#q').addEventListener('input', e => {
+  clearTimeout(qTimer);
+  qTimer = setTimeout(() => { setQuery(e.target.value); refresh(); }, 200);
+});
+
+$('#sort').addEventListener('change', e => { cur.sort.key = e.target.value; refresh(); });
+
+$('#thrSrc').addEventListener('change', e => {
+  if (!e.target.value) {
+    clearThr();
+  } else {
+    const [gi, pos, field] = JSON.parse(e.target.value);
+    thr = {src: files[gi], pos, field, proj: null, judge: thr ? thr.judge : {dir: 'below', t: 50}};  // 50: persona_judge_classifier's --threshold
+    scoreFile(cur);
+    const s = cur.sc.sortedProj;
+    thr.proj = {dir: 'above', t: s.length ? s[Math.floor(0.9 * s.length)] : 0};  // start at this file's 90th percentile
+  }
+  buildControls();
+  refresh();
+});
+const NEXT_DIR = {above: 'below', below: 'any', any: 'above'};
+$('#thrTune').addEventListener('click', e => {
+  const b = e.target.closest('button[data-c]');
+  if (!b) return;
+  thr[b.dataset.c].dir = NEXT_DIR[thr[b.dataset.c].dir];
+  refresh();
+});
+$('#thrTune').addEventListener('input', e => {
+  const c = e.target.dataset.c;
+  if (!c) return;
+  if (e.target.type === 'number') {
+    const t = parseFloat(e.target.value);
+    if (!Number.isFinite(t)) return;
+    thr[c].t = t;
+  } else if (c === 'proj') {  // slider = percentile of this file's projections
+    const s = cur.sc.sortedProj;
+    if (!s.length) return;
+    thr.proj.t = s[Math.min(s.length - 1, Math.floor(+e.target.value / 1000 * s.length))];
+  } else {
+    thr.judge.t = +e.target.value;
+  }
+  refresh();
+});
+$('#thrTune').addEventListener('change', e => { if (e.target.type === 'number') renderThr(); });  // show the value in use after an invalid entry
+$('#colorBy').addEventListener('change', e => { colorBy = e.target.value; renderThr(); });
+$('#thrBox').addEventListener('toggle', () => { if (cur) drawPlot(cur); });
+addEventListener('resize', () => { if (cur && $('#thrBox').open) drawPlot(cur); });
+$('#dir').addEventListener('click', () => { cur.sort.dir *= -1; refresh(); });
+
+$('#facets').addEventListener('change', e => {
+  const pk = e.target.dataset.pk;
+  if (pk === undefined) return;
+  if (e.target.value === '') delete cur.filt[pk];
+  else cur.filt[pk] = e.target.value;
+  refresh();
+});
+$('#facets').addEventListener('click', e => {
+  if (e.target.id !== 'clearFilt') return;
+  cur.filt = {};
+  buildControls();
+  refresh();
+});
+
+let raf = 0;
+$('#list').addEventListener('scroll', () => {
+  if (!raf) raf = requestAnimationFrame(() => { raf = 0; renderList(); });
+});
+$('#list').addEventListener('click', e => {
+  const it = e.target.closest('.item');
+  if (it) select(+it.dataset.p);
+});
+
+$('#detail').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.dataset.act === 'prev') select(sel - 1);
+  else if (b.dataset.act === 'next') select(sel + 1);
+  else if (b.dataset.act === 'back') { const h = hist.pop(); go(h.f, h.row); }
+  else if (b.classList.contains('jump')) {
+    hist.push({f: cur, row: cur.selRow});
+    go(files[+b.dataset.f], +b.dataset.r);
+  }
+});
+
+addEventListener('keydown', e => {
+  const tag = e.target.tagName;
+  if (e.key === 'Escape' && (tag === 'INPUT' || tag === 'SELECT')) { e.target.blur(); return; }
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey || !cur) return;
+  if (e.key === '/') { e.preventDefault(); $('#q').focus(); $('#q').select(); }
+  else if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); select(sel + 1); }
+  else if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); select(sel - 1); }
+});
+
+renderAll();
+</script>
+</body>
+</html>

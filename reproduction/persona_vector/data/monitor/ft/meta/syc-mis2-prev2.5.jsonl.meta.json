@@ -1,0 +1,41 @@
+{
+  "output": "syc-mis2-prev2.5.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/rollouts/steer/L00_c0.0.jsonl": "de95a40399d1df3c106a994ed489bd6696fca0a2dd3c3018f70d5b923d15b33c",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c",
+    "reproduction/persona_vector/adapters/syc-mis2-prev2.5/adapter_model.safetensors": "ce4c75a60b686d44e25f582baeb0777ea6adbcfe93f50f3f49494be67a303156"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "/root/sycoscope-v2/reproduction/persona_vector/monitor_project.py",
+    "--rollouts",
+    "reproduction/persona_vector/data/rollouts/steer/L00_c0.0.jsonl",
+    "--vectors",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--out",
+    "reproduction/persona_vector/data/monitor/ft/syc-mis2-prev2.5.jsonl",
+    "--adapter",
+    "reproduction/persona_vector/adapters/syc-mis2-prev2.5"
+  ],
+  "args": {
+    "rollouts": "reproduction/persona_vector/data/rollouts/steer/L00_c0.0.jsonl",
+    "vectors": [
+      "reproduction/persona_vector/vectors/sycophantic_float32.npz"
+    ],
+    "out": "reproduction/persona_vector/data/monitor/ft/syc-mis2-prev2.5.jsonl",
+    "adapter": "reproduction/persona_vector/adapters/syc-mis2-prev2.5"
+  },
+  "counts": {
+    "n_in": 100,
+    "n_out": 100
+  },
+  "created_at": "2026-11-20T21:20:50+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "dtype": "bfloat16",
+  "layer_index": "hidden_states index 0..32",
+  "wall_seconds": 71.54472303390503
+}

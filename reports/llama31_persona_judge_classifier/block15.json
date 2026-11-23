@@ -1,5 +1,6 @@
 {
   "block": 15,
+  "vector": "persona",
   "threshold": 50.0,
   "judge_target": "judge>=50",
   "length_bins": 10,

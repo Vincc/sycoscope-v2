@@ -1,0 +1,35 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c+0.0.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c+0.0_judged.jsonl": "21c7d300be2c4f6d85fc5eda99825791d4e2177cac657263c28744d56e519174"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge_rollouts.py",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c+0.0_judged.jsonl",
+    "--judge-name",
+    "sonnet55",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts"
+  ],
+  "args": {
+    "judged": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c+0.0_judged.jsonl"
+    ],
+    "judge_name": "sonnet55",
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts"
+  },
+  "counts": {
+    "n_in": 400,
+    "excluded": {
+      "turn2_truncated": 37,
+      "turn1_incorrect": 1
+    },
+    "n_out": 362
+  },
+  "created_at": "2026-11-16T21:48:23+00:00"
+}

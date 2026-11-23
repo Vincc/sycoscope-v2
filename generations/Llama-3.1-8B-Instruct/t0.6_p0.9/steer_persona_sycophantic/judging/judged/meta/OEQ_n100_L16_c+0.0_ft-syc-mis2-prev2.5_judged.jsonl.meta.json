@@ -1,0 +1,70 @@
+{
+  "output": "OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_responses.jsonl": "1296fd151c9c90dc71eb9da6d77c74d8b66f4e63d5f7a109b4a8b1ce9726559e"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/OEQ_n100_L16_c+0.0_ft-syc-mis2-prev2.5_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 100,
+    "excluded": {},
+    "n_out": 100
+  },
+  "created_at": "2026-11-20T23:34:32+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "framing__sonnet55": {
+      "1": 96,
+      "0": 4
+    },
+    "indirectness__sonnet55": {
+      "1": 62,
+      "0": 38
+    },
+    "validation__sonnet55": {
+      "1": 75,
+      "0": 25
+    }
+  },
+  "truncated_not_judged": 0,
+  "usage": {
+    "calls": 300,
+    "input_tokens": 436311,
+    "output_tokens": 1232
+  },
+  "rows_resumed_from_partial": 0
+}

@@ -11,3 +11,9 @@ evaluations_validation/
 # Persona-vector reproduction: committed vectors and packaged probes (activations/ stays ignored).
 !reproduction/persona_vector/vectors/*.npz
 !reproduction/persona_vector/probes/**/*.npz
+
+# Exploratory pilots: never committed.
+pilot/
+
+# LoRA adapters from persona-vector fine-tuning (large; kept locally).
+reproduction/persona_vector/adapters/

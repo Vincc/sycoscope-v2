@@ -1,0 +1,80 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.scores.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.jsonl": "d05f6cc079f297397a115f1f823a229df9445d8b74c27c6c050c4c18c729c35a",
+    "reproduction/persona_vector/data/prompts/judge_prompts.json": "e5e30e2d4bc8ac1b538f69bc2388672ff5e5eba0fefd26ea26e6b6b325471d6c",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.requests.jsonl": "748a588f2b7bca448eb98212ba4ea8ba966d7feb119e2b57bbdd7f4e0665d79e"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge.py",
+    "--rollouts",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.jsonl",
+    "--metrics",
+    "sycophantic",
+    "coherence",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "--cache-root",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "--concurrency",
+    "8"
+  ],
+  "args": {
+    "rollouts": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.jsonl"
+    ],
+    "metrics": [
+      "sycophantic",
+      "coherence"
+    ],
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "cache_root": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "concurrency": 8
+  },
+  "counts": {
+    "n_in": 390,
+    "excluded": {},
+    "n_out": 390,
+    "n_none": {
+      "sycophantic": 0,
+      "coherence": 0
+    }
+  },
+  "created_at": "2026-11-20T23:14:53+00:00",
+  "judge_model": "gpt-4.1-mini-2025-04-14",
+  "usage": {
+    "prompt_tokens": 249054,
+    "completion_tokens": 780
+  },
+  "responses_files": [
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c+0.0_ft-syc-mis2.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c+0.0_ft-syc-normal.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c+0.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c+1.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c+1.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c-0.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c-1.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c-1.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_c-2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n100_L16_rand0_c+2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n300_L16_c+0.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n300_L16_c+2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\OEQ_n300_L16_c-2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+0.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-normal.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+0.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+1.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+1.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c-0.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c-1.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c-1.5.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c-2.0.responses.jsonl",
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_rand0_c+2.0.responses.jsonl"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_responses.jsonl": "53022f94482a91474300b52658c4ac43f77534c006662d59d5c301123678faf8"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/judging/judge_responses.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_responses.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+    "--env-file",
+    ".env",
+    "--judge-name",
+    "sonnet55",
+    "--backend",
+    "anthropic",
+    "--judge-model",
+    "claude-sonnet-5-5",
+    "--max-workers",
+    "16"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_responses.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/judged/are_you_sure_trivia_qa_n400_L16_c+0.0_ft-syc-mis2_judged.jsonl",
+    "env_file": ".env",
+    "judge_model": "claude-sonnet-5-5",
+    "judge_name": "sonnet55",
+    "backend": "anthropic",
+    "openrouter_provider": null,
+    "max_workers": 16
+  },
+  "counts": {
+    "n_in": 400,
+    "excluded": {},
+    "n_out": 400
+  },
+  "created_at": "2026-11-20T21:40:16+00:00",
+  "judge_name": "sonnet55",
+  "judge_model": "claude-sonnet-5-5",
+  "backend": "anthropic",
+  "openrouter_provider": null,
+  "judge_max_tokens": 4096,
+  "judge_thinking": "omitted",
+  "label_counts": {
+    "syco__sonnet55": {
+      "1": 142,
+      "0": 257,
+      "None": 1
+    },
+    "turn1_correct__sonnet55": {
+      "1": 399,
+      "0": 1
+    },
+    "turn2_correct__sonnet55": {
+      "0": 142,
+      "1": 258
+    }
+  },
+  "syco_none_reasons": {
+    "turn1_incorrect": 1
+  },
+  "usage": {
+    "calls": 800,
+    "input_tokens": 518982,
+    "output_tokens": 17672
+  },
+  "rows_resumed_from_partial": 0
+}

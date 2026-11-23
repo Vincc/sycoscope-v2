@@ -5,14 +5,16 @@ to its judge input (persona_trait/rollouts/<stem>.jsonl), its judged file (judge
 activations of its responses; the judge's question and answer must equal judge_question(messages) and the response.
 Rows are split into sets by decoding and source. Targets per set: the judge's score >= --threshold, and each benchmark label
 of interp.generalization_matrix.unit_rows under --judge-name (on the rows with that label).
-At each position the classifier score is the projection on the unit persona vector (response_avg_diff; block L uses its
-hidden_states index L + 1), raw and length-controlled. The length-controlled score is the projection's percentile within its
+At each position the classifier score is the projection on a unit vector built from the persona vector (response_avg_diff;
+block L uses its hidden_states index L + 1), chosen by --vector: the persona vector itself, the persona vector minus its
+component along the Assistant Axis (--assistant-axis, an assistant-axis pipeline axis.pt whose row L is block L), or that
+component alone. Scores are raw and length-controlled. The length-controlled score is the projection's percentile within its
 response-length bin (--length-bins equal-count bins of response tokens, per set), so it ranks rows only against rows of
 similar length. The judge's score is also scored against each benchmark label. For each score and target: AUROC with a 95%
 group-bootstrap interval (groups are prompts, scores held fixed), the share of positives among the top R rows, R = the
 number of positives, and Spearman correlations with the judge's score and with response length; AUROC, interval and hit
 rate are None when the target has one class.
-Writes <output> (metrics per set x target x score), <rows-output> (one record per response) and their meta files.
+Writes <output> (metrics per set x target x score), optionally <rows-output> (one record per response), and their meta files.
 
 Run from the repo root: python -m interp.persona_judge_classifier --scores ... --judge-name ... --persona-vector ... ...
 """
@@ -21,6 +23,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
+import torch
 from scipy.stats import rankdata, spearmanr
 
 from interp.cache_activations import POSITIONS, load, read_parts
@@ -75,6 +78,8 @@ def main():
     parser.add_argument("--scores", type=Path, nargs="+", required=True, help="<decoding>/judging/persona_trait/*.scores.jsonl")
     parser.add_argument("--judge-name", required=True, help="Label suffix of the benchmark labels, e.g. sonnet55.")
     parser.add_argument("--persona-vector", type=Path, required=True)
+    parser.add_argument("--vector", choices=["persona", "persona_minus_axis", "axis_part"], required=True)
+    parser.add_argument("--assistant-axis", type=Path, help="axis.pt; required unless --vector persona.")
     parser.add_argument("--cache-dir", type=Path, required=True)
     parser.add_argument("--positions", nargs="+", choices=list(POSITIONS), required=True)
     parser.add_argument("--block", type=int, required=True)
@@ -83,12 +88,23 @@ def main():
     parser.add_argument("--bootstrap", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--rows-output", type=Path, required=True)
+    parser.add_argument("--rows-output", type=Path)
     args = parser.parse_args()
+    if (args.vector == "persona") != (args.assistant_axis is None):
+        raise ValueError("--assistant-axis goes with --vector persona_minus_axis or axis_part, and only with them")
 
     persona_meta = read_json(args.persona_vector.parent / "meta" / f"{args.persona_vector.name}.meta.json")
     persona_model = (persona_meta["model"], persona_meta["revision"])
-    v = np.load(args.persona_vector)[PERSONA_KEY][args.block + 1].astype(np.float64)
+    persona = np.load(args.persona_vector)[PERSONA_KEY][args.block + 1].astype(np.float64)
+    vector_info = {"vector": args.vector}
+    if args.vector == "persona":
+        v = persona
+    else:
+        axis = torch.load(args.assistant_axis, map_location="cpu", weights_only=True)[args.block].double().numpy()
+        axis /= np.linalg.norm(axis)
+        along = (persona @ axis) * axis
+        v = persona - along if args.vector == "persona_minus_axis" else along
+        vector_info["persona_cos_axis"] = float(persona @ axis / np.linalg.norm(persona))
     v /= np.linalg.norm(v)
     judge_target = f"judge>={args.threshold:g}"
 
@@ -182,12 +198,16 @@ def main():
     total = {"n_in": sum(c["n_in"] for c in counts.values()), "n_out": len(records),
              "excluded": dict(sum((Counter(c["excluded"]) for c in counts.values()), Counter()))}
     check_counts(total["n_in"], total["excluded"], total["n_out"], "all files")
-    write_json(args.output, {"block": args.block, "threshold": args.threshold, "judge_target": judge_target,
+    write_json(args.output, {"block": args.block, **vector_info, "threshold": args.threshold, "judge_target": judge_target,
                              "length_bins": args.length_bins, "counts": counts, "metrics": metrics})
-    write_jsonl(args.rows_output, records)
-    for output in (args.output, args.rows_output):
-        write_meta(output, [*inputs, args.persona_vector], args, total, {"sets": counts})
-    print(f"{total}: wrote {args.output} and {args.rows_output}")
+    outputs = [args.output]
+    if args.rows_output is not None:
+        write_jsonl(args.rows_output, records)
+        outputs.append(args.rows_output)
+    vector_inputs = [args.persona_vector, *([args.assistant_axis] if args.assistant_axis is not None else [])]
+    for output in outputs:
+        write_meta(output, [*inputs, *vector_inputs], args, total, {"sets": counts})
+    print(f"{total}: wrote {', '.join(map(str, outputs))}")
 
 
 if __name__ == "__main__":

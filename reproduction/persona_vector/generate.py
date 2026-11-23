@@ -17,7 +17,7 @@ import numpy as np
 import torch
 
 from utils.io import read_jsonl, write_jsonl, write_meta
-from utils.models import load_model_and_tokenizer, resolve_terminators
+from utils.models import load_model_and_tokenizer, merge_adapter, resolve_terminators
 
 MODEL = "meta-llama/Llama-3.1-8B-Instruct"
 MAX_NEW_TOKENS = 1000
@@ -84,6 +84,7 @@ def main():
     parser.add_argument("--cells", nargs="+", help="--mode steer: LAYER:COEF, paper layer numbering.")
     parser.add_argument("--batch-size", type=int, required=True)
     parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--adapter", type=Path, help="LoRA adapter directory merged into the model.")
     args = parser.parse_args()
     if args.mode == "sample" and (args.out is None or args.cells or args.vector):
         raise ValueError("--mode sample takes --out only")
@@ -92,6 +93,9 @@ def main():
 
     rows = read_jsonl(args.prompts)
     model, tokenizer = load_model_and_tokenizer(MODEL, padding_side="left")  # pad = eos, as upstream
+    if args.adapter is not None:
+        model = merge_adapter(model, args.adapter)
+    adapter = [args.adapter / "adapter_model.safetensors"] if args.adapter is not None else []
     terminators = resolve_terminators(model, tokenizer)
     sampling = SAMPLING[args.mode]
     revision = model.config._commit_hash
@@ -102,7 +106,7 @@ def main():
         t0 = time.time()
         out = sample_rows(model, tokenizer, rows, args.batch_size, sampling, terminators, args.seed)
         write_jsonl(args.out, out)
-        write_meta(args.out, [args.prompts], args, {"n_in": len(rows), "n_out": len(out)},
+        write_meta(args.out, [args.prompts, *adapter], args, {"n_in": len(rows), "n_out": len(out)},
                    {"model": MODEL, "revision": revision, "sampling": sampling, "max_new_tokens": MAX_NEW_TOKENS,
                     "terminators": terminators, "wall_seconds": time.time() - t0})
         return
@@ -127,7 +131,7 @@ def main():
                 out = sample_rows(model, tokenizer, rows, args.batch_size, sampling, terminators, args.seed)
         out = [{**r, "layer": layer, "coef": coef} for r in out]
         write_jsonl(path, out)
-        write_meta(path, [args.prompts, args.vector], args, {"n_in": len(rows), "n_out": len(out)},
+        write_meta(path, [args.prompts, args.vector, *adapter], args, {"n_in": len(rows), "n_out": len(out)},
                    {"model": MODEL, "revision": revision, "sampling": sampling, "max_new_tokens": MAX_NEW_TOKENS,
                     "terminators": terminators, "layer": layer, "block": layer - 1, "coef": coef,
                     "wall_seconds": time.time() - t0})

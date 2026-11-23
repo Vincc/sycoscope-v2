@@ -15,7 +15,7 @@ import numpy as np
 import torch
 
 from utils.io import read_jsonl, write_jsonl, write_meta
-from utils.models import load_model_and_tokenizer
+from utils.models import load_model_and_tokenizer, merge_adapter
 
 MODEL = "meta-llama/Llama-3.1-8B-Instruct"
 
@@ -29,6 +29,7 @@ def main():
     parser.add_argument("--rollouts", type=Path, required=True)
     parser.add_argument("--vectors", type=Path, nargs="+", required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--adapter", type=Path, help="LoRA adapter directory merged into the model.")
     args = parser.parse_args()
     if args.out.exists():
         raise FileExistsError(args.out)
@@ -37,6 +38,8 @@ def main():
     rows = read_jsonl(args.rollouts)
     t0 = time.time()
     model, tokenizer = load_model_and_tokenizer(MODEL, padding_side="right")
+    if args.adapter is not None:
+        model = merge_adapter(model, args.adapter)
     out = []
     with torch.no_grad():
         for n, r in enumerate(rows):
@@ -45,12 +48,12 @@ def main():
             hs = model(**inputs, output_hidden_states=True).hidden_states
             last = torch.stack([h[0, prompt_len - 1, :] for h in hs]).detach().cpu()  # (33, hidden) bf16
             proj = {name: a_proj_b(last, v).tolist() for name, v in vectors.items()}  # bf16 * float32 -> float32
-            out.append({"id": r["id"], "condition": r["condition"], "question_index": r["question_index"],
-                        "rollout": r["rollout"], "prompt_len": prompt_len, "proj": proj})
+            out.append({"id": r["id"], **({"condition": r["condition"]} if "condition" in r else {}),  # steer rollouts have none
+                        "question_index": r["question_index"], "rollout": r["rollout"], "prompt_len": prompt_len, "proj": proj})
             if (n + 1) % 200 == 0:
                 print(f"  {n + 1}/{len(rows)}", flush=True)
     write_jsonl(args.out, out)
-    write_meta(args.out, [args.rollouts, *args.vectors], args, {"n_in": len(rows), "n_out": len(out)},
+    write_meta(args.out, [args.rollouts, *args.vectors, *([args.adapter / 'adapter_model.safetensors'] if args.adapter else [])], args, {"n_in": len(rows), "n_out": len(out)},
                {"model": MODEL, "revision": model.config._commit_hash, "dtype": "bfloat16",
                 "layer_index": "hidden_states index 0..32", "wall_seconds": time.time() - t0})
 

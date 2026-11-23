@@ -1,0 +1,103 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c+1.5_responses.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/are_you_sure_trivia_qa_n400.jsonl": "042b88c6704e70f1e0c9fe697999bd0fa695f843fb8c309c731001415e6604db",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "/root/sycoscope-v2/reproduction/persona_vector/steer_benchmarks.py",
+    "--items",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/are_you_sure_trivia_qa_n400.jsonl",
+    "--vector",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--layer",
+    "16",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses",
+    "--batch-size",
+    "150",
+    "--seed",
+    "0",
+    "--temperature",
+    "0.6",
+    "--top-p",
+    "0.9",
+    "--top-k",
+    "0",
+    "--max-new-tokens",
+    "1024",
+    "--coefs",
+    "0",
+    "2",
+    "-2",
+    "1",
+    "-1",
+    "1.5",
+    "-1.5",
+    "0.5",
+    "-0.5"
+  ],
+  "args": {
+    "items": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/are_you_sure_trivia_qa_n400.jsonl",
+    "vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "layer": 16,
+    "coefs": [
+      0.0,
+      2.0,
+      -2.0,
+      1.0,
+      -1.0,
+      1.5,
+      -1.5,
+      0.5,
+      -0.5
+    ],
+    "random_direction_seed": null,
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses",
+    "batch_size": 150,
+    "seed": 0,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_new_tokens": 1024
+  },
+  "counts": {
+    "n_in": 400,
+    "excluded": {},
+    "n_out": 400,
+    "n_truncated": 28
+  },
+  "created_at": "2026-11-16T22:04:38+00:00",
+  "generation": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "backend": "transformers",
+    "dtype": "bfloat16",
+    "max_new_tokens": 1024,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": 0,
+    "seed": 0
+  },
+  "steer": {
+    "vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "key": "response_avg_diff",
+    "direction": "persona",
+    "random_seed": null,
+    "layer": 16,
+    "block": 15,
+    "coef": 1.5,
+    "norm": 2.5905587673187256,
+    "cos_with_persona": 1.0
+  },
+  "terminators": [
+    128001,
+    128008,
+    128009
+  ],
+  "wall_seconds": 517.1084067821503
+}

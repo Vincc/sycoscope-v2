@@ -1,0 +1,33 @@
+{
+  "output": "OEQ_n100_L16_c-1.5_responses.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n300_L16_c-1.5_responses.jsonl": "1f81ad95eaf6aee29d687a8c2d3da3abe94e409317a44a4216cdf3c76c06f63d",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n100.jsonl": "923c40ea3a0dbb0332e92418f969beb1cd0ec14a8ccc7e8e39efe55491222252"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "scripts/subset_by_items.py",
+    "--input",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n300_L16_c-1.5_responses.jsonl",
+    "--items",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n100.jsonl",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c-1.5_responses.jsonl"
+  ],
+  "args": {
+    "input": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n300_L16_c-1.5_responses.jsonl",
+    "items": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n100.jsonl",
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/responses/OEQ_n100_L16_c-1.5_responses.jsonl"
+  },
+  "counts": {
+    "n_in": 300,
+    "excluded": {
+      "not_in_items": 200
+    },
+    "n_out": 100
+  },
+  "created_at": "2026-11-17T00:04:21+00:00"
+}

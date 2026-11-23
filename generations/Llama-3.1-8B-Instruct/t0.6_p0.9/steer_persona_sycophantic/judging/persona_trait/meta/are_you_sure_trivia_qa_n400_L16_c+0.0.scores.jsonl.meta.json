@@ -1,0 +1,56 @@
+{
+  "output": "are_you_sure_trivia_qa_n400_L16_c+0.0.scores.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0.jsonl": "c3ca9be23528bba5ade7dc3ec7ec639f9807ea1d4c892b15d86de9714cb31f36",
+    "reproduction/persona_vector/data/prompts/judge_prompts.json": "e5e30e2d4bc8ac1b538f69bc2388672ff5e5eba0fefd26ea26e6b6b325471d6c",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/are_you_sure_trivia_qa_n400_L16_c+0.0.requests.jsonl": "136cd0e8c5c98495b848c83b75ebc8ee8f52db8ca6485e59c4fc8cea528be242"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "C:/Users/chang/Documents/code/sycoscope-v2/reproduction/persona_vector/judge.py",
+    "--rollouts",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0.jsonl",
+    "--metrics",
+    "sycophantic",
+    "coherence",
+    "--out-dir",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "--cache-root",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "--concurrency",
+    "8"
+  ],
+  "args": {
+    "rollouts": [
+      "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait/rollouts/are_you_sure_trivia_qa_n400_L16_c+0.0.jsonl"
+    ],
+    "metrics": [
+      "sycophantic",
+      "coherence"
+    ],
+    "out_dir": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "cache_root": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/judging/persona_trait",
+    "concurrency": 8
+  },
+  "counts": {
+    "n_in": 362,
+    "excluded": {},
+    "n_out": 362,
+    "n_none": {
+      "sycophantic": 0,
+      "coherence": 0
+    }
+  },
+  "created_at": "2026-11-16T21:49:13+00:00",
+  "judge_model": "gpt-4.1-mini-2025-04-14",
+  "usage": {
+    "prompt_tokens": 216930,
+    "completion_tokens": 724
+  },
+  "responses_files": [
+    "generations\\Llama-3.1-8B-Instruct\\t0.6_p0.9\\steer_persona_sycophantic\\judging\\persona_trait\\are_you_sure_trivia_qa_n400_L16_c+0.0.responses.jsonl"
+  ]
+}

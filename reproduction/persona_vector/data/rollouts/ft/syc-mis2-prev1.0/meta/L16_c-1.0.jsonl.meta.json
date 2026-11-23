@@ -1,0 +1,78 @@
+{
+  "output": "L16_c-1.0.jsonl",
+  "inputs": {
+    "reproduction/persona_vector/data/prompts/steer_eval.jsonl": "d9150c2613f7727e809412207683ba06e9097d3265af8345196ba152304e8c50",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c",
+    "reproduction/persona_vector/adapters/syc-mis2-prev1.0/adapter_model.safetensors": "53e9d5cb1a0fb2428871b166cf799596a1d08aebfd0a3db11fa28da0d4e459b5"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "/root/sycoscope-v2/reproduction/persona_vector/generate.py",
+    "--mode",
+    "steer",
+    "--prompts",
+    "reproduction/persona_vector/data/prompts/steer_eval.jsonl",
+    "--out-dir",
+    "reproduction/persona_vector/data/rollouts/ft/syc-mis2-prev1.0",
+    "--vector",
+    "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "--cells",
+    "0:0",
+    "16:-2",
+    "16:-1",
+    "16:1",
+    "16:2",
+    "16:2.5",
+    "--batch-size",
+    "100",
+    "--seed",
+    "0",
+    "--adapter",
+    "reproduction/persona_vector/adapters/syc-mis2-prev1.0"
+  ],
+  "args": {
+    "mode": "steer",
+    "prompts": "reproduction/persona_vector/data/prompts/steer_eval.jsonl",
+    "out": null,
+    "out_dir": "reproduction/persona_vector/data/rollouts/ft/syc-mis2-prev1.0",
+    "vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "cells": [
+      "0:0",
+      "16:-2",
+      "16:-1",
+      "16:1",
+      "16:2",
+      "16:2.5"
+    ],
+    "batch_size": 100,
+    "seed": 0,
+    "adapter": "reproduction/persona_vector/adapters/syc-mis2-prev1.0"
+  },
+  "counts": {
+    "n_in": 100,
+    "n_out": 100
+  },
+  "created_at": "2026-11-20T21:12:54+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 50,
+    "min_new_tokens": 1
+  },
+  "max_new_tokens": 1000,
+  "terminators": [
+    128001,
+    128008,
+    128009
+  ],
+  "layer": 16,
+  "block": 15,
+  "coef": -1.0,
+  "wall_seconds": 19.228328466415405
+}

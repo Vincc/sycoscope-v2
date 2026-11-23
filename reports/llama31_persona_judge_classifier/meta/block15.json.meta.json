@@ -28,7 +28,7 @@
     "reproduction/persona_vector/vectors/sycophantic_float32.npz": "f16f7124236e4988dd03ee9f81e8fb353f1ef4b5d83f2b5da3ba8f149dd99c3c"
   },
   "git": {
-    "commit": "0aa7d275583fbceea082b548295fe198da3131a5",
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
     "dirty": true
   },
   "argv": [
@@ -61,6 +61,8 @@
     "1000",
     "--seed",
     "0",
+    "--vector",
+    "persona",
     "--output",
     "reports/llama31_persona_judge_classifier/block15.json",
     "--rows-output",
@@ -79,6 +81,8 @@
     ],
     "judge_name": "sonnet55",
     "persona_vector": "reproduction/persona_vector/vectors/sycophantic_float32.npz",
+    "vector": "persona",
+    "assistant_axis": null,
     "cache_dir": "activations/cache",
     "positions": [
       "response_mean",
@@ -97,7 +101,7 @@
     "n_out": 19615,
     "excluded": {}
   },
-  "created_at": "2026-11-04T02:47:20+00:00",
+  "created_at": "2026-11-04T15:48:29+00:00",
   "sets": {
     "t0.6_p0.9:AITA-YTA": {
       "n_in": 2000,

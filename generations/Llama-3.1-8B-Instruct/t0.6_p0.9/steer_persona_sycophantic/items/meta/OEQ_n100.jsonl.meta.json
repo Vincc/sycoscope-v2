@@ -1,0 +1,42 @@
+{
+  "output": "OEQ_n100.jsonl",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n300.jsonl": "1ce4738f667e2197edf9b2571a315a83f17513187e3660921c957620c4d5797b"
+  },
+  "git": {
+    "commit": "2549bf364d4e31c4dd871e4e6f387ba97b98061f",
+    "dirty": true
+  },
+  "argv": [
+    "scripts/select_steer_items.py",
+    "--judged",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n300.jsonl",
+    "--judge-name",
+    "sonnet55",
+    "--source",
+    "OEQ",
+    "--n",
+    "100",
+    "--seed",
+    "0",
+    "--output",
+    "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n100.jsonl"
+  ],
+  "args": {
+    "judged": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n300.jsonl",
+    "judge_name": "sonnet55",
+    "source": "OEQ",
+    "n": 100,
+    "seed": 0,
+    "output": "generations/Llama-3.1-8B-Instruct/t0.6_p0.9/steer_persona_sycophantic/items/OEQ_n100.jsonl"
+  },
+  "counts": {
+    "n_in": 300,
+    "excluded": {
+      "not_sampled": 200
+    },
+    "n_out": 100,
+    "n_eligible": 300
+  },
+  "created_at": "2026-11-16T23:56:21+00:00"
+}
