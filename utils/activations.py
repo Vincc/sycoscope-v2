@@ -212,9 +212,9 @@ NO_LABEL = -1  # judge label was None (unparseable, refused or not applicable)
 
 
 def read_labels(z) -> dict[str, np.ndarray]:
-    """{label name: int array of 0, 1 or NO_LABEL} from a judged activations npz. Empty for other npz files."""
+    """{label name: int array of 0, 1 or NO_LABEL} from a judged activations npz or dict. Empty for other inputs."""
     out = {}
-    for key in z.files:
+    for key in z:  # an npz iterates over its array names
         if key.startswith(LABEL_PREFIX):
             y = z[key]
             if y.dtype.kind != "i" or not set(np.unique(y).tolist()) <= {NO_LABEL, 0, 1}:

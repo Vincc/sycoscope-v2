@@ -6,6 +6,8 @@ float16 arrays L00..L<n-1> of shape (rows, hidden), block L = hidden_states[L + 
 the part's row ids, row text SHA-256, the position definition and per-row response stats (next-token agreement and
 mean NLL under the model, from the same forward pass). A rerun reads only the meta files: it stops if a
 cached row's text, the model revision or a position definition changed, and forward-passes only rows missing a position.
+--drop-system-prompt removes each row's system message (the chat template's default system block stays) and caches
+into <input path, no suffix>_nosys/.
 
 Run from the repo root: python -m interp.cache_activations --model ... --inputs ... --positions ... --cache-dir ...
 """
@@ -20,9 +22,10 @@ import numpy as np
 from safetensors import safe_open
 from safetensors.numpy import save_file
 
-from utils.activations import check_right_padded, prepare
+from probe_training.get_activations import CONTRASTIVE_FIELDS, judging_fields
+from utils.activations import act_key, check_right_padded, prepare
 from utils.io import REPO_ROOT, check_counts, meta_path, read_json, read_jsonl, sha256, write_meta
-from utils.models import load_model_and_tokenizer, model_spec, text_config
+from utils.models import load_model_and_tokenizer, load_tokenizer, model_spec, text_config
 
 # n = number of response tokens. A thinking block between prompt and response is in no position.
 POSITIONS = {
@@ -36,6 +39,27 @@ POSITIONS = {
     "response_frac50": "mean over the first ceil(50 * n / 100) response tokens",
     "response_frac75": "mean over the first ceil(75 * n / 100) response tokens",
 }
+SYSTEM_DROPPED = "each row's system message removed; the chat template's default system block stays"
+
+
+def drop_system_prompt(rows: list[dict]) -> list[dict]:
+    """Rows with their system message removed. Raises unless each row has exactly one, first."""
+    out = []
+    for r in rows:
+        roles = [m["role"] for m in r["messages"]]
+        if roles[0] != "system" or "system" in roles[1:]:
+            raise ValueError(f"{r['id']}: expected exactly one system message, first; roles are {roles}")
+        out.append({**r, "messages": r["messages"][1:]})
+    return out
+
+
+def check_shared_prompts(rows: list[dict]) -> int:
+    """Rows with the same prompt_id must have identical messages. Returns the number of prompts."""
+    first = {}
+    for r in rows:
+        if first.setdefault(r["prompt_id"], r["messages"]) != r["messages"]:
+            raise ValueError(f"{r['id']}: messages differ from another row of prompt {r['prompt_id']}")
+    return len(first)
 
 
 def cache_spans(prompt_len: int, answer_start: int, resp_end: int) -> dict[str, tuple[int, int]]:
@@ -111,6 +135,75 @@ def load(position_dir: Path, layers: list[int] | None = None, verify: bool = Tru
     return ids, {L: np.concatenate([c[L] for c in chunks]) for L in chunks[0]}
 
 
+RUN_SETTINGS = ("model", "model_revision", "template_kwargs", "n_layers", "system_prompt")
+
+
+def load_for_probes(cache_root: Path, rows: list[dict], positions: list[str], layers: list[int], tokenizer=None):
+    """Probe inputs from cached positions joined to JSONL rows by id: ({name: array}, info).
+
+    Keeps the rows that are cached, in row order, after checking each one's rendered text (system message dropped
+    if the cache dropped it) against the cached SHA-256. Arrays: act_key(position, block) float32, id,
+    next_token_agreement, response_nll, and the pair fields of contrastive rows (which have label) or the judged
+    fields (benchmark, group, truncated, labels__<name>). info: run settings, layers, part meta files, row counts.
+    tokenizer=None loads the cached model's tokenizer.
+    """
+    records = {}
+    for pos in positions:
+        records[pos] = read_parts(cache_root / pos, {"definition": POSITIONS[pos]})
+        if not records[pos]:
+            raise FileNotFoundError(f"{cache_root / pos}: no cached parts")
+    first = records[positions[0]][0]
+    run = {k: first.get(k) for k in RUN_SETTINGS}  # system_prompt is absent unless it was dropped
+    for pos, metas in records.items():
+        for m in metas:
+            if {k: m.get(k) for k in RUN_SETTINGS} != run:
+                raise ValueError(f"{cache_root / pos}/{m['output']}: run settings differ from {first['output']}")
+    bad_layers = sorted(set(layers) - set(range(run["n_layers"])))
+    if bad_layers:
+        raise ValueError(f"layers {bad_layers} outside the cached {run['n_layers']} blocks")
+    text_sha = {rid: d for m in records[positions[0]] for rid, d in zip(m["ids"], m["text_sha256"], strict=True)}
+    for pos in positions[1:]:
+        if {rid: d for m in records[pos] for rid, d in zip(m["ids"], m["text_sha256"], strict=True)} != text_sha:
+            raise ValueError(f"{cache_root}: positions {positions[0]} and {pos} cache different rows or texts")
+
+    ids = [r["id"] for r in rows]
+    if len(set(ids)) != len(ids):
+        raise ValueError("duplicate ids in the rows")
+    kept = [r for r in rows if r["id"] in text_sha]
+    if not kept:
+        raise ValueError(f"{cache_root}: none of the rows is cached")
+    counts = check_counts(len(rows), {"not_cached": len(rows) - len(kept)}, len(kept), str(cache_root))
+    if tokenizer is None:
+        tokenizer = load_tokenizer(run["model"], padding_side="right")
+    rendered = drop_system_prompt(kept) if run["system_prompt"] == SYSTEM_DROPPED else kept
+    prepared, skips = prepare(rendered, tokenizer, first["args"]["max_length"], run["template_kwargs"])
+    if skips:
+        raise ValueError(f"cached rows that prepare() skips: {skips[:3]}")
+    for p in prepared:
+        if hashlib.sha256(p["full_text"].encode("utf-8")).hexdigest() != text_sha[p["id"]]:
+            raise ValueError(f"{p['id']}: rendered text differs from the cached text")
+
+    z = {"id": np.array([r["id"] for r in kept])}
+    for pos in positions:
+        cached_ids, blocks = load(cache_root / pos, layers)
+        index = {rid: i for i, rid in enumerate(cached_ids)}
+        order = [index[r["id"]] for r in kept]
+        for L in layers:
+            z[act_key(pos, L)] = blocks[L][order]
+    stats = {rid: (a, n) for m in records[positions[0]]
+             for rid, a, n in zip(m["ids"], m["next_token_agreement"], m["response_nll"], strict=True)}
+    z["next_token_agreement"] = np.array([stats[r["id"]][0] for r in kept])
+    z["response_nll"] = np.array([stats[r["id"]][1] for r in kept])
+    if "label" in kept[0]:
+        z |= {k: np.array([r[k] for r in kept]) for k in CONTRASTIVE_FIELDS}
+    else:
+        z |= judging_fields(kept)
+    part_metas = sorted(meta_path(cache_root / pos / m["output"]) for pos in positions for m in records[pos])
+    info = {**run, "layers": layers, "part_metas": part_metas, "counts": counts,
+            "n_cached_not_in_rows": len(set(text_sha) - set(ids))}
+    return z, info
+
+
 def pool(model, tokenizer, rows: list[dict], todo: dict[str, set], n_layers: int, batch_size: int):
     """({position: (rows needing it, (n_layers, rows, hidden) float32 span means)}, {row id: response stats})."""
     import torch
@@ -181,6 +274,12 @@ def cache_input(model, tokenizer, input_path: Path, out_root: Path, positions: l
         raise ValueError(f"{input_path}: {len(wrong_model)} rows are not from {expect['model']}, e.g. {wrong_model[:3]}")
     if expect["thinking"] and any("reasoning" not in r for r in rows):
         raise ValueError(f"{expect['model']} is a thinking model but {input_path} has rows without a reasoning field")
+    if "system_prompt" in expect:
+        if expect["system_prompt"] != SYSTEM_DROPPED:
+            raise ValueError(f"unknown system_prompt setting {expect['system_prompt']!r}")
+        rows = drop_system_prompt(rows)
+        print(f"{input_path}: system message dropped; {check_shared_prompts(rows)} prompts, each now identical across "
+              f"its rows", flush=True)
 
     prepared, skips = prepare(rows, tokenizer, max_length, expect["template_kwargs"])
     for p in prepared:
@@ -263,6 +362,8 @@ def main():
     parser.add_argument("--max-length", type=int, required=True, help="Rows with more tokens are skipped, not truncated.")
     parser.add_argument("--batch-size", type=int, required=True)
     parser.add_argument("--rows-per-part", type=int, default=1024, help="Rows per part file.")
+    parser.add_argument("--drop-system-prompt", action="store_true",
+                        help="Remove each row's system message before rendering; cache into <input>_nosys/.")
     args = parser.parse_args()
 
     model_dir = args.model.split("/")[-1]
@@ -271,10 +372,13 @@ def main():
         parts = path.resolve().relative_to(REPO_ROOT / "generations").parts
         if parts[0] != model_dir or path.suffix != ".jsonl":
             raise ValueError(f"{path} is not a .jsonl under generations/{model_dir}/")
-        out_roots.append(args.cache_dir / model_dir / Path(*parts[1:]).with_suffix(""))
+        root = args.cache_dir / model_dir / Path(*parts[1:]).with_suffix("")
+        out_roots.append(root.with_name(root.name + "_nosys") if args.drop_system_prompt else root)
 
     model, tokenizer = load_model_and_tokenizer(args.model, padding_side="right")
     expect = settings(args.model, model)
+    if args.drop_system_prompt:
+        expect["system_prompt"] = SYSTEM_DROPPED  # recorded in every part and checked on a rerun
     for path, out_root in zip(args.inputs, out_roots):
         written = cache_input(model, tokenizer, path, out_root, args.positions, expect, args.max_length,
                               args.batch_size, args.rows_per_part, args)

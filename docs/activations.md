@@ -61,6 +61,12 @@ Labels are not cached. Join them by `id` with `generations/<model>/<decoding>/ju
   `hf download SycoScope/activation-cache --repo-type dataset --include "Llama-3.1-8B-Instruct/t0.6_p0.9/responses/*/prompt_last/*" --local-dir activations/cache`
 - To load: `ids, acts = load(Path("activations/cache/Llama-3.1-8B-Instruct/t0.6_p0.9/responses/OEQ_s0_responses/prompt_last"), layers=[15])` returns row ids and `{block: (rows, hidden) float32}`, after checking each file's SHA-256 against its meta file.
 
+## Training rows and probes
+
+- `--drop-system-prompt` caches an input's rows with their system message removed, into `<input path, no .jsonl>_nosys/`. The prompt is then the template's default one, as in the benchmark rows, while the response is the one written under the system prompt. Each part's meta records `system_prompt`. Rows sharing a `prompt_id` must have identical messages once the system message is gone, so both sides of a contrastive pair see the same prompt.
+- `bash interp/run_nosys_cache_vast.sh` caches `prompt_last` and `response_mean` of the tefo contrastive training responses with and without the system prompt (17,920 rows each, about 4.7 GB per position).
+- `probe_training/train_probes.py` and `evaluate_probes.py` take `--cache <folder> --rows <jsonl>` instead of `--activations <npz>`. `interp.cache_activations.load_for_probes` joins the cached positions to the JSONL by `id` and checks each row's rendered text (without the system message if the cache dropped it) against `text_sha256`. Pair fields come from contrastive rows; labels and skyline groups from judged rows. Positions keep their cache names (`response_mean`, ...), so a sweep trained from the cache is evaluated from the cache. `--activations` still reads the older npz files.
+
 ## Generators
 
 Responses sit in one folder per decoding: `generations/Llama-3.1-8B-Instruct/greedy/` holds everything generated greedily before October 2026 (responses and judged files), and `generations/Llama-3.1-8B-Instruct/t0.6_p0.9/` the sampled set. The activation cache mirrors these paths. `training/` (probe-training generations) stays at the model level.

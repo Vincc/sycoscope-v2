@@ -1,8 +1,10 @@
 """Fit one probe per unit x method x position x layer x C on train groups; score on held-out test groups.
 
-A unit is a contrastive cell (--cells, contrastive activations npz, split by prompt_id so both responses to a
-prompt share a side) or a skyline label (--labels, judged activations npz, split by group; rows whose label is
+A unit is a contrastive cell (--cells, contrastive activations, split by prompt_id so both responses to a
+prompt share a side) or a skyline label (--labels, judged activations, split by group; rows whose label is
 None are excluded). One split is shared by every unit; validation chooses hyperparameters and test reports results.
+Activations come from a get_activations npz (--activations; positions last_prompt, first5, response) or from the
+activation cache joined to its JSONL (--cache and --rows; cache positions such as response_mean).
 Writes to probes/<model name>/<sweep>/:
   split.json               train, val and test groups, train_ids, val_ids, fit_ids (balanced rows per unit)
   <unit>.probes.npz        every probe for one unit (pairNN or the label name), arrays keyed <probe_id>__<field>
@@ -17,9 +19,10 @@ from pathlib import Path
 
 import numpy as np
 
+from interp.cache_activations import POSITIONS as CACHE_POSITIONS, load_for_probes, read_parts
 from utils import probes
 from utils.activations import NO_LABEL, POSITIONS, act_key, read_labels
-from utils.io import REPO_ROOT, check_counts, meta_path, read_json, write_json, write_jsonl, write_meta
+from utils.io import REPO_ROOT, check_counts, meta_path, read_json, read_jsonl, write_json, write_jsonl, write_meta
 from utils.splits import group_split, split_masks
 
 
@@ -102,13 +105,17 @@ def skyline_units(z, names: list[str], source: str) -> tuple[list[dict], dict]:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--activations", type=Path, required=True, help="Contrastive or judged *_activations.npz.")
+    source_group = parser.add_mutually_exclusive_group(required=True)
+    source_group.add_argument("--activations", type=Path, help="Contrastive or judged *_activations.npz.")
+    source_group.add_argument("--cache", type=Path, help="Activation-cache folder of --rows, holding one folder per position.")
+    parser.add_argument("--rows", type=Path, help="With --cache: the contrastive or judged JSONL its rows come from.")
     parser.add_argument("--sweep", required=True, help="Output directory name under probes/<model name>/.")
     unit_group = parser.add_mutually_exclusive_group(required=True)
     unit_group.add_argument("--cells", nargs="+", help="Contrastive: pair indices, or 'all'.")
     unit_group.add_argument("--labels", nargs="+", help="Skyline: judged label names, or 'all'.")
     parser.add_argument("--methods", nargs="+", choices=probes.METHODS, required=True)
-    parser.add_argument("--positions", nargs="+", choices=POSITIONS, required=True)
+    parser.add_argument("--positions", nargs="+", choices=[*POSITIONS, *CACHE_POSITIONS], required=True,
+                        help=f"--activations: {', '.join(POSITIONS)}. --cache: {', '.join(CACHE_POSITIONS)}.")
     parser.add_argument("--layers", type=int, nargs="+", required=True)
     parser.add_argument("--C", type=float, nargs="+", required=True, help="Inverse L2 strengths (logistic only).")
     parser.add_argument("--max-iter", type=int, required=True)
@@ -116,17 +123,30 @@ def main():
     parser.add_argument("--val-frac", type=float, required=True, help="0 for no validation split.")
     parser.add_argument("--seed", type=int, required=True, help="Split seed.")
     args = parser.parse_args()
+    if (args.cache is None) != (args.rows is None):
+        parser.error("--cache and --rows go together")
 
-    act_meta = read_json(meta_path(args.activations))
-    missing_layers = sorted(set(args.layers) - set(act_meta["layers"]))
-    if missing_layers:
-        raise ValueError(f"{args.activations} lacks layers {missing_layers}")
-    out_dir = REPO_ROOT / "probes" / act_meta["model"].split("/")[-1] / args.sweep
+    cache_join = None
+    if args.activations is not None:
+        act_meta = read_json(meta_path(args.activations))
+        missing_layers = sorted(set(args.layers) - set(act_meta["layers"]))
+        if missing_layers:
+            raise ValueError(f"{args.activations} lacks layers {missing_layers}")
+        model, inputs, source = act_meta["model"], [args.activations], args.activations.as_posix()
+    else:
+        model = read_parts(args.cache / args.positions[0], {})[0]["model"]
+        inputs, source = [args.rows], f"{args.cache.as_posix()} + {args.rows.as_posix()}"
+    out_dir = REPO_ROOT / "probes" / model.split("/")[-1] / args.sweep
     if out_dir.exists():
         raise FileExistsError(f"{out_dir} exists; pick a new --sweep name")
 
-    z = np.load(args.activations)
-    source = args.activations.as_posix()
+    if args.activations is not None:
+        z = np.load(args.activations)
+    else:
+        z, info = load_for_probes(args.cache, read_jsonl(args.rows), args.positions, args.layers)
+        inputs += info["part_metas"]
+        cache_join = {k: v for k, v in info.items() if k != "part_metas"}
+        print(f"cache joined to {args.rows}: {info['counts']}")
     if args.cells is not None:
         if "label" not in z:
             raise ValueError(f"{args.activations} has no label array; it is not a contrastive activations file")
@@ -206,7 +226,7 @@ def main():
                     "split_seed": args.seed,
                     "test_frac": args.test_frac,
                     "val_frac": args.val_frac,
-                    "model": act_meta["model"],
+                    "model": model,
                     "n_train": int(tr.sum()),
                     "n_train_pos": int(y[tr].sum()),
                     "n_train_candidate": int(tr_candidate.sum()),
@@ -225,10 +245,10 @@ def main():
     write_json(split_path, split)
     manifest_path = out_dir / "manifest.jsonl"
     write_jsonl(manifest_path, manifest)
-    extra = {"model": act_meta["model"], "units": [u["name"] for u in units], "n_probes": len(manifest),
-             "per_unit": counts["per_unit"]}
+    extra = {"model": model, "units": [u["name"] for u in units], "n_probes": len(manifest),
+             "per_unit": counts["per_unit"], "cache_join": cache_join}
     for out in [split_path, manifest_path, *(out_dir / f"{u['name']}.probes.npz" for u in units)]:
-        write_meta(out, [args.activations], args, counts.get("total", counts["per_unit"]), extra)
+        write_meta(out, inputs, args, counts.get("total", counts["per_unit"]), extra)
     print(f"\n{len(manifest)} probes -> {manifest_path}")
 
 
