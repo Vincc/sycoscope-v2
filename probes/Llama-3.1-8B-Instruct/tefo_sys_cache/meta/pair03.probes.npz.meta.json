@@ -1,0 +1,282 @@
+{
+  "output": "pair03.probes.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl": "869587f4d6c7a8e57171ac42cf9b62357f49d9b0cc66cf7f9c513fa9f8c483b7",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00000.safetensors.meta.json": "0adcc771724c0782494c98d17de71b614dcb609a4c67153376ac5439dabb4617",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00001.safetensors.meta.json": "dc7acb932daebe6d4fc847b63d337eea7a4c019ed5fe97624cd0cc73562b8607",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00002.safetensors.meta.json": "577e5c0faed6bd7f111c42b1acc7ec65f78b7d5dd9d7978fe0871c8b0b227ec0",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00003.safetensors.meta.json": "be786faf5a6ab6dd09d479446bfab210cad2f2d2c602162803c5d33eecf7cf0e",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00004.safetensors.meta.json": "4f60a2015bcf86947fb221ff8d1dcecc4747a9ce57ad14b638b3abac1dae9cc9",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00005.safetensors.meta.json": "dc278b6046971cbdaac380c5d64c2ff9a6cf21110e04eaeb9191a41e657d8468",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00006.safetensors.meta.json": "29d9bd845a6fa1ea78f54b709680856ca3b70d6ba8779ec1aba395dde6bdc4cf",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00007.safetensors.meta.json": "11445105317f69ffe0c78d449be03f37cbeebf86c06f16f9c1a9c117f3cdd9c8",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00008.safetensors.meta.json": "7d501f2e72989a2af385772047fcb71a46be649dac6d4a330bef2aa5e2e0423a",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00009.safetensors.meta.json": "db839a66b6c8e59416e273eb77f94d587c89047cd3819ce995c418d3aab4c2da",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00010.safetensors.meta.json": "c4efd3c3629c53fea392f0a13594b4a88d5440ba0a557b02ebe8d46bbc486ec0",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00011.safetensors.meta.json": "25836a21f3872b9d03301e536daa6cac06cd24577f40c370c3b3d0b4bc425dd6",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00012.safetensors.meta.json": "160b13067044a2aefa8a2a54ed7405b591f5c0708a28348bfbac3a01b4382f78",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00013.safetensors.meta.json": "09c4316d3fcf75f99c1bf10578f7d7ea6bc48d83b3cdb1a5f3048537dbafd498",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00014.safetensors.meta.json": "8527877c7451a90d2b5609952c8d0ae6f6b3d29d38e0b625050daa4ebd781823",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00015.safetensors.meta.json": "e8d309f0b7545e9e70489a0b685103c3cdb84d0d888863c8e4cbdeaade94843d",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00016.safetensors.meta.json": "4f0e886f6679092c8bd098ae6135dd653bc05fffb3643aed20a11c829d310ed2",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/prompt_last/meta/part-00017.safetensors.meta.json": "65309c252c2afdd4e0441eaac095d0c1284e09945dc350aa60ebcf81c2424f74",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00000.safetensors.meta.json": "3f07ebbe6ea445bbc944081f4119cff93d877f0dc2d079c668e019a2becab1ef",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00001.safetensors.meta.json": "436f225390b8f1ab22173a2815568937e08810b8926defb5a63bdd7c8c171d85",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00002.safetensors.meta.json": "2eb61b6cf85abb23323e735f5d44bf6a9dcf99e9d3a72c99aa5718d13b450979",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00003.safetensors.meta.json": "a9e2ed9190206072768c394f43a7aa7c03b5d06083956fff90d7d4e0542f471a",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00004.safetensors.meta.json": "67757c703c952d64fd7aac30663802cccb74558c318f049f53c318811ac4eca4",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00005.safetensors.meta.json": "0ae8ef013e16c90ddf2b40f9ee9c7db1396111c3466106675c6903746b437f84",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00006.safetensors.meta.json": "55bb6097eada130c6ff1d5bffc942b7526eb68d8cecd0105191d5941c4ca4882",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00007.safetensors.meta.json": "78f4e0ba06f44e4634c0c3cdc529f568bd9a6301e4f32ce32d2d16dc3db55c85",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00008.safetensors.meta.json": "e8e99cb612c64dd51036aa37c8e09d1afc07777248ab08d048fa4329e72fb448",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00009.safetensors.meta.json": "5cbe7da560e3272584abf73aa32cccfc9bce47786ea727057c40e8cf8ccfe9d6",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00010.safetensors.meta.json": "f664a8e0dd443d88e918d131c12a703fdac91c842eff72b1c4da99c51898ea6d",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00011.safetensors.meta.json": "976f5ce125a5076d71e4837c6013c61d16ada82b37ed22dc17bcc54ff4d4bf21",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00012.safetensors.meta.json": "5c85b41c950378c418c690c67f2785690a6f2a07089eccf7d638b9b90800e689",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00013.safetensors.meta.json": "c13c1af2365c6df0a0a4e5330cd171f2fe456a6be08610c72aa6bca0dbe38f35",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00014.safetensors.meta.json": "45224c8ac81b6e87d6628da081176df36ce962db598de222afb93b50ab7580b3",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00015.safetensors.meta.json": "0ab89645427cb2059dce16d5f23e1bd2b517ebd4209a7045ccd7effe9e581688",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00016.safetensors.meta.json": "f8cee19a6fc6030c1049580f2e262c9c20b216ba2213e7561a72bc759e47ef6a",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses/response_mean/meta/part-00017.safetensors.meta.json": "5dee5ccd608c2b1304db471d50dc4ee7df2dab4342ff983566cad51434597f33"
+  },
+  "git": {
+    "commit": "5dbae88a3e15ae1091517a1bb792b4b21dad0b04",
+    "dirty": true
+  },
+  "argv": [
+    "c:/Users/chang/Documents/code/sycoscope-v2/probe_training/train_probes.py",
+    "--cache",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses",
+    "--sweep",
+    "tefo_sys_cache",
+    "--positions",
+    "prompt_last",
+    "response_mean",
+    "--rows",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "--cells",
+    "all",
+    "--methods",
+    "logistic",
+    "dim",
+    "--layers",
+    "3",
+    "6",
+    "10",
+    "13",
+    "16",
+    "19",
+    "22",
+    "26",
+    "29",
+    "--C",
+    "0.0001",
+    "0.001",
+    "0.01",
+    "0.1",
+    "1",
+    "10",
+    "--max-iter",
+    "10000",
+    "--test-frac",
+    "0.2",
+    "--val-frac",
+    "0.10",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "activations": null,
+    "cache": "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses",
+    "rows": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "sweep": "tefo_sys_cache",
+    "cells": [
+      "all"
+    ],
+    "labels": null,
+    "methods": [
+      "logistic",
+      "dim"
+    ],
+    "positions": [
+      "prompt_last",
+      "response_mean"
+    ],
+    "layers": [
+      3,
+      6,
+      10,
+      13,
+      16,
+      19,
+      22,
+      26,
+      29
+    ],
+    "C": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "max_iter": 10000,
+    "test_frac": 0.2,
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 17920,
+    "excluded": {
+      "cell_not_selected": 0,
+      "pair_partner_missing": 0
+    },
+    "n_out": 17920
+  },
+  "created_at": "2026-11-23T21:58:39+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "units": [
+    "pair00",
+    "pair01",
+    "pair02",
+    "pair03",
+    "pair04",
+    "pair05",
+    "pair06",
+    "pair07",
+    "pair08",
+    "pair09",
+    "pair10",
+    "pair11",
+    "pair12",
+    "pair13"
+  ],
+  "n_probes": 1764,
+  "per_unit": {
+    "pair00": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair01": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair02": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair03": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair04": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair05": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair06": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair07": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair08": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair09": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair10": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair11": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair12": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair13": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    }
+  },
+  "cache_join": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "model_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "template_kwargs": null,
+    "n_layers": 32,
+    "system_prompt": null,
+    "layers": [
+      3,
+      6,
+      10,
+      13,
+      16,
+      19,
+      22,
+      26,
+      29
+    ],
+    "counts": {
+      "n_in": 17920,
+      "excluded": {
+        "not_cached": 0
+      },
+      "n_out": 17920
+    },
+    "n_cached_not_in_rows": 0
+  }
+}

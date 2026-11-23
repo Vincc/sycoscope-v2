@@ -1,0 +1,262 @@
+{
+  "output": "pair13.probes.npz",
+  "inputs": {
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl": "869587f4d6c7a8e57171ac42cf9b62357f49d9b0cc66cf7f9c513fa9f8c483b7",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00000.safetensors.meta.json": "d2588f60f766096819e760fa4912094c935bc6c6a51d16389dfd0999d3b48afc",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00001.safetensors.meta.json": "55644844ec7dbf73c5c73c27348d0652558cede7a190b679741c51d20c54cd58",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00002.safetensors.meta.json": "e449dfd730a055fedb283abfe33e1bcfd855b477d992d9bdbfd0e8846e96e361",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00003.safetensors.meta.json": "2bd7c13528c271ab888a9d67b9df99074b294c298b4715fc5fe12e53325cd00e",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00004.safetensors.meta.json": "68c2b93bfc1feb8e688c25de9dca0ea6c470ecc10747d8f489c086beb3a333db",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00005.safetensors.meta.json": "1348bfb7200fc2abd24494b4daa66f0d4679788fdb41825bc93c9fc05c6e278b",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00006.safetensors.meta.json": "2310ce3dcec1a099e31ca4373f9faf76cda1eaeebd83838660d3f75e6c56eaf2",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00007.safetensors.meta.json": "5e650e183bc1e77dae94454c750a652057ee44b1d86c42ac4b460857702544c2",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00008.safetensors.meta.json": "e4245639c968b93e63c73fc4eb1523c58272cc7af86c1f6f5605a7ed00871f9e",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00009.safetensors.meta.json": "7dc167addbe42f6dbfe972be548d48c3257d5bdb59cec95ce6ddcafe5530de16",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00010.safetensors.meta.json": "42c48a5a62c5f1a50c4470a14787565dcd956645a9a68c0314e3faad0b86b594",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00011.safetensors.meta.json": "a496ac848327a88fc00ea5c23c2cc4bb201104a6c2b3a7d7a2d754261f524141",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00012.safetensors.meta.json": "828f5a5a8ff10cd4b7c69212831bf16708efec3576d969ef2704c442991f927b",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00013.safetensors.meta.json": "98f8fb5a413cae2c868696275c6528b1b6ccffe944e8c1aa7a495e19de83109d",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00014.safetensors.meta.json": "c5fe2763c5cad73ae28f0ecb91d31fd4267cffc415922950578f27dec9cd3f00",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00015.safetensors.meta.json": "8fed5eb993c9bc512101728c345aa29293e0317a7bb5a15002315df817cb2cde",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00016.safetensors.meta.json": "11fd961b61caebc909882c1ff8d3b88d839756547c8b27424878661118776bcf",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys/prompt_last/meta/part-00017.safetensors.meta.json": "14448ce3b9d56c708b36ec6a58072b054572dcfc2b9403776fc7daaf98a88436"
+  },
+  "git": {
+    "commit": "5dbae88a3e15ae1091517a1bb792b4b21dad0b04",
+    "dirty": true
+  },
+  "argv": [
+    "c:/Users/chang/Documents/code/sycoscope-v2/probe_training/train_probes.py",
+    "--cache",
+    "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys",
+    "--rows",
+    "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "--sweep",
+    "tefo_nosys_cache_prompt_last_null",
+    "--cells",
+    "all",
+    "--methods",
+    "logistic",
+    "dim",
+    "--positions",
+    "prompt_last",
+    "--layers",
+    "3",
+    "6",
+    "10",
+    "13",
+    "16",
+    "19",
+    "22",
+    "26",
+    "29",
+    "--C",
+    "0.0001",
+    "0.001",
+    "0.01",
+    "0.1",
+    "1",
+    "10",
+    "--max-iter",
+    "10000",
+    "--test-frac",
+    "0.2",
+    "--val-frac",
+    "0.10",
+    "--seed",
+    "0"
+  ],
+  "args": {
+    "activations": null,
+    "cache": "activations/cache/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses_nosys",
+    "rows": "generations/Llama-3.1-8B-Instruct/training/synthetic_dataset/synthetic_trait_emotion_fact_opinion/synthetic_trait_emotion_fact_opinion_contrastive_responses.jsonl",
+    "sweep": "tefo_nosys_cache_prompt_last_null",
+    "cells": [
+      "all"
+    ],
+    "labels": null,
+    "methods": [
+      "logistic",
+      "dim"
+    ],
+    "positions": [
+      "prompt_last"
+    ],
+    "layers": [
+      3,
+      6,
+      10,
+      13,
+      16,
+      19,
+      22,
+      26,
+      29
+    ],
+    "C": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "max_iter": 10000,
+    "test_frac": 0.2,
+    "val_frac": 0.1,
+    "seed": 0
+  },
+  "counts": {
+    "n_in": 17920,
+    "excluded": {
+      "cell_not_selected": 0,
+      "pair_partner_missing": 0
+    },
+    "n_out": 17920
+  },
+  "created_at": "2026-11-23T22:36:32+00:00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "units": [
+    "pair00",
+    "pair01",
+    "pair02",
+    "pair03",
+    "pair04",
+    "pair05",
+    "pair06",
+    "pair07",
+    "pair08",
+    "pair09",
+    "pair10",
+    "pair11",
+    "pair12",
+    "pair13"
+  ],
+  "n_probes": 882,
+  "per_unit": {
+    "pair00": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair01": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair02": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair03": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair04": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair05": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair06": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair07": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair08": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair09": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair10": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair11": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair12": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    },
+    "pair13": {
+      "n_in": 1280,
+      "excluded": {
+        "pair_partner_missing": 0
+      },
+      "n_out": 1280
+    }
+  },
+  "cache_join": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "model_revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+    "template_kwargs": null,
+    "n_layers": 32,
+    "system_prompt": "each row's system message removed; the chat template's default system block stays",
+    "layers": [
+      3,
+      6,
+      10,
+      13,
+      16,
+      19,
+      22,
+      26,
+      29
+    ],
+    "counts": {
+      "n_in": 17920,
+      "excluded": {
+        "not_cached": 0
+      },
+      "n_out": 17920
+    },
+    "n_cached_not_in_rows": 0
+  }
+}

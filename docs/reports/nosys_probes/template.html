@@ -1,0 +1,482 @@
+<title>Probes Without the System Prompt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column for prose; figures and tables run wider, each scrolling inside its own box. */
+:root {
+  --bg: #fbfbfa; --panel: #f3f3f0; --ink: #16171a; --ink-2: #4f5158; --ink-3: #7c7e86; --rule: #dedfdc; --grid: #e9e9e6;
+  --accent: #3159c4; --s-sys: #2a78d6; --s-nosys: #eb6834; --seq-lo: #e8f0fb; --seq-hi: #184f95; --on-dark: #ffffff;
+  --font-ui: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161719; --panel: #1f2023; --ink: #eceae4; --ink-2: #b9b8b0; --ink-3: #8b8a84; --rule: #34353a; --grid: #2a2b2f;
+    --accent: #7f9cf0; --s-sys: #3987e5; --s-nosys: #d95926; --seq-lo: #23272e; --seq-hi: #86b6ef; --on-dark: #0b0b0b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161719; --panel: #1f2023; --ink: #eceae4; --ink-2: #b9b8b0; --ink-3: #8b8a84; --rule: #34353a; --grid: #2a2b2f;
+  --accent: #7f9cf0; --s-sys: #3987e5; --s-nosys: #d95926; --seq-lo: #23272e; --seq-hi: #86b6ef; --on-dark: #0b0b0b;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--font-ui);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; display: grid; gap: 40px; }
+section { display: grid; gap: 12px; min-width: 0; }
+.prose { max-width: 72ch; }
+h1 { font-size: 30px; line-height: 1.15; font-weight: 700; margin: 0 0 8px; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: 19px; font-weight: 600; margin: 0 0 6px; text-wrap: balance; }
+h2.part { font-size: 24px; border-top: 1px solid var(--rule); padding-top: 18px; margin-top: 4px; }
+h3 { font: 600 15px var(--font-ui); margin: 0; }
+p { margin: 0 0 10px; }
+a { color: var(--accent); }
+.lede { color: var(--ink-2); font-size: 16px; }
+.meta { color: var(--ink-3); font: 12.5px/1.5 var(--font-data); }
+.eyebrow { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+ul.list { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+ul.list b { font-weight: 600; }
+ol.method { margin: 0; padding-left: 20px; display: grid; gap: 6px; color: var(--ink-2); }
+ol.method b { color: var(--ink); font-weight: 600; }
+code { font: 12.5px var(--font-data); overflow-wrap: anywhere; }
+.panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.panel { border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); padding: 10px 10px 6px; min-width: 0; }
+.panel h3 { font-size: 13.5px; }
+.panel .sub { font: 11.5px var(--font-data); color: var(--ink-3); margin: 1px 0 4px; }
+.panel svg { display: block; width: 100%; height: auto; }
+svg text { font: 11px var(--font-data); fill: var(--ink-3); }
+svg text.cell { font-size: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--ink-2); font-size: 12.5px; align-items: center; }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.key i.sys { background: var(--s-sys); }
+.key i.nosys { background: var(--s-nosys); }
+.key i.ring-sys { border: 2px solid var(--s-sys); width: 6px; height: 6px; }
+.key i.ring-nosys { border: 2px solid var(--s-nosys); width: 6px; height: 6px; }
+.key i.line { width: 18px; height: 0; border-radius: 0; border-top: 2px solid var(--ink-2); }
+.key i.band { width: 18px; height: 10px; border-radius: 2px; background: color-mix(in srgb, var(--ink-2) 22%, transparent); }
+.key i.diag { width: 18px; height: 0; border-radius: 0; border-top: 1.5px dashed var(--ink-3); }
+#tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--bg); font: 12px/1.45 var(--font-ui);
+  padding: 7px 9px; border-radius: 6px; max-width: 300px; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 8px; background: var(--panel); }
+table.plain { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; width: 100%; }
+table.plain th, table.plain td { padding: 6px 10px; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
+table.plain th:first-child, table.plain td:first-child { text-align: left; }
+table.plain thead th { font-weight: 600; color: var(--ink-2); font-size: 12px; vertical-align: bottom; }
+table.plain th.grp { text-align: center; color: var(--ink-3); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+table.plain td.num { font-family: var(--font-data); font-size: 12.5px; }
+table.plain .ci { font-size: 11px; color: var(--ink-3); margin-left: 4px; }
+table.plain td.flag { font-weight: 600; }
+table.plain tr.ctrl td:first-child { color: var(--ink-2); }
+details summary { cursor: pointer; color: var(--ink-2); font-size: 13px; }
+details .scroll, details pre { margin-top: 8px; }
+summary:focus-visible, .seg button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.reading { border-left: 3px solid var(--rule); padding: 2px 0 2px 14px; color: var(--ink-2); max-width: 80ch; }
+.reading b { color: var(--ink); font-weight: 600; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; position: sticky; top: env(safe-area-inset-top, 0px);
+  background: var(--bg); padding-block: 10px; z-index: 5; border-bottom: 1px solid var(--rule); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.ctl-label { font-size: 12.5px; color: var(--ink-3); margin-right: 6px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--rule); border-radius: 7px; overflow: hidden; }
+.seg button { font: 500 13px var(--font-ui); color: var(--ink-2); background: var(--bg); border: 0; padding: 6px 11px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+pre.cmd { font: 12px/1.5 var(--font-data); background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px;
+  overflow-x: auto; white-space: pre; color: var(--ink-2); margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+.stat { border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; }
+.stat .v { font: 600 22px var(--font-ui); }
+.stat .l { font-size: 12.5px; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main>
+<header class="prose">
+  <div class="eyebrow">SycoScope · Llama-3.1-8B-Instruct · tefo contrastive set</div>
+  <h1>Probes without the system prompt</h1>
+  <p class="lede">Contrastive probes are trained on responses written under a sycophantic or a non-sycophantic system prompt, and until now the activations were taken with that system prompt still in context. We removed it from the forward pass, kept the responses, and retrained. <span id="answer"></span></p>
+  <p class="meta">Probes: <span id="n-probes"></span> · rows: <span id="n-rows"></span> · built from <code>reports/llama31_nosys_probes/summary.json</code></p>
+</header>
+
+<section class="prose">
+  <h2 class="part">Methods</h2>
+  <ol class="method">
+    <li><b>Data.</b> The tefo contrastive set: 640 prompts, 14 system-prompt pairs (8 taxonomy cells, the baseline, 5 controls), one sycophantic and one non-sycophantic response per prompt and pair, 17,920 rows. The responses were generated earlier with the system prompt; they are reused unchanged.</li>
+    <li><b>Two contexts.</b> <i>With system prompt</i>: the prompt the response was written under. <i>Without</i>: the system message removed; Llama 3.1's template then adds its default block (“Cutting Knowledge Date … Today Date …”), exactly as for the benchmark rows. Without it, both sides of a pair see token-identical prompts.</li>
+    <li><b>Activations.</b> One bfloat16 forward pass per row and context on an A100 (<code>interp/cache_activations.py</code>, <code>--drop-system-prompt</code> for the second). Mean over response tokens and the last prompt token, all 32 blocks, stored in float16, with each row's mean response NLL and next-token agreement from the same pass.</li>
+    <li><b>Probes.</b> Per pair: logistic regression (C ∈ {1e-4 … 10}) and difference of means, at blocks 3, 6, 10, 13, 16, 19, 22, 26, 29. One split by prompt for every pair and both contexts: 448 train, 64 validation, 128 test prompts, the same split as the earlier sweep. Logistic C is chosen per pair and block on validation AUROC; ties go to the smaller C. Test numbers are on test prompts only.</li>
+    <li><b>Benchmarks.</b> Sampled Llama 3.1 responses (T 0.6, top-p 0.9) to ELEPHANT AITA-YTA, OEQ and SS (validation, indirectness, framing), AITA-NTA-OG, AITA-NTA-FLIP (flipped telling) and Are You Sure, labelled by Sonnet 5.5, with units as in <code>interp/generalization_matrix.py</code>. Both probe sets are scored on the same cached activations. 95% intervals at block <span class="ci-block"></span> resample prompt groups 1,000 times.</li>
+  </ol>
+</section>
+
+<div class="controls" role="group" aria-label="Figure controls">
+  <span><span class="ctl-label">Method</span><span class="seg" id="ctl-method"><button type="button" data-v="logistic" aria-pressed="true">Logistic</button><button type="button" data-v="dim" aria-pressed="false">Difference of means</button></span></span>
+  <span><span class="ctl-label">Block</span><span class="seg" id="ctl-layer"></span></span>
+</div>
+
+<section>
+  <h2 class="part">Results</h2>
+  <div class="prose">
+    <h2>1. The response alone separates the two sides</h2>
+    <p>Test AUROC of each pair's probe, trained and tested in the same context.</p>
+  </div>
+  <div class="panel">
+    <h3>Without the system prompt</h3>
+    <div class="sub" id="heat-sub"></div>
+    <div class="scroll" style="border:0;background:none"><svg id="heat-nosys" role="img" aria-label="Heatmap of test AUROC without the system prompt"></svg></div>
+  </div>
+  <div class="panel">
+    <h3>With the system prompt</h3>
+    <div class="sub">same scale</div>
+    <div class="scroll" style="border:0;background:none"><svg id="heat-sys" role="img" aria-label="Heatmap of test AUROC with the system prompt"></svg></div>
+  </div>
+  <p class="reading" id="read-indist"></p>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>2. Likelihood alone also separates them, for some pairs</h2>
+    <p>Without the system prompt the responses are off-policy: the model finds them less likely than its own text (mean NLL <span id="nll-sys"></span> nats with the system prompt, <span id="nll-nosys"></span> without; next-token agreement <span id="ag-sys"></span> and <span id="ag-nosys"></span>). If one side is systematically less likely, a probe could learn surprise rather than sycophancy. Rings show the test AUROC of mean response NLL alone as the score for the sycophantic label; 0.5 is no information, and values below 0.5 separate just as well in the other direction.</p>
+  </div>
+  <div class="panel">
+    <h3>NLL baseline and the probe, test prompts</h3>
+    <div class="sub" id="dot-sub"></div>
+    <div class="legend"><span class="key"><i class="ring-sys"></i>NLL, with system prompt</span><span class="key"><i class="ring-nosys"></i>NLL, without</span><span class="key"><i class="nosys"></i>probe, without</span></div>
+    <svg id="dots" role="img" aria-label="Dot plot of NLL and probe AUROC per pair"></svg>
+  </div>
+  <p class="reading" id="read-nll"></p>
+  <details><summary>Table: NLL, agreement and probe-score correlation per pair</summary><div class="scroll"><table class="plain" id="tbl-nll"></table></div></details>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>3. Each probe set transfers to the other context</h2>
+    <p>Each probe is scored on the same test prompts in its own context and in the other one.</p>
+  </div>
+  <div class="scroll"><table class="plain" id="tbl-transfer"></table></div>
+  <p class="reading" id="read-transfer"></p>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>4. Directions agree early and diverge after block 10</h2>
+    <p>Cosine between the with- and without-system direction of the same pair, method and block. Line: median over the 14 pairs; band: lowest to highest.</p>
+  </div>
+  <div class="legend"><span class="key"><i class="line"></i>median over pairs</span><span class="key"><i class="band"></i>range over pairs</span></div>
+  <div class="panels">
+    <div class="panel"><h3>Logistic</h3><div class="sub">cosine of unit directions</div><svg id="cos-logistic" role="img" aria-label="Cosine by block, logistic"></svg></div>
+    <div class="panel"><h3>Difference of means</h3><div class="sub">cosine of unit directions</div><svg id="cos-dim" role="img" aria-label="Cosine by block, difference of means"></svg></div>
+  </div>
+  <p class="reading" id="read-cos"></p>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>5. On the benchmarks there is no systematic shift, but single cells move</h2>
+    <p>Every probe × benchmark label × block × method, AUROC with the system prompt (x) against without (y). Points on the dashed line score the same.</p>
+  </div>
+  <div class="panel">
+    <h3>Benchmark AUROC, with against without the system prompt</h3>
+    <div class="sub" id="scatter-sub"></div>
+    <div class="legend"><span class="key"><i class="sys" style="background:var(--accent)"></i>one probe on one label at one block</span><span class="key"><i class="diag"></i>equal AUROC</span></div>
+    <svg id="scatter" role="img" aria-label="Scatter of benchmark AUROC with against without the system prompt"></svg>
+  </div>
+  <p class="reading" id="read-ood"></p>
+  <div class="prose"><p>At block <span class="ci-block"></span>, the baseline probe and the probe of the cell each benchmark is matched to in the spec, with 95% intervals. Bold marks rows where the two intervals do not overlap.</p></div>
+  <div class="scroll"><table class="plain" id="tbl-ood"></table></div>
+</section>
+
+<section>
+  <div class="prose">
+    <h2>6. Checks</h2>
+    <p><b>Parity with the earlier pipeline.</b> The with-system cache against the September float32 activations (<code>get_activations</code>) of the same rows, and the probes retrained from the cache against the earlier sweep on the same split and grid.</p>
+  </div>
+  <div class="scroll"><table class="plain" id="tbl-parity"></table></div>
+  <div class="prose">
+    <p><b>Null check.</b> Without the system prompt, both sides of a pair share a token-identical prompt, so their last-prompt-token vectors should be identical and carry no label. The spread column is the largest distance of a row's vector from its prompt's mean, relative to that mean; the AUROC columns are probes trained on that position with the same grid and split (test prompts).</p>
+  </div>
+  <div class="scroll"><table class="plain" id="tbl-null"></table></div>
+  <p class="reading" id="read-null"></p>
+</section>
+
+<section class="prose">
+  <h2 class="part">Limitations</h2>
+  <ul class="list">
+    <li><b>One response set, one model.</b> All numbers are for Llama-3.1-8B-Instruct on the tefo set with seed-0 split. Seed-to-seed variance of the split was not measured, so small differences between the two contexts are not interpretable.</li>
+    <li><b>The responses are off-policy without the system prompt.</b> Section 2 shows the likelihood of the response alone separates the two sides strongly for some pairs. A probe trained without the system prompt can use that signal; this analysis does not remove it.</li>
+    <li><b>Benchmark labels come from one judge.</b> Sonnet 5.5 labels, without human validation; benchmark AUROC is bounded by label quality. SyPR is not included.</li>
+    <li><b>Intervals are per AUROC, not per difference.</b> Non-overlapping intervals are a conservative reading of a difference; overlapping ones do not show equality.</li>
+    <li><b>Batching leaks a little label information into prompt positions.</b> Section 6: identical prompts do not give exactly identical vectors, and a few null probes rise above chance. The in-distribution signals in section 1 are far larger; whether the same noise moves benchmark AUROC by a few thousandths was not measured.</li>
+  </ul>
+</section>
+
+<section class="prose">
+  <h2 class="part">Assumptions</h2>
+  <ul class="list">
+    <li>Removing the system message keeps Llama 3.1's default system block, so the training prompt matches the benchmark prompt token for token.</li>
+    <li>The training responses are the existing ones, generated through OpenRouter with the system prompt (providers DeepInfra, Novita and Groq, not pinned). The 8 truncated rows are kept, as in the earlier sweep.</li>
+    <li>Probes use the response mean. The last prompt token is cached only as a null check.</li>
+    <li>Layers, C grid, methods, split fractions and seed match the earlier with-system sweep (<code>synthetic_tefo_C_sweep</code>); both contexts are retrained from the new cache so they share one pipeline.</li>
+    <li>Logistic C is chosen on validation AUROC, ties to the smaller C; every block is shown; nothing is chosen on test or benchmark rows.</li>
+    <li>Benchmarks are the sampled set (T 0.6, top-p 0.9) with Sonnet 5.5 labels; units and exclusions follow <code>interp/generalization_matrix.py</code> (AITA-NTA-FLIP on its flipped telling; Are You Sure rows without a defined flip excluded).</li>
+    <li>Training activations are float16 in the cache; earlier sweeps used float32. The parity table bounds the difference.</li>
+  </ul>
+</section>
+
+<section>
+  <details>
+    <summary>Provenance and commands</summary>
+    <pre class="cmd">bash interp/run_nosys_cache_vast.sh            # A100: tests, parity on 64 rows, cache with and without the system prompt, upload
+python -m probe_training.train_probes --cache &lt;tefo cache&gt; --rows &lt;tefo jsonl&gt; --sweep tefo_sys_cache \
+  --positions prompt_last response_mean --cells all --methods logistic dim --layers 3 6 10 13 16 19 22 26 29 \
+  --C 0.0001 0.001 0.01 0.1 1 10 --max-iter 10000 --test-frac 0.2 --val-frac 0.10 --seed 0
+python -m probe_training.train_probes --cache &lt;tefo cache&gt;_nosys ... --sweep tefo_nosys_cache --positions response_mean
+python -m probe_training.train_probes --cache &lt;tefo cache&gt;_nosys ... --sweep tefo_nosys_cache_prompt_last_null --positions prompt_last
+python -m probe_analysis.nosys.compute_nosys --sys-sweep probes/Llama-3.1-8B-Instruct/tefo_sys_cache \
+  --nosys-sweep probes/Llama-3.1-8B-Instruct/tefo_nosys_cache --reference-sweep probes/Llama-3.1-8B-Instruct/synthetic_tefo_C_sweep \
+  --reference-npz &lt;September tefo npz&gt; --judged &lt;7 sampled judged files&gt; --judge-name sonnet55 --cache-dir activations/cache \
+  --ci-block 16 --bootstrap 1000 --seed 0 --output reports/llama31_nosys_probes/summary.json
+python docs/reports/nosys_probes/build.py .</pre>
+    <p class="meta">Activations: Hub dataset SycoScope/activation-cache, Llama-3.1-8B-Instruct/training/…/synthetic_trait_emotion_fact_opinion_contrastive_responses[_nosys]/. Probes: probes/Llama-3.1-8B-Instruct/tefo_sys_cache, tefo_nosys_cache, tefo_nosys_cache_prompt_last_null.</p>
+  </details>
+</section>
+</main>
+<div id="tip" hidden></div>
+
+<script>
+const D = __DATA__;
+const NS = "http://www.w3.org/2000/svg";
+const L = D.layers, PAIRS = D.pairs;
+const state = { method: "logistic", layer: D.ci_layer };
+const f3 = v => v == null ? "–" : v.toFixed(3);
+const f2 = v => v == null ? "–" : v.toFixed(2);
+const pct = v => Math.round(v * 100) + "%";
+const short = c => c.replace("Position-", "Pos-").replace("Person-", "Pers-");
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function txt(parent, x, y, s, attrs = {}) { const t = el("text", { x, y, ...attrs }, parent); t.textContent = s; return t; }
+const tip = document.getElementById("tip");
+function showTip(ev, html) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + r.width > innerWidth - 8) x = ev.clientX - r.width - 14;
+  if (y + r.height > innerHeight - 8) y = ev.clientY - r.height - 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+function hideTip() { tip.hidden = true; }
+function setText(id, s) { const e = document.getElementById(id); if (e) e.textContent = s; }
+function table(id, head, rows) {
+  const t = document.getElementById(id);
+  t.innerHTML = "<thead>" + head + "</thead><tbody>" + rows.join("") + "</tbody>";
+}
+
+/* static text */
+const H = D.headline;
+setText("n-probes", `${D.counts.n_probes_sys.toLocaleString()} with the system prompt, ${D.counts.n_probes_nosys.toLocaleString()} without`);
+setText("n-rows", D.counts.rows.toLocaleString());
+document.querySelectorAll(".ci-block").forEach(e => e.textContent = D.ci_layer);
+setText("nll-sys", f2(D.stats.sys.nll_mean)); setText("nll-nosys", f2(D.stats.nosys.nll_mean));
+setText("ag-sys", f3(D.stats.sys.agreement_mean)); setText("ag-nosys", f3(D.stats.nosys.agreement_mean));
+setText("answer", `The probe is not just reading the system prompt. Without it, the response still separates the two sides of every pair (lowest test AUROC ${f3(H.indist_nosys_min)}, median ${f3(H.indist_nosys_median)}). On the benchmarks there is no systematic shift: over ${H.n_ood_cells.toLocaleString()} probe × label × block cells the mean change is ${H.ood_diff_mean >= 0 ? "+" : ""}${H.ood_diff_mean.toFixed(3)} AUROC and ${pct(H.ood_frac_nosys_higher)} go up. Individual cells do move (5% by more than ${H.ood_diff_abs_p95.toFixed(2)}, the largest by ${H.ood_diff_max_abs.toFixed(2)}), mostly on small labels and from block 10 on, where the two sets of directions diverge. Part of what the no-system probes separate is how unlikely the response is to the model.`);
+
+/* controls */
+const segL = document.getElementById("ctl-layer");
+L.forEach(l => { const b = document.createElement("button"); b.type = "button"; b.dataset.v = l; b.textContent = l; segL.appendChild(b); });
+function bindSeg(id, key, cast) {
+  const seg = document.getElementById(id);
+  seg.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[key] = cast(b.dataset.v); render();
+  });
+}
+bindSeg("ctl-method", "method", String); bindSeg("ctl-layer", "layer", Number);
+function syncSeg() {
+  document.querySelectorAll("#ctl-method button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === state.method));
+  document.querySelectorAll("#ctl-layer button").forEach(b => b.setAttribute("aria-pressed", Number(b.dataset.v) === state.layer));
+}
+const mName = m => m === "logistic" ? "logistic" : "difference of means";
+
+/* 1. heatmap */
+const ID = {};
+D.in_dist.forEach(r => { ID[`${r.condition}|${r.pair}|${r.method}|${r.layer}`] = r; });
+function drawHeat(cond) {
+  const other = cond === "sys" ? "nosys" : "sys", cname = c => c === "sys" ? "with" : "without";
+  const svg = document.getElementById("heat-" + cond); svg.innerHTML = "";
+  const left = 230, top = 22, cw = 62, ch = 24, W = left + cw * L.length + 8, Hh = top + ch * PAIRS.length + 6;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`); svg.style.minWidth = "640px";
+  L.forEach((l, j) => txt(svg, left + j * cw + cw / 2, 14, "block " + l, { "text-anchor": "middle" }));
+  const lo = 0.75;
+  PAIRS.forEach((p, i) => {
+    txt(svg, 4, top + i * ch + ch / 2 + 4, `${p.i}  ${p.cell}`, { fill: "var(--ink-2)" });
+    L.forEach((l, j) => {
+      const r = ID[`${cond}|${p.i}|${state.method}|${l}`], v = r.test_auroc;
+      const t = Math.max(0, Math.min(1, (v - lo) / (1 - lo)));
+      const x = left + j * cw, y = top + i * ch;
+      const rect = el("rect", { x: x + 1, y: y + 1, width: cw - 2, height: ch - 2, rx: 3,
+        fill: `color-mix(in oklab, var(--seq-hi) ${Math.round(t * 100)}%, var(--seq-lo))` }, svg);
+      txt(svg, x + cw / 2, y + ch / 2 + 4, v.toFixed(3), { "text-anchor": "middle", class: "cell",
+        style: `fill:${t > 0.55 ? "var(--on-dark)" : "var(--ink)"}` });
+      const s = ID[`${other}|${p.i}|${state.method}|${l}`];
+      rect.addEventListener("mousemove", e => showTip(e, `<b>${p.cell}</b><br>block ${l}, ${mName(state.method)}<br>${cname(cond)}: ${f3(v)} (paired win ${f3(r.test_paired_win_rate)})<br>${cname(other)}: ${f3(s.test_auroc)}${state.method === "logistic" ? `<br>chosen C: ${r.C}` : ""}`));
+      rect.addEventListener("mouseleave", hideTip);
+    });
+  });
+  if (cond === "sys") return;
+  setText("heat-sub", `${mName(state.method)} · colour from ${lo} or below (light) to 1.0 (dark)`);
+  const vals = D.in_dist.filter(r => r.condition === "nosys" && r.method === state.method);
+  const sysVals = D.in_dist.filter(r => r.condition === "sys" && r.method === state.method).map(r => r.test_auroc);
+  const worst = vals.reduce((a, b) => a.test_auroc < b.test_auroc ? a : b);
+  const base = vals.filter(r => r.pair === 0).map(r => r.test_auroc);
+  const baseLowest = L.filter(l => { const at = vals.filter(r => r.layer === l); return at.every(r => r.test_auroc >= at.find(q => q.pair === 0).test_auroc); }).length;
+  document.getElementById("read-indist").innerHTML = `<b>Reading.</b> With the ${mName(state.method)} probe, the lowest score without the system prompt is ${f3(worst.test_auroc)} (${PAIRS[worst.pair].cell}, block ${worst.layer}). The General (baseline) pair scores ${f3(Math.min(...base))}–${f3(Math.max(...base))} and is the lowest pair at ${baseLowest} of ${L.length} blocks. With the system prompt in context the lowest score is ${f3(Math.min(...sysVals))} and the median ${f3(sysVals.slice().sort((a, b) => a - b)[Math.floor(sysVals.length / 2)])}: removing the prompt costs little, so most of the separation is in the responses.`;
+}
+
+/* 2. dot plot */
+function drawDots() {
+  const svg = document.getElementById("dots"); svg.innerHTML = "";
+  const left = 230, right = 16, top = 18, rh = 22, W = 760, Hh = top + rh * PAIRS.length + 24;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const x = v => left + v * (W - left - right);
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => {
+    el("line", { x1: x(v), x2: x(v), y1: top - 6, y2: Hh - 20, stroke: v === 0.5 ? "var(--ink-3)" : "var(--grid)", "stroke-dasharray": v === 0.5 ? "4 3" : "" }, svg);
+    txt(svg, x(v), Hh - 6, v.toFixed(2), { "text-anchor": "middle" });
+  });
+  D.likelihood.forEach((r, i) => {
+    const y = top + i * rh + rh / 2, p = PAIRS[r.pair];
+    txt(svg, 4, y + 4, `${p.i}  ${p.cell}`, { fill: "var(--ink-2)" });
+    const probe = ID[`nosys|${r.pair}|${state.method}|${state.layer}`].test_auroc;
+    const marks = [[r.nll_sys, "ring", "var(--s-sys)", "NLL with system prompt"], [r.nll_nosys, "ring", "var(--s-nosys)", "NLL without"],
+                   [probe, "fill", "var(--s-nosys)", `probe without (${mName(state.method)}, block ${state.layer})`]];
+    marks.forEach(([v, kind, c, name]) => {
+      el("circle", kind === "ring" ? { cx: x(v), cy: y, r: 5, fill: "var(--panel)", stroke: c, "stroke-width": 2 }
+                                   : { cx: x(v), cy: y, r: 4.5, fill: c, stroke: "var(--panel)", "stroke-width": 2 }, svg);
+      const hit = el("circle", { cx: x(v), cy: y, r: 10, fill: "transparent" }, svg);
+      hit.addEventListener("mousemove", e => showTip(e, `<b>${p.cell}</b><br>${name}: ${f3(v)}`));
+      hit.addEventListener("mouseleave", hideTip);
+    });
+  });
+  setText("dot-sub", `test AUROC for the sycophantic label · probe: ${mName(state.method)}, block ${state.layer}`);
+  const strong = D.likelihood.filter(r => Math.max(r.nll_nosys, 1 - r.nll_nosys) >= 0.8).map(r => PAIRS[r.pair].cell);
+  document.getElementById("read-nll").innerHTML = `<b>Reading.</b> Without the system prompt, NLL alone reaches a separation of at least 0.8 (AUROC ≥ 0.8 or ≤ 0.2) for ${strong.length} of 14 pairs: ${strong.join(", ")}. The strongest is ${f3(H.nll_nosys_sep_max)}. The probe without the system prompt (${mName(state.method)}, block ${state.layer}) separates better than NLL for ${D.likelihood.filter(r => ID[`nosys|${r.pair}|${state.method}|${state.layer}`].test_auroc > Math.max(r.nll_nosys, 1 - r.nll_nosys)).length} of 14 pairs, so it carries more than likelihood there; how much of its benchmark signal is likelihood is not separated here. Probe scores and NLL are correlated within a pair; the table gives the Spearman correlation on test rows.`;
+  const rows = D.likelihood.map(r => `<tr${PAIRS[r.pair].i >= 9 ? ' class="ctrl"' : ""}><td>${r.pair}  ${PAIRS[r.pair].cell}</td><td class="num">${f3(r.nll_sys)}</td><td class="num">${f3(r.nll_nosys)}</td><td class="num">${f3(r.agree_sys)}</td><td class="num">${f3(r.agree_nosys)}</td><td class="num">${f2(r.spearman_sys[state.method][state.layer])}</td><td class="num">${f2(r.spearman[state.method][state.layer])}</td></tr>`);
+  table("tbl-nll", `<tr><th rowspan="2">Pair</th><th class="grp" colspan="2">NLL AUROC</th><th class="grp" colspan="2">Agreement AUROC</th><th class="grp" colspan="2">Spearman, probe vs NLL</th></tr><tr><th>with</th><th>without</th><th>with</th><th>without</th><th>with</th><th>without</th></tr>`, rows);
+}
+
+/* 3. transfer */
+const TR = {};
+D.transfer.forEach(r => { TR[`${r.trained_on}|${r.pair}|${r.method}|${r.layer}`] = r; });
+function drawTransfer() {
+  const k = (c, p) => `${c}|${p}|${state.method}|${state.layer}`;
+  const rows = PAIRS.map(p => {
+    const s = ID[k("sys", p.i)], n = ID[k("nosys", p.i)], sn = TR[k("sys", p.i)], ns = TR[k("nosys", p.i)];
+    return `<tr${p.i >= 9 ? ' class="ctrl"' : ""}><td>${p.i}  ${p.cell}</td><td class="num">${f3(s.test_auroc)}</td><td class="num">${f3(sn.auroc)}</td><td class="num">${f3(sn.paired_win_rate)}</td><td class="num">${f3(n.test_auroc)}</td><td class="num">${f3(ns.auroc)}</td><td class="num">${f3(ns.paired_win_rate)}</td></tr>`;
+  });
+  table("tbl-transfer", `<tr><th rowspan="2">Pair</th><th class="grp" colspan="3">Trained with system prompt</th><th class="grp" colspan="3">Trained without</th></tr><tr><th>own context</th><th>on without</th><th>paired win</th><th>own context</th><th>on with</th><th>paired win</th></tr>`, rows);
+  const sn = PAIRS.map(p => TR[k("sys", p.i)].auroc), ns = PAIRS.map(p => TR[k("nosys", p.i)].auroc);
+  document.getElementById("read-transfer").innerHTML = `<b>Reading.</b> At block ${state.layer} (${mName(state.method)}), probes trained with the system prompt score ${f3(Math.min(...sn))}–${f3(Math.max(...sn))} on the same responses without it, and probes trained without score ${f3(Math.min(...ns))}–${f3(Math.max(...ns))} with it. The direction that separates the responses survives the change of context in both directions.`;
+}
+
+/* 4. cosine */
+function drawCos(method) {
+  const svg = document.getElementById("cos-" + method); svg.innerHTML = "";
+  const W = 460, Hh = 220, left = 38, right = 12, top = 10, bottom = 26;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`);
+  const x = l => left + (l - 3) / (29 - 3) * (W - left - right), y = v => top + (1 - v) * (Hh - top - bottom);
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => { el("line", { x1: left, x2: W - right, y1: y(v), y2: y(v), stroke: "var(--grid)" }, svg); txt(svg, left - 6, y(v) + 4, v.toFixed(2), { "text-anchor": "end" }); });
+  L.forEach(l => txt(svg, x(l), Hh - 8, l, { "text-anchor": "middle" }));
+  const by = L.map(l => { const v = D.cosine.filter(r => r.method === method && r.layer === l).map(r => r.cosine).sort((a, b) => a - b);
+    return { l, min: v[0], max: v[v.length - 1], med: (v[6] + v[7]) / 2, rows: D.cosine.filter(r => r.method === method && r.layer === l) }; });
+  el("path", { d: "M" + by.map(b => `${x(b.l)},${y(b.max)}`).join("L") + "L" + by.slice().reverse().map(b => `${x(b.l)},${y(b.min)}`).join("L") + "Z",
+    fill: "color-mix(in srgb, var(--ink-2) 18%, transparent)" }, svg);
+  el("path", { d: "M" + by.map(b => `${x(b.l)},${y(b.med)}`).join("L"), fill: "none", stroke: "var(--ink-2)", "stroke-width": 2 }, svg);
+  by.forEach(b => {
+    el("circle", { cx: x(b.l), cy: y(b.med), r: 4, fill: "var(--ink-2)", stroke: "var(--panel)", "stroke-width": 2 }, svg);
+    const hit = el("rect", { x: x(b.l) - 14, y: top, width: 28, height: Hh - top - bottom, fill: "transparent" }, svg);
+    const lo = b.rows.reduce((a, c) => a.cosine < c.cosine ? a : c);
+    hit.addEventListener("mousemove", e => showTip(e, `block ${b.l}<br>median ${f2(b.med)}, range ${f2(b.min)}–${f2(b.max)}<br>lowest: ${PAIRS[lo.pair].cell}`));
+    hit.addEventListener("mouseleave", hideTip);
+  });
+  return by;
+}
+
+/* 5. scatter and table */
+function oodCells() {
+  const out = [];
+  for (const [u, byM] of Object.entries(D.ood)) for (const [m, byP] of Object.entries(byM)) for (const [p, c] of Object.entries(byP))
+    L.forEach((l, j) => out.push({ u, m, p: +p, l, s: c.s[j], n: c.n[j] }));
+  return out;
+}
+const CELLS = oodCells();
+function drawScatter() {
+  const svg = document.getElementById("scatter"); svg.innerHTML = "";
+  const W = 560, Hh = 520, left = 46, right = 12, top = 10, bottom = 36;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`); svg.style.maxWidth = "620px";
+  const lo = 0.2, hi = 0.9;
+  const x = v => left + (v - lo) / (hi - lo) * (W - left - right), y = v => top + (1 - (v - lo) / (hi - lo)) * (Hh - top - bottom);
+  for (let v = 0.2; v <= 0.9001; v += 0.1) {
+    el("line", { x1: x(v), x2: x(v), y1: top, y2: Hh - bottom, stroke: "var(--grid)" }, svg);
+    el("line", { x1: left, x2: W - right, y1: y(v), y2: y(v), stroke: "var(--grid)" }, svg);
+    txt(svg, x(v), Hh - bottom + 14, v.toFixed(1), { "text-anchor": "middle" });
+    txt(svg, left - 6, y(v) + 4, v.toFixed(1), { "text-anchor": "end" });
+  }
+  txt(svg, (left + W - right) / 2, Hh - 4, "AUROC, trained with the system prompt", { "text-anchor": "middle", fill: "var(--ink-2)" });
+  txt(svg, 12, (top + Hh - bottom) / 2, "AUROC, trained without", { "text-anchor": "middle", fill: "var(--ink-2)", transform: `rotate(-90 12 ${(top + Hh - bottom) / 2})` });
+  el("line", { x1: x(lo), y1: y(lo), x2: x(hi), y2: y(hi), stroke: "var(--ink-3)", "stroke-dasharray": "5 4" }, svg);
+  const sel = CELLS.filter(c => c.m === state.method && c.l === state.layer);
+  const g = el("g", {}, svg);
+  CELLS.filter(c => c.m === state.method).forEach(c => el("circle", { cx: x(c.s), cy: y(c.n), r: 2.2, fill: "var(--ink-3)", opacity: 0.25 }, g));
+  sel.forEach(c => el("circle", { cx: x(c.s), cy: y(c.n), r: 3.6, fill: "var(--accent)", stroke: "var(--panel)", "stroke-width": 1 }, g));
+  svg.onmousemove = e => {
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let best = null, bd = 144;
+    sel.forEach(c => { const d = (x(c.s) - q.x) ** 2 + (y(c.n) - q.y) ** 2; if (d < bd) { bd = d; best = c; } });
+    if (best) showTip(e, `<b>${best.u}</b><br>probe: ${PAIRS[best.p].cell}<br>block ${best.l}, ${mName(best.m)}<br>with ${f3(best.s)} · without ${f3(best.n)}`); else hideTip();
+  };
+  svg.onmouseleave = hideTip;
+  setText("scatter-sub", `highlighted: ${mName(state.method)} at block ${state.layer} (${sel.length} points); grey: the same method at the other blocks`);
+  const d = sel.map(c => c.n - c.s), mean = d.reduce((a, b) => a + b, 0) / d.length;
+  const absBy = L.map(l => { const a = CELLS.filter(c => c.l === l).map(c => Math.abs(c.n - c.s)); return a.reduce((s, v) => s + v, 0) / a.length; });
+  const big = CELLS.slice().sort((a, b) => Math.abs(b.n - b.s) - Math.abs(a.n - a.s)).slice(0, 20);
+  const bigUnits = [...new Set(big.map(c => c.u))].map(u => `${u} (${D.ood_units[u].n_pos}+ / ${D.ood_units[u].n_neg}−)`);
+  document.getElementById("read-ood").innerHTML = `<b>Reading.</b> Over all ${H.n_ood_cells.toLocaleString()} cells, removing the system prompt changes benchmark AUROC by ${H.ood_diff_mean >= 0 ? "+" : ""}${H.ood_diff_mean.toFixed(3)} on average (median ${H.ood_diff_median >= 0 ? "+" : ""}${H.ood_diff_median.toFixed(3)}); ${pct(H.ood_frac_nosys_higher)} of cells go up. 95% of cells move by less than ${H.ood_diff_abs_p95.toFixed(3)}; the largest change is ${H.ood_diff_max_abs.toFixed(3)}. The mean absolute change grows with depth, from ${absBy[0].toFixed(3)} at block ${L[0]} to ${absBy[4].toFixed(3)} at block ${L[4]}, following the cosine in section 4. The 20 largest changes are all on ${bigUnits.join(", ")}. At block ${D.ci_layer}, the two intervals overlap in ${pct(H.ood_ci_overlap_frac)} of ${H.n_ci_cells} probe × label cells. For the highlighted points the mean change is ${mean >= 0 ? "+" : ""}${mean.toFixed(3)}.`;
+}
+function drawOodTable() {
+  const m = state.method, ciL = D.ci_layer, j = L.indexOf(ciL);
+  const cellTxt = (c, k) => `${f3(c[k][j])}<span class="ci">${c.ci[k] ? `[${f2(c.ci[k][0])}, ${f2(c.ci[k][1])}]` : ""}</span>`;
+  const sep = c => c.ci.s && c.ci.n && (c.ci.n[0] > c.ci.s[1] || c.ci.s[0] > c.ci.n[1]);
+  const rows = Object.keys(D.ood).map(u => {
+    const lab = u.split("/")[1], mp = D.match[lab], b = D.ood[u][m]["0"], mc = mp != null ? D.ood[u][m][String(mp)] : null;
+    const n = D.ood_units[u];
+    return `<tr><td>${u} <span class="ci">${n.n_pos}+ / ${n.n_neg}−</span></td><td class="num${sep(b) ? " flag" : ""}">${cellTxt(b, "s")}</td><td class="num${sep(b) ? " flag" : ""}">${cellTxt(b, "n")}</td><td>${mp != null ? short(PAIRS[mp].cell) : "–"}</td><td class="num${mc && sep(mc) ? " flag" : ""}">${mc ? cellTxt(mc, "s") : "–"}</td><td class="num${mc && sep(mc) ? " flag" : ""}">${mc ? cellTxt(mc, "n") : "–"}</td></tr>`;
+  });
+  table("tbl-ood", `<tr><th rowspan="2">Benchmark label <span class="ci">sycophantic / not</span></th><th class="grp" colspan="2">General (baseline) probe</th><th rowspan="2">Matched cell</th><th class="grp" colspan="2">Matched-cell probe</th></tr><tr><th>with</th><th>without</th><th>with</th><th>without</th></tr>`, rows);
+}
+
+/* 6. checks */
+function drawChecks() {
+  const P = D.parity;
+  const rows = L.map(l => { const a = P.activations[l]; return `<tr><td>block ${l}</td><td class="num">${a.median_rel_l2.toExponential(1)}</td><td class="num">${a.max_rel_l2.toExponential(1)}</td><td class="num">${a.min_cos.toFixed(5)}</td></tr>`; });
+  rows.push(`<tr><td>retrained probes, test AUROC</td><td class="num">${P.sweep.median_abs_test_auroc_diff.toFixed(4)}</td><td class="num">${P.sweep.max_abs_test_auroc_diff.toFixed(4)}</td><td class="num">${P.sweep.n_probes} probes</td></tr>`);
+  table("tbl-parity", `<tr><th>Response mean, with system prompt</th><th>median rel. L2</th><th>max rel. L2</th><th>min cosine</th></tr>`, rows);
+  const nrows = L.map(l => { const s = D.null_sweep[l]; const med = a => a[Math.floor(a.length / 2)];
+    return `<tr><td>block ${l}</td><td class="num">${(D.null_spread[l] * 100).toFixed(1)}%</td><td class="num">${f3(med(s.logistic))}</td><td class="num">${f3(s.logistic[s.logistic.length - 1])}</td><td class="num">${f3(med(s.dim))}</td><td class="num">${f3(s.dim[s.dim.length - 1])}</td></tr>`; });
+  table("tbl-null", `<tr><th rowspan="2">Last prompt token, without</th><th rowspan="2">max spread</th><th class="grp" colspan="2">Logistic, 14 pairs</th><th class="grp" colspan="2">Difference of means, 14 pairs</th></tr><tr><th>median AUROC</th><th>max</th><th>median AUROC</th><th>max</th></tr>`, nrows);
+  const t = D.null_top;
+  document.getElementById("read-null").innerHTML = `<b>Reading.</b> Identical prompts give vectors that differ by up to ${(Math.max(...Object.values(D.null_spread)) * 100).toFixed(1)}% in late blocks, from bfloat16 arithmetic in batches of different padded length. Most null probes sit at chance, but the highest reaches ${f3(t.test_auroc)} (${PAIRS[t.pair].cell}, ${mName(t.method)}, block ${t.layer}, ${t.n_test} test rows). The likely route is that batches are sorted by length and length differs by label, so the batching noise is partly label-aligned; this was not tested further. With the system prompt, the same position scores at least ${f3(D.prompt_last_sys.min)} over ${D.prompt_last_sys.n} probes, because there the prompt itself differs.`;
+}
+
+function render() {
+  syncSeg(); drawHeat("nosys"); drawHeat("sys"); drawDots(); drawTransfer(); drawScatter(); drawOodTable();
+}
+render();
+const cl = drawCos("logistic"), cd = drawCos("dim");
+document.getElementById("read-cos").innerHTML = `<b>Reading.</b> Difference-of-means directions stay close (median ${f2(cd[0].med)} at block 3, ${f2(cd[4].med)} at block 16). Logistic directions agree at block 3 (median ${f2(cl[0].med)}) and fall to a median of ${f2(cl[4].med)} by block 16 (range ${f2(cl[4].min)}–${f2(cl[4].max)}). For scale, two random directions in 4,096 dimensions have |cosine| around 0.02. The logistic probes reach the same accuracy along partly different directions, which regularised logistic regression on correlated features allows.`;
+drawChecks();
+</script>
